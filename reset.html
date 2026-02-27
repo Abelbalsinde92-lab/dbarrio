@@ -21,7 +21,7 @@
 
   <input id="p1" type="password" placeholder="Nueva contraseña (mín 6)" />
   <input id="p2" type="password" placeholder="Repite la contraseña" />
-  <button onclick="save()">Guardar</button>
+  <button id="btnSave" onclick="save()" disabled>Guardar</button>
 
   <div id="msg"></div>
 
@@ -56,43 +56,51 @@
 
   // 👇 NUEVO: prepara la sesión temporal (PKCE o hash tokens)
   async function init(){
+  const btn = document.getElementById('btnSave');
+  if (btn) btn.disabled = true; // por defecto deshabilitado
+
+  const url = new URL(window.location.href);
+  const code = url.searchParams.get('code');
+
+  try {
     // 1) Si viene como ?code=...
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get('code');
+    if (code) {
+      const { error } = await sb.auth.exchangeCodeForSession(window.location.href);
+      if (error) return show('Link inválido o expirado. Pide recuperar contraseña otra vez.');
 
-    try {
-      if (code) {
-        // PKCE flow
-        const { error } = await sb.auth.exchangeCodeForSession(window.location.href);
-        if (error) return show('Link inválido o expirado. Pide recuperar contraseña otra vez.');
-        show('Link verificado. Ya puedes poner tu nueva contraseña.', true);
-        return;
-      }
-
-      // 2) Si viene como #access_token=...
-      const t = readHashTokens();
-      if (t) {
-        const { error } = await sb.auth.setSession({
-          access_token: t.access_token,
-          refresh_token: t.refresh_token
-        });
-        if (error) return show('Link inválido o expirado. Pide recuperar contraseña otra vez.');
-        show('Link verificado. Ya puedes poner tu nueva contraseña.', true);
-        return;
-      }
-
-      // 3) Si no hay nada, revisa si ya hay sesión (por si acaso)
-      const { data: { session } } = await sb.auth.getSession();
-      if (!session) {
-        show('No hay sesión de recuperación en este enlace. Abre el link desde Safari o pide uno nuevo.');
-      } else {
-        show('Sesión lista. Ya puedes cambiar tu contraseña.', true);
-      }
-    } catch (e) {
-      show('Error inesperado. Intenta abrir el enlace en Safari.');
+      show('Link verificado. Ya puedes poner tu nueva contraseña.', true);
+      if (btn) btn.disabled = false;
+      return;
     }
-  }
 
+    // 2) Si viene como #access_token=...
+    const t = readHashTokens();
+    if (t) {
+      const { error } = await sb.auth.setSession({
+        access_token: t.access_token,
+        refresh_token: t.refresh_token
+      });
+      if (error) return show('Link inválido o expirado. Pide recuperar contraseña otra vez.');
+
+      show('Link verificado. Ya puedes poner tu nueva contraseña.', true);
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    // 3) Si no hay nada, revisa si ya hay sesión (por si acaso)
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) {
+      show('No hay sesión de recuperación en este enlace. Abre el link desde Safari o pide uno nuevo.');
+      return;
+    }
+
+    show('Sesión lista. Ya puedes cambiar tu contraseña.', true);
+    if (btn) btn.disabled = false;
+
+  } catch (e) {
+    show('Error inesperado. Intenta abrir el enlace en Safari.');
+  }
+}
   async function save(){
     const p1=document.getElementById('p1').value;
     const p2=document.getElementById('p2').value;
