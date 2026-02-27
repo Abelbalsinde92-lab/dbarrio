@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>dbarrio — recuperar acceso</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;max-width:520px;margin:40px auto;padding:0 16px}
+    h1{margin:0 0 14px}
+    p{color:#555}
+    input{width:100%;padding:12px 14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:16px}
+    button{width:100%;padding:12px 14px;border:0;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}
+    .ok{color:#0a7a3d;margin-top:10px}
+    .err{color:#c62828;margin-top:10px}
+  </style>
+</head>
+<body>
+  <h1>Recuperar acceso</h1>
+  <p>Introduce tu nueva contraseña.</p>
+
+  <input id="p1" type="password" placeholder="Nueva contraseña (mín 6)" />
+  <input id="p2" type="password" placeholder="Repite la contraseña" />
+  <button onclick="save()">Guardar</button>
+
+  <div id="msg"></div>
+
+<script>
+  const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
+  const SKEY = 'TU_ANON_KEY_AQUI';
+  const sb = supabase.createClient(SURL, SKEY);
+
+  function show(text, ok=false){
+    const m=document.getElementById('msg');
+    m.className = ok ? 'ok' : 'err';
+    m.textContent = text;
+  }
+
+  async function save(){
+    const p1=document.getElementById('p1').value;
+    const p2=document.getElementById('p2').value;
+    if(p1.length<6) return show('La contraseña debe tener al menos 6 caracteres.');
+    if(p1!==p2) return show('Las contraseñas no coinciden.');
+
+    // Si llegaste aquí desde el link de recovery, supabase ya trae la sesión temporal
+    const { data, error } = await sb.auth.updateUser({ password: p1 });
+    if(error) return show('Error: ' + error.message);
+
+    show('Contraseña actualizada. Ya puedes iniciar sesión.', true);
+    setTimeout(()=>{ window.location.href='index.html'; }, 1200);
+  }
+</script>
+</body>
+</html>
