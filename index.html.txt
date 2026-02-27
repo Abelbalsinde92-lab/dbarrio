@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#1C1C2E"/>
+<title>dbarrio — servicios tecnicos</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg"/>
+<link rel="apple-touch-icon" href="icon.svg"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
+  --ink:#1C1C2E;--ink2:#2E2E45;
+  --bg:#F0EDE8;--card:#FFFFFF;
+  --line:#E5E2DC;--g1:#6B6B7E;--g2:#B8B4AE;
+  --err:#D63031;--ok:#00856F;
+  --r:14px;--f:'Outfit',sans-serif;--fd:'Barlow Condensed',sans-serif;
+}
+html{background:var(--ink)}
+body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:40;background:var(--ink);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;padding-top:env(safe-area-inset-top,0)}
+.logo{display:flex;align-items:flex-end;gap:5px;text-decoration:none}
+.logo-db{font-family:var(--fd);font-size:36px;font-weight:900;color:var(--y);letter-spacing:-3px;line-height:.85}
+.logo-word{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:2.5px;padding-bottom:2px}
+.nav{display:flex;gap:6px}
+.nav a{font-size:11px;font-weight:500;color:rgba(255,255,255,.45);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:20px;transition:all .15s}
+.nav a:hover{color:var(--y);border-color:rgba(245,193,22,.3)}
+
+/* HERO */
+.hero{background:var(--ink);padding:28px 16px 0;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px),repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px)}
+.hero-wm{position:absolute;right:-10px;top:-20px;font-family:var(--fd);font-size:200px;font-weight:900;color:rgba(245,193,22,.045);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(245,193,22,.1);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:4px 12px 4px 8px;margin-bottom:14px}
+.hero-dot{width:7px;height:7px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 6px rgba(245,193,22,0)}}
+.hero-chip-txt{font-size:11px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.3px}
+.hero-title{font-family:var(--fd);font-size:46px;font-weight:900;font-style:italic;color:#fff;line-height:.92;letter-spacing:-.5px;margin-bottom:12px;position:relative;z-index:1}
+.hero-title em{font-style:normal;color:var(--y);display:block}
+.hero-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;max-width:300px;margin-bottom:28px;position:relative;z-index:1}
+.code-badge{display:inline-flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle;margin:0 2px}
+.hero-stats{display:flex;border-top:1px solid rgba(255,255,255,.07);margin:0 -16px}
+.stat{flex:1;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:2px;border-right:1px solid rgba(255,255,255,.07)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--y);line-height:1}
+.stat-l{font-size:10px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.3px}
+.hero-curve{height:26px;background:var(--bg);border-radius:26px 26px 0 0;margin-top:-1px}
+
+/* CONTENT */
+.content{padding:4px 14px 40px;padding-bottom:calc(40px + env(safe-area-inset-bottom,0));display:flex;flex-direction:column;gap:10px}
+
+/* CTA */
+.btn-cta{width:100%;border:none;cursor:pointer;background:var(--y);border-radius:var(--r);display:flex;align-items:stretch;overflow:hidden;box-shadow:0 4px 20px rgba(245,193,22,.35);transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
+.btn-cta:active{transform:scale(.97);box-shadow:0 2px 8px rgba(245,193,22,.2)}
+.btn-cta-body{flex:1;padding:18px 20px;text-align:left}
+.cta-title{font-family:var(--fd);font-size:25px;font-weight:900;color:var(--ink);letter-spacing:.2px;line-height:1;display:block}
+.cta-sub{font-size:12px;font-weight:600;color:rgba(28,28,46,.55);display:block;margin-top:2px}
+.btn-cta-ico{width:56px;background:rgba(28,28,46,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.acard{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:transform .1s;box-shadow:0 1px 4px rgba(0,0,0,.05);-webkit-tap-highlight-color:transparent;text-align:left;width:100%}
+.acard:active{transform:scale(.97)}
+.acard.row{flex-direction:row;align-items:center;justify-content:space-between}
+.acard.hl{background:var(--yl);border-color:rgba(245,193,22,.35)}
+.acard.dk{background:#F4F3F8;border-color:rgba(28,28,46,.1)}
+.acard-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.icy{background:rgba(245,193,22,.15)} .icb{background:rgba(66,135,245,.1)}
+.icr{background:rgba(214,48,49,.08)}  .ico{background:rgba(237,137,54,.1)}
+.ick{background:rgba(28,28,46,.07)}
+.acard-txt{display:flex;flex-direction:column;gap:2px;flex:1}
+.acard-title{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
+.acard-desc{font-size:11px;font-weight:500;color:var(--g1)}
+.tip{text-align:center;font-size:12px;color:var(--g1);padding:4px 10px}
+.tip-chip{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:12px;font-weight:800;padding:2px 8px;border-radius:5px;vertical-align:middle;margin:0 2px;letter-spacing:.5px}
+
+/* ANIMATIONS */
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:up .35s ease both}
+.btn-cta{animation:up .3s ease .08s both}
+.grid2{animation:up .3s ease .14s both}
+.a1{animation:up .3s ease .2s both}
+.a2{animation:up .3s ease .25s both}
+.a3{animation:up .3s ease .29s both}
+
+/* MODAL SYSTEM */
+.ov{display:none;position:fixed;inset:0;background:rgba(15,15,28,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:200;align-items:flex-end;justify-content:center}
+.ov.open{display:flex}
+.sheet{background:var(--card);width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom,28px);max-height:92svh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideup .26s cubic-bezier(.22,.72,0,1) both}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.pill{width:36px;height:4px;background:var(--line);border-radius:4px;margin:10px auto}
+.sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;margin-bottom:14px}
+.sheet-title{font-family:var(--fd);font-size:23px;font-weight:800;color:var(--ink);letter-spacing:.1px}
+.sheet-x{background:var(--line);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--g1);display:flex;align-items:center;justify-content:center}
+.sheet-x:hover{background:var(--g2)}
+.mbody{padding:0 20px 20px}
+.fg{margin-bottom:13px}
+label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:var(--f);color:var(--ink);background:#FAFAFA;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);background:#fff;box-shadow:0 0 0 3px rgba(28,28,46,.06)}
+textarea{resize:vertical;min-height:72px}
+.fe{font-size:11px;color:var(--err);margin-top:4px;display:none}
+.fe.v{display:block}
+.cb{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.cb input[type=checkbox]{width:18px;height:18px;margin-top:1px;flex-shrink:0;accent-color:var(--ink);cursor:pointer}
+.cb span{font-size:12px;color:var(--g1);line-height:1.55}
+.cb a{color:var(--ink)}
+.sep{display:flex;align-items:center;gap:10px;margin:14px 0 12px;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--line)}
+.stars{display:flex;gap:10px;padding:4px 0}
+.star{font-size:34px;cursor:pointer;color:var(--line);transition:color .1s,transform .1s;user-select:none;line-height:1}
+.star.on{color:var(--y)}
+.star:active{transform:scale(.82)}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:var(--f);cursor:pointer;margin-top:14px;transition:background .14s,transform .1s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-y{background:var(--y);color:var(--ink)}
+.btn-y:hover{background:var(--yd)}
+.btn-k{background:var(--ink);color:#fff}
+.btn-k:hover{background:var(--ink2)}
+.ok-box{display:none;background:linear-gradient(135deg,#EDFAF3,#D4F0E4);border:1.5px solid #8DD4AA;border-radius:10px;padding:16px 18px;margin-top:14px;font-size:13px;color:var(--ok);line-height:1.7}
+.ok-box.v{display:block}
+.ok-code{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:24px;font-weight:900;padding:4px 14px;border-radius:8px;margin:6px 0 4px;letter-spacing:1px}
+.ok-note{display:block;font-size:11px;color:#1A7F5A;margin-top:4px}
+.err-box{display:none;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--err)}
+.err-box.v{display:block}
+.hint{font-size:12px;color:var(--g1);line-height:1.55;margin-top:6px}
+.sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
+.btn-y .sp{border-color:rgba(28,28,46,.2);border-top-color:var(--ink)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="#" class="logo">
+    <span class="logo-db">db</span>
+    <span class="logo-word">dbarrio</span>
+  </a>
+  <nav class="nav">
+    <a href="privacidad.html" target="_blank">Privacidad</a>
+    <a href="terminos.html" target="_blank">Terminos</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-wm">db</div>
+  <div class="hero-chip">
+    <span class="hero-dot"></span>
+    <span class="hero-chip-txt">Activo ahora</span>
+  </div>
+  <h1 class="hero-title">Tu tecnico<em>en minutos.</em></h1>
+  <p class="hero-desc">Conectamos tu necesidad con un tecnico verificado. Guarda tu codigo <span class="code-badge">db-xxxx</span> para garantia, reclamo y calificacion.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-n">24h</span><span class="stat-l">Respuesta</span></div>
+    <div class="stat"><span class="stat-n">9</span><span class="stat-l">Servicios</span></div>
+    <div class="stat"><span class="stat-n">WA</span><span class="stat-l">Directo</span></div>
+  </div>
+</section>
+<div class="hero-curve"></div>
+
+<div class="content">
+  <button class="btn-cta" onclick="open_('sol')">
+    <div class="btn-cta-body">
+      <span class="cta-title">Solicitar tecnico</span>
+      <span class="cta-sub">Atencion rapida por WhatsApp</span>
+    </div>
+    <div class="btn-cta-ico">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(28,28,46,.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+  </button>
+
+  <div class="grid2">
+    <button class="acard" onclick="open_('gar')">
+      <div class="acard-icon icb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4287f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+      <div class="acard-txt"><span class="acard-title">Garantia</span><span class="acard-desc">Si el trabajo fallo</span></div>
+    </button>
+    <button class="acard" onclick="open_('rec')">
+      <div class="acard-icon icr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D63031" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <div class="acard-txt"><span class="acard-title">Reclamo</span><span class="acard-desc">Reportar problema</span></div>
+    </button>
+    <button class="acard" onclick="open_('cal')">
+      <div class="acard-icon icy"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <div class="acard-txt"><span class="acard-title">Calificar</span><span class="acard-desc">Control de calidad</span></div>
+    </button>
+    <button class="acard hl" onclick="open_('uni')">
+      <div class="acard-icon ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DD6B20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="acard-txt"><span class="acard-title">Unete</span><span class="acard-desc">Trabaja con nosotros</span></div>
+    </button>
+  </div>
+
+  <button class="acard row dk a1" onclick="open_('acc')">
+    <div class="acard-icon ick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#454562" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <div class="acard-txt"><span class="acard-title">Acceso privado</span><span class="acard-desc">Admin y socios verificados</span></div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8B4AE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+
+  <div class="a2" style="background:var(--ink);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;gap:14px">
+    <div style="flex:1">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);margin-bottom:6px">Codigo de seguimiento</div>
+      <div style="font-family:var(--fd);font-size:26px;font-weight:900;color:var(--y);letter-spacing:1px;line-height:1">db-xxxx</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:4px">Guardalo — garantia, reclamo y calificacion</div>
+    </div>
+    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="rgba(245,193,22,.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+  </div>
+</div>
+
+<!-- SOLICITAR -->
+<div class="ov" id="ov-sol" onclick="ovc(event,'sol')">
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Solicitar tecnico</span><button class="sheet-x" onclick="close_('sol')">&times;</button></div>
+  <div class="mbody">
+    <div class="fg"><label>Nombre completo</label><input id="s-cli" type="text" placeholder="Tu nombre"/><div class="fe" id="es-cli">Requerido.</div></div>
+    <div class="fg"><label>WhatsApp</label><input id="s-wa" type="tel" placeholder="+53 5XXX XXXX"/><div class="fe" id="es-wa">Numero invalido.</div></div>
+    <div class="fg"><label>Municipio</label><input id="s-mun" type="text" placeholder="Donde necesitas el servicio"/><div class="fe" id="es-mun">Requerido.</div></div>
+    <div class="fg"><label>Direccion (opcional)</label><input id="s-dir" type="text" placeholder="Calle, numero, referencias..."/></div>
+    <div class="fg"><label>Tipo de servicio</label>
+      <select id="s-srv"><option value="">-- Seleccionar --</option><option>Electrodomesticos</option><option>Plomeria</option><option>Electricidad</option><option>Refrigeracion</option><option>Television / audio</option><option>Computadoras</option><option>Celulares</option><option>Cerrajeria</option><option>Otro</option></select>
+      <div class="fe" id="es-srv">Selecciona un servicio.</div>
+    </div>
+    <div class="fg"><label>Descripcion del problema</label><textarea id="s-det" placeholder="Describe que falla o que necesitas..."></textarea></div>
+    <div class="cb"><input type="checkbox" id="s-cp"/><span>Acepto el uso de mis datos para coordinar el servicio. <a href="privacidad.html" target="_blank">Privacidad</a></span></div>
+    <div class="ok-box" id="ok-sol">Solicitud registrada. Tu codigo es:<br/><span class="ok-code" id="cod-sol"></span><span class="ok-note">Guardalo — lo necesitas para garantia, reclamo y calificacion.</span></div>
+    <div class="err-box" id="err-sol"></div>
+    <button class="btn btn-y" id="btn-sol" onclick="envSol()">Solicitar tecnico</button>
+  </div>
+</div></div>
+
+<!-- GARANTIA -->
+<div class="ov" id="ov-gar" onclick="ovc(event,'gar')">
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Garantia</span><button class="sheet-x" onclick="close_('gar')">&times;</button></div>
+  <div class="mbody">
+    <div class="fg"><label>Codigo del servicio</label><input id="g-rec" type="text" placeholder="db-xxxx"/><div class="fe" id="eg-rec">Requerido.</div></div>
+    <div class="fg"><label>Telefono de contacto</label><input id="g-tel" type="tel" placeholder="+53..."/><div class="fe" id="eg-tel">Invalido.</div></div>
+    <div class="fg"><label>Describe la falla</label><textarea id="g-fal" placeholder="Que falla presenta el trabajo..."></textarea><div class="fe" id="eg-fal">Requerido.</div></div>
+    <div class="cb"><input type="checkbox" id="g-cp"/><span>Acepto el uso de mis datos. <a href="privacidad.html" target="_blank">Privacidad</a></span></div>
+    <div class="ok-box" id="ok-gar">Garantia registrada. Nos contactaremos contigo pronto.</div>
+    <div class="err-box" id="err-gar"></div>
+    <button class="btn btn-k" id="btn-gar" onclick="envGar()">Enviar garantia</button>
+  </div>
+</div></div>
+
+<!-- RECLAMO -->
+<div class="ov" id="ov-rec" onclick="ovc(event,'rec')">
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Reclamo</span><button class="sheet-x" onclick="close_('rec')">&times;</button></div>
+  <div class="mbody">
+    <div class="fg"><label>Telefono de contacto</label><input id="r-tel" type="tel" placeholder="+53..."/><div class="fe" id="er-tel">Invalido.</div></div>
+    <div class="fg"><label>Codigo (opcional)</label><input id="r-cod" type="text" placeholder="db-xxxx si lo tienes"/></div>
+    <div class="fg"><label>Descripcion del reclamo</label><textarea id="r-msg" placeholder="Explica el problema con detalle..."></textarea><div class="fe" id="er-msg">Requerido.</div></div>
+    <div class="cb"><input type="checkbox" id="r-cp"/><span>Acepto el uso de mis datos. <a href="privacidad.html" target="_blank">Privacidad</a></span></div>
+    <div class="ok-box" id="ok-rec">Reclamo registrado. Lo revisaremos pronto.</div>
+    <div class="err-box" id="err-rec"></div>
+    <button class="btn btn-k" id="btn-rec" onclick="envRec()">Enviar reclamo</button>
+  </div>
+</div></div>
+
+<!-- CALIFICAR -->
+<div class="ov" id="ov-cal" onclick="ovc(event,'cal')">
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Calificar servicio</span><button class="sheet-x" onclick="close_('cal')">&times;</button></div>
+  <div class="mbody">
+    <div class="fg"><label>Codigo del servicio</label><input id="c-cod" type="text" placeholder="db-xxxx"/><div class="fe" id="ec-cod">Requerido.</div></div>
+    <div class="fg"><label>Valoracion</label>
+      <div class="stars" id="stars">
+        <span class="star" data-v="1" onclick="setStar(1)">★</span><span class="star" data-v="2" onclick="setStar(2)">★</span><span class="star" data-v="3" onclick="setStar(3)">★</span><span class="star" data-v="4" onclick="setStar(4)">★</span><span class="star" data-v="5" onclick="setStar(5)">★</span>
+      </div>
+      <div class="fe" id="ec-st">Selecciona al menos una estrella.</div>
+    </div>
+    <div class="ok-box" id="ok-cal">Valoracion registrada. Gracias por tu opinion.</div>
+    <div class="err-box" id="err-cal"></div>
+    <button class="btn btn-y" id="btn-cal" onclick="envCal()">Enviar valoracion</button>
+  </div>
+</div></div>
+
+<!-- UNETE -->
+<div class="ov" id="ov-uni" onclick="ovc(event,'uni')">
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Unete como tecnico</span><button class="sheet-x" onclick="close_('uni')">&times;</button></div>
+  <div class="mbody">
+    <div class="fg"><label>Nombre completo</label><input id="u-nom" type="text" placeholder="Tu nombre"/><div class="fe" id="eu-nom">Requerido.</div></div>
+    <div class="fg"><label>Telefono / WhatsApp</label><input id="u-tel" type="tel" placeholder="+53..."/><div class="fe" id="eu-tel">Invalido.</div></div>
+    <div class="fg"><label>Especialidad</label>
+      <select id="u-esp"><option value="">-- Seleccionar --</option><option>Electrodomesticos</option><option>Plomeria</option><option>Electricidad</option><option>Refrigeracion</option><option>Television / audio</option><option>Computadoras</option><option>Celulares</option><option>Cerrajeria</option><option>Multidisciplinario</option></select>
+      <div class="fe" id="eu-esp">Requerido.</div>
+    </div>
+    <div class="fg"><label>Zona / Municipio</label><input id="u-zona" type="text" placeholder="Donde trabajas"/><div class="fe" id="eu-zona">Requerido.</div></div>
+    <div class="sep">Crear cuenta</div>
+    <div class="fg"><label>Correo electronico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com"/><div class="fe" id="eu-email">Correo invalido.</div></div>
+    <div class="fg"><label>Contrasena</label><input id="u-pass" type="password" placeholder="Minimo 6 caracteres"/><div class="fe" id="eu-pass">Minimo 6 caracteres.</div></div>
+    <p class="hint">Tu solicitud queda <strong>pendiente de aprobacion</strong>. Te avisamos por WhatsApp cuando puedas operar.</p>
+    <div class="ok-box" id="ok-uni">Cuenta creada. Tu solicitud esta en revision. Te contactaremos pronto.</div>
+    <div class="err-box" id="err-uni"></div>
+    <button class="btn btn-k" id="btn-uni" onclick="envUni()">Crear cuenta</button>
+  </div>
+</div></div>
+
+<!-- ACCESO -->
+<div class="ov" id="ov-acc" onclick="ovc(event,'acc')">
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Acceso privado</span><button class="sheet-x" onclick="close_('acc')">&times;</button></div>
+  <div class="mbody">
+    <div class="fg"><label>Correo electronico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com"/><div class="fe" id="ea-email">Invalido.</div></div>
+    <div class="fg"><label>Contrasena</label><input id="a-pass" type="password" placeholder="••••••••"/><div class="fe" id="ea-pass">Requerido.</div></div>
+    <div class="err-box" id="err-acc"></div>
+    <button class="btn btn-k" id="btn-acc" onclick="doLogin()">Entrar</button>
+  </div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
+const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+const sb=supabase.createClient(SURL,SKEY);
+let sv=0;
+
+function open_(k){document.getElementById('ov-'+k).classList.add('open');document.body.style.overflow='hidden'}
+function close_(k){document.getElementById('ov-'+k).classList.remove('open');document.body.style.overflow=''}
+function ovc(e,k){if(e.target===document.getElementById('ov-'+k))close_(k)}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.ov.open').forEach(o=>{o.classList.remove('open');document.body.style.overflow=''})});
+
+function vt(t){return String(t||'').trim().length>=6}
+function sE(id,m){const e=document.getElementById(id);if(e){if(m)e.textContent=m;e.classList.add('v')}}
+function cE(id){const e=document.getElementById(id);if(e)e.classList.remove('v')}
+function sOK(id){const e=document.getElementById(id);if(e)e.classList.add('v')}
+function sER(id,m){const e=document.getElementById(id);if(e){e.textContent=m;e.classList.add('v')}}
+function cER(id){const e=document.getElementById(id);if(e)e.classList.remove('v')}
+function setL(id,on){const b=document.getElementById(id);if(!b)return;if(!b._t)b._t=b.innerHTML;b.disabled=on;b.innerHTML=on?'<span class="sp"></span>Enviando...':(b._t)}
+function dbc(id){return'db-'+id}
+
+async function envSol(){
+  cER('err-sol');
+  const cli=document.getElementById('s-cli').value.trim();
+  const wa=document.getElementById('s-wa').value.trim();
+  const mun=document.getElementById('s-mun').value.trim();
+  const dir=document.getElementById('s-dir').value.trim();
+  const srv=document.getElementById('s-srv').value;
+  const det=document.getElementById('s-det').value.trim();
+  const cp=document.getElementById('s-cp').checked;
+  ['es-cli','es-wa','es-mun','es-srv'].forEach(cE);
+  let ok=true;
+  if(!cli){sE('es-cli');ok=false}if(!vt(wa)){sE('es-wa');ok=false}
+  if(!mun){sE('es-mun');ok=false}if(!srv){sE('es-srv');ok=false}
+  if(!ok)return;
+  setL('btn-sol',true);
+  const now=new Date().toISOString();
+  const{data,error}=await sb.from('solicitudes').insert({
+    cliente:cli,telefono:wa,municipio:mun,direccion:dir||null,servicio:srv,
+    detalles:det||null,estado:'pendiente',fecha_ts:now,
+    consent_privacidad:cp,consent_privacidad_ts:cp?now:null,
+    consent_texto:'solicitud publica v2'
+  }).select('id').single();
+  setL('btn-sol',false);
+  if(error){sER('err-sol','Error: '+error.message);return}
+  document.getElementById('cod-sol').textContent=dbc(data.id);
+  sOK('ok-sol');document.getElementById('btn-sol').style.display='none';
+}
+
+async function envGar(){
+  cER('err-gar');
+  const rec=document.getElementById('g-rec').value.trim();
+  const tel=document.getElementById('g-tel').value.trim();
+  const fal=document.getElementById('g-fal').value.trim();
+  const cp=document.getElementById('g-cp').checked;
+  ['eg-rec','eg-tel','eg-fal'].forEach(cE);
+  let ok=true;
+  if(!rec){sE('eg-rec');ok=false}if(!vt(tel)){sE('eg-tel');ok=false}if(!fal){sE('eg-fal');ok=false}
+  if(!ok)return;
+  setL('btn-gar',true);
+  const now=new Date().toISOString();
+  const{error}=await sb.from('garantias').insert({recibo:rec,telefono:tel,falla:fal,estado:'pendiente',consent_privacidad:cp,consent_privacidad_ts:cp?now:null,consent_texto:'garantia v2'});
+  setL('btn-gar',false);
+  if(error){sER('err-gar','Error: '+error.message);return}
+  sOK('ok-gar');document.getElementById('btn-gar').style.display='none';
+}
+
+async function envRec(){
+  cER('err-rec');
+  const tel=document.getElementById('r-tel').value.trim();
+  const cod=document.getElementById('r-cod').value.trim();
+  const msg=document.getElementById('r-msg').value.trim();
+  const cp=document.getElementById('r-cp').checked;
+  ['er-tel','er-msg'].forEach(cE);
+  let ok=true;
+  if(!vt(tel)){sE('er-tel');ok=false}if(!msg){sE('er-msg');ok=false}
+  if(!ok)return;
+  setL('btn-rec',true);
+  const now=new Date().toISOString();
+  const{error}=await sb.from('quejas').insert({telefono:tel,codigo_servicio:cod||null,mensaje:msg,estado:'pendiente',consent_privacidad:cp,consent_privacidad_ts:cp?now:null,consent_texto:'reclamo v2'});
+  setL('btn-rec',false);
+  if(error){sER('err-rec','Error: '+error.message);return}
+  sOK('ok-rec');document.getElementById('btn-rec').style.display='none';
+}
+
+function setStar(v){sv=v;document.querySelectorAll('#stars .star').forEach(s=>s.classList.toggle('on',parseInt(s.dataset.v)<=v));cE('ec-st')}
+async function envCal(){
+  cER('err-cal');
+  const cod=document.getElementById('c-cod').value.trim();
+  ['ec-cod','ec-st'].forEach(cE);
+  let ok=true;
+  if(!cod){sE('ec-cod');ok=false}if(!sv){sE('ec-st');ok=false}
+  if(!ok)return;
+  const n=parseInt(cod.replace(/^db-/i,''));
+  if(isNaN(n)){sE('ec-cod','Formato invalido. Usa db-xxxx.');return}
+  setL('btn-cal',true);
+  const{data:row}=await sb.from('solicitudes').select('id').eq('id',n).maybeSingle();
+  if(!row){setL('btn-cal',false);sER('err-cal','Codigo no encontrado.');return}
+  const now=new Date().toISOString();
+  const { error } = await sb.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
+  setL('btn-cal',false);
+  if(error){sER('err-cal','Error: '+error.message);return}
+  sOK('ok-cal');document.getElementById('btn-cal').style.display='none';
+}
+
+async function envUni(){
+  cER('err-uni');
+  const nom=document.getElementById('u-nom').value.trim();
+  const tel=document.getElementById('u-tel').value.trim();
+  const esp=document.getElementById('u-esp').value;
+  const zona=document.getElementById('u-zona').value.trim();
+  const email=document.getElementById('u-email').value.trim();
+  const pass=document.getElementById('u-pass').value;
+  ['eu-nom','eu-tel','eu-esp','eu-zona','eu-email','eu-pass'].forEach(cE);
+  let ok=true;
+  if(!nom){sE('eu-nom');ok=false}if(!vt(tel)){sE('eu-tel');ok=false}
+  if(!esp){sE('eu-esp');ok=false}if(!zona){sE('eu-zona');ok=false}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('eu-email');ok=false}
+  if(pass.length<6){sE('eu-pass');ok=false}
+  if(!ok)return;
+  setL('btn-uni',true);
+  const{data:ad,error:ae}=await sb.auth.signUp({email,password:pass});
+  if(ae||!ad.user){setL('btn-uni',false);sER('err-uni','Error: '+(ae?ae.message:'sin usuario'));return}
+  const{error:se}=await sb.from('socios').insert({
+    nombre:nom,telefono:tel,especialidad:esp,zona:zona,
+    email:email,auth_uid:ad.user.id,admitido:false,estado_socio:'pendiente',
+    comision:15,deuda:0,trabajos:0
+  });
+  await sb.auth.signOut();
+  setL('btn-uni',false);
+  if(se){sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);return}
+  sOK('ok-uni');document.getElementById('btn-uni').style.display='none';
+}
+
+async function doLogin(){
+  cER('err-acc');
+  const email=document.getElementById('a-email').value.trim();
+  const pass=document.getElementById('a-pass').value;
+  ['ea-email','ea-pass'].forEach(cE);
+  let ok=true;
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');ok=false}
+  if(!pass){sE('ea-pass');ok=false}
+  if(!ok)return;
+  setL('btn-acc',true);
+  const{data:auth,error:ae}=await sb.auth.signInWithPassword({email,password:pass});
+  if(ae||!auth.session){setL('btn-acc',false);sER('err-acc','Credenciales incorrectas.');return}
+  const uid=auth.session.user.id;
+  const{data:adm}=await sb.from('admins').select('id').eq('auth_uid',uid).maybeSingle();
+  if(adm){window.location.href='admin.html';return}
+  const{data:soc}=await sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid',uid).maybeSingle();
+  if(soc){
+    if(!soc.admitido||soc.estado_socio!=='activo'){await sb.auth.signOut();setL('btn-acc',false);sER('err-acc','Cuenta pendiente de aprobacion.');return}
+    window.location.href='socio.html';return;
+  }
+  await sb.auth.signOut();setL('btn-acc',false);
+  sER('err-acc','Usuario no reconocido.');
+}
+</script>
+</body>
+</html>

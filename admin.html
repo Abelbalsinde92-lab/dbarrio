@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#1C1C2E"/>
+<title>dbarrio — admin</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
+  --ink:#1C1C2E;--ink2:#2E2E45;--ink3:#454562;
+  --bg:#ECEAE5;--card:#FFFFFF;--line:#E0DDD7;
+  --g1:#6B6B7E;--g2:#A8A4A0;
+  --err:#D63031;--ok:#00856F;--wa:#25D366;
+  --r:14px;--rs:10px;
+  --f:'Outfit',sans-serif;--fd:'Barlow Condensed',sans-serif;
+}
+
+html,body{height:100%;overflow:hidden}
+body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:var(--ink);
+  height:54px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  padding-top:env(safe-area-inset-top,0);
+  z-index:30;
+}
+.topbar-logo{display:flex;align-items:flex-end;gap:4px}
+.logo-db{font-family:var(--fd);font-size:32px;font-weight:900;color:var(--y);letter-spacing:-3px;line-height:.85}
+.logo-tag{font-size:9px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:2px;padding-bottom:2px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.kpi-bar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.kpi-bar::-webkit-scrollbar{display:none}
+.kpi{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:3px 10px;display:flex;flex-direction:column;align-items:center;min-width:52px;flex-shrink:0}
+.kpi-n{font-family:var(--fd);font-size:16px;font-weight:800;color:var(--y);line-height:1}
+.kpi-l{font-size:9px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.3px}
+.btn-exit{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;white-space:nowrap;transition:all .15s}
+.btn-exit:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+
+/* ── BODY LAYOUT ── */
+.body{display:flex;flex:1;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:200px;flex-shrink:0;
+  background:var(--ink2);
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+  scrollbar-width:none;
+  padding:16px 0;
+  padding-bottom:env(safe-area-inset-bottom,16px);
+  transition:transform .25s cubic-bezier(.4,0,.2,1);
+}
+.sidebar::-webkit-scrollbar{display:none}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;
+  font-family:var(--fd);font-size:18px;font-weight:700;
+  color:rgba(255,255,255,.45);
+  cursor:pointer;
+  border-left:3px solid transparent;
+  transition:all .15s;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.sb-item svg{opacity:.5;flex-shrink:0;transition:opacity .15s}
+.sb-item:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.04)}
+.sb-item.active{color:var(--y);border-left-color:var(--y);background:rgba(245,193,22,.06)}
+.sb-item.active svg{opacity:1;stroke:var(--y)}
+
+/* MOBILE SIDEBAR */
+@media(max-width:640px){
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;
+    z-index:50;
+    transform:translateX(-100%);
+    box-shadow:4px 0 24px rgba(0,0,0,.3);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;
+  }
+  .sidebar-overlay.open{display:block}
+  .btn-menu{display:flex!important}
+  .topbar-logo{gap:8px}
+}
+.btn-menu{display:none;background:none;border:none;cursor:pointer;padding:4px;-webkit-tap-highlight-color:transparent}
+
+/* ── MAIN ── */
+.main{
+  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+  padding:0;
+}
+.section{display:none;padding:14px 14px;padding-bottom:calc(20px + env(safe-area-inset-bottom,0))}
+.section.active{display:block}
+
+/* ── SECTION HEADER ── */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-title{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--ink);letter-spacing:.1px}
+.sec-sub{font-size:11px;color:var(--g1);margin-top:1px}
+
+/* ── CARD BASE ── */
+.card{
+  background:var(--card);
+  border-radius:var(--r);
+  border-left:4px solid var(--y);
+  box-shadow:0 2px 8px rgba(0,0,0,.07);
+  margin-bottom:10px;
+  overflow:hidden;
+  transition:box-shadow .15s;
+}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.card-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  gap:10px;
+}
+.card-hdr-left{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.card-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card-code{font-family:var(--fd);font-size:16px;font-weight:800;color:var(--ink);letter-spacing:.3px}
+.card-name{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-detail{font-size:12px;color:var(--g1)}
+.card-hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.card-chevron{transition:transform .2s;color:var(--g2);flex-shrink:0}
+.card.open .card-chevron{transform:rotate(180deg)}
+.card-body{display:none;padding:0 16px 16px;border-top:1px solid var(--line)}
+.card.open .card-body{display:block}
+
+/* ── STATUS CHIPS ── */
+.chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.2px;line-height:1.4;flex-shrink:0}
+.cp{background:#FFF3CD;color:#92600A;border:1px solid #F0D070}
+.ca{background:#D4EDDA;color:#155724;border:1px solid #9BD4A8}
+.cc{background:#D1ECF1;color:#0C5460;border:1px solid #8DD4DC}
+.cr{background:#F8D7DA;color:#721C24;border:1px solid #F0A0A8}
+.ce{background:#E2D9F3;color:#4B2D8B;border:1px solid #C4AAE8}
+.cw{background:rgba(245,193,22,.15);color:#92600A;border:1px solid rgba(245,193,22,.3)}
+
+/* ── CARD INFO GRID ── */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin:12px 0}
+.info-item{display:flex;flex-direction:column;gap:2px}
+.info-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g1)}
+.info-val{font-size:13px;font-weight:600;color:var(--ink);word-break:break-word}
+.info-full{grid-column:1/-1}
+
+/* ── ACTION BUTTONS ── */
+.actions{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.actions-row{display:flex;gap:8px}
+.btn{border:none;border-radius:var(--rs);font-size:13px;font-weight:700;font-family:var(--f);cursor:pointer;padding:10px 14px;transition:all .12s;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-y{background:var(--y);color:var(--ink)}
+.btn-y:hover{background:var(--yd)}
+.btn-k{background:var(--ink);color:#fff}
+.btn-k:hover{background:var(--ink2)}
+.btn-g{background:var(--bg);color:var(--ink);border:1.5px solid var(--line)}
+.btn-g:hover{background:var(--line)}
+.btn-r{background:#FFF0F0;color:var(--err);border:1.5px solid rgba(214,48,49,.2)}
+.btn-r:hover{background:rgba(214,48,49,.1)}
+.btn-wa{background:#EDFDF5;color:#1A5C38;border:1.5px solid rgba(37,211,102,.3);font-weight:700}
+.btn-wa:hover{background:rgba(37,211,102,.15)}
+.btn-full{width:100%}
+.btn-sm{padding:7px 12px;font-size:12px}
+
+/* ── FORM INLINE ── */
+.inline-form{background:var(--bg);border-radius:var(--rs);padding:12px;margin-top:10px}
+.inline-form label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.inline-form input,.inline-form select,.inline-form textarea{width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;font-family:var(--f);color:var(--ink);background:#fff;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.inline-form input:focus,.inline-form select:focus,.inline-form textarea:focus{outline:none;border-color:var(--ink)}
+.inline-form textarea{resize:none;min-height:56px}
+
+/* ── CALL LINK ── */
+.call-link{display:inline-flex;align-items:center;gap:5px;color:var(--ink);text-decoration:none;font-weight:600;font-size:13px;background:rgba(28,28,46,.05);padding:5px 10px;border-radius:8px;transition:background .12s}
+.call-link:hover{background:rgba(28,28,46,.1)}
+
+/* ── SOCIOS TABLE → CARDS ── */
+.socio-card{background:var(--card);border-radius:var(--r);padding:0;margin-bottom:8px;border-left:4px solid var(--line);box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
+.socio-card.pendiente{border-left-color:var(--y)}
+.socio-card.activo{border-left-color:var(--ok)}
+.socio-card.baja{border-left-color:var(--err)}
+.socio-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;gap:10px;-webkit-tap-highlight-color:transparent}
+.socio-hdr-left{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+.socio-name{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
+.socio-meta{font-size:12px;color:var(--g1)}
+.socio-body{display:none;padding:0 16px 14px;border-top:1px solid var(--line)}
+.socio-card.open .socio-body{display:block}
+
+/* ── CAJA ── */
+.caja-card{background:var(--card);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;border-left:4px solid var(--err);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.caja-hdr{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.caja-nombre{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
+.caja-deuda{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--err);line-height:1}
+.caja-sub{font-size:11px;color:var(--g1)}
+
+/* MOV LIST */
+.mov-item{background:var(--bg);border-radius:var(--rs);padding:10px 12px;margin-top:6px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mov-left{display:flex;flex-direction:column;gap:2px}
+.mov-tipo{font-size:12px;font-weight:700;color:var(--ink)}
+.mov-nota{font-size:11px;color:var(--g1)}
+.mov-monto{font-family:var(--fd);font-size:17px;font-weight:800}
+.mov-monto.cargo{color:var(--err)}
+.mov-monto.pago{color:var(--ok)}
+
+/* ── FILTROS ── */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.filters input,.filters select{flex:1;min-width:120px;padding:8px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;font-family:var(--f);background:#fff;color:var(--ink);-webkit-appearance:none;appearance:none}
+.filters input:focus,.filters select:focus{outline:none;border-color:var(--ink)}
+
+/* ── HISTORIAL CARDS ── */
+.hist-card{background:var(--card);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;border-left:4px solid var(--ok);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.hist-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.hist-code{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink)}
+.hist-monto{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink)}
+.hist-meta{font-size:12px;color:var(--g1);margin-top:4px}
+.stars-r{display:flex;gap:2px;margin-top:6px}
+.star-r{font-size:14px;color:var(--line)}
+.star-r.on{color:var(--y)}
+
+/* ── AJUSTES (no tabla, todo cards) ── */
+.setting-card{background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.setting-title{font-family:var(--fd);font-size:17px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.setting-card label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.setting-card input,.setting-card select,.setting-card textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;font-family:var(--f);color:var(--ink);background:#FAFAFA;transition:border-color .15s;-webkit-appearance:none}
+.setting-card input:focus,.setting-card select:focus,.setting-card textarea:focus{outline:none;border-color:var(--ink)}
+.setting-card textarea{resize:vertical;min-height:80px}
+
+/* ── SOPORTE ── */
+.soporte-card{background:var(--card);border-radius:var(--r);border-left:4px solid var(--ink3);box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:8px;overflow:hidden}
+.soporte-hdr{padding:12px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent}
+.soporte-hdr-left{display:flex;flex-direction:column;gap:2px}
+.soporte-title{font-size:13px;font-weight:700;color:var(--ink)}
+.soporte-meta{font-size:11px;color:var(--g1)}
+.soporte-body{display:none;padding:0 16px 14px;border-top:1px solid var(--line)}
+.soporte-card.open .soporte-body{display:block}
+
+/* ── EMPTY / LOADING ── */
+.empty{text-align:center;padding:40px 20px;color:var(--g2);font-size:13px}
+.empty-ico{font-size:32px;margin-bottom:8px;opacity:.4}
+.loading{text-align:center;padding:32px 20px;color:var(--g1);font-size:13px}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0));
+  left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--ink);color:#fff;
+  padding:10px 20px;border-radius:24px;
+  font-size:13px;font-weight:600;
+  white-space:nowrap;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  z-index:999;pointer-events:none;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── MODAL ── */
+.ov{display:none;position:fixed;inset:0;background:rgba(15,15,28,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:200;align-items:flex-end;justify-content:center}
+.ov.open{display:flex}
+.sheet{background:var(--card);width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom,28px);max-height:80svh;overflow-y:auto;animation:shu .25s cubic-bezier(.22,.72,0,1) both}
+@keyframes shu{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.pill{width:36px;height:4px;background:var(--line);border-radius:4px;margin:10px auto}
+.sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;margin-bottom:12px}
+.sheet-title{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--ink)}
+.sheet-x{background:var(--line);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--g1);display:flex;align-items:center;justify-content:center}
+.mbody{padding:0 20px 20px}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;font-family:var(--f);color:var(--ink);background:#FAFAFA;-webkit-appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--ink)}
+.fg textarea{resize:none;min-height:72px}
+.err-box{display:none;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13px;color:var(--err)}
+.err-box.v{display:block}
+.sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;vertical-align:middle;margin-right:5px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
+@media(min-width:641px){.btn-menu{display:none!important}}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+<div class="sidebar-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="btn-menu" id="btn-menu" onclick="toggleSidebar()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-logo">
+      <span class="logo-db">db</span>
+      <span class="logo-tag">admin</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="kpi-bar">
+      <div class="kpi"><span class="kpi-n" id="kP">—</span><span class="kpi-l">Pend</span></div>
+      <div class="kpi"><span class="kpi-n" id="kA">—</span><span class="kpi-l">Asig</span></div>
+      <div class="kpi"><span class="kpi-n" id="kC">—</span><span class="kpi-l">Comp</span></div>
+      <div class="kpi"><span class="kpi-n" id="kI">—</span><span class="kpi-l">Caja</span></div>
+    </div>
+    <button class="btn-exit" onclick="exitAdmin()">Salir</button>
+  </div>
+</header>
+
+<div class="body">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sb-item active" id="nav-op" onclick="goSec('op')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Operacion
+    </div>
+    <div class="sb-item" id="nav-hi" onclick="goSec('hi')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Historial
+    </div>
+    <div class="sb-item" id="nav-so" onclick="goSec('so')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Socios
+    </div>
+    <div class="sb-item" id="nav-ca" onclick="goSec('ca')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Caja
+    </div>
+    <div class="sb-item" id="nav-sp" onclick="goSec('sp')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Soporte
+    </div>
+    <div class="sb-item" id="nav-aj" onclick="goSec('aj')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
+      Ajustes
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ══ OPERACION ══ -->
+    <div class="section active" id="sec-op">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Operacion</div><div class="sec-sub">Ordenes activas</div></div>
+        <button class="btn btn-g btn-sm" onclick="loadOp()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Actualizar
+        </button>
+      </div>
+      <div id="lista-op"><div class="loading">Cargando...</div></div>
+    </div>
+
+    <!-- ══ HISTORIAL ══ -->
+    <div class="section" id="sec-hi">
+      <div class="sec-hdr"><div><div class="sec-title">Historial</div><div class="sec-sub">Ordenes completadas</div></div></div>
+      <div class="filters">
+        <input id="f-cli" type="text" placeholder="Cliente..." oninput="loadHi()"/>
+        <input id="f-cod" type="text" placeholder="db-..." oninput="loadHi()"/>
+        <input id="f-d1" type="date" onchange="loadHi()"/>
+        <input id="f-d2" type="date" onchange="loadHi()"/>
+      </div>
+      <div id="lista-hi"><div class="loading">Cargando...</div></div>
+    </div>
+
+    <!-- ══ SOCIOS ══ -->
+    <div class="section" id="sec-so">
+      <div class="sec-hdr"><div><div class="sec-title">Socios</div><div class="sec-sub">Tecnicos registrados</div></div></div>
+      <div id="lista-so"><div class="loading">Cargando...</div></div>
+    </div>
+
+    <!-- ══ CAJA ══ -->
+    <div class="section" id="sec-ca">
+      <div class="sec-hdr"><div><div class="sec-title">Caja</div><div class="sec-sub">Deudas y movimientos</div></div></div>
+      <div id="lista-ca"></div>
+      <div style="margin-top:16px">
+        <div style="font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px">Movimientos</div>
+        <div class="filters">
+          <select id="f-ca-soc" onchange="loadMovs()"><option value="">Todos los socios</option></select>
+        </div>
+        <div id="lista-movs"></div>
+      </div>
+    </div>
+
+    <!-- ══ SOPORTE ══ -->
+    <div class="section" id="sec-sp">
+      <div class="sec-hdr"><div><div class="sec-title">Soporte</div><div class="sec-sub">Garantias y reclamos</div></div></div>
+      <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:var(--g1);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Garantias</div>
+      <div id="lista-gar"><div class="loading">Cargando...</div></div>
+      <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:var(--g1);margin:16px 0 8px;text-transform:uppercase;letter-spacing:1px">Reclamos</div>
+      <div id="lista-que"><div class="loading">Cargando...</div></div>
+    </div>
+
+    <!-- ══ AJUSTES ══ -->
+    <div class="section" id="sec-aj">
+      <div class="sec-hdr"><div><div class="sec-title">Ajustes</div><div class="sec-sub">Configuracion del sistema</div></div></div>
+
+      <div class="setting-card">
+        <div class="setting-title">Comision global</div>
+        <div class="fg"><label>Porcentaje por defecto (%)</label><input type="number" id="aj-com" min="0" max="100" step="1" value="15"/></div>
+        <button class="btn btn-k btn-full" onclick="saveComision()">Guardar comision</button>
+      </div>
+
+      <div class="setting-card">
+        <div class="setting-title">WhatsApp admin</div>
+        <div class="fg"><label>Numero (con codigo de pais, sin +)</label><input type="tel" id="aj-wa" placeholder="34627493593"/></div>
+        <button class="btn btn-k btn-full" onclick="saveWA()">Guardar numero</button>
+      </div>
+
+      <div class="setting-card">
+        <div class="setting-title">Templates de mensajes</div>
+        <div class="fg"><label>Asignacion a socio</label><textarea id="aj-t1" rows="4"></textarea></div>
+        <div class="fg"><label>Aprobacion de socio</label><textarea id="aj-t2" rows="4"></textarea></div>
+        <div class="fg"><label>Orden completada (cliente)</label><textarea id="aj-t3" rows="4"></textarea></div>
+        <button class="btn btn-k btn-full" onclick="saveTemplates()">Guardar templates</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL COMPLETAR -->
+<div class="ov" id="ov-comp" onclick="if(event.target===this)closeModal('comp')">
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Completar orden</span><button class="sheet-x" onclick="closeModal('comp')">&times;</button></div>
+  <div class="mbody">
+    <div class="fg"><label>Monto cobrado ($)</label><input id="comp-monto" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+    <div class="fg"><label>Nota (opcional)</label><textarea id="comp-nota" placeholder="Observaciones del servicio..."></textarea></div>
+    <div class="err-box" id="err-comp"></div>
+    <button class="btn btn-y btn-full" id="btn-comp" onclick="doCompletar()">Confirmar y cerrar orden</button>
+  </div>
+</div></div>
+
+<!-- MODAL RECHAZAR -->
+<div class="ov" id="ov-rech" onclick="if(event.target===this)closeModal('rech')">
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Rechazar orden</span><button class="sheet-x" onclick="closeModal('rech')">&times;</button></div>
+  <div class="mbody">
+    <div class="fg"><label>Motivo del rechazo</label><textarea id="rech-mot" placeholder="Indica el motivo..."></textarea></div>
+    <div class="err-box" id="err-rech"></div>
+    <button class="btn btn-r btn-full" id="btn-rech" onclick="doRechazar()">Rechazar orden</button>
+  </div>
+</div></div>
+
+<!-- MODAL CAJA -->
+<div class="ov" id="ov-caja" onclick="if(event.target===this)closeModal('caja')">
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="caja-title">Movimiento</span><button class="sheet-x" onclick="closeModal('caja')">&times;</button></div>
+  <div class="mbody">
+    <div class="fg"><label>Monto ($)</label><input id="caja-monto" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+    <div class="fg"><label>Nota (opcional)</label><input id="caja-nota" type="text" placeholder=""/></div>
+    <div class="err-box" id="err-caja"></div>
+    <button class="btn btn-k btn-full" id="btn-caja" onclick="doCajaOp()">Confirmar</button>
+  </div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ══════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════
+const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
+const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+const sb = supabase.createClient(SURL, SKEY);
+
+// Config almacenada en localStorage (por device)
+const CFG = {
+  get wa()   { return localStorage.getItem('db_wa')  || '34627493593' },
+  set wa(v)  { localStorage.setItem('db_wa', v) },
+  get com()  { return parseFloat(localStorage.getItem('db_com') || '15') },
+  set com(v) { localStorage.setItem('db_com', v) },
+  get t1()   { return localStorage.getItem('db_t1') || 'Hola {socio} 👋\n\nNueva orden asignada — *{code}*\n\n📍 Cliente: {cliente}\n🏠 {municipio}\n📞 {telefono}\n🔧 {servicio}\n📝 {detalles}\n\nConfirma recepcion respondiendo este mensaje.\n\n— dbarrio' },
+  set t1(v)  { localStorage.setItem('db_t1', v) },
+  get t2()   { return localStorage.getItem('db_t2') || 'Hola {socio} 👋\n\nTu cuenta en dbarrio ha sido *aprobada* ✅\n\nYa puedes acceder al panel en dbarrio.com con tu email y contrasena.\n\nCualquier duda respondeme por aqui.\n\n— dbarrio' },
+  set t2(v)  { localStorage.setItem('db_t2', v) },
+  get t3()   { return localStorage.getItem('db_t3') || 'Hola {cliente} 👋\n\nTu servicio ha sido completado ✅\n\nCodigo: *{code}*\nTecnico: {socio}\nImporte: {monto}\n\n¿Como fue la atencion? Calificas en dbarrio.com con tu codigo.\n\n— dbarrio' },
+  set t3(v)  { localStorage.setItem('db_t3', v) },
+};
+
+// Estado de sesion y contexto
+let sociosMap = {}; // id → socio
+let pendingCompId = null;
+let pendingRechId = null;
+let pendingCajaId = null;
+let pendingCajaTipo = null;
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { goIndex(); return; }
+  const { data: adm } = await sb.from('admins').select('id').eq('auth_uid', session.user.id).maybeSingle();
+  if (!adm) { await sb.auth.signOut(); goIndex(); return; }
+  loadAjsUI();
+  loadKPIs();
+  loadSociosMap();
+  loadOp();
+});
+
+function goIndex() { window.location.href = 'index.html'; }
+async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+function dbc(id) { return 'db-' + id }
+function fmt(ts) { if (!ts) return '—'; const d=new Date(ts); return d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}) }
+function fmtD(ts) { if (!ts) return '—'; const d=new Date(ts); return d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}) }
+function fmtM(n) { return n != null ? '$'+parseFloat(n).toFixed(2) : '—' }
+function stars(v, n=5) { return Array.from({length:n},(_,i)=>`<span class="star-r${i<(v||0)?' on':''}"">★</span>`).join('') }
+function setT(id, v) { const e=document.getElementById(id); if(e) e.textContent=v }
+
+function toast(msg, dur=2500) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+function wa(num, msg) { window.open('https://wa.me/'+num.replace(/\D/g,'')+'?text='+encodeURIComponent(msg), '_blank') }
+
+function openModal(k) { document.getElementById('ov-'+k).classList.add('open') }
+function closeModal(k) { document.getElementById('ov-'+k).classList.remove('open') }
+
+function toggleCard(el) { el.closest('.card').classList.toggle('open') }
+function toggleSocioCard(el) { el.closest('.socio-card').classList.toggle('open') }
+function toggleSoporteCard(el) { el.closest('.soporte-card').classList.toggle('open') }
+
+// ── SIDEBAR ──
+function goSec(id) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  closeSidebar();
+  if (id==='hi') loadHi();
+  if (id==='so') loadSocios();
+  if (id==='ca') loadCaja();
+  if (id==='sp') loadSoporte();
+}
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sb-overlay').classList.toggle('open') }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sb-overlay').classList.remove('open') }
+
+// ══════════════════════════════════════════
+// KPIs
+// ══════════════════════════════════════════
+async function loadKPIs() {
+  const [{ data: solic }, { data: movs }] = await Promise.all([
+    sb.from('solicitudes').select('estado'),
+    sb.from('movimientos').select('monto').eq('tipo','cargo_comision')
+  ]);
+  const s = solic || [];
+  setT('kP', s.filter(x=>x.estado==='pendiente').length);
+  setT('kA', s.filter(x=>x.estado==='asignada').length);
+  setT('kC', s.filter(x=>x.estado==='completada').length);
+  const ing = (movs||[]).reduce((a,m)=>a+parseFloat(m.monto||0),0);
+  setT('kI', '$'+ing.toFixed(0));
+}
+
+// ══════════════════════════════════════════
+// SOCIOS MAP (cache)
+// ══════════════════════════════════════════
+async function loadSociosMap() {
+  const { data } = await sb.from('socios').select('id,nombre,telefono,comision');
+  if (data) { sociosMap = {}; data.forEach(s=>{ sociosMap[s.id]=s }); }
+}
+
+// ══════════════════════════════════════════
+// OPERACION
+// ══════════════════════════════════════════
+async function loadOp() {
+  const el = document.getElementById('lista-op');
+  el.innerHTML = '<div class="loading">Cargando...</div>';
+  await loadSociosMap();
+  const { data, error } = await sb.from('solicitudes')
+    .select('*').in('estado',['pendiente','asignada'])
+    .order('created_at',{ascending:true});
+  if (error) { el.innerHTML = `<div class="empty"><div class="empty-ico">⚠</div>Error: ${esc(error.message)}</div>`; return }
+  if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">✓</div>Sin ordenes activas</div>'; return }
+  el.innerHTML = data.map(buildCardOp).join('');
+  loadKPIs();
+}
+
+function buildCardOp(s) {
+  const socioNom = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].nombre : null;
+  const socioTel = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].telefono : null;
+  const chipClass = {pendiente:'cp',asignada:'ca',en_proceso:'ce'}[s.estado] || 'cp';
+  const telLimpio = (s.telefono||'').replace(/\s/g,'');
+
+  const optsSelect = Object.values(sociosMap)
+    .filter(x=>x)
+    .map(x=>`<option value="${x.id}" ${s.socio_asignado===x.id?'selected':''}>${esc(x.nombre)}</option>`)
+    .join('');
+
+  const cierreFlag = s.solicita_cierre
+    ? `<div style="background:#FFF3CD;border:1px solid #F0D070;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;font-weight:600;color:#92600A">⚡ El socio solicita cierre de esta orden</div>` : '';
+
+  const btnAsignar = s.estado==='pendiente'
+    ? `<div class="inline-form" style="margin-top:10px">
+        <label>Asignar socio</label>
+        <select id="sel-${s.id}"><option value="">-- Seleccionar --</option>${optsSelect}</select>
+        <button class="btn btn-y btn-full" style="margin-top:8px" onclick="asignar(${s.id})">Asignar y notificar</button>
+       </div>` : '';
+
+  const btnWASocio = socioTel
+    ? `<button class="btn btn-wa" onclick="waSocioAsignado(${s.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WA al socio</button>` : '';
+
+  return `
+<div class="card" id="card-${s.id}">
+  <div class="card-hdr" onclick="toggleCard(this)">
+    <div class="card-hdr-left">
+      <div class="card-meta">
+        <span class="card-code">${esc(dbc(s.id))}</span>
+        <span class="chip ${chipClass}">${esc(s.estado)}</span>
+        ${s.solicita_cierre ? '<span class="chip cw">⚡ Cierre</span>' : ''}
+      </div>
+      <span class="card-name">${esc(s.cliente)}</span>
+      <span class="card-detail">${esc(s.municipio||'')} · ${esc(s.servicio||'')}</span>
+    </div>
+    <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="card-body">
+    <div class="info-grid">
+      <div class="info-item"><span class="info-label">Fecha</span><span class="info-val">${fmt(s.fecha_ts)}</span></div>
+      <div class="info-item"><span class="info-label">Servicio</span><span class="info-val">${esc(s.servicio||'—')}</span></div>
+      <div class="info-item info-full"><span class="info-label">Telefono cliente</span>
+        <a href="tel:${esc(telLimpio)}" class="call-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          ${esc(s.telefono||'—')}
+        </a>
+      </div>
+      ${s.direccion ? `<div class="info-item info-full"><span class="info-label">Direccion</span><span class="info-val">${esc(s.direccion)}</span></div>` : ''}
+      ${s.detalles ? `<div class="info-item info-full"><span class="info-label">Descripcion</span><span class="info-val">${esc(s.detalles)}</span></div>` : ''}
+      ${socioNom ? `<div class="info-item"><span class="info-label">Socio asignado</span><span class="info-val">${esc(socioNom)}</span></div>` : ''}
+      ${s.nota_socio ? `<div class="info-item info-full"><span class="info-label">Nota del socio</span><span class="info-val">${esc(s.nota_socio)}</span></div>` : ''}
+    </div>
+    ${cierreFlag}
+    ${btnAsignar}
+    <div class="actions-row" style="margin-top:10px">
+      ${s.estado==='asignada' ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Completar</button>` : ''}
+      ${btnWASocio}
+      <button class="btn btn-r" onclick="openRechazar(${s.id})">Rechazar</button>
+    </div>
+  </div>
+</div>`;
+}
+
+async function asignar(id) {
+  const sel = document.getElementById('sel-'+id);
+  if (!sel?.value) { toast('Selecciona un socio'); return }
+  const socioId = parseInt(sel.value);
+  const { error } = await sb.from('solicitudes').update({
+    socio_asignado: socioId, estado: 'asignada'
+  }).eq('id', id);
+  if (error) { toast('Error: '+error.message); return }
+  toast('Orden asignada');
+  // Abrir WA automáticamente
+  const { data: sol } = await sb.from('solicitudes').select('*').eq('id',id).single();
+  if (sol && sociosMap[socioId]) {
+    const soc = sociosMap[socioId];
+    const msg = CFG.t1
+      .replace('{socio}', soc.nombre)
+      .replace('{code}', dbc(id))
+      .replace('{cliente}', sol.cliente||'')
+      .replace('{municipio}', sol.municipio||'')
+      .replace('{telefono}', sol.telefono||'')
+      .replace('{servicio}', sol.servicio||'')
+      .replace('{detalles}', sol.detalles||'Sin detalles');
+    if (soc.telefono) wa(soc.telefono, msg);
+  }
+  loadOp();
+}
+
+function openCompletar(id) { pendingCompId=id; document.getElementById('comp-monto').value=''; document.getElementById('comp-nota').value=''; document.getElementById('err-comp').classList.remove('v'); openModal('comp') }
+function openRechazar(id) { pendingRechId=id; document.getElementById('rech-mot').value=''; document.getElementById('err-rech').classList.remove('v'); openModal('rech') }
+
+async function doCompletar() {
+  const monto = parseFloat(document.getElementById('comp-monto').value);
+  const nota  = document.getElementById('comp-nota').value.trim();
+  if (isNaN(monto)||monto<0) { const e=document.getElementById('err-comp'); e.textContent='Ingresa un monto valido.'; e.classList.add('v'); return }
+  const btn=document.getElementById('btn-comp'); btn.disabled=true; btn.innerHTML='<span class="sp"></span>Procesando...';
+
+  const now = new Date().toISOString();
+  const { data: sol } = await sb.from('solicitudes').select('*,socios(nombre,telefono,comision)').eq('id',pendingCompId).single();
+
+  const { error: eu } = await sb.from('solicitudes').update({
+    estado:'completada', fecha_fin:now, monto:monto, nota_admin:nota||null
+  }).eq('id', pendingCompId);
+  if (eu) { const e=document.getElementById('err-comp'); e.textContent=eu.message; e.classList.add('v'); btn.disabled=false; btn.innerHTML='Confirmar y cerrar orden'; return }
+
+  // Cargo comision al socio
+  if (sol?.socio_asignado) {
+    const comPct = sol.socios?.comision ?? CFG.com;
+    const comMonto = parseFloat((monto * comPct / 100).toFixed(2));
+    await sb.from('movimientos').insert({
+      socio_id: sol.socio_asignado, solicitud_id: pendingCompId,
+      tipo: 'cargo_comision', monto: comMonto,
+      nota: `Comision ${comPct}% — ${dbc(pendingCompId)}`
+    });
+    const { data: soc } = await sb.from('socios').select('deuda,trabajos').eq('id',sol.socio_asignado).single();
+    await sb.from('socios').update({
+      deuda: (parseFloat(soc?.deuda||0) + comMonto).toFixed(2),
+      trabajos: (soc?.trabajos||0) + 1
+    }).eq('id', sol.socio_asignado);
+  }
+
+  // WA al cliente
+  const socNom = sol?.socios?.nombre || (sol?.socio_asignado ? (sociosMap[sol.socio_asignado]?.nombre||'—') : '—');
+  const msgCli = CFG.t3
+    .replace('{cliente}', sol?.cliente||'')
+    .replace('{code}', dbc(pendingCompId))
+    .replace('{socio}', socNom)
+    .replace('{monto}', fmtM(monto));
+  if (sol?.telefono) wa(sol.telefono, msgCli);
+
+  btn.disabled=false; btn.innerHTML='Confirmar y cerrar orden';
+  closeModal('comp'); toast('Orden completada'); loadOp(); loadKPIs();
+}
+
+async function doRechazar() {
+  const mot = document.getElementById('rech-mot').value.trim();
+  if (!mot) { const e=document.getElementById('err-rech'); e.textContent='Ingresa el motivo.'; e.classList.add('v'); return }
+  const { error } = await sb.from('solicitudes').update({
+    estado:'rechazada', motivo_rechazo:mot
+  }).eq('id', pendingRechId);
+  if (error) { const e=document.getElementById('err-rech'); e.textContent=error.message; e.classList.add('v'); return }
+  closeModal('rech'); toast('Orden rechazada'); loadOp(); loadKPIs();
+}
+
+async function waSocioAsignado(id) {
+  const { data: sol } = await sb.from('solicitudes').select('*').eq('id',id).single();
+  if (!sol?.socio_asignado) return;
+  const soc = sociosMap[sol.socio_asignado];
+  if (!soc?.telefono) { toast('El socio no tiene telefono registrado'); return }
+  const msg = CFG.t1
+    .replace('{socio}', soc.nombre)
+    .replace('{code}', dbc(id))
+    .replace('{cliente}', sol.cliente||'')
+    .replace('{municipio}', sol.municipio||'')
+    .replace('{telefono}', sol.telefono||'')
+    .replace('{servicio}', sol.servicio||'')
+    .replace('{detalles}', sol.detalles||'Sin detalles');
+  wa(soc.telefono, msg);
+}
+
+// ══════════════════════════════════════════
+// HISTORIAL
+// ══════════════════════════════════════════
+async function loadHi() {
+  const el = document.getElementById('lista-hi');
+  el.innerHTML = '<div class="loading">Cargando...</div>';
+  const cli = document.getElementById('f-cli').value.trim();
+  const cod = document.getElementById('f-cod').value.trim();
+  const d1  = document.getElementById('f-d1').value;
+  const d2  = document.getElementById('f-d2').value;
+  let q = sb.from('solicitudes').select('*').eq('estado','completada').order('fecha_fin',{ascending:false}).limit(100);
+  if (cli) q = q.ilike('cliente','%'+cli+'%');
+  if (cod) { const n=parseInt(cod.replace(/^db-/i,'')); if (!isNaN(n)) q=q.eq('id',n) }
+  if (d1) q = q.gte('fecha_fin', d1);
+  if (d2) q = q.lte('fecha_fin', d2+'T23:59:59');
+  const { data, error } = await q;
+  if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return }
+  if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">○</div>Sin resultados</div>'; return }
+  el.innerHTML = data.map(s => {
+    const socNom = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].nombre : '—';
+    return `
+<div class="hist-card">
+  <div class="hist-row">
+    <div><div class="hist-code">${esc(dbc(s.id))}</div><div class="hist-meta">${esc(s.cliente)} · ${esc(socNom)}</div></div>
+    <div style="text-align:right"><div class="hist-monto">${fmtM(s.monto)}</div><div class="hist-meta">${fmtD(s.fecha_fin)}</div></div>
+  </div>
+  <div class="hist-meta" style="margin-top:6px">${esc(s.municipio||'')} · ${esc(s.servicio||'')}</div>
+  ${s.valoracion ? `<div class="stars-r" style="margin-top:6px">${stars(s.valoracion)}</div>` : ''}
+</div>`}).join('');
+}
+
+// ══════════════════════════════════════════
+// SOCIOS
+// ══════════════════════════════════════════
+async function loadSocios() {
+  const el = document.getElementById('lista-so');
+  el.innerHTML = '<div class="loading">Cargando...</div>';
+  const { data, error } = await sb.from('socios').select('*').order('estado_socio').order('nombre');
+  if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return }
+  if (!data?.length) { el.innerHTML = '<div class="empty">Sin socios registrados</div>'; return }
+  // Pendientes primero
+  const pend = data.filter(x=>!x.admitido || x.estado_socio==='pendiente');
+  const rest = data.filter(x=>x.admitido && x.estado_socio!=='pendiente');
+  let html = '';
+  if (pend.length) html += `<div style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--y);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Pendientes de aprobacion</div>` + pend.map(buildSocioCard).join('');
+  if (rest.length) { if (pend.length) html += `<div style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--g1);margin:12px 0 8px;text-transform:uppercase;letter-spacing:1px">Activos / Baja</div>`; html += rest.map(buildSocioCard).join(''); }
+  el.innerHTML = html;
+}
+
+function buildSocioCard(s) {
+  const est = s.admitido ? (s.estado_socio||'activo') : 'pendiente';
+  const chipCls = {activo:'ca',pendiente:'cp',baja:'cr'}[est]||'cp';
+  const telLimpio = (s.telefono||'').replace(/\s/g,'');
+  return `
+<div class="socio-card ${est}" id="sc-${s.id}">
+  <div class="socio-hdr" onclick="toggleSocioCard(this)">
+    <div class="socio-hdr-left">
+      <span class="socio-name">${esc(s.nombre)}</span>
+      <span class="socio-meta">${esc(s.especialidad||'')} · ${esc(s.zona||'')}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="chip ${chipCls}">${est}</span>
+      <svg class="card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+  <div class="socio-body">
+    <div class="info-grid">
+      <div class="info-item"><span class="info-label">Telefono</span>
+        <a href="tel:${esc(telLimpio)}" class="call-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>${esc(s.telefono||'—')}</a>
+      </div>
+      <div class="info-item"><span class="info-label">Email</span><span class="info-val">${esc(s.email||'—')}</span></div>
+      <div class="info-item"><span class="info-label">Deuda</span><span class="info-val" style="color:${(s.deuda||0)>0?'var(--err)':'var(--ok)'}">${fmtM(s.deuda)}</span></div>
+      <div class="info-item"><span class="info-label">Trabajos</span><span class="info-val">${s.trabajos||0}</span></div>
+      <div class="info-item"><span class="info-label">Rating</span><span class="info-val">${s.rating_avg ? parseFloat(s.rating_avg).toFixed(1)+' ★' : '—'}</span></div>
+      <div class="info-item"><span class="info-label">Comision</span><span class="info-val">${s.comision||15}%</span></div>
+    </div>
+    <div class="inline-form" style="margin-top:10px">
+      <label>Ajustar comision (%)</label>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <input id="com-${s.id}" type="number" min="0" max="100" value="${s.comision||15}" style="max-width:100px"/>
+        <button class="btn btn-g btn-sm" onclick="saveComSocio(${s.id})">Guardar</button>
+      </div>
+    </div>
+    <div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
+      ${!s.admitido ? `<button class="btn btn-y" onclick="aprobarSocio(${s.id}, '${esc(s.nombre)}', '${esc(s.telefono||'')}')">Aprobar</button>` : ''}
+      ${s.estado_socio==='activo' ? `<button class="btn btn-r btn-sm" onclick="cambiarEstadoSocio(${s.id},'baja')">Dar de baja</button>` : ''}
+      ${s.estado_socio==='baja' ? `<button class="btn btn-g btn-sm" onclick="cambiarEstadoSocio(${s.id},'activo')">Reactivar</button>` : ''}
+      ${s.telefono ? `<button class="btn btn-wa btn-sm" onclick="waAdmin('${esc(s.telefono)}','Hola ${esc(s.nombre)}, te contacta el equipo dbarrio.')">WA</button>` : ''}
+    </div>
+  </div>
+</div>`;
+}
+
+async function aprobarSocio(id, nombre, telefono) {
+  const { error } = await sb.from('socios').update({admitido:true,estado_socio:'activo'}).eq('id',id);
+  if (error) { toast('Error: '+error.message); return }
+  toast('Socio aprobado');
+  if (telefono) {
+    const msg = CFG.t2.replace('{socio}', nombre);
+    wa(telefono, msg);
+  }
+  loadSocios(); loadSociosMap();
+}
+
+async function cambiarEstadoSocio(id, est) {
+  const { error } = await sb.from('socios').update({estado_socio:est}).eq('id',id);
+  if (error) { toast('Error: '+error.message); return }
+  toast(est==='activo'?'Socio reactivado':'Socio dado de baja');
+  loadSocios(); loadSociosMap();
+}
+
+async function saveComSocio(id) {
+  const val = parseFloat(document.getElementById('com-'+id).value);
+  if (isNaN(val)) { toast('Valor invalido'); return }
+  const { error } = await sb.from('socios').update({comision:val}).eq('id',id);
+  if (error) { toast('Error: '+error.message); return }
+  toast('Comision actualizada'); loadSociosMap();
+}
+
+function waAdmin(tel, msg) { wa(tel, msg) }
+
+// ══════════════════════════════════════════
+// CAJA
+// ══════════════════════════════════════════
+async function loadCaja() {
+  await loadSociosMap();
+  // Socios con deuda
+  const { data: socs } = await sb.from('socios').select('id,nombre,telefono,deuda').gt('deuda',0).order('deuda',{ascending:false});
+  const elC = document.getElementById('lista-ca');
+  if (!socs?.length) {
+    elC.innerHTML = '<div class="empty">Sin socios con deuda pendiente</div>';
+  } else {
+    elC.innerHTML = socs.map(s => `
+<div class="caja-card">
+  <div class="caja-hdr">
+    <div><div class="caja-nombre">${esc(s.nombre)}</div><div class="caja-sub">${s.telefono||'Sin telefono'}</div></div>
+    <div style="text-align:right"><div class="caja-deuda">${fmtM(s.deuda)}</div><div class="caja-sub">Deuda</div></div>
+  </div>
+  <div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
+    <button class="btn btn-y btn-sm" onclick="openCaja(${s.id},'liquidar')">Liquidar todo</button>
+    <button class="btn btn-g btn-sm" onclick="openCaja(${s.id},'pago')">Registrar pago</button>
+    <button class="btn btn-g btn-sm" onclick="openCaja(${s.id},'ajuste')">Ajuste</button>
+    ${s.telefono?`<button class="btn btn-wa btn-sm" onclick="waCobro(${s.id})">Cobrar WA</button>`:''}
+  </div>
+</div>`).join('');
+  }
+  // Select de socios para filtro movimientos
+  const selSoc = document.getElementById('f-ca-soc');
+  const prevVal = selSoc.value;
+  selSoc.innerHTML = '<option value="">Todos los socios</option>' + Object.values(sociosMap).filter(Boolean).map(s=>`<option value="${s.id}" ${s.id==prevVal?'selected':''}>${esc(s.nombre)}</option>`).join('');
+  loadMovs();
+}
+
+function openCaja(id, tipo) {
+  pendingCajaId=id; pendingCajaTipo=tipo;
+  const titles={liquidar:'Liquidar deuda',pago:'Registrar pago',ajuste:'Ajuste manual'};
+  setT('caja-title', titles[tipo]||'Movimiento');
+  document.getElementById('caja-monto').value='';
+  document.getElementById('caja-nota').value='';
+  document.getElementById('err-caja').classList.remove('v');
+  openModal('caja');
+}
+
+async function doCajaOp() {
+  const monto = parseFloat(document.getElementById('caja-monto').value);
+  const nota  = document.getElementById('caja-nota').value.trim();
+  if (isNaN(monto)||monto<=0) { const e=document.getElementById('err-caja'); e.textContent='Ingresa un monto valido.'; e.classList.add('v'); return }
+  const btn=document.getElementById('btn-caja'); btn.disabled=true; btn.innerHTML='<span class="sp"></span>';
+
+  const { data: soc } = await sb.from('socios').select('deuda,nombre').eq('id',pendingCajaId).single();
+  const deudaActual = parseFloat(soc?.deuda||0);
+  let nuevaDeuda = deudaActual;
+  let tipo = pendingCajaTipo;
+
+  if (tipo==='liquidar') { nuevaDeuda=0; }
+  else if (tipo==='pago') { nuevaDeuda=Math.max(0,deudaActual-monto); }
+  else { nuevaDeuda=deudaActual+monto; tipo='ajuste'; }
+
+  await sb.from('movimientos').insert({
+    socio_id:pendingCajaId, tipo:tipo, monto:monto,
+    nota:nota||(tipo==='liquidar'?`Liquidacion total — ${soc?.nombre}`:`${tipo} — ${soc?.nombre}`)
+  });
+  await sb.from('socios').update({deuda:nuevaDeuda.toFixed(2)}).eq('id',pendingCajaId);
+
+  btn.disabled=false; btn.innerHTML='Confirmar';
+  closeModal('caja'); toast('Movimiento registrado'); loadCaja();
+}
+
+async function loadMovs() {
+  const el = document.getElementById('lista-movs');
+  el.innerHTML = '<div class="loading">Cargando...</div>';
+  const socId = document.getElementById('f-ca-soc').value;
+  let q = sb.from('movimientos').select('*').order('created_at',{ascending:false}).limit(50);
+  if (socId) q = q.eq('socio_id', parseInt(socId));
+  const { data, error } = await q;
+  if (error) { el.innerHTML=`<div class="empty">Error: ${esc(error.message)}</div>`; return }
+  if (!data?.length) { el.innerHTML='<div class="empty">Sin movimientos</div>'; return }
+  el.innerHTML = data.map(m => {
+    const socNom = sociosMap[m.socio_id]?.nombre||'—';
+    const esPago = ['pago','ajuste_negativo'].includes(m.tipo);
+    return `
+<div class="mov-item">
+  <div class="mov-left">
+    <span class="mov-tipo">${esc(m.tipo.replace(/_/g,' '))} · ${esc(socNom)}</span>
+    <span class="mov-nota">${esc(m.nota||'')} · ${fmt(m.created_at)}</span>
+  </div>
+  <span class="mov-monto ${esPago?'pago':'cargo'}">${esPago?'-':'+'} ${fmtM(m.monto)}</span>
+</div>`}).join('');
+}
+
+async function waCobro(id) {
+  const soc = sociosMap[id];
+  if (!soc?.telefono) { toast('Sin telefono'); return }
+  const { data } = await sb.from('socios').select('deuda').eq('id',id).single();
+  const msg = `Hola ${soc.nombre} 👋\n\nTe recordamos que tienes una deuda pendiente de *${fmtM(data?.deuda)}* con dbarrio.\n\nPor favor coordina el pago a la brevedad.\n\n— dbarrio`;
+  wa(soc.telefono, msg);
+}
+
+// ══════════════════════════════════════════
+// SOPORTE
+// ══════════════════════════════════════════
+async function loadSoporte() {
+  const [{ data: gars }, { data: ques }] = await Promise.all([
+    sb.from('garantias').select('*').order('created_at',{ascending:false}),
+    sb.from('quejas').select('*').order('created_at',{ascending:false})
+  ]);
+  const elG = document.getElementById('lista-gar');
+  const elQ = document.getElementById('lista-que');
+  if (!gars?.length) { elG.innerHTML='<div class="empty">Sin garantias</div>' }
+  else elG.innerHTML = gars.map(g=>`
+<div class="soporte-card${g.estado==='resuelto'?' resolved':''}">
+  <div class="soporte-hdr" onclick="toggleSoporteCard(this)">
+    <div class="soporte-hdr-left">
+      <span class="soporte-title">${esc(g.recibo||'Sin codigo')} · ${esc(g.telefono||'')}</span>
+      <span class="soporte-meta">${fmtD(g.created_at)} · <span class="chip ${g.estado==='resuelto'?'cc':'cp'}">${esc(g.estado)}</span></span>
+    </div>
+    <svg class="card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="soporte-body">
+    <p style="font-size:13px;color:var(--ink);margin-bottom:10px">${esc(g.falla||'')}</p>
+    <div class="actions-row">
+      ${g.telefono?`<a href="tel:${esc((g.telefono||'').replace(/\s/g,''))}" class="btn btn-g btn-sm">Llamar</a>`:''}
+      <button class="btn btn-g btn-sm" onclick="resolverGar(${g.id})">Marcar resuelto</button>
+    </div>
+  </div>
+</div>`).join('');
+  if (!ques?.length) { elQ.innerHTML='<div class="empty">Sin reclamos</div>' }
+  else elQ.innerHTML = ques.map(q=>`
+<div class="soporte-card">
+  <div class="soporte-hdr" onclick="toggleSoporteCard(this)">
+    <div class="soporte-hdr-left">
+      <span class="soporte-title">${esc(q.codigo_servicio||'Sin codigo')} · ${esc(q.telefono||'')}</span>
+      <span class="soporte-meta">${fmtD(q.created_at)} · <span class="chip ${q.estado==='resuelto'?'cc':'cr'}">${esc(q.estado)}</span></span>
+    </div>
+    <svg class="card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="soporte-body">
+    <p style="font-size:13px;color:var(--ink);margin-bottom:10px">${esc(q.mensaje||'')}</p>
+    <div class="actions-row">
+      ${q.telefono?`<a href="tel:${esc((q.telefono||'').replace(/\s/g,''))}" class="btn btn-g btn-sm">Llamar</a>`:''}
+      <button class="btn btn-g btn-sm" onclick="resolverQue(${q.id})">Marcar resuelto</button>
+    </div>
+  </div>
+</div>`).join('');
+}
+
+async function resolverGar(id) { await sb.from('garantias').update({estado:'resuelto'}).eq('id',id); toast('Marcado como resuelto'); loadSoporte() }
+async function resolverQue(id) { await sb.from('quejas').update({estado:'resuelto'}).eq('id',id); toast('Marcado como resuelto'); loadSoporte() }
+
+// ══════════════════════════════════════════
+// AJUSTES
+// ══════════════════════════════════════════
+function loadAjsUI() {
+  document.getElementById('aj-wa').value  = CFG.wa;
+  document.getElementById('aj-com').value = CFG.com;
+  document.getElementById('aj-t1').value  = CFG.t1;
+  document.getElementById('aj-t2').value  = CFG.t2;
+  document.getElementById('aj-t3').value  = CFG.t3;
+}
+function saveWA() { CFG.wa=document.getElementById('aj-wa').value.trim(); toast('Numero guardado') }
+function saveComision() { CFG.com=parseFloat(document.getElementById('aj-com').value)||15; toast('Comision guardada') }
+function saveTemplates() { CFG.t1=document.getElementById('aj-t1').value; CFG.t2=document.getElementById('aj-t2').value; CFG.t3=document.getElementById('aj-t3').value; toast('Templates guardados') }
+</script>
+</body>
+</html>

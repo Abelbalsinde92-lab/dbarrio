@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#1C1C2E"/>
+<title>dbarrio — técnico</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --y:#F5C116;--yd:#C9980D;
+  --ink:#1C1C2E;--ink2:#252540;--ink3:#5A5A7A;
+  --bg:#F7F4EF;--card:#FFFFFF;--line:#ECEAE5;
+  --g1:#8A8A9A;--g2:#C8C5BF;
+  --ok:#1A7F5A;--err:#D63031;--wa:#25D366;
+  --r:14px;--rs:8px;
+  --f:'Outfit',system-ui,sans-serif;
+  --fd:'Barlow Condensed',system-ui,sans-serif;
+  --th:54px;--nav:62px;
+}
+html{background:var(--ink)}
+body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--th);background:var(--ink);display:flex;align-items:center;padding:0 16px;padding-top:env(safe-area-inset-top,0);gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.tb-logo{font-family:var(--fd);font-size:26px;font-weight:900;color:var(--y);letter-spacing:-2px;line-height:1;text-decoration:none}
+.tb-nombre{font-size:12px;font-weight:600;color:rgba(255,255,255,.4);flex:1}
+.tb-exit{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f)}
+/* CONTENT */
+.content{padding-top:var(--th);padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0))}
+/* TABS */
+.tab{display:none;padding:14px 14px 0}
+.tab.active{display:block}
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  background:var(--ink);
+  display:flex;
+  padding-bottom:env(safe-area-inset-bottom,0);
+  border-top:2px solid var(--y);
+  height:var(--nav);
+}
+.bnav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;background:none;border:none;cursor:pointer;
+  color:rgba(255,255,255,.4);font-family:var(--f);
+  -webkit-tap-highlight-color:transparent;
+  transition:color .15s;
+}
+.bnav-btn.active{color:var(--y)}
+.bnav-ic{width:20px;height:20px}
+.bnav-lbl{font-size:10px;font-weight:600;letter-spacing:.3px}
+/* CARDS */
+.card{background:var(--card);border-radius:var(--r);border-left:3px solid var(--y);box-shadow:0 1px 6px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.04);margin-bottom:10px;overflow:hidden}
+.card-hdr{display:flex;align-items:center;padding:13px 14px;cursor:pointer;gap:10px;-webkit-tap-highlight-color:transparent;user-select:none}
+.card-hdr:active{background:rgba(0,0,0,.02)}
+.card-top{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.card-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.card-code{font-family:var(--fd);font-size:15px;font-weight:800;color:var(--ink);letter-spacing:.3px}
+.card-meta{font-size:11px;color:var(--g1);display:flex;gap:8px;flex-wrap:wrap}
+.card-toggle{font-size:17px;color:var(--g2);flex-shrink:0;transition:transform .2s}
+.card.open .card-toggle{transform:rotate(180deg)}
+.card-body{display:none;padding:0 14px 14px;border-top:1px solid var(--line)}
+.card.open .card-body{display:block}
+/* FIELDS */
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;padding:12px 0 12px}
+.field{display:flex;flex-direction:column;gap:2px}
+.field.full{grid-column:1/-1}
+.f-lbl{font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.4px}
+.f-val{font-size:13px;font-weight:500;color:var(--ink);line-height:1.4}
+/* INLINE FORM */
+.ifrm{display:none;background:#F9F8F5;border-radius:var(--rs);padding:14px;margin-top:10px;border:1.5px solid var(--line)}
+.ifrm.open{display:block}
+.ifrm-title{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+/* ACTIONS */
+.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:none;border-radius:var(--rs);padding:9px 14px;font-size:13px;font-weight:600;font-family:var(--f);cursor:pointer;transition:opacity .12s,transform .1s;-webkit-tap-highlight-color:transparent;white-space:nowrap;text-decoration:none}
+.btn:active{transform:scale(.96)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-yellow{background:var(--y);color:var(--ink);font-weight:700}
+.btn-ghost{background:var(--line);color:var(--ink)}
+.btn-danger{background:#fff;color:var(--err);border:1.5px solid var(--err)}
+.btn-wa{background:var(--wa);color:#fff}
+.btn-sm{padding:7px 11px;font-size:12px}
+/* CHIPS */
+.chip{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.2px;white-space:nowrap;text-transform:uppercase}
+.ca{background:#CCE5FF;color:#004085}
+.ce{background:#D1ECF1;color:#0C5460}
+/* FORM */
+.fg{margin-bottom:11px}
+.flbl{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+textarea{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f);color:var(--ink);background:#fff;resize:vertical;min-height:60px;-webkit-appearance:none}
+textarea:focus{outline:none;border-color:var(--ink)}
+/* CUENTA */
+.cuenta-card{background:var(--card);border-radius:var(--r);box-shadow:0 1px 6px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.04);padding:20px;margin-bottom:12px}
+.cuenta-nombre{font-family:var(--fd);font-size:26px;font-weight:900;color:var(--ink);margin-bottom:4px}
+.cuenta-tag{font-size:12px;color:var(--g1)}
+.cuenta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.cg-item{display:flex;flex-direction:column;gap:3px}
+.cg-lbl{font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.4px}
+.cg-val{font-size:18px;font-weight:700;color:var(--ink);font-family:var(--fd)}
+.cg-val.deuda-activa{color:var(--err)}
+.cg-val.deuda-cero{color:var(--ok)}
+/* HISTORIAL ROW */
+.hist-card{background:var(--card);border-radius:var(--r);border-left:3px solid var(--g2);box-shadow:0 1px 6px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.04);padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.hist-info{flex:1;min-width:0}
+.hist-code{font-family:var(--fd);font-size:14px;font-weight:800;color:var(--ink)}
+.hist-meta{font-size:11px;color:var(--g1);margin-top:2px}
+.hist-right{text-align:right;flex-shrink:0}
+.hist-monto{font-family:var(--fd);font-size:16px;font-weight:800;color:var(--ok)}
+.hist-stars{font-size:12px;color:var(--y)}
+/* EMPTY */
+.vacio{text-align:center;padding:36px 20px;font-size:14px;color:var(--g1)}
+.cargando{text-align:center;padding:28px;font-size:13px;color:var(--g1)}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a href="#" class="tb-logo">db</a>
+  <span class="tb-nombre" id="tbNombre">—</span>
+  <button class="tb-exit" onclick="exitSocio()">Salir</button>
+</header>
+
+<div class="content">
+  <div class="tab active" id="tab-ordenes">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <span style="font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink)">Mis órdenes</span>
+      <button style="background:var(--line);border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f)" onclick="loadOrdenes()">↺ Actualizar</button>
+    </div>
+    <div id="listaOrd"><div class="cargando">Cargando...</div></div>
+  </div>
+
+  <div class="tab" id="tab-historial">
+    <div style="margin-bottom:14px"><span style="font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink)">Mi historial</span></div>
+    <div id="listaHist"><div class="cargando">Cargando...</div></div>
+  </div>
+
+  <div class="tab" id="tab-cuenta">
+    <div style="margin-bottom:14px"><span style="font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink)">Mi cuenta</span></div>
+    <div id="cuentaContent"><div class="cargando">Cargando...</div></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="bnav-btn active" id="bnav-ordenes" onclick="goTab('ordenes',this)">
+    <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <span class="bnav-lbl">Órdenes</span>
+  </button>
+  <button class="bnav-btn" id="bnav-historial" onclick="goTab('historial',this)">
+    <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span class="bnav-lbl">Historial</span>
+  </button>
+  <button class="bnav-btn" id="bnav-cuenta" onclick="goTab('cuenta',this)">
+    <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    <span class="bnav-lbl">Mi cuenta</span>
+  </button>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
+const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+const WA_ADMIN = '34627493593';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+let mySocio = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data:{ session } } = await sb.auth.getSession();
+  if (session) { await init(session); return; }
+  sb.auth.onAuthStateChange(async (ev, session) => {
+    if (!session) { goIdx(); return; }
+    if (document.body.dataset.ok) return;
+    await init(session);
+  });
+});
+
+async function init(session) {
+  if (document.body.dataset.ok) return;
+  const { data, error } = await sb.from('socios').select('*').eq('auth_uid', session.user.id).maybeSingle();
+  if (error || !data) { await sb.auth.signOut(); goIdx(); return; }
+  if (!data.admitido || data.estado_socio !== 'activo') { await sb.auth.signOut(); goIdx(); return; }
+  document.body.dataset.ok = '1';
+  mySocio = data;
+  document.getElementById('tbNombre').textContent = data.nombre;
+  loadOrdenes();
+}
+function goIdx() { window.location.href = 'index.html'; }
+async function exitSocio() { await sb.auth.signOut(); goIdx(); }
+
+const TABS = { ordenes: loadOrdenes, historial: loadHistorial, cuenta: loadCuenta };
+function goTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if (TABS[name]) TABS[name]();
+}
+
+async function loadOrdenes() {
+  const el = document.getElementById('listaOrd');
+  if (!mySocio) { el.innerHTML = '<div class="vacio">Iniciando...</div>'; return; }
+  el.innerHTML = '<div class="cargando">Cargando...</div>';
+  const { data, error } = await sb.from('solicitudes').select('*')
+    .eq('socio_asignado', mySocio.id)
+    .in('estado', ['asignada'])
+    .order('created_at', { ascending: false });
+  if (error) { el.innerHTML = errBox(error.message); return; }
+  if (!data?.length) { el.innerHTML = '<div class="vacio">Sin órdenes activas.</div>'; return; }
+  el.innerHTML = data.map(cardOrden).join('');
+}
+
+function cardOrden(s) {
+  const cid = 'or'+s.id;
+  const enP = s.sub_estado === 'en_proceso';
+  const chip = enP ? '<span class="chip ce">En proceso</span>' : '<span class="chip ca">Asignada</span>';
+
+  return `<div class="card" id="${cid}">
+  <div class="card-hdr" onclick="toggleCard('${cid}')">
+    <div class="card-top">
+      <div class="card-row">${chip}<span class="card-code">${dbc(s.id)}</span></div>
+      <div class="card-meta">
+        <span>${esc(s.cliente)}</span>
+        ${s.municipio?'<span>'+esc(s.municipio)+'</span>':''}
+        <span>${fmt(s.created_at)}</span>
+      </div>
+    </div>
+    <span class="card-toggle">▾</span>
+  </div>
+  <div class="card-body">
+    <div class="fields">
+      <div class="field"><span class="f-lbl">Servicio</span><span class="f-val">${esc(s.servicio||'—')}</span></div>
+      <div class="field"><span class="f-lbl">Municipio</span><span class="f-val">${esc(s.municipio||'—')}</span></div>
+      <div class="field"><span class="f-lbl">Teléfono</span>
+        <span class="f-val"><a href="tel:${esc(s.telefono||'')}" style="color:var(--ink);font-weight:700;font-size:15px">${esc(s.telefono||'—')}</a></span>
+      </div>
+      ${s.sub_estado?`<div class="field"><span class="f-lbl">Sub-estado</span><span class="f-val">${esc(s.sub_estado)}</span></div>`:''}
+      ${s.direccion?`<div class="field full"><span class="f-lbl">Dirección</span><span class="f-val">${esc(s.direccion)}</span></div>`:''}
+      ${s.detalles?`<div class="field full"><span class="f-lbl">Detalles</span><span class="f-val">${esc(s.detalles)}</span></div>`:''}
+      ${s.nota_admin?`<div class="field full"><span class="f-lbl">Nota del admin</span><span class="f-val">${esc(s.nota_admin)}</span></div>`:''}
+    </div>
+    <!-- Form cierre -->
+    <div class="ifrm" id="ifrm-cierre-${s.id}">
+      <div class="ifrm-title">Solicitar cierre</div>
+      <div class="fg"><label class="flbl">Resumen del trabajo realizado</label>
+        <textarea id="nt-cierre-${s.id}" placeholder="Describe brevemente qué se realizó..."></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn btn-yellow" onclick="confCierre(${s.id})">Enviar solicitud</button>
+        <button class="btn btn-ghost" onclick="closeF('cierre',${s.id})">Cancelar</button>
+      </div>
+    </div>
+    <!-- Form no puedo -->
+    <div class="ifrm" id="ifrm-nopuedo-${s.id}">
+      <div class="ifrm-title">¿Por qué no puedes atender?</div>
+      <div class="fg"><textarea id="nt-nopuedo-${s.id}" placeholder="Motivo..."></textarea></div>
+      <div class="actions">
+        <button class="btn btn-danger" onclick="confNoPuedo(${s.id})">Confirmar</button>
+        <button class="btn btn-ghost" onclick="closeF('nopuedo',${s.id})">Cancelar</button>
+      </div>
+    </div>
+    <div class="actions">
+      ${!enP ? `<button class="btn btn-yellow" onclick="marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
+      ${s.telefono ? `<a href="tel:${esc(s.telefono)}" class="btn btn-dark">Llamar cliente</a>` : ''}
+      <button class="btn btn-ghost btn-sm" onclick="openF('cierre',${s.id})">Solicitar cierre</button>
+      <button class="btn btn-wa btn-sm" onclick="waAdmin(${s.id})">${svgWA()} Admin</button>
+      <button class="btn btn-danger btn-sm" onclick="openF('nopuedo',${s.id})">No puedo atender</button>
+    </div>
+  </div>
+</div>`;
+}
+
+async function marcarEnProceso(id) {
+  const { error } = await sb.from('solicitudes').update({ sub_estado:'en_proceso' }).eq('id', id);
+  if (error) { alert('Error: '+error.message); return; }
+  loadOrdenes();
+}
+async function confCierre(id) {
+  const nota = document.getElementById('nt-cierre-'+id).value.trim();
+  if (!nota) { alert('Describe el trabajo realizado.'); return; }
+  const { error } = await sb.from('solicitudes').update({ solicita_cierre:true, nota_socio:nota }).eq('id', id);
+  if (error) { alert('Error: '+error.message); return; }
+  loadOrdenes();
+}
+async function confNoPuedo(id) {
+  const nota = document.getElementById('nt-nopuedo-'+id).value.trim();
+  const { error } = await sb.from('solicitudes').update({
+    socio_asignado: null, estado:'pendiente', sub_estado:null,
+    nota_socio: nota ? ('Rechazado por socio: '+nota) : 'Socio no disponible'
+  }).eq('id', id);
+  if (error) { alert('Error: '+error.message); return; }
+  loadOrdenes();
+}
+
+async function loadHistorial() {
+  const el = document.getElementById('listaHist');
+  if (!mySocio) return;
+  el.innerHTML = '<div class="cargando">Cargando...</div>';
+  const { data, error } = await sb.from('solicitudes').select('id,cliente,municipio,fecha_fin,monto,valoracion,servicio')
+    .eq('socio_asignado', mySocio.id).eq('estado','completada')
+    .order('fecha_fin', { ascending:false });
+  if (error) { el.innerHTML = errBox(error.message); return; }
+  if (!data?.length) { el.innerHTML = '<div class="vacio">Sin órdenes completadas todavía.</div>'; return; }
+  el.innerHTML = data.map(r => {
+    const stars = '★'.repeat(r.valoracion||0)+'☆'.repeat(5-(r.valoracion||0));
+    return `<div class="hist-card">
+      <div class="hist-info">
+        <div class="hist-code">${dbc(r.id)}</div>
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-top:2px">${esc(r.cliente)}</div>
+        <div class="hist-meta">${r.servicio?esc(r.servicio)+' · ':''} ${r.municipio?esc(r.municipio)+' · ':''} ${fmt(r.fecha_fin)}</div>
+      </div>
+      <div class="hist-right">
+        <div class="hist-monto">$${(r.monto||0).toFixed(2)}</div>
+        <div class="hist-stars">${stars}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function loadCuenta() {
+  const el = document.getElementById('cuentaContent');
+  if (!mySocio) return;
+  const { data } = await sb.from('socios').select('*').eq('id', mySocio.id).maybeSingle();
+  if (data) mySocio = data;
+  const s = mySocio;
+  const deudaColor = (s.deuda||0) > 0 ? 'deuda-activa' : 'deuda-cero';
+  el.innerHTML = `
+    <div class="cuenta-card">
+      <div class="cuenta-nombre">${esc(s.nombre)}</div>
+      <div class="cuenta-tag">${esc(s.especialidad||'—')} · ${esc(s.zona||'—')}</div>
+      <div class="cuenta-grid">
+        <div class="cg-item"><span class="cg-lbl">Deuda</span><span class="cg-val ${deudaColor}">$${(s.deuda||0).toFixed(2)}</span></div>
+        <div class="cg-item"><span class="cg-lbl">Trabajos</span><span class="cg-val">${s.trabajos||0}</span></div>
+        <div class="cg-item"><span class="cg-lbl">Rating</span><span class="cg-val">${s.rating_avg?Number(s.rating_avg).toFixed(1):'-'}</span></div>
+        <div class="cg-item"><span class="cg-lbl">Comisión</span><span class="cg-val">${s.comision||15}%</span></div>
+      </div>
+    </div>
+    <div class="cuenta-card">
+      <div class="cuenta-tag" style="margin-bottom:10px;font-weight:700;color:var(--ink)">Contactar admin</div>
+      <button class="btn btn-wa" style="width:100%" onclick="waAdminGeneral()">${svgWA()} Escribir al admin</button>
+      <p style="font-size:11px;color:var(--g1);margin-top:8px;line-height:1.5">Para consultas, problemas de pago o cualquier asunto operativo.</p>
+    </div>`;
+}
+
+async function waAdmin(idOrden) {
+  const { data:s } = await sb.from('solicitudes').select('cliente,servicio,municipio').eq('id',idOrden).maybeSingle();
+  const txt = `Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\nConsulta sobre la orden *${dbc(idOrden)}*\n👤 Cliente: ${s?.cliente||'—'}\n🔧 Servicio: ${s?.servicio||'—'}\n📍 Municipio: ${s?.municipio||'—'}\n\n`;
+  openWA(WA_ADMIN, txt);
+}
+function waAdminGeneral() {
+  openWA(WA_ADMIN, `Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\n`);
+}
+function openWA(num, txt) {
+  const n = String(num).replace(/\D/g,'');
+  window.open('https://wa.me/'+n+'?text='+encodeURIComponent(txt),'_blank');
+}
+function svgWA(){return`<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.057-.002-.115-.003-.172-.003-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`}
+function dbc(id){return'db-'+id}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function errBox(m){return`<div class="vacio" style="color:var(--err)">Error: ${esc(m)}</div>`}
+function fmt(ts){if(!ts)return'—';const d=new Date(ts);return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'2-digit'})}
+function toggleCard(id){document.getElementById(id)?.classList.toggle('open')}
+function openF(tipo,id){
+  ['cierre','nopuedo'].forEach(t=>{document.getElementById('ifrm-'+t+'-'+id)?.classList.remove('open')});
+  document.getElementById('ifrm-'+tipo+'-'+id)?.classList.add('open');
+  const card=document.getElementById('or'+id);
+  if(card&&!card.classList.contains('open'))card.classList.add('open');
+}
+function closeF(tipo,id){document.getElementById('ifrm-'+tipo+'-'+id)?.classList.remove('open')}
+</script>
+</body>
+</html>
