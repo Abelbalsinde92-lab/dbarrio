@@ -315,7 +315,13 @@ textarea{resize:vertical;min-height:72px}
     <div class="fg"><label>Correo electronico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com"/><div class="fe" id="ea-email">Invalido.</div></div>
     <div class="fg"><label>Contrasena</label><input id="a-pass" type="password" placeholder="••••••••"/><div class="fe" id="ea-pass">Requerido.</div></div>
     <div class="err-box" id="err-acc"></div>
-    <button class="btn btn-k" id="btn-acc" onclick="doLogin()">Entrar</button>
+<button class="btn btn-k" id="btn-acc" onclick="doLogin()">Entrar</button>
+
+<!-- NUEVO: recovery -->
+<button class="btn btn-y" id="btn-rec" onclick="doRecovery()" style="margin-top:10px">
+  Olvidé mi contraseña
+</button>
+<p class="hint">Te enviaremos un enlace para crear una nueva contraseña.</p>
   </div>
 </div></div>
 
@@ -443,7 +449,13 @@ async function envUni(){
   if(pass.length<6){sE('eu-pass');ok=false}
   if(!ok)return;
   setL('btn-uni',true);
-  const{data:ad,error:ae}=await sb.auth.signUp({email,password:pass});
+  const{data:ad,error:ae}=await sb.auth.signUp({
+  email,
+  password: pass,
+  options: {
+    emailRedirectTo: 'https://dbarrio-two.vercel.app/'
+  }
+});
   if(ae||!ad.user){setL('btn-uni',false);sER('err-uni','Error: '+(ae?ae.message:'sin usuario'));return}
   const{error:se}=await sb.from('socios').insert({
     nombre:nom,telefono:tel,especialidad:esp,zona:zona,
@@ -478,6 +490,29 @@ async function doLogin(){
   }
   await sb.auth.signOut();setL('btn-acc',false);
   sER('err-acc','Usuario no reconocido.');
+}
+
+async function doRecovery(){
+  cER('err-acc');
+  const email = document.getElementById('a-email').value.trim();
+  ['ea-email'].forEach(cE);
+
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    sE('ea-email'); 
+    return;
+  }
+
+  // OJO: debe existir /reset.html publicado en Vercel
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://dbarrio-two.vercel.app/reset.html'
+  });
+
+  if(error){
+    sER('err-acc', 'Error: ' + error.message);
+    return;
+  }
+
+  sER('err-acc', 'Listo. Revisa tu correo (y spam). Abre el enlace en Safari.');
 }
 </script>
 </body>
