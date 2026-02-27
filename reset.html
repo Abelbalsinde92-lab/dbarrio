@@ -11,13 +11,14 @@
     p{color:#555}
     input{width:100%;padding:12px 14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:16px}
     button{width:100%;padding:12px 14px;border:0;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}
+    button:disabled{opacity:.5;cursor:not-allowed}
     .ok{color:#0a7a3d;margin-top:10px}
     .err{color:#c62828;margin-top:10px}
   </style>
 </head>
 <body>
   <h1>Recuperar acceso</h1>
-  <p>Introduce tu nueva contraseña.</p>
+  <p id="sub">Verificando enlace…</p>
 
   <input id="p1" type="password" placeholder="Nueva contraseña (mín 6)" />
   <input id="p2" type="password" placeholder="Repite la contraseña" />
@@ -29,12 +30,7 @@
   const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
   const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
   const sb = supabase.createClient(SURL, SKEY);
-<script>
-  const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
-  const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
-  const sb = supabase.createClient(SURL, SKEY);
 
-  // 👇 NUEVO: al cargar, intenta crear sesión desde el link del email
   document.addEventListener('DOMContentLoaded', init);
 
   function show(text, ok=false){
@@ -43,7 +39,12 @@
     m.textContent = text;
   }
 
-  // 👇 NUEVO: helper para leer el hash (#access_token=...)
+  function setSub(text){
+    const s=document.getElementById('sub');
+    if(s) s.textContent = text;
+  }
+
+  // Lee tokens del hash: #access_token=...&refresh_token=...
   function readHashTokens(){
     const hash = window.location.hash || '';
     if(!hash.startsWith('#')) return null;
@@ -54,60 +55,65 @@
     return null;
   }
 
-  // 👇 NUEVO: prepara la sesión temporal (PKCE o hash tokens)
   async function init(){
-  const btn = document.getElementById('btnSave');
-  if (btn) btn.disabled = true; // por defecto deshabilitado
+    const btn = document.getElementById('btnSave');
+    if (btn) btn.disabled = true;
 
-  const url = new URL(window.location.href);
-  const code = url.searchParams.get('code');
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get('code');
 
-  try {
-    // 1) Si viene como ?code=...
-    if (code) {
-      const { error } = await sb.auth.exchangeCodeForSession(window.location.href);
-      if (error) return show('Link inválido o expirado. Pide recuperar contraseña otra vez.');
+    try {
+      // 1) PKCE: ?code=...
+      if (code) {
+        const { error } = await sb.auth.exchangeCodeForSession(window.location.href);
+        if (error) {
+          setSub('Enlace inválido');
+          return show('Link inválido o expirado. Pide recuperar contraseña otra vez.');
+        }
+        setSub('Enlace verificado. Crea tu nueva contraseña.');
+        if (btn) btn.disabled = false;
+        return;
+      }
 
-      show('Link verificado. Ya puedes poner tu nueva contraseña.', true);
+      // 2) Implicit: #access_token=...
+      const t = readHashTokens();
+      if (t) {
+        const { error } = await sb.auth.setSession({
+          access_token: t.access_token,
+          refresh_token: t.refresh_token
+        });
+        if (error) {
+          setSub('Enlace inválido');
+          return show('Link inválido o expirado. Pide recuperar contraseña otra vez.');
+        }
+        setSub('Enlace verificado. Crea tu nueva contraseña.');
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      // 3) Si no hay code ni hash, mira si hay sesión ya
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        setSub('No hay sesión de recuperación');
+        return show('No hay sesión de recuperación en este enlace. Abre el link desde Safari o pide uno nuevo.');
+      }
+
+      setSub('Sesión lista. Crea tu nueva contraseña.');
       if (btn) btn.disabled = false;
-      return;
+
+    } catch (e) {
+      setSub('Error');
+      show('Error inesperado. Intenta abrir el enlace en Safari.');
     }
-
-    // 2) Si viene como #access_token=...
-    const t = readHashTokens();
-    if (t) {
-      const { error } = await sb.auth.setSession({
-        access_token: t.access_token,
-        refresh_token: t.refresh_token
-      });
-      if (error) return show('Link inválido o expirado. Pide recuperar contraseña otra vez.');
-
-      show('Link verificado. Ya puedes poner tu nueva contraseña.', true);
-      if (btn) btn.disabled = false;
-      return;
-    }
-
-    // 3) Si no hay nada, revisa si ya hay sesión (por si acaso)
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) {
-      show('No hay sesión de recuperación en este enlace. Abre el link desde Safari o pide uno nuevo.');
-      return;
-    }
-
-    show('Sesión lista. Ya puedes cambiar tu contraseña.', true);
-    if (btn) btn.disabled = false;
-
-  } catch (e) {
-    show('Error inesperado. Intenta abrir el enlace en Safari.');
   }
-}
+
   async function save(){
     const p1=document.getElementById('p1').value;
     const p2=document.getElementById('p2').value;
+
     if(p1.length<6) return show('La contraseña debe tener al menos 6 caracteres.');
     if(p1!==p2) return show('Las contraseñas no coinciden.');
 
-    // 👇 (opcional pero recomendado) valida que hay sesión antes de actualizar
     const { data: { session } } = await sb.auth.getSession();
     if(!session) return show('Sesión no válida. Abre el enlace desde Safari o pide uno nuevo.');
 
@@ -115,27 +121,7 @@
     if(error) return show('Error: ' + error.message);
 
     show('Contraseña actualizada. Ya puedes iniciar sesión.', true);
-    setTimeout(()=>{ window.location.href='index.html'; }, 1200);
-  }
-</script>
-  function show(text, ok=false){
-    const m=document.getElementById('msg');
-    m.className = ok ? 'ok' : 'err';
-    m.textContent = text;
-  }
-
-  async function save(){
-    const p1=document.getElementById('p1').value;
-    const p2=document.getElementById('p2').value;
-    if(p1.length<6) return show('La contraseña debe tener al menos 6 caracteres.');
-    if(p1!==p2) return show('Las contraseñas no coinciden.');
-
-    // Si llegaste aquí desde el link de recovery, supabase ya trae la sesión temporal
-    const { data, error } = await sb.auth.updateUser({ password: p1 });
-    if(error) return show('Error: ' + error.message);
-
-    show('Contraseña actualizada. Ya puedes iniciar sesión.', true);
-    setTimeout(()=>{ window.location.href='index.html'; }, 1200);
+    setTimeout(()=>{ window.location.href='index.html'; }, 900);
   }
 </script>
 </body>
