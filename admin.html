@@ -468,7 +468,14 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
 // ══════════════════════════════════════════
 const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
-const sb = supabase.createClient(SURL, SKEY);
+const sb = supabase.createClient(SURL, SKEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    storage: window.localStorage
+  }
+});
 
 // Config almacenada en localStorage (por device)
 const CFG = {
@@ -787,6 +794,12 @@ async function loadHi() {
 // ══════════════════════════════════════════
 async function loadSocios() {
   const el = document.getElementById('lista-so');
+    // DIAG: comprobar sesión real (JWT)
+  const { data: u, error: ue } = await sb.auth.getUser();
+  if (ue || !u?.user) {
+    el.innerHTML = `<div class="empty"><div class="empty-ico">🔒</div>Sesión no válida. Vuelve a iniciar sesión.</div>`;
+    return;
+  }
   el.innerHTML = '<div class="loading">Cargando...</div>';
   const { data, error } = await sb.from('socios').select('*').order('estado_socio').order('nombre');
   if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return }
