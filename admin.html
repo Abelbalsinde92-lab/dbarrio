@@ -542,7 +542,7 @@ function goSec(id) {
   document.getElementById('nav-'+id).classList.add('active');
   closeSidebar();
   if (id==='hi') loadHi();
-  if (id==='so') loadSocios();
+  if (id==='so') { loadSociosMap(); loadSocios(); }
   if (id==='ca') loadCaja();
   if (id==='sp') loadSoporte();
 }
@@ -838,7 +838,7 @@ function buildSocioCard(s) {
       ${!s.admitido ? `<button class="btn btn-y" onclick='aprobarSocio(${s.id}, ${JSON.stringify(s.nombre||"")}, ${JSON.stringify(s.telefono||"")})'>Aprobar</button>` : ''}
       ${s.estado_socio==='activo' ? `<button class="btn btn-r btn-sm" onclick="cambiarEstadoSocio(${s.id},'baja')">Dar de baja</button>` : ''}
       ${s.estado_socio==='baja' ? `<button class="btn btn-g btn-sm" onclick="cambiarEstadoSocio(${s.id},'activo')">Reactivar</button>` : ''}
-      ${s.telefono ? `<button class="btn btn-wa btn-sm" onclick="waAdmin('${esc(s.telefono)}','Hola ${esc(s.nombre)}, te contacta el equipo dbarrio.')">WA</button>` : ''}
+      ${s.telefono ? `<button class="btn btn-wa btn-sm" onclick='waAdmin(${JSON.stringify(s.telefono||"")}, ${JSON.stringify(`Hola ${s.nombre||""}, te contacta el equipo dbarrio.`)})'>WA</button>` : ''}
     </div>
   </div>
 </div>`;
