@@ -835,7 +835,7 @@ function buildSocioCard(s) {
       </div>
     </div>
     <div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
-      ${!s.admitido ? `<button class="btn btn-y" onclick="aprobarSocio(${s.id}, '${esc(s.nombre)}', '${esc(s.telefono||'')}')">Aprobar</button>` : ''}
+      ${!s.admitido ? `<button class="btn btn-y" onclick='aprobarSocio(${s.id}, ${JSON.stringify(s.nombre||"")}, ${JSON.stringify(s.telefono||"")})'>Aprobar</button>` : ''}
       ${s.estado_socio==='activo' ? `<button class="btn btn-r btn-sm" onclick="cambiarEstadoSocio(${s.id},'baja')">Dar de baja</button>` : ''}
       ${s.estado_socio==='baja' ? `<button class="btn btn-g btn-sm" onclick="cambiarEstadoSocio(${s.id},'activo')">Reactivar</button>` : ''}
       ${s.telefono ? `<button class="btn btn-wa btn-sm" onclick="waAdmin('${esc(s.telefono)}','Hola ${esc(s.nombre)}, te contacta el equipo dbarrio.')">WA</button>` : ''}
