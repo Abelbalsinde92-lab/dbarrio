@@ -289,7 +289,25 @@ function cardOrden(s) {
     <div class="ifrm" id="ifrm-cierre-${s.id}">
       <div class="ifrm-title">Solicitar cierre</div>
       <div class="fg"><label class="flbl">Resumen del trabajo realizado</label>
-        <textarea id="nt-cierre-${s.id}" placeholder="Describe brevemente qué se realizó..."></textarea>
+       <div class="fg">
+  <label>Monto cobrado ($)</label>
+  <input id="monto-cierre-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"/>
+</div>
+
+<div class="fg">
+  <label>Garantía (días)</label>
+  <input id="gar-cierre-${s.id}" type="number" min="0" step="1" placeholder="0"/>
+</div>
+
+<div class="fg">
+  <label>Detalle del trabajo</label>
+  <textarea id="nt-cierre-${s.id}" placeholder="Describe lo realizado..."></textarea>
+</div>
+
+<button class="btn btn-y btn-full" onclick="confCierre(${s.id})">
+  Solicitar cierre
+</button>
+
       </div>
       <div class="actions">
         <button class="btn btn-yellow" onclick="confCierre(${s.id})">Enviar solicitud</button>
@@ -322,6 +340,7 @@ async function marcarEnProceso(id) {
   loadOrdenes();
 }
 async function confCierre(id) {
+
   const nota = document.getElementById('nt-cierre-'+id).value.trim();
   const montoRaw = document.getElementById('monto-cierre-'+id).value.trim();
   const garRaw = document.getElementById('gar-cierre-'+id).value.trim();
@@ -329,9 +348,20 @@ async function confCierre(id) {
   const monto = parseFloat(montoRaw.replace(',','.'));
   const gar = parseInt(garRaw, 10);
 
-  if (!nota) return alert('Describe el trabajo realizado.');
-  if (isNaN(monto) || monto <= 0) return alert('Ingresa el monto cobrado.');
-  if (isNaN(gar) || gar < 0) return alert('Ingresa los días de garantía (0 si no aplica).');
+  if (!nota) {
+    alert('Describe el trabajo realizado.');
+    return;
+  }
+
+  if (isNaN(monto) || monto <= 0) {
+    alert('Ingresa el monto cobrado.');
+    return;
+  }
+
+  if (isNaN(gar) || gar < 0) {
+    alert('Ingresa los días de garantía (0 si no aplica).');
+    return;
+  }
 
   const { error } = await sb.from('solicitudes').update({
     solicita_cierre: true,
@@ -341,7 +371,12 @@ async function confCierre(id) {
     cierre_ts: new Date().toISOString()
   }).eq('id', id);
 
-  if (error) return alert('Error: ' + error.message);
+  if (error) {
+    alert('Error: ' + error.message);
+    return;
+  }
+
+  alert('Cierre enviado al administrador para aprobación.');
   loadOrdenes();
 }
 async function confNoPuedo(id) {
