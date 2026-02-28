@@ -339,44 +339,25 @@ async function marcarEnProceso(id) {
   if (error) { alert('Error: '+error.message); return; }
   loadOrdenes();
 }
-async function confCierre(id) {
+async function enviarReporte(id) {
+  const monto = parseFloat(document.getElementById('monto-'+id).value);
+  const nota  = document.getElementById('nt-reporte-'+id).value.trim();
+  const gar   = parseInt(document.getElementById('gar-'+id).value, 10);
 
-  const nota = document.getElementById('nt-cierre-'+id).value.trim();
-  const montoRaw = document.getElementById('monto-cierre-'+id).value.trim();
-  const garRaw = document.getElementById('gar-cierre-'+id).value.trim();
-
-  const monto = parseFloat(montoRaw.replace(',','.'));
-  const gar = parseInt(garRaw, 10);
-
-  if (!nota) {
-    alert('Describe el trabajo realizado.');
-    return;
-  }
-
-  if (isNaN(monto) || monto <= 0) {
-    alert('Ingresa el monto cobrado.');
-    return;
-  }
-
-  if (isNaN(gar) || gar < 0) {
-    alert('Ingresa los días de garantía (0 si no aplica).');
-    return;
-  }
+  if (isNaN(monto) || monto <= 0) return alert('Monto inválido');
+  if (!nota) return alert('Describe el trabajo realizado');
+  if (isNaN(gar) || gar < 0) return alert('Garantía inválida');
 
   const { error } = await sb.from('solicitudes').update({
-    solicita_cierre: true,
+    reporte_listo: true,
     monto_socio: monto,
-    garantia_dias: gar,
     nota_socio: nota,
-    cierre_ts: new Date().toISOString()
+    garantia_dias: gar,
+    reporte_ts: new Date().toISOString(),
+    sub_estado: 'finalizada_por_socio' // opcional (para tracking)
   }).eq('id', id);
 
-  if (error) {
-    alert('Error: ' + error.message);
-    return;
-  }
-
-  alert('Cierre enviado al administrador para aprobación.');
+  if (error) return alert('Error: ' + error.message);
   loadOrdenes();
 }
 async function confNoPuedo(id) {
