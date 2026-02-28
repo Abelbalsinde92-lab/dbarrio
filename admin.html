@@ -8,7 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="icon.svg"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
   --ink:#1C1C2E;--ink2:#2E2E45;--ink3:#454562;
@@ -758,10 +758,22 @@ async function asignar(id) {
 function openCompletar(id) { pendingCompId=id; document.getElementById('comp-monto').value=''; document.getElementById('comp-nota').value=''; document.getElementById('err-comp').classList.remove('v'); openModal('comp') }
 function openRechazar(id) { pendingRechId=id; document.getElementById('rech-mot').value=''; document.getElementById('err-rech').classList.remove('v'); openModal('rech') }
 
+// ✅ REEMPLAZA TU FUNCIÓN ENTERA doCompletar() POR ESTA (admin)
+
 async function doCompletar() {
   const monto = parseFloat(document.getElementById('comp-monto').value);
   const nota  = document.getElementById('comp-nota').value.trim();
-    const garDias = parseInt(document.getElementById('comp-gar')?.value || '0', 10);
+
+  // ✅ garantía en días (input id="comp-gar")
+  const garDias = parseInt(document.getElementById('comp-gar')?.value || '0', 10);
+
+  // Validaciones
+  if (isNaN(monto) || monto < 0) {
+    const e = document.getElementById('err-comp');
+    e.textContent = 'Ingresa un monto válido.';
+    e.classList.add('v');
+    return;
+  }
   if (isNaN(garDias) || garDias < 0) {
     const e = document.getElementById('err-comp');
     e.textContent = 'Garantía inválida (días).';
@@ -769,61 +781,111 @@ async function doCompletar() {
     return;
   }
 
-  // ✅ calcular expiración de garantía (si aplica)
+  // ✅ calcular expiración ANTES del update final
   const finGar = new Date();
   finGar.setDate(finGar.getDate() + (garDias || 0));
   const finGarISO = garDias > 0 ? finGar.toISOString() : null;
-  if (isNaN(monto)||monto<0) { const e=document.getElementById('err-comp'); e.textContent='Ingresa un monto valido.'; e.classList.add('v'); return }
-  const btn=document.getElementById('btn-comp'); btn.disabled=true; btn.innerHTML='<span class="sp"></span>Procesando...';
+
+  const btn = document.getElementById('btn-comp');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="sp"></span>Procesando...';
 
   const now = new Date().toISOString();
-  const { data: sol } = await sb.from('solicitudes').select('*,socios(nombre,telefono,comision)').eq('id',pendingCompId).single();
 
+  // Traer la orden (y socio relacionado si existe)
+  const { data: sol, error: es } = await sb
+    .from('solicitudes')
+    .select('*,socios(nombre,telefono,comision)')
+    .eq('id', pendingCompId)
+    .single();
+
+  if (es || !sol) {
+    const e = document.getElementById('err-comp');
+    e.textContent = es?.message || 'No se pudo cargar la orden.';
+    e.classList.add('v');
+    btn.disabled = false;
+    btn.innerHTML = 'Confirmar y cerrar orden';
+    return;
+  }
+
+  // ✅ UPDATE FINAL (aquí viajan garantía + expiración)
   const { error: eu } = await sb.from('solicitudes').update({
-  estado: 'completada',
-  fecha_fin: now,
-  monto: monto,
-  nota_admin: nota || null,
+    estado: 'completada',
+    fecha_fin: now,
+    monto: monto,
+    nota_admin: nota || null,
 
-  // ✅ cierre aprobado
-  solicita_cierre: false,
+    // cierre aprobado
+    solicita_cierre: false,
 
-  // ✅ garantía aprobada
-  garantia_dias: garDias,
-  garantia_expira: finGarISO
-}).eq('id', pendingCompId);
-  if (eu) { const e=document.getElementById('err-comp'); e.textContent=eu.message; e.classList.add('v'); btn.disabled=false; btn.innerHTML='Confirmar y cerrar orden'; return }
+    // garantía
+    garantia_dias: garDias,
+    garantia_expira: finGarISO
+  }).eq('id', pendingCompId);
 
-  const garDias = parseInt(document.getElementById('comp-gar').value || '0', 10);
-  if (isNaN(garDias) || garDias < 0) { ... }
+  if (eu) {
+    const e = document.getElementById('err-comp');
+    e.textContent = eu.message;
+    e.classList.add('v');
+    btn.disabled = false;
+    btn.innerHTML = 'Confirmar y cerrar orden';
+    return;
+  }
 
-  // Cargo comision al socio
+  // ✅ Cargo comisión al socio + actualizar deuda/trabajos
   if (sol?.socio_asignado) {
     const comPct = sol.socios?.comision ?? CFG.com;
     const comMonto = parseFloat((monto * comPct / 100).toFixed(2));
+
     await sb.from('movimientos').insert({
-      socio_id: sol.socio_asignado, solicitud_id: pendingCompId,
-      tipo: 'cargo_comision', monto: comMonto,
+      socio_id: sol.socio_asignado,
+      solicitud_id: pendingCompId,
+      tipo: 'cargo_comision',
+      monto: comMonto,
       nota: `Comision ${comPct}% — ${dbc(pendingCompId)}`
     });
-    const { data: soc } = await sb.from('socios').select('deuda,trabajos').eq('id',sol.socio_asignado).single();
+
+    const { data: soc } = await sb
+      .from('socios')
+      .select('deuda,trabajos')
+      .eq('id', sol.socio_asignado)
+      .single();
+
     await sb.from('socios').update({
-      deuda: (parseFloat(soc?.deuda||0) + comMonto).toFixed(2),
-      trabajos: (soc?.trabajos||0) + 1
+      deuda: (parseFloat(soc?.deuda || 0) + comMonto).toFixed(2),
+      trabajos: (soc?.trabajos || 0) + 1
     }).eq('id', sol.socio_asignado);
   }
 
-  // WA al cliente
-  const socNom = sol?.socios?.nombre || (sol?.socio_asignado ? (sociosMap[sol.socio_asignado]?.nombre||'—') : '—');
+  // ✅ WA al cliente (incluye garantía + vence + detalles)
+  const socNom = sol?.socios?.nombre
+    || (sol?.socio_asignado ? (sociosMap[sol.socio_asignado]?.nombre || '—') : '—');
+
+  const venceTxt = finGarISO
+    ? new Date(finGarISO).toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric' })
+    : 'No aplica';
+
+  const garTxt = garDias > 0 ? `${garDias} días` : 'Sin garantía';
+  const detallesTxt = sol?.nota_socio || '—';
+
   const msgCli = CFG.t3
-    .replace('{cliente}', sol?.cliente||'')
+    .replace('{cliente}', sol?.cliente || '')
     .replace('{code}', dbc(pendingCompId))
     .replace('{socio}', socNom)
-    .replace('{monto}', fmtM(monto));
+    .replace('{monto}', fmtM(monto))
+    .replace('{garantia}', garTxt)
+    .replace('{vence}', venceTxt)
+    .replace('{detalles}', detallesTxt);
+
   if (sol?.telefono) wa(sol.telefono, msgCli);
 
-  btn.disabled=false; btn.innerHTML='Confirmar y cerrar orden';
-  closeModal('comp'); toast('Orden completada'); loadOp(); loadKPIs();
+  // UI final
+  btn.disabled = false;
+  btn.innerHTML = 'Confirmar y cerrar orden';
+  closeModal('comp');
+  toast('Orden completada');
+  loadOp();
+  loadKPIs();
 }
 
 async function doRechazar() {
