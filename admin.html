@@ -426,17 +426,40 @@ ${s.solicita_cierre ? `<button class="btn btn-y" onclick="openAprobarCierre(${s.
 
 <!-- MODAL COMPLETAR -->
 <div class="ov" id="ov-comp" onclick="if(event.target===this)closeModal('comp')">
-<div class="sheet">
-  <div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Completar orden</span><button class="sheet-x" onclick="closeModal('comp')">&times;</button></div>
-  <div class="mbody">
-    <div class="fg"><label>Monto cobrado ($)</label><input id="comp-monto" type="number" min="0" step="0.01" placeholder="0.00"/></div>
-    <div class="fg"><label>Nota (opcional)</label><textarea id="comp-nota" placeholder="Observaciones del servicio..."></textarea></div>
-    <div class="err-box" id="err-comp"></div>
-    <button class="btn btn-y btn-full" id="btn-comp" onclick="doCompletar()">Confirmar y cerrar orden</button>
-  <div class="fg"><label>Garantía (días)</label><input id="comp-gar" type="number" min="0" step="1" placeholder="0"/></div>
+  <div class="sheet">
+    <div class="pill"></div>
+
+    <div class="sheet-hdr">
+      <span class="sheet-title">Completar orden</span>
+      <button class="sheet-x" onclick="closeModal('comp')">&times;</button>
+    </div>
+
+    <div class="mbody">
+
+      <div class="fg">
+        <label>Monto cobrado ($)</label>
+        <input id="comp-monto" type="number" min="0" step="0.01" placeholder="0.00"/>
+      </div>
+
+      <div class="fg">
+        <label>Garantía (días)</label>
+        <input id="comp-gar" type="number" min="0" step="1" placeholder="0"/>
+      </div>
+
+      <div class="fg">
+        <label>Nota (opcional)</label>
+        <textarea id="comp-nota" placeholder="Observaciones del servicio..."></textarea>
+      </div>
+
+      <div class="err-box" id="err-comp"></div>
+
+      <button class="btn btn-y btn-full" id="btn-comp" onclick="doCompletar()">
+        Confirmar y cerrar orden
+      </button>
+
+    </div>
   </div>
-</div></div>
+</div>
 
 <!-- MODAL RECHAZAR -->
 <div class="ov" id="ov-rech" onclick="if(event.target===this)closeModal('rech')">
