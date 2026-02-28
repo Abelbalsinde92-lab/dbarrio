@@ -675,10 +675,12 @@ const chipText  = { pendiente:'pendiente', asignada:'asignada', en_proceso:'en p
   <div class="card-hdr" onclick="toggleCard(this)">
     <div class="card-hdr-left">
       <div class="card-meta">
-        <span class="card-code">${esc(dbc(s.id))}</span>
-       ${s.sub_estado ? `<div class="info-item"><span class="info-label">Sub-estado</span><span class="info-val">${esc(s.sub_estado)}</span></div>` : ''}
-        ${s.solicita_cierre ? '<span class="chip cw">⚡ Cierre</span>' : ''}
-      </div>
+  <span class="card-code">${esc(dbc(s.id))}</span>
+
+  <span class="chip ${chipClass}">${esc(chipText)}</span>
+
+  ${s.solicita_cierre ? '<span class="chip cw">⚡ Cierre</span>' : ''}
+</div>
       <span class="card-name">${esc(s.cliente)}</span>
       <span class="card-detail">${esc(s.municipio||'')} · ${esc(s.servicio||'')}</span>
     </div>
