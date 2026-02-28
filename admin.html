@@ -503,24 +503,39 @@ let pendingCajaTipo = null;
 // ══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async () => {
   const { data: { session } } = await sb.auth.getSession();
+
   if (!session) {
-  alert('Debes iniciar sesión primero.');
-  goIndex();
-  return;
-}
-  const { data: adm } = await sb
-  .from('admins')
-  .select('id')
-  .eq('auth_uid', session.user.id)
-  .maybeSingle();
+    alert('Debes iniciar sesión primero.');
+    goIndex();
+    return;
+  }
 
-if (!adm) { 
-  await sb.auth.signOut(); 
-  goIndex(); 
-  return; 
-}
+  const { data: adm, error: admErr } = await sb
+    .from('admins')
+    .select('id')
+    .eq('auth_uid', session.user.id)
+    .maybeSingle();
 
-// ✅ REALTIME: refrescar admin cuando cambie una orden
+  if (admErr || !adm) {
+    await sb.auth.signOut();
+    goIndex();
+    return;
+  }
+
+  // ✅ REALTIME: refrescar admin cuando cambie una orden
+  setupRealtime();
+
+  loadAjsUI();
+  loadKPIs();
+  await loadSociosMap();
+  loadOp();
+}); // ✅ IMPORTANTE: cerrar el DOMContentLoaded
+
+// fuera del listener:
+function goIndex() { window.location.href = '/'; }
+async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
+
+// ✅ realtime fuera también
 function setupRealtime() {
   sb.channel('rt-admin-solicitudes')
     .on(
