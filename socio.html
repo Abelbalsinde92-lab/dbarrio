@@ -249,91 +249,109 @@ async function loadOrdenes() {
 
 function cardOrden(s) {
   const cid = 'or'+s.id;
+
   const enP = s.sub_estado === 'en_proceso';
-  const chip = enP ? '<span class="chip ce">En proceso</span>' : '<span class="chip ca">Asignada</span>';
+  const rep = s.sub_estado === 'cierre_reportado';
+
+  const chip =
+    rep ? '<span class="chip ce">Cierre reportado</span>' :
+    enP ? '<span class="chip ce">En proceso</span>' :
+          '<span class="chip ca">Asignada</span>';
 
   return `<div class="card" id="${cid}">
-  <div class="card-hdr" onclick="toggleCard('${cid}')">
-    <div class="card-top">
-      <div class="card-row">${chip}<span class="card-code">${dbc(s.id)}</span></div>
-      <div class="card-meta">
-        <span>${esc(s.cliente)}</span>
-        ${s.municipio?'<span>'+esc(s.municipio)+'</span>':''}
-        <span>${fmt(s.fecha_ts)}</span>
+    <div class="card-hdr" onclick="toggleCard('${cid}')">
+      <div class="card-top">
+        <div class="card-row">${chip}<span class="card-code">${dbc(s.id)}</span></div>
+        <div class="card-meta">
+          <span>${esc(s.cliente)}</span>
+          ${s.municipio?'<span>'+esc(s.municipio)+'</span>':''}
+          <span>${fmt(s.fecha_ts)}</span>
+        </div>
       </div>
+      <span class="card-toggle">▾</span>
     </div>
-    <span class="card-toggle">▾</span>
-  </div>
-  <div class="card-body">
-    <div class="fields">
-      <div class="field"><span class="f-lbl">Servicio</span><span class="f-val">${esc(s.servicio||'—')}</span></div>
-      <div class="field"><span class="f-lbl">Municipio</span><span class="f-val">${esc(s.municipio||'—')}</span></div>
-      <div class="field"><span class="f-lbl">Teléfono</span>
-        <span class="f-val"><a href="tel:${esc(s.telefono||'')}" style="color:var(--ink);font-weight:700;font-size:15px">${esc(s.telefono||'—')}</a></span>
+
+    <div class="card-body">
+      <div class="fields">
+        <div class="field"><span class="f-lbl">Servicio</span><span class="f-val">${esc(s.servicio||'—')}</span></div>
+        <div class="field"><span class="f-lbl">Municipio</span><span class="f-val">${esc(s.municipio||'—')}</span></div>
+        <div class="field"><span class="f-lbl">Teléfono</span>
+          <span class="f-val"><a href="tel:${esc(s.telefono||'')}" style="color:var(--ink);font-weight:700;font-size:15px">${esc(s.telefono||'—')}</a></span>
+        </div>
+        ${s.direccion?`<div class="field full"><span class="f-lbl">Dirección</span><span class="f-val">${esc(s.direccion)}</span></div>`:''}
+        ${s.detalles?`<div class="field full"><span class="f-lbl">Detalles</span><span class="f-val">${esc(s.detalles)}</span></div>`:''}
+        ${s.nota_admin?`<div class="field full"><span class="f-lbl">Nota del admin</span><span class="f-val">${esc(s.nota_admin)}</span></div>`:''}
       </div>
-      ${s.sub_estado?`<div class="field"><span class="f-lbl">Sub-estado</span><span class="f-val">${esc(s.sub_estado)}</span></div>`:''}
-      ${s.direccion?`<div class="field full"><span class="f-lbl">Dirección</span><span class="f-val">${esc(s.direccion)}</span></div>`:''}
-      ${s.detalles?`<div class="field full"><span class="f-lbl">Detalles</span><span class="f-val">${esc(s.detalles)}</span></div>`:''}
-      ${s.nota_admin?`<div class="field full"><span class="f-lbl">Nota del admin</span><span class="f-val">${esc(s.nota_admin)}</span></div>`:''}
-    </div>
-    <div class="fg">
-  <label class="flbl">Monto cobrado ($)</label>
-  <textarea id="monto-cierre-${s.id}" placeholder="Ej: 25" style="min-height:44px"></textarea>
-</div>
 
-<div class="fg">
-  <label class="flbl">Garantía (días)</label>
-  <textarea id="gar-cierre-${s.id}" placeholder="Ej: 30" style="min-height:44px"></textarea>
-</div>
-    <!-- Form cierre -->
-    <div class="ifrm" id="ifrm-cierre-${s.id}">
-      <div class="ifrm-title">Solicitar cierre</div>
-      <div class="fg"><label class="flbl">Resumen del trabajo realizado</label>
-       <div class="fg">
-  <label>Monto cobrado ($)</label>
-  <input id="monto-cierre-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"/>
-</div>
+      <!-- FORM: REPORTE DE CIERRE -->
+      <div class="ifrm open" id="ifrm-cierre-${s.id}">
+        <div class="ifrm-title">Reporte de cierre (lo que cobraste y garantía)</div>
 
-<div class="fg">
-  <label>Garantía (días)</label>
-  <input id="gar-cierre-${s.id}" type="number" min="0" step="1" placeholder="0"/>
-</div>
+        <div class="fg">
+          <label class="flbl">Monto cobrado ($)</label>
+          <input id="monto-cierre-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"
+                 style="width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f)"/>
+        </div>
 
-<div class="fg">
-  <label>Detalle del trabajo</label>
-  <textarea id="nt-cierre-${s.id}" placeholder="Describe lo realizado..."></textarea>
-</div>
+        <div class="fg">
+          <label class="flbl">Garantía (días)</label>
+          <input id="gar-cierre-${s.id}" type="number" min="0" step="1" placeholder="0"
+                 style="width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f)"/>
+        </div>
 
-<button class="btn btn-y btn-full" onclick="confCierre(${s.id})">
-  Solicitar cierre
-</button>
+        <div class="fg">
+          <label class="flbl">Detalle del trabajo</label>
+          <textarea id="nt-cierre-${s.id}" placeholder="Describe lo realizado..."></textarea>
+        </div>
 
+        <div class="actions">
+          ${!rep ? `<button class="btn btn-yellow" onclick="reportarCierre(${s.id})">Enviar reporte</button>` : `<button class="btn btn-ghost" disabled>Reporte enviado</button>`}
+        </div>
       </div>
+
+      <!-- FORM NO PUEDO -->
+      <div class="ifrm" id="ifrm-nopuedo-${s.id}">
+        <div class="ifrm-title">¿Por qué no puedes atender?</div>
+        <div class="fg"><textarea id="nt-nopuedo-${s.id}" placeholder="Motivo..."></textarea></div>
+        <div class="actions">
+          <button class="btn btn-danger" onclick="confNoPuedo(${s.id})">Confirmar</button>
+          <button class="btn btn-ghost" onclick="closeF('nopuedo',${s.id})">Cancelar</button>
+        </div>
+      </div>
+
       <div class="actions">
-        <button class="btn btn-yellow" onclick="confCierre(${s.id})">Enviar solicitud</button>
-        <button class="btn btn-ghost" onclick="closeF('cierre',${s.id})">Cancelar</button>
+        ${!enP ? `<button class="btn btn-yellow" onclick="marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
+        ${s.telefono ? `<a href="tel:${esc(s.telefono)}" class="btn btn-dark">Llamar cliente</a>` : ''}
+        <button class="btn btn-wa btn-sm" onclick="waAdmin(${s.id})">${svgWA()} Admin</button>
+        <button class="btn btn-danger btn-sm" onclick="openF('nopuedo',${s.id})">No puedo atender</button>
       </div>
     </div>
-    <!-- Form no puedo -->
-    <div class="ifrm" id="ifrm-nopuedo-${s.id}">
-      <div class="ifrm-title">¿Por qué no puedes atender?</div>
-      <div class="fg"><textarea id="nt-nopuedo-${s.id}" placeholder="Motivo..."></textarea></div>
-      <div class="actions">
-        <button class="btn btn-danger" onclick="confNoPuedo(${s.id})">Confirmar</button>
-        <button class="btn btn-ghost" onclick="closeF('nopuedo',${s.id})">Cancelar</button>
-      </div>
-    </div>
-    <div class="actions">
-      ${!enP ? `<button class="btn btn-yellow" onclick="marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
-      ${s.telefono ? `<a href="tel:${esc(s.telefono)}" class="btn btn-dark">Llamar cliente</a>` : ''}
-      <button class="btn btn-ghost btn-sm" onclick="openF('cierre',${s.id})">Solicitar cierre</button>
-      <button class="btn btn-wa btn-sm" onclick="waAdmin(${s.id})">${svgWA()} Admin</button>
-      <button class="btn btn-danger btn-sm" onclick="openF('nopuedo',${s.id})">No puedo atender</button>
-    </div>
-  </div>
-</div>`;
+  </div>`;
 }
 
+async function reportarCierre(id) {
+  const monto = parseFloat(document.getElementById('monto-cierre-'+id).value);
+  const gar   = parseInt(document.getElementById('gar-cierre-'+id).value, 10);
+  const nota  = document.getElementById('nt-cierre-'+id).value.trim();
+
+  if (isNaN(monto) || monto <= 0) return alert('Monto inválido');
+  if (isNaN(gar) || gar < 0) return alert('Garantía inválida');
+  if (!nota) return alert('Describe el trabajo realizado');
+
+  const { error } = await sb.from('solicitudes').update({
+    monto_socio: monto,
+    garantia_dias: gar,
+    nota_socio: nota,
+    cierre_ts: new Date().toISOString(),
+    sub_estado: 'cierre_reportado',
+    solicita_cierre: false  // por si quedó de antes
+  }).eq('id', id);
+
+  if (error) return alert('Error: ' + error.message);
+
+  alert('Reporte enviado al admin');
+  loadOrdenes();
+}
 async function marcarEnProceso(id) {
   const { error } = await sb.from('solicitudes').update({ sub_estado:'en_proceso' }).eq('id', id);
   if (error) { alert('Error: '+error.message); return; }
