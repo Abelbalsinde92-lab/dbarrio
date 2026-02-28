@@ -160,17 +160,18 @@ textarea:focus{outline:none;border-color:var(--ink)}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
-const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+const SKEY = 'eyJhbGciOi...MVYs';
 const WA_ADMIN = '34627493593';
 
-const sb = supabase.createClient(SURL, SKEY); // ✅ FIX
-
+const sb = supabase.createClient(SURL, SKEY);
 let mySocio = null;
-</script>
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const { data:{ session } } = await sb.auth.getSession();
+  const { data:{ session }, error } = await sb.auth.getSession();
+  if (error) { console.log('getSession error', error); }
+
   if (session) { await init(session); return; }
+
   sb.auth.onAuthStateChange(async (ev, session) => {
     if (!session) { goIdx(); return; }
     if (document.body.dataset.ok) return;
@@ -180,14 +181,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function init(session) {
   if (document.body.dataset.ok) return;
-  const { data, error } = await sb.from('socios').select('*').eq('auth_uid', session.user.id).maybeSingle();
+
+  const { data, error } = await sb
+    .from('socios')
+    .select('*')
+    .eq('auth_uid', session.user.id)
+    .maybeSingle();
+
   if (error || !data) { await sb.auth.signOut(); goIdx(); return; }
   if (!data.admitido || data.estado_socio !== 'activo') { await sb.auth.signOut(); goIdx(); return; }
+
   document.body.dataset.ok = '1';
   mySocio = data;
   document.getElementById('tbNombre').textContent = data.nombre;
   loadOrdenes();
 }
+
 function goIdx() { window.location.href = 'index.html'; }
 async function exitSocio() { await sb.auth.signOut(); goIdx(); }
 
