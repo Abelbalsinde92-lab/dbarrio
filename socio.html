@@ -122,6 +122,8 @@ textarea:focus{outline:none;border-color:var(--ink)}
   <button class="tb-exit" onclick="exitSocio()">Salir</button>
 </header>
 
+<div id="dbg" style="padding:10px 14px;color:#D63031;font-size:12px"></div>
+
 <div class="content">
   <div class="tab active" id="tab-ordenes">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
@@ -163,20 +165,40 @@ const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
 const SKEY = 'eyJhbGciOi...MVYs';
 const WA_ADMIN = '34627493593';
 
-const sb = supabase.createClient(SURL, SKEY);
+const sb = supabase.createClient(SURL, SKEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+  }
+});
 let mySocio = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const { data:{ session }, error } = await sb.auth.getSession();
-  if (error) { console.log('getSession error', error); }
 
-  if (session) { await init(session); return; }
+  // 1️⃣ Intentar leer tokens desde la URL (#access_token=...)
+  const hash = window.location.hash || '';
+  if (hash.startsWith('#')) {
+    const p = new URLSearchParams(hash.slice(1));
+    const access_token = p.get('access_token');
+    const refresh_token = p.get('refresh_token');
 
-  sb.auth.onAuthStateChange(async (ev, session) => {
-    if (!session) { goIdx(); return; }
-    if (document.body.dataset.ok) return;
+    if (access_token && refresh_token) {
+      await sb.auth.setSession({ access_token, refresh_token });
+      history.replaceState(null, '', window.location.pathname); // limpia la URL
+    }
+  }
+
+  // 2️⃣ Ahora sí intentar obtener sesión
+  const { data:{ session } } = await sb.auth.getSession();
+
+  if (session) {
     await init(session);
-  });
+    return;
+  }
+
+  // 3️⃣ Si no hay sesión → fuera
+  goIdx();
 });
 
 async function init(session) {
@@ -188,9 +210,12 @@ async function init(session) {
     .eq('auth_uid', session.user.id)
     .maybeSingle();
 
-  if (error || !data) { await sb.auth.signOut(); goIdx(); return; }
-  if (!data.admitido || data.estado_socio !== 'activo') { await sb.auth.signOut(); goIdx(); return; }
+  const dbg = (m) => { const d=document.getElementById('dbg'); if(d) d.textContent = m; };
 
+if (error) { dbg('ERROR socios: ' + error.message); return; }
+if (!data) { dbg('No existe socio para este usuario (auth_uid no coincide).'); return; }
+if (!data.admitido) { dbg('Tu cuenta está pendiente: admitido=false'); return; }
+if (data.estado_socio !== 'activo') { dbg('Tu estado_socio es: ' + data.estado_socio); return; }
   document.body.dataset.ok = '1';
   mySocio = data;
   document.getElementById('tbNombre').textContent = data.nombre;
