@@ -610,6 +610,20 @@ function fmtM(n) { return n != null ? '$'+parseFloat(n).toFixed(2) : '—' }
 function stars(v, n=5) { return Array.from({length:n},(_,i)=>`<span class="star-r${i<(v||0)?' on':''}"">★</span>`).join('') }
 function setT(id, v) { const e=document.getElementById(id); if(e) e.textContent=v }
 
+async function marcarReclamoResuelto(id) {
+  const { error } = await sb
+    .from('quejas')
+    .update({ estado: 'resuelto' })
+    .eq('id', id);
+
+  if (error) {
+    alert('Error: ' + error.message);
+    return;
+  }
+
+  loadSoporte(); // vuelve a cargar la sección
+}
+
 function toast(msg, dur=2500) {
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
@@ -1323,48 +1337,145 @@ async function waCobro(id) {
 // SOPORTE
 // ══════════════════════════════════════════
 async function loadSoporte() {
-  const [{ data: gars }, { data: ques }] = await Promise.all([
-    sb.from('garantias').select('*').order('created_at',{ascending:false}),
-    sb.from('quejas').select('*').order('created_at',{ascending:false})
-  ]);
-  const elG = document.getElementById('lista-gar');
-  const elQ = document.getElementById('lista-que');
-  if (!gars?.length) { elG.innerHTML='<div class="empty">Sin garantias</div>' }
-  else elG.innerHTML = gars.map(g=>`
-<div class="soporte-card${g.estado==='resuelto'?' resolved':''}">
-  <div class="soporte-hdr" onclick="toggleSoporteCard(this)">
-    <div class="soporte-hdr-left">
-      <span class="soporte-title">${esc(g.recibo||'Sin codigo')} · ${esc(g.telefono||'')}</span>
-      <span class="soporte-meta">${fmtD(g.created_at)} · <span class="chip ${g.estado==='resuelto'?'cc':'cp'}">${esc(g.estado)}</span></span>
+
+  const elGar = document.getElementById('lista-garantias');
+  const elRec = document.getElementById('lista-reclamos');
+
+  elGar.innerHTML = '<div class="loading">Cargando...</div>';
+  elRec.innerHTML = '<div class="loading">Cargando...</div>';
+
+  // 1️⃣ Traer solicitudes con socio
+  const { data: solicitudes, error: e1 } = await sb
+    .from('solicitudes')
+    .select(`
+      *,
+      socios (
+        nombre,
+        telefono
+      )
+    `)
+    .not('garantia_dias', 'is', null)
+    .order('fecha_fin', { ascending:false });
+
+  if (e1) {
+    elGar.innerHTML = `<div class="empty">Error: ${e1.message}</div>`;
+    elRec.innerHTML = '';
+    return;
+  }
+
+  // 2️⃣ Traer quejas con solicitud asociada
+  const { data: quejas, error: e2 } = await sb
+    .from('quejas')
+    .select(`
+      *,
+      solicitudes (
+        id,
+        cliente,
+        telefono,
+        socio_asignado,
+        garantia_dias,
+        garantia_expira,
+        socios (
+          nombre
+        )
+      )
+    `)
+    .order('created_at', { ascending:false });
+
+  if (e2) {
+    elRec.innerHTML = `<div class="empty">Error: ${e2.message}</div>`;
+  }
+
+  // =========================
+  // 🛡 GARANTÍAS
+  // =========================
+
+  if (!solicitudes?.length) {
+    elGar.innerHTML = '<div class="empty">Sin garantías registradas</div>';
+  } else {
+
+    elGar.innerHTML = solicitudes.map(s => {
+
+      const socio = s.socios?.nombre || '—';
+
+      const hoy = new Date();
+      const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
+      const vencida = exp ? exp < hoy : false;
+
+      const estadoTxt = vencida ? 'vencida' : 'activa';
+
+      return `
+<div class="support-card">
+
+  <div class="support-top">
+    <div>
+      <div class="support-code">${dbc(s.id)} · ${esc(s.telefono)}</div>
+      <div class="support-meta">${fmtD(s.fecha_fin)}</div>
     </div>
-    <svg class="card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
   </div>
-  <div class="soporte-body">
-    <p style="font-size:13px;color:var(--ink);margin-bottom:10px">${esc(g.falla||'')}</p>
-    <div class="actions-row">
-      ${g.telefono?`<a href="tel:${esc((g.telefono||'').replace(/\s/g,''))}" class="btn btn-g btn-sm">Llamar</a>`:''}
-      <button class="btn btn-g btn-sm" onclick="resolverGar(${g.id})">Marcar resuelto</button>
+
+  <div style="margin-top:8px;font-size:13px">
+    👤 Socio: ${esc(socio)}
+  </div>
+
+  <div style="
+      margin-top:6px;
+      font-size:13px;
+      font-weight:600;
+      color:${vencida ? '#D63031' : '#1A7F5A'};
+  ">
+    🛡 ${vencida ? 'Garantía vencida' : 'Garantía activa'}
+    ${exp ? ' · Vence: ' + exp.toLocaleDateString('es-ES') : ''}
+  </div>
+
+</div>
+`;
+
+  // =========================
+  // ⚠ RECLAMOS
+  // =========================
+
+  if (!quejas?.length) {
+    elRec.innerHTML = '<div class="empty">Sin reclamos</div>';
+  } else {
+
+    elRec.innerHTML = quejas.map(q => {
+
+      const s = q.solicitudes;
+      const socio = s?.socios?.nombre || '—';
+
+      return `
+<div class="support-card">
+  <div class="support-top">
+    <div>
+      <div class="support-code">${dbc(s?.id)} · ${esc(s?.telefono || '')}</div>
+      <div class="support-meta">${fmtD(q.created_at)} · ${esc(q.estado || 'pendiente')}</div>
     </div>
   </div>
-</div>`).join('');
-  if (!ques?.length) { elQ.innerHTML='<div class="empty">Sin reclamos</div>' }
-  else elQ.innerHTML = ques.map(q=>`
-<div class="soporte-card">
-  <div class="soporte-hdr" onclick="toggleSoporteCard(this)">
-    <div class="soporte-hdr-left">
-      <span class="soporte-title">${esc(q.codigo_servicio||'Sin codigo')} · ${esc(q.telefono||'')}</span>
-      <span class="soporte-meta">${fmtD(q.created_at)} · <span class="chip ${q.estado==='resuelto'?'cc':'cr'}">${esc(q.estado)}</span></span>
-    </div>
-    <svg class="card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+
+  <div style="margin-top:8px;font-size:13px">
+    👤 Socio: ${esc(socio)}
   </div>
-  <div class="soporte-body">
-    <p style="font-size:13px;color:var(--ink);margin-bottom:10px">${esc(q.mensaje||'')}</p>
-    <div class="actions-row">
-      ${q.telefono?`<a href="tel:${esc((q.telefono||'').replace(/\s/g,''))}" class="btn btn-g btn-sm">Llamar</a>`:''}
-      <button class="btn btn-g btn-sm" onclick="resolverQue(${q.id})">Marcar resuelto</button>
-    </div>
+
+  <div style="margin-top:6px;font-size:13px">
+    ${esc(q.descripcion || 'Sin descripción')}
   </div>
-</div>`).join('');
+
+  <div style="margin-top:10px">
+    <button class="btn btn-dark" onclick="window.open('tel:${s?.telefono || ''}')">
+      Llamar
+    </button>
+
+    <button class="btn btn-yellow"
+      onclick="marcarReclamoResuelto(${q.id})">
+      Marcar resuelto
+    </button>
+  </div>
+
+</div>
+`;
+    }).join('');
+  }
 }
 
 async function resolverGar(id) { await sb.from('garantias').update({estado:'resuelto'}).eq('id',id); toast('Marcado como resuelto'); loadSoporte() }
