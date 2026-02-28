@@ -1396,15 +1396,13 @@ async function loadSoporte() {
 
     elGar.innerHTML = solicitudes.map(s => {
 
-      const socio = s.socios?.nombre || '—';
+  const socio = s.socios?.nombre || '—';
 
-      const hoy = new Date();
-      const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
-      const vencida = exp ? exp < hoy : false;
+  const hoy = new Date();
+  const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
+  const vencida = exp ? exp < hoy : false;
 
-      const estadoTxt = vencida ? 'vencida' : 'activa';
-
-      return `
+  return `
 <div class="support-card">
 
   <div class="support-top">
@@ -1430,6 +1428,7 @@ async function loadSoporte() {
 
 </div>
 `;
+}).join('');
 
   // =========================
   // ⚠ RECLAMOS
