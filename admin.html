@@ -667,14 +667,22 @@ function buildCardOp(s) {
     ? sociosMap[s.socio_asignado].telefono
     : null;
 
-  const visual = (s.estado === 'asignada' && s.sub_estado === 'en_proceso')
-    ? 'en_proceso'
-    : s.estado;
+  const telLimpio = (s.telefono||'').replace(/\s/g,'');
+
+  const cierreReportado =
+    (s.sub_estado === 'cierre_reportado') ||
+    (s.monto_socio != null);
+
+  const visual =
+    (s.estado === 'asignada' && cierreReportado) ? 'cierre_reportado' :
+    (s.estado === 'asignada' && s.sub_estado === 'en_proceso') ? 'en_proceso' :
+    s.estado;
 
   const chipClass = {
     pendiente:'cp',
     asignada:'ca',
     en_proceso:'ce',
+    cierre_reportado:'cc',
     completada:'cc',
     rechazada:'cr'
   }[visual] || 'cp';
@@ -683,15 +691,10 @@ function buildCardOp(s) {
     pendiente:'pendiente',
     asignada:'asignada',
     en_proceso:'en proceso',
+    cierre_reportado:'cierre reportado',
     completada:'completada',
     rechazada:'rechazada'
   }[visual] || visual;
-
-  const telLimpio = (s.telefono||'').replace(/\s/g,'');
-
-  const cierreReportado =
-    (s.sub_estado === 'cierre_reportado') ||
-    (s.monto_socio != null);
 
   const cierreFlag = cierreReportado
     ? `<div style="background:#E2F7EE;border:1px solid #9BD4A8;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#155724">
@@ -720,7 +723,6 @@ function buildCardOp(s) {
         <div class="card-meta">
           <span class="card-code">${esc(dbc(s.id))}</span>
           <span class="chip ${chipClass}">${esc(chipText)}</span>
-          ${cierreReportado ? `<span class="chip cc">cierre reportado</span>` : ``}
         </div>
         <span class="card-name">${esc(s.cliente)}</span>
         <span class="card-detail">${esc(s.municipio||'')} · ${esc(s.servicio||'')}</span>
@@ -800,84 +802,114 @@ async function asignar(id) {
   loadOp();
 }
 
-function openCompletar(id) { pendingCompId=id; document.getElementById('comp-monto').value=''; document.getElementById('comp-nota').value=''; document.getElementById('err-comp').classList.remove('v'); openModal('comp') }
+async function openCompletar(id) {
+  pendingCompId = id;
+
+  // limpiar estado UI
+  const e = document.getElementById('err-comp');
+  if (e) { e.textContent = ''; e.classList.remove('v'); }
+
+  // cargar orden para traer lo reportado por el socio
+  const { data: sol, error } = await sb
+    .from('solicitudes')
+    .select('monto_socio,garantia_dias,nota_socio')
+    .eq('id', id)
+    .single();
+
+  if (error || !sol) {
+    toast('No pude cargar el reporte del socio');
+    return;
+  }
+
+  // ✅ SI NO HAY REPORTE → no abrir (porque no hay nada que aprobar)
+  if (sol.monto_socio == null) {
+    toast('El socio aún no reportó el cierre (monto).');
+    return;
+  }
+
+  // ✅ Rellenar inputs del modal (si existen)
+  const inMonto = document.getElementById('comp-monto');
+  if (inMonto) inMonto.value = sol.monto_socio ?? '';
+
+  const inGar = document.getElementById('comp-gar'); // (si lo creas en el modal)
+  if (inGar) inGar.value = sol.garantia_dias ?? 0;
+
+  const inNota = document.getElementById('comp-nota');
+  // aquí la nota del admin es opcional, pero podemos precargar los detalles del socio para que lo veas
+  if (inNota) inNota.value = sol.nota_socio ?? '';
+
+  openModal('comp');
+}
 function openRechazar(id) { pendingRechId=id; document.getElementById('rech-mot').value=''; document.getElementById('err-rech').classList.remove('v'); openModal('rech') }
 
 // ✅ REEMPLAZA TU FUNCIÓN ENTERA doCompletar() POR ESTA (admin)
 
 async function doCompletar() {
-  const monto = parseFloat(document.getElementById('comp-monto').value);
-  const nota  = document.getElementById('comp-nota').value.trim();
-
-  // ✅ garantía en días (input id="comp-gar")
-  const garDias = parseInt(document.getElementById('comp-gar')?.value || '0', 10);
-
-  // Validaciones
-  if (isNaN(monto) || monto < 0) {
-    const e = document.getElementById('err-comp');
-    e.textContent = 'Ingresa un monto válido.';
-    e.classList.add('v');
-    return;
-  }
-  if (isNaN(garDias) || garDias < 0) {
-    const e = document.getElementById('err-comp');
-    e.textContent = 'Garantía inválida (días).';
-    e.classList.add('v');
-    return;
-  }
-
-  // ✅ calcular expiración ANTES del update final
-  const finGar = new Date();
-  finGar.setDate(finGar.getDate() + (garDias || 0));
-  const finGarISO = garDias > 0 ? finGar.toISOString() : null;
-
   const btn = document.getElementById('btn-comp');
   btn.disabled = true;
   btn.innerHTML = '<span class="sp"></span>Procesando...';
 
+  const err = (msg) => {
+    const e = document.getElementById('err-comp');
+    e.textContent = msg;
+    e.classList.add('v');
+    btn.disabled = false;
+    btn.innerHTML = 'Confirmar y cerrar orden';
+  };
+
   const now = new Date().toISOString();
 
-  // Traer la orden (y socio relacionado si existe)
+  // 1) Leer orden (incluye lo reportado por el socio)
   const { data: sol, error: es } = await sb
     .from('solicitudes')
-    .select('*,socios(nombre,telefono,comision)')
+    .select('*, socios(nombre,telefono,comision)')
     .eq('id', pendingCompId)
     .single();
 
-  if (es || !sol) {
-    const e = document.getElementById('err-comp');
-    e.textContent = es?.message || 'No se pudo cargar la orden.';
-    e.classList.add('v');
-    btn.disabled = false;
-    btn.innerHTML = 'Confirmar y cerrar orden';
-    return;
+  if (es || !sol) return err(es?.message || 'No se pudo cargar la orden.');
+
+  // 2) Validar que el socio reportó cierre (monto)
+  const monto = sol.monto_socio != null ? parseFloat(sol.monto_socio) : NaN;
+  if (isNaN(monto) || monto < 0) return err('El socio no reportó un monto válido.');
+
+  const garDias = sol.garantia_dias != null ? parseInt(sol.garantia_dias, 10) : 0;
+  if (isNaN(garDias) || garDias < 0) return err('Garantía inválida reportada por el socio.');
+
+  // 3) Calcular expiración ANTES del update final
+  let finGarISO = null;
+  if (garDias > 0) {
+    const finGar = new Date();
+    finGar.setDate(finGar.getDate() + garDias);
+    finGarISO = finGar.toISOString();
   }
 
-  // ✅ UPDATE FINAL (aquí viajan garantía + expiración)
+  // 4) Nota del admin (opcional). Si quieres que NO se edite, lo quitamos y listo.
+  const notaAdmin = document.getElementById('comp-nota')?.value?.trim() || null;
+
+  // 5) UPDATE FINAL en solicitudes
   const { error: eu } = await sb.from('solicitudes').update({
     estado: 'completada',
     fecha_fin: now,
+
+    // ✅ el monto final que ve el sistema sale del socio
     monto: monto,
-    nota_admin: nota || null,
 
-    // cierre aprobado
-    solicita_cierre: false,
+    // opcional admin
+    nota_admin: notaAdmin,
 
-    // garantía
+    // ✅ garantía aprobada (sale del socio)
     garantia_dias: garDias,
-    garantia_expira: finGarISO
+    garantia_expira: finGarISO,
+
+    // ✅ limpiar banderas antiguas si quedaron
+    solicita_cierre: false,
+    cierre_ts: now,
+    sub_estado: null
   }).eq('id', pendingCompId);
 
-  if (eu) {
-    const e = document.getElementById('err-comp');
-    e.textContent = eu.message;
-    e.classList.add('v');
-    btn.disabled = false;
-    btn.innerHTML = 'Confirmar y cerrar orden';
-    return;
-  }
+  if (eu) return err(eu.message);
 
-  // ✅ Cargo comisión al socio + actualizar deuda/trabajos
+  // 6) Cobrar comisión al socio + actualizar deuda/trabajos
   if (sol?.socio_asignado) {
     const comPct = sol.socios?.comision ?? CFG.com;
     const comMonto = parseFloat((monto * comPct / 100).toFixed(2));
@@ -902,7 +934,7 @@ async function doCompletar() {
     }).eq('id', sol.socio_asignado);
   }
 
-  // ✅ WA al cliente (incluye garantía + vence + detalles)
+  // 7) WA al cliente (garantía + vence + detalles)
   const socNom = sol?.socios?.nombre
     || (sol?.socio_asignado ? (sociosMap[sol.socio_asignado]?.nombre || '—') : '—');
 
@@ -913,7 +945,8 @@ async function doCompletar() {
   const garTxt = garDias > 0 ? `${garDias} días` : 'Sin garantía';
   const detallesTxt = sol?.nota_socio || '—';
 
-  const msgCli = CFG.t3
+  // Nota: si tu template CFG.t3 no tiene {garantia}{vence}{detalles}, no se verán.
+  const msgCli = (CFG.t3 || '')
     .replace('{cliente}', sol?.cliente || '')
     .replace('{code}', dbc(pendingCompId))
     .replace('{socio}', socNom)
@@ -924,7 +957,7 @@ async function doCompletar() {
 
   if (sol?.telefono) wa(sol.telefono, msgCli);
 
-  // UI final
+  // 8) UI final
   btn.disabled = false;
   btn.innerHTML = 'Confirmar y cerrar orden';
   closeModal('comp');
