@@ -170,6 +170,7 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
 .btn-wa:hover{background:rgba(37,211,102,.15)}
 .btn-full{width:100%}
 .btn-sm{padding:7px 12px;font-size:12px}
+${s.solicita_cierre ? `<button class="btn btn-y" onclick="openAprobarCierre(${s.id})">Aprobar cierre</button>` : ''}
 
 /* ── FORM INLINE ── */
 .inline-form{background:var(--bg);border-radius:var(--rs);padding:12px;margin-top:10px}
@@ -433,6 +434,7 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
     <div class="fg"><label>Nota (opcional)</label><textarea id="comp-nota" placeholder="Observaciones del servicio..."></textarea></div>
     <div class="err-box" id="err-comp"></div>
     <button class="btn btn-y btn-full" id="btn-comp" onclick="doCompletar()">Confirmar y cerrar orden</button>
+  <div class="fg"><label>Garantía (días)</label><input id="comp-gar" type="number" min="0" step="1" placeholder="0"/></div>
   </div>
 </div></div>
 
@@ -487,7 +489,22 @@ const CFG = {
   set t1(v)  { localStorage.setItem('db_t1', v) },
   get t2()   { return localStorage.getItem('db_t2') || 'Hola {socio} 👋\n\nTu cuenta en dbarrio ha sido *aprobada* ✅\n\nYa puedes acceder al panel en dbarrio.com con tu email y contrasena.\n\nCualquier duda respondeme por aqui.\n\n— dbarrio' },
   set t2(v)  { localStorage.setItem('db_t2', v) },
-  get t3()   { return localStorage.getItem('db_t3') || 'Hola {cliente} 👋\n\nTu servicio ha sido completado ✅\n\nCodigo: *{code}*\nTecnico: {socio}\nImporte: {monto}\n\n¿Como fue la atencion? Calificas en dbarrio.com con tu codigo.\n\n— dbarrio' },
+  get t3() { return localStorage.getItem('db_t3') || 
+`Hola {cliente} 👋
+
+Tu servicio fue *aprobado y completado* ✅
+
+Código: *{code}*
+Técnico: {socio}
+Importe: {monto}
+
+Garantía: {garantia}
+Vence: {vence}
+
+Detalles:
+{detalles}
+
+— dbarrio` },
   set t3(v)  { localStorage.setItem('db_t3', v) },
 };
 
@@ -744,6 +761,18 @@ function openRechazar(id) { pendingRechId=id; document.getElementById('rech-mot'
 async function doCompletar() {
   const monto = parseFloat(document.getElementById('comp-monto').value);
   const nota  = document.getElementById('comp-nota').value.trim();
+    const garDias = parseInt(document.getElementById('comp-gar')?.value || '0', 10);
+  if (isNaN(garDias) || garDias < 0) {
+    const e = document.getElementById('err-comp');
+    e.textContent = 'Garantía inválida (días).';
+    e.classList.add('v');
+    return;
+  }
+
+  // ✅ calcular expiración de garantía (si aplica)
+  const finGar = new Date();
+  finGar.setDate(finGar.getDate() + (garDias || 0));
+  const finGarISO = garDias > 0 ? finGar.toISOString() : null;
   if (isNaN(monto)||monto<0) { const e=document.getElementById('err-comp'); e.textContent='Ingresa un monto valido.'; e.classList.add('v'); return }
   const btn=document.getElementById('btn-comp'); btn.disabled=true; btn.innerHTML='<span class="sp"></span>Procesando...';
 
@@ -751,9 +780,22 @@ async function doCompletar() {
   const { data: sol } = await sb.from('solicitudes').select('*,socios(nombre,telefono,comision)').eq('id',pendingCompId).single();
 
   const { error: eu } = await sb.from('solicitudes').update({
-    estado:'completada', fecha_fin:now, monto:monto, nota_admin:nota||null
-  }).eq('id', pendingCompId);
+  estado: 'completada',
+  fecha_fin: now,
+  monto: monto,
+  nota_admin: nota || null,
+
+  // ✅ cierre aprobado
+  solicita_cierre: false,
+
+  // ✅ garantía aprobada
+  garantia_dias: garDias,
+  garantia_expira: finGarISO
+}).eq('id', pendingCompId);
   if (eu) { const e=document.getElementById('err-comp'); e.textContent=eu.message; e.classList.add('v'); btn.disabled=false; btn.innerHTML='Confirmar y cerrar orden'; return }
+
+  const garDias = parseInt(document.getElementById('comp-gar').value || '0', 10);
+  if (isNaN(garDias) || garDias < 0) { ... }
 
   // Cargo comision al socio
   if (sol?.socio_asignado) {
@@ -808,6 +850,23 @@ async function waSocioAsignado(id) {
     .replace('{servicio}', sol.servicio||'')
     .replace('{detalles}', sol.detalles||'Sin detalles');
   wa(soc.telefono, msg);
+}
+
+async function openAprobarCierre(id) {
+  pendingCompId = id;
+
+  const { data: sol, error } = await sb.from('solicitudes')
+    .select('monto_socio, garantia_dias, nota_socio')
+    .eq('id', id).single();
+
+  if (error) { toast('Error: '+error.message); return; }
+
+  document.getElementById('comp-monto').value = sol?.monto_socio ?? '';
+  document.getElementById('comp-gar').value   = sol?.garantia_dias ?? 0;
+  document.getElementById('comp-nota').value  = ''; // nota del admin si quiere
+  document.getElementById('err-comp').classList.remove('v');
+
+  openModal('comp');
 }
 
 // ══════════════════════════════════════════
