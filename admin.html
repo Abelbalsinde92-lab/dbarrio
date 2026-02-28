@@ -658,69 +658,120 @@ async function loadOp() {
 }
 
 function buildCardOp(s) {
-  const socioNom = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].nombre : null;
-  const socioTel = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].telefono : null;
-  // Estado visual: si está asignada y el socio está en proceso, lo mostramos
-const visual = (s.estado === 'asignada' && s.sub_estado === 'en_proceso')
-  ? 'en_proceso'
-  : s.estado;
 
-const chipClass = { pendiente:'cp', asignada:'ca', en_proceso:'ce', completada:'cc', rechazada:'cr' }[visual] || 'cp';
-const chipText  = { pendiente:'pendiente', asignada:'asignada', en_proceso:'en proceso', completada:'completada', rechazada:'rechazada' }[visual] || visual;
+  const socioNom = s.socio_asignado && sociosMap[s.socio_asignado]
+    ? sociosMap[s.socio_asignado].nombre
+    : null;
+
+  const socioTel = s.socio_asignado && sociosMap[s.socio_asignado]
+    ? sociosMap[s.socio_asignado].telefono
+    : null;
+
+  const visual = (s.estado === 'asignada' && s.sub_estado === 'en_proceso')
+    ? 'en_proceso'
+    : s.estado;
+
+  const chipClass = {
+    pendiente:'cp',
+    asignada:'ca',
+    en_proceso:'ce',
+    completada:'cc',
+    rechazada:'cr'
+  }[visual] || 'cp';
+
+  const chipText  = {
+    pendiente:'pendiente',
+    asignada:'asignada',
+    en_proceso:'en proceso',
+    completada:'completada',
+    rechazada:'rechazada'
+  }[visual] || visual;
+
   const telLimpio = (s.telefono||'').replace(/\s/g,'');
 
-  const optsSelect = Object.values(sociosMap)
-    .filter(x=>x)
-    .map(x=>`<option value="${x.id}" ${s.socio_asignado===x.id?'selected':''}>${esc(x.nombre)}</option>`)
-    .join('');
+  const cierreReportado =
+    (s.sub_estado === 'cierre_reportado') ||
+    (s.monto_socio != null);
 
-  const btnAsignar = s.estado==='pendiente'
-    ? `<div class="inline-form" style="margin-top:10px">
-        <label>Asignar socio</label>
-        <select id="sel-${s.id}"><option value="">-- Seleccionar --</option>${optsSelect}</select>
-        <button class="btn btn-y btn-full" style="margin-top:8px" onclick="asignar(${s.id})">Asignar y notificar</button>
-       </div>` : '';
+  const cierreFlag = cierreReportado
+    ? `<div style="background:#E2F7EE;border:1px solid #9BD4A8;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#155724">
+         ✅ Cierre reportado por el socio
+         ${s.monto_socio!=null ? `<div style="margin-top:4px">Monto: ${fmtM(s.monto_socio)}</div>` : ``}
+         ${s.garantia_dias!=null ? `<div>Garantía: ${s.garantia_dias} días</div>` : ``}
+       </div>`
+    : '';
+
+  const btnCompletar =
+    (s.estado==='asignada' && cierreReportado)
+      ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Aprobar y enviar garantía</button>`
+      : '';
+
+  const btnRechazar =
+    `<button class="btn btn-r" onclick="openRechazar(${s.id})">Rechazar</button>`;
 
   const btnWASocio = socioTel
-    ? `<button class="btn btn-wa" onclick="waSocioAsignado(${s.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WA al socio</button>` : '';
+    ? `<button class="btn btn-wa" onclick="waSocioAsignado(${s.id})">WA socio</button>`
+    : '';
 
   return `
-<div class="card" id="card-${s.id}">
-  <div class="card-hdr" onclick="toggleCard(this)">
-    <div class="card-hdr-left">
-      <div class="card-meta">
-  <span class="card-code">${esc(dbc(s.id))}</span>
-  <span class="chip ${chipClass}">${esc(chipText)}</span>
-  ${s.reporte_listo ? `<span class="chip cw">💰 Reporte</span>` : ``}
-</div>
-      <span class="card-name">${esc(s.cliente)}</span>
-      <span class="card-detail">${esc(s.municipio||'')} · ${esc(s.servicio||'')}</span>
-    </div>
-    <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-  </div>
-  <div class="card-body">
-    <div class="info-grid">
-      <div class="info-item"><span class="info-label">Fecha</span><span class="info-val">${fmt(s.fecha_ts)}</span></div>
-      <div class="info-item"><span class="info-label">Servicio</span><span class="info-val">${esc(s.servicio||'—')}</span></div>
-      <div class="info-item info-full"><span class="info-label">Telefono cliente</span>
-        <a href="tel:${esc(telLimpio)}" class="call-link">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          ${esc(s.telefono||'—')}
-        </a>
+  <div class="card" id="card-${s.id}">
+    <div class="card-hdr" onclick="toggleCard(this)">
+      <div class="card-hdr-left">
+        <div class="card-meta">
+          <span class="card-code">${esc(dbc(s.id))}</span>
+          <span class="chip ${chipClass}">${esc(chipText)}</span>
+          ${cierreReportado ? `<span class="chip cc">cierre reportado</span>` : ``}
+        </div>
+        <span class="card-name">${esc(s.cliente)}</span>
+        <span class="card-detail">${esc(s.municipio||'')} · ${esc(s.servicio||'')}</span>
       </div>
-      ${s.direccion ? `<div class="info-item info-full"><span class="info-label">Direccion</span><span class="info-val">${esc(s.direccion)}</span></div>` : ''}
-      ${s.detalles ? `<div class="info-item info-full"><span class="info-label">Descripcion</span><span class="info-val">${esc(s.detalles)}</span></div>` : ''}
-      ${socioNom ? `<div class="info-item"><span class="info-label">Socio asignado</span><span class="info-val">${esc(socioNom)}</span></div>` : ''}
-      ${s.nota_socio ? `<div class="info-item info-full"><span class="info-label">Nota del socio</span><span class="info-val">${esc(s.nota_socio)}</span></div>` : ''}
+      <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
     </div>
-    ${cierreFlag}
-    ${btnAsignar}
-    <div class="actions-row" style="margin-top:10px">
-      ${(s.estado==='asignada' && s.monto_reportado != null) ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Enviar garantía</button>` : ''}
-      <button class="btn btn-r" onclick="openRechazar(${s.id})">Rechazar</button>
+
+    <div class="card-body">
+
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Fecha</span>
+          <span class="info-val">${fmt(s.fecha_ts)}</span>
+        </div>
+
+        <div class="info-item">
+          <span class="info-label">Servicio</span>
+          <span class="info-val">${esc(s.servicio||'—')}</span>
+        </div>
+
+        <div class="info-item info-full">
+          <span class="info-label">Teléfono</span>
+          <a href="tel:${esc(telLimpio)}" class="call-link">
+            ${esc(s.telefono||'—')}
+          </a>
+        </div>
+
+        ${socioNom
+          ? `<div class="info-item">
+               <span class="info-label">Socio</span>
+               <span class="info-val">${esc(socioNom)}</span>
+             </div>`
+          : ''
+        }
+
+      </div>
+
+      ${cierreFlag}
+
+      <div class="actions-row" style="margin-top:10px">
+        ${btnCompletar}
+        ${btnWASocio}
+        ${btnRechazar}
+      </div>
+
     </div>
-  </div>
-</div>`;
+  </div>`;
 }
 
 async function asignar(id) {
