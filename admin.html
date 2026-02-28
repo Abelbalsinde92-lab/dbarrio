@@ -1038,29 +1038,92 @@ async function openAprobarCierre(id) {
 async function loadHi() {
   const el = document.getElementById('lista-hi');
   el.innerHTML = '<div class="loading">Cargando...</div>';
+
   const cli = document.getElementById('f-cli').value.trim();
   const cod = document.getElementById('f-cod').value.trim();
   const d1  = document.getElementById('f-d1').value;
   const d2  = document.getElementById('f-d2').value;
-  let q = sb.from('solicitudes').select('*').eq('estado','completada').order('fecha_fin',{ascending:false}).limit(100);
+
+  let q = sb.from('solicitudes')
+    .select('*')
+    .eq('estado','completada')
+    .order('fecha_fin',{ascending:false})
+    .limit(100);
+
   if (cli) q = q.ilike('cliente','%'+cli+'%');
-  if (cod) { const n=parseInt(cod.replace(/^db-/i,'')); if (!isNaN(n)) q=q.eq('id',n) }
+  if (cod) {
+    const n=parseInt(cod.replace(/^db-/i,''));
+    if (!isNaN(n)) q=q.eq('id',n)
+  }
   if (d1) q = q.gte('fecha_fin', d1);
   if (d2) q = q.lte('fecha_fin', d2+'T23:59:59');
+
   const { data, error } = await q;
-  if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return }
-  if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">○</div>Sin resultados</div>'; return }
+
+  if (error) {
+    el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`;
+    return;
+  }
+
+  if (!data?.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-ico">○</div>Sin resultados</div>';
+    return;
+  }
+
   el.innerHTML = data.map(s => {
-    const socNom = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].nombre : '—';
+
+    const socNom = s.socio_asignado && sociosMap[s.socio_asignado]
+      ? sociosMap[s.socio_asignado].nombre
+      : '—';
+
+    // 🔹 Garantía
+    let garantiaHTML = '';
+    if (s.garantia_dias != null) {
+
+      const hoy = new Date();
+      const expira = s.garantia_expira ? new Date(s.garantia_expira) : null;
+      const vencida = expira ? expira < hoy : false;
+
+      garantiaHTML = `
+        <div style="margin-top:6px;font-size:12px">
+          🛡 Garantía: ${s.garantia_dias} días
+          ${
+            expira
+              ? ` · Vence: ${expira.toLocaleDateString('es-ES')}`
+              : ''
+          }
+          ${
+            vencida
+              ? ` <span style="color:#D63031;font-weight:700">(VENCIDA)</span>`
+              : ''
+          }
+        </div>
+      `;
+    }
+
     return `
 <div class="hist-card">
   <div class="hist-row">
-    <div><div class="hist-code">${esc(dbc(s.id))}</div><div class="hist-meta">${esc(s.cliente)} · ${esc(socNom)}</div></div>
-    <div style="text-align:right"><div class="hist-monto">${fmtM(s.monto)}</div><div class="hist-meta">${fmtD(s.fecha_fin)}</div></div>
+    <div>
+      <div class="hist-code">${esc(dbc(s.id))}</div>
+      <div class="hist-meta">${esc(s.cliente)} · ${esc(socNom)}</div>
+    </div>
+    <div style="text-align:right">
+      <div class="hist-monto">${fmtM(s.monto)}</div>
+      <div class="hist-meta">${fmtD(s.fecha_fin)}</div>
+    </div>
   </div>
-  <div class="hist-meta" style="margin-top:6px">${esc(s.municipio||'')} · ${esc(s.servicio||'')}</div>
+
+  <div class="hist-meta" style="margin-top:6px">
+    ${esc(s.municipio||'')} · ${esc(s.servicio||'')}
+  </div>
+
   ${s.valoracion ? `<div class="stars-r" style="margin-top:6px">${stars(s.valoracion)}</div>` : ''}
-</div>`}).join('');
+
+  ${garantiaHTML}
+
+</div>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════
