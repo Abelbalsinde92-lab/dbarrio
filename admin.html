@@ -674,9 +674,6 @@ const chipText  = { pendiente:'pendiente', asignada:'asignada', en_proceso:'en p
     .map(x=>`<option value="${x.id}" ${s.socio_asignado===x.id?'selected':''}>${esc(x.nombre)}</option>`)
     .join('');
 
-  const cierreFlag = s.solicita_cierre
-    ? `<div style="background:#FFF3CD;border:1px solid #F0D070;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;font-weight:600;color:#92600A">⚡ El socio solicita cierre de esta orden</div>` : '';
-
   const btnAsignar = s.estado==='pendiente'
     ? `<div class="inline-form" style="margin-top:10px">
         <label>Asignar socio</label>
@@ -693,10 +690,8 @@ const chipText  = { pendiente:'pendiente', asignada:'asignada', en_proceso:'en p
     <div class="card-hdr-left">
       <div class="card-meta">
   <span class="card-code">${esc(dbc(s.id))}</span>
-
   <span class="chip ${chipClass}">${esc(chipText)}</span>
-
-  ${s.solicita_cierre ? '<span class="chip cw">⚡ Cierre</span>' : ''}
+  ${s.reporte_listo ? `<span class="chip cw">💰 Reporte</span>` : ``}
 </div>
       <span class="card-name">${esc(s.cliente)}</span>
       <span class="card-detail">${esc(s.municipio||'')} · ${esc(s.servicio||'')}</span>
@@ -721,8 +716,7 @@ const chipText  = { pendiente:'pendiente', asignada:'asignada', en_proceso:'en p
     ${cierreFlag}
     ${btnAsignar}
     <div class="actions-row" style="margin-top:10px">
-      ${s.estado==='asignada' ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Completar</button>` : ''}
-      ${btnWASocio}
+      ${(s.estado==='asignada' && s.monto_reportado != null) ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Enviar garantía</button>` : ''}
       <button class="btn btn-r" onclick="openRechazar(${s.id})">Rechazar</button>
     </div>
   </div>
