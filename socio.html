@@ -162,8 +162,11 @@ textarea:focus{outline:none;border-color:var(--ink)}
 const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
 const WA_ADMIN = '34627493593';
-const sb = supabase.createClient(SB_URL, SB_KEY);
+
+const sb = supabase.createClient(SURL, SKEY); // ✅ FIX
+
 let mySocio = null;
+</script>
 
 document.addEventListener('DOMContentLoaded', async () => {
   const { data:{ session } } = await sb.auth.getSession();
@@ -204,7 +207,7 @@ async function loadOrdenes() {
   const { data, error } = await sb.from('solicitudes').select('*')
     .eq('socio_asignado', mySocio.id)
     .in('estado', ['asignada'])
-    .order('created_at', { ascending: false });
+    .order('fecha_ts', { ascending: false });
   if (error) { el.innerHTML = errBox(error.message); return; }
   if (!data?.length) { el.innerHTML = '<div class="vacio">Sin órdenes activas.</div>'; return; }
   el.innerHTML = data.map(cardOrden).join('');
@@ -222,7 +225,7 @@ function cardOrden(s) {
       <div class="card-meta">
         <span>${esc(s.cliente)}</span>
         ${s.municipio?'<span>'+esc(s.municipio)+'</span>':''}
-        <span>${fmt(s.created_at)}</span>
+        <span>${fmt(s.fecha_ts)}</span>
       </div>
     </div>
     <span class="card-toggle">▾</span>
