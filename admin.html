@@ -508,13 +508,38 @@ document.addEventListener('DOMContentLoaded', async () => {
   goIndex();
   return;
 }
-  const { data: adm } = await sb.from('admins').select('id').eq('auth_uid', session.user.id).maybeSingle();
-  if (!adm) { await sb.auth.signOut(); goIndex(); return; }
-  loadAjsUI();
-  loadKPIs();
-  loadSociosMap();
-  loadOp();
-});
+  const { data: adm } = await sb
+  .from('admins')
+  .select('id')
+  .eq('auth_uid', session.user.id)
+  .maybeSingle();
+
+if (!adm) { 
+  await sb.auth.signOut(); 
+  goIndex(); 
+  return; 
+}
+
+// ✅ REALTIME: refrescar admin cuando cambie una orden
+function setupRealtime() {
+  sb.channel('rt-admin-solicitudes')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'solicitudes' },
+      () => {
+        const opActiva = document.getElementById('sec-op')?.classList.contains('active');
+        if (opActiva) loadOp();
+        loadKPIs();
+      }
+    )
+    .subscribe();
+}
+setupRealtime();
+
+loadAjsUI();
+loadKPIs();
+loadSociosMap();
+loadOp();
 
 function goIndex() { window.location.href = '/'; }
 async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
@@ -603,7 +628,13 @@ async function loadOp() {
 function buildCardOp(s) {
   const socioNom = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].nombre : null;
   const socioTel = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].telefono : null;
-  const chipClass = {pendiente:'cp',asignada:'ca',en_proceso:'ce'}[s.estado] || 'cp';
+  // Estado visual: si está asignada y el socio está en proceso, lo mostramos
+const visual = (s.estado === 'asignada' && s.sub_estado === 'en_proceso')
+  ? 'en_proceso'
+  : s.estado;
+
+const chipClass = { pendiente:'cp', asignada:'ca', en_proceso:'ce', completada:'cc', rechazada:'cr' }[visual] || 'cp';
+const chipText  = { pendiente:'pendiente', asignada:'asignada', en_proceso:'en proceso', completada:'completada', rechazada:'rechazada' }[visual] || visual;
   const telLimpio = (s.telefono||'').replace(/\s/g,'');
 
   const optsSelect = Object.values(sociosMap)
@@ -630,7 +661,7 @@ function buildCardOp(s) {
     <div class="card-hdr-left">
       <div class="card-meta">
         <span class="card-code">${esc(dbc(s.id))}</span>
-        <span class="chip ${chipClass}">${esc(s.estado)}</span>
+       ${s.sub_estado ? `<div class="info-item"><span class="info-label">Sub-estado</span><span class="info-val">${esc(s.sub_estado)}</span></div>` : ''}
         ${s.solicita_cierre ? '<span class="chip cw">⚡ Cierre</span>' : ''}
       </div>
       <span class="card-name">${esc(s.cliente)}</span>
