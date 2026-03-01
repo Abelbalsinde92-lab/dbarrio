@@ -587,12 +587,6 @@ function setupRealtime() {
     )
     .subscribe();
 }
-setupRealtime();
-
-loadAjsUI();
-loadKPIs();
-loadSociosMap();
-loadOp();
 
 function goIndex() { window.location.href = '/'; }
 async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
@@ -697,90 +691,66 @@ async function loadOp() {
 }
 
 function buildCardOp(s) {
-
   const socioNom = s.socio_asignado && sociosMap[s.socio_asignado]
     ? sociosMap[s.socio_asignado].nombre
     : null;
-
-  const rechazoSocio = (s.sub_estado === 'rechazada_por_socio');
 
   const socioTel = s.socio_asignado && sociosMap[s.socio_asignado]
     ? sociosMap[s.socio_asignado].telefono
     : null;
 
-  const telLimpio = (s.telefono||'').replace(/\s/g,'');
+  const telLimpio = (s.telefono || '').replace(/\s/g, '');
 
   const cierreReportado =
     (s.sub_estado === 'cierre_reportado') ||
     (s.monto_socio != null);
 
+  const rechazoSocio = (s.sub_estado === 'rechazada_por_socio');
+
+  // 🔹 “visual” = lo que se ve en el chip
   const visual =
+    (s.estado === 'asignada' && rechazoSocio) ? 'rechazada_por_socio' :
     (s.estado === 'asignada' && cierreReportado) ? 'cierre_reportado' :
     (s.estado === 'asignada' && s.sub_estado === 'en_proceso') ? 'en_proceso' :
     s.estado;
 
-  const visual =
-  (s.estado === 'asignada' && rechazoSocio) ? 'rechazada_por_socio' :
-  (s.estado === 'asignada' && cierreReportado) ? 'cierre_reportado' :
-  (s.estado === 'asignada' && s.sub_estado === 'en_proceso') ? 'en_proceso' :
-  s.estado;
-  
-  const rechazoSocio = (s.sub_estado === 'rechazada_por_socio');
-
   const chipClass = {
-  pendiente:'cp', asignada:'ca', en_proceso:'ce',
-  cierre_reportado:'cc', rechazada_por_socio:'cr',
-  completada:'cc', rechazada:'cr'
-}[visual] || 'cp';
+    pendiente: 'cp',
+    asignada: 'ca',
+    en_proceso: 'ce',
+    cierre_reportado: 'cc',
+    rechazada_por_socio: 'cr',
+    completada: 'cc',
+    rechazada: 'cr'
+  }[visual] || 'cp';
 
-const chipText = {
-  pendiente:'pendiente', asignada:'asignada', en_proceso:'en proceso',
-  cierre_reportado:'cierre reportado', rechazada_por_socio:'rechazo socio',
-  completada:'completada', rechazada:'rechazada'
-}[visual] || visual;
-  
-  const btnLiberar =
-  (s.estado === 'asignada' && rechazoSocio)
-    ? `<button class="btn btn-g" onclick="liberarPorRechazo(${s.id})">Liberar / volver a pendiente</button>`
-    : '';
-  
-  const chipClass = {
-  pendiente:'cp',
-  asignada:'ca',
-  en_proceso:'ce',
-  cierre_reportado:'cc',
-  rechazada_por_socio:'cr',  // 👈
-  completada:'cc',
-  rechazada:'cr'
-}[visual] || 'cp';
+  const chipText = {
+    pendiente: 'pendiente',
+    asignada: 'asignada',
+    en_proceso: 'en proceso',
+    cierre_reportado: 'cierre reportado',
+    rechazada_por_socio: 'rechazo socio',
+    completada: 'completada',
+    rechazada: 'rechazada'
+  }[visual] || visual;
 
-const chipText = {
-  pendiente:'pendiente',
-  asignada:'asignada',
-  en_proceso:'en proceso',
-  cierre_reportado:'cierre reportado',
-  rechazada_por_socio:'rechazo socio', // 👈
-  completada:'completada',
-  rechazada:'rechazada'
-}[visual] || visual;
-  
   const cierreFlag = cierreReportado
     ? `<div style="background:#E2F7EE;border:1px solid #9BD4A8;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#155724">
          ✅ Cierre reportado por el socio
-         ${s.monto_socio!=null ? `<div style="margin-top:4px">Monto: ${fmtM(s.monto_socio)}</div>` : ``}
-         ${s.garantia_dias!=null ? `<div>Garantía: ${s.garantia_dias} días</div>` : ``}
+         ${s.monto_socio != null ? `<div style="margin-top:4px">Monto: ${fmtM(s.monto_socio)}</div>` : ``}
+         ${s.garantia_dias != null ? `<div>Garantía: ${s.garantia_dias} días</div>` : ``}
        </div>`
     : '';
 
-     const rechazoFlag = rechazoSocio
-  ? `<div style="background:#FFF5F5;border:1px solid #FCA5A5;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#721C24">
-       ❌ Rechazada por el socio
-       <div style="margin-top:6px;font-weight:600">
-         ${esc(s.motivo_rechazo_socio || s.nota_socio || 'Sin motivo')}
-       </div>
-     </div>`
-  : '';
-  
+  const rechazoFlag = rechazoSocio
+    ? `<div style="background:#FFF5F5;border:1px solid #FCA5A5;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#721C24">
+         ❌ Rechazada por el socio
+         <div style="margin-top:6px;font-weight:600">
+           ${esc(s.motivo_rechazo_socio || s.nota_socio || 'Sin motivo')}
+         </div>
+       </div>`
+    : '';
+
   // ✅ Selector de socio solo si está pendiente
   let asignarHTML = '';
   if (s.estado === 'pendiente') {
@@ -802,8 +772,13 @@ const chipText = {
   }
 
   const btnCompletar =
-    (s.estado==='asignada' && cierreReportado)
+    (s.estado === 'asignada' && cierreReportado)
       ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Aprobar y enviar garantía</button>`
+      : '';
+
+  const btnLiberar =
+    (s.estado === 'asignada' && rechazoSocio)
+      ? `<button class="btn btn-g" onclick="liberarPorRechazo(${s.id})">Liberar / volver a pendiente</button>`
       : '';
 
   const btnRechazar =
@@ -822,7 +797,7 @@ const chipText = {
           <span class="chip ${chipClass}">${esc(chipText)}</span>
         </div>
         <span class="card-name">${esc(s.cliente)}</span>
-        <span class="card-detail">${esc(s.municipio||'')} · ${esc(s.servicio||'')}</span>
+        <span class="card-detail">${esc(s.municipio || '')} · ${esc(s.servicio || '')}</span>
       </div>
       <svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24"
         fill="none" stroke="currentColor" stroke-width="2.5"
@@ -832,7 +807,6 @@ const chipText = {
     </div>
 
     <div class="card-body">
-
       <div class="info-grid">
         <div class="info-item">
           <span class="info-label">Fecha</span>
@@ -841,20 +815,13 @@ const chipText = {
 
         <div class="info-item">
           <span class="info-label">Servicio</span>
-          <span class="info-val">${esc(s.servicio||'—')}</span>
+          <span class="info-val">${esc(s.servicio || '—')}</span>
         </div>
-
-<div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
-  ${btnCompletar}
-  ${btnLiberar}
-  ${btnWASocio}
-  ${btnRechazar}
-</div>
 
         <div class="info-item info-full">
           <span class="info-label">Teléfono</span>
           <a href="tel:${esc(telLimpio)}" class="call-link">
-            ${esc(s.telefono||'—')}
+            ${esc(s.telefono || '—')}
           </a>
         </div>
 
@@ -873,10 +840,10 @@ const chipText = {
 
       <div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
         ${btnCompletar}
+        ${btnLiberar}
         ${btnWASocio}
         ${btnRechazar}
       </div>
-
     </div>
   </div>`;
 }
@@ -914,7 +881,8 @@ async function liberarPorRechazo(id) {
   const { error } = await sb.from('solicitudes').update({
     estado: 'pendiente',
     socio_asignado: null,
-    sub_estado: null
+    sub_estado: null,
+    motivo_rechazo_socio: null
   }).eq('id', id);
 
   if (error) { toast('Error: ' + error.message); return; }
