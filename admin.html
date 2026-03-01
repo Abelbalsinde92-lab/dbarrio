@@ -170,7 +170,6 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
 .btn-wa:hover{background:rgba(37,211,102,.15)}
 .btn-full{width:100%}
 .btn-sm{padding:7px 12px;font-size:12px}
-/* FIX #1: Se eliminó el template literal JS que estaba aquí suelto y rompía todo el CSS */
 
 /* ── FORM INLINE ── */
 .inline-form{background:var(--bg);border-radius:var(--rs);padding:12px;margin-top:10px}
@@ -388,34 +387,13 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
     </div>
 
     <!-- ══ SOPORTE ══ -->
-<div class="section" id="sec-sp">
-  <div class="sec-hdr">
-    <div>
-      <div class="sec-title">Soporte</div>
-      <div class="sec-sub">Garantías y reclamos</div>
+    <div class="section" id="sec-sp">
+      <div class="sec-hdr"><div><div class="sec-title">Soporte</div><div class="sec-sub">Garantias y reclamos</div></div></div>
+      <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:var(--g1);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Garantias</div>
+      <div id="lista-gar"><div class="loading">Cargando...</div></div>
+      <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:var(--g1);margin:16px 0 8px;text-transform:uppercase;letter-spacing:1px">Reclamos</div>
+      <div id="lista-que"><div class="loading">Cargando...</div></div>
     </div>
-  </div>
-
-  <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:var(--g1);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">
-    Garantías
-  </div>
-  <div id="lista-gar"><div class="loading">Cargando...</div></div>
-
-  <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:var(--g1);margin:16px 0 8px;text-transform:uppercase;letter-spacing:1px">
-    Reclamos
-  </div>
-
-  <div class="filters" style="margin:8px 0 10px">
-    <select id="f-reclamos" onchange="loadSoporte()">
-      <option value="pendiente" selected>Pendientes</option>
-      <option value="resuelto">Resueltos</option>
-      <option value="archivado">Archivados</option>
-      <option value="todos">Todos</option>
-    </select>
-  </div>
-
-  <div id="lista-que"><div class="loading">Cargando...</div></div>
-</div>
 
     <!-- ══ AJUSTES ══ -->
     <div class="section" id="sec-aj">
@@ -533,7 +511,7 @@ const CFG = {
   set t1(v)  { localStorage.setItem('db_t1', v) },
   get t2()   { return localStorage.getItem('db_t2') || 'Hola {socio} 👋\n\nTu cuenta en dbarrio ha sido *aprobada* ✅\n\nYa puedes acceder al panel en dbarrio.com con tu email y contrasena.\n\nCualquier duda respondeme por aqui.\n\n— dbarrio' },
   set t2(v)  { localStorage.setItem('db_t2', v) },
-  get t3() { return localStorage.getItem('db_t3') ||
+  get t3() { return localStorage.getItem('db_t3') || 
 `Hola {cliente} 👋
 
 Tu servicio fue *aprobado y completado* ✅
@@ -561,10 +539,7 @@ let pendingCajaTipo = null;
 
 // ══════════════════════════════════════════
 // INIT
-// FIX #4/#5: Se eliminaron las funciones y llamadas duplicadas.
-// Todo queda dentro de DOMContentLoaded o declarado UNA sola vez fuera.
 // ══════════════════════════════════════════
-
 function goIndex() { window.location.href = '/'; }
 async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
 
@@ -603,7 +578,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // ✅ Todo se llama UNA sola vez aquí
   setupRealtime();
   loadAjsUI();
   loadKPIs();
@@ -619,39 +593,37 @@ function dbc(id) { return 'db-' + id }
 function fmt(ts) { if (!ts) return '—'; const d=new Date(ts); return d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}) }
 function fmtD(ts) { if (!ts) return '—'; const d=new Date(ts); return d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}) }
 function fmtM(n) { return n != null ? '$'+parseFloat(n).toFixed(2) : '—' }
-// FIX #6: Se corrigió la comilla doble extra en el atributo class
 function stars(v, n=5) { return Array.from({length:n},(_,i)=>`<span class="star-r${i<(v||0)?' on':''}">★</span>`).join('') }
 function setT(id, v) { const e=document.getElementById(id); if(e) e.textContent=v }
 
-// ─────────────────────────────────────────
-// RECLAMOS: resolver + archivar + filtro
-// ─────────────────────────────────────────
-
-// Reutilizable: cambia estado de una queja
-async function setReclamoEstado(id, estado) {
+async function marcarReclamoResuelto(id) {
   const { error } = await sb
     .from('quejas')
-    .update({ estado })
+    .update({ estado: 'resuelto' })
     .eq('id', id);
 
   if (error) {
     alert('Error: ' + error.message);
-    return false;
+    return;
   }
-  return true;
+
+  loadSoporte();
 }
 
-// Tu función existente (la dejamos, pero ahora usa setReclamoEstado)
-async function marcarReclamoResuelto(id) {
-  const ok = await setReclamoEstado(id, 'resuelto');
-  if (ok) loadSoporte();
+function toast(msg, dur=2500) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
 }
 
-// Nueva: archivar reclamo
-async function archivarReclamo(id) {
-  const ok = await setReclamoEstado(id, 'archivado');
-  if (ok) loadSoporte();
-}
+function wa(num, msg) { window.open('https://wa.me/'+num.replace(/\D/g,'')+'?text='+encodeURIComponent(msg), '_blank') }
+
+function openModal(k) { document.getElementById('ov-'+k).classList.add('open') }
+function closeModal(k) { document.getElementById('ov-'+k).classList.remove('open') }
+
+function toggleCard(el) { el.closest('.card').classList.toggle('open') }
+function toggleSocioCard(el) { el.closest('.socio-card').classList.toggle('open') }
+function toggleSoporteCard(el) { el.closest('.soporte-card').classList.toggle('open') }
 
 // ── SIDEBAR ──
 function goSec(id) {
@@ -755,12 +727,10 @@ function buildCardOp(s) {
        </div>`
     : '';
 
-  // FIX #1 (parte JS): El botón "Aprobar cierre" que estaba suelto en el CSS
-  // ahora está correctamente aquí en la lógica de buildCardOp
   const btnCompletar =
     (s.estado==='asignada' && cierreReportado)
       ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Aprobar y enviar garantía</button>`
-      : (s.solicita_cierre ? `<button class="btn btn-y" onclick="openAprobarCierre(${s.id})">Aprobar cierre</button>` : '');
+      : '';
 
   const btnRechazar =
     `<button class="btn btn-r" onclick="openRechazar(${s.id})">Rechazar</button>`;
@@ -858,11 +828,9 @@ async function asignar(id) {
 async function openCompletar(id) {
   pendingCompId = id;
 
-  // limpiar estado UI
   const e = document.getElementById('err-comp');
   if (e) { e.textContent = ''; e.classList.remove('v'); }
 
-  // cargar orden para traer lo reportado por el socio
   const { data: sol, error } = await sb
     .from('solicitudes')
     .select('monto_socio,garantia_dias,nota_socio')
@@ -874,13 +842,11 @@ async function openCompletar(id) {
     return;
   }
 
-  // ✅ SI NO HAY REPORTE → no abrir (porque no hay nada que aprobar)
   if (sol.monto_socio == null) {
     toast('El socio aún no reportó el cierre (monto).');
     return;
   }
 
-  // ✅ Rellenar inputs del modal (si existen)
   const inMonto = document.getElementById('comp-monto');
   if (inMonto) inMonto.value = sol.monto_socio ?? '';
 
@@ -909,7 +875,6 @@ async function doCompletar() {
 
   const now = new Date().toISOString();
 
-  // 1) Leer orden (incluye lo reportado por el socio)
   const { data: sol, error: es } = await sb
     .from('solicitudes')
     .select('*, socios(nombre,telefono,comision)')
@@ -918,14 +883,12 @@ async function doCompletar() {
 
   if (es || !sol) return err(es?.message || 'No se pudo cargar la orden.');
 
-  // 2) Validar que el socio reportó cierre (monto)
   const monto = sol.monto_socio != null ? parseFloat(sol.monto_socio) : NaN;
   if (isNaN(monto) || monto < 0) return err('El socio no reportó un monto válido.');
 
   const garDias = sol.garantia_dias != null ? parseInt(sol.garantia_dias, 10) : 0;
   if (isNaN(garDias) || garDias < 0) return err('Garantía inválida reportada por el socio.');
 
-  // 3) Calcular expiración ANTES del update final
   let finGarISO = null;
   if (garDias > 0) {
     const finGar = new Date();
@@ -933,10 +896,8 @@ async function doCompletar() {
     finGarISO = finGar.toISOString();
   }
 
-  // 4) Nota del admin (opcional)
   const notaAdmin = document.getElementById('comp-nota')?.value?.trim() || null;
 
-  // 5) UPDATE FINAL en solicitudes
   const { error: eu } = await sb.from('solicitudes').update({
     estado: 'completada',
     fecha_fin: now,
@@ -951,7 +912,6 @@ async function doCompletar() {
 
   if (eu) return err(eu.message);
 
-  // 6) Cobrar comisión al socio + actualizar deuda/trabajos
   if (sol?.socio_asignado) {
     const comPct = sol.socios?.comision ?? CFG.com;
     const comMonto = parseFloat((monto * comPct / 100).toFixed(2));
@@ -976,7 +936,6 @@ async function doCompletar() {
     }).eq('id', sol.socio_asignado);
   }
 
-  // 7) WA al cliente
   const socNom = sol?.socios?.nombre
     || (sol?.socio_asignado ? (sociosMap[sol.socio_asignado]?.nombre || '—') : '—');
 
@@ -998,7 +957,6 @@ async function doCompletar() {
 
   if (sol?.telefono) wa(sol.telefono, msgCli);
 
-  // 8) UI final
   btn.disabled = false;
   btn.innerHTML = 'Confirmar y cerrar orden';
   closeModal('comp');
@@ -1148,7 +1106,6 @@ async function loadHi() {
 // ══════════════════════════════════════════
 async function loadSocios() {
   const el = document.getElementById('lista-so');
-  // DIAG: comprobar sesión real (JWT)
   const { data: u, error: ue } = await sb.auth.getUser();
   if (ue || !u?.user) {
     el.innerHTML = `<div class="empty"><div class="empty-ico">🔒</div>Sesión no válida. Vuelve a iniciar sesión.</div>`;
@@ -1158,7 +1115,6 @@ async function loadSocios() {
   const { data, error } = await sb.from('socios').select('*').order('estado_socio').order('nombre');
   if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return }
   if (!data?.length) { el.innerHTML = '<div class="empty">Sin socios registrados</div>'; return }
-  // Pendientes primero
   const pend = data.filter(x=>!x.admitido || x.estado_socio==='pendiente');
   const rest = data.filter(x=>x.admitido && x.estado_socio!=='pendiente');
   let html = '';
@@ -1244,7 +1200,6 @@ function waAdmin(tel, msg) { wa(tel, msg) }
 // ══════════════════════════════════════════
 async function loadCaja() {
   await loadSociosMap();
-  // Socios con deuda
   const { data: socs } = await sb.from('socios').select('id,nombre,telefono,deuda').gt('deuda',0).order('deuda',{ascending:false});
   const elC = document.getElementById('lista-ca');
   if (!socs?.length) {
@@ -1264,7 +1219,6 @@ async function loadCaja() {
   </div>
 </div>`).join('');
   }
-  // Select de socios para filtro movimientos
   const selSoc = document.getElementById('f-ca-soc');
   const prevVal = selSoc.value;
   selSoc.innerHTML = '<option value="">Todos los socios</option>' + Object.values(sociosMap).filter(Boolean).map(s=>`<option value="${s.id}" ${s.id==prevVal?'selected':''}>${esc(s.nombre)}</option>`).join('');
@@ -1337,144 +1291,150 @@ async function waCobro(id) {
 }
 
 // ══════════════════════════════════════════
-// SOPORTE (GARANTÍAS + RECLAMOS) — limpio y robusto
+// SOPORTE
 // ══════════════════════════════════════════
 async function loadSoporte() {
+
   const elGar = document.getElementById('lista-gar');
   const elRec = document.getElementById('lista-que');
-  if (!elGar || !elRec) return;
 
   elGar.innerHTML = '<div class="loading">Cargando...</div>';
   elRec.innerHTML = '<div class="loading">Cargando...</div>';
 
-  try {
-    // Asegurar sociosMap para nombres
-    await loadSociosMap();
+  const { data: solicitudes, error: e1 } = await sb
+    .from('solicitudes')
+    .select(`
+      *,
+      socios (
+        nombre,
+        telefono
+      )
+    `)
+    .not('garantia_dias', 'is', null)
+    .order('fecha_fin', { ascending:false });
 
-    // 1) GARANTÍAS
-    const { data: solicitudes, error: e1 } = await sb
-      .from('solicitudes')
-      .select('id,cliente,telefono,socio_asignado,garantia_dias,garantia_expira,fecha_fin')
-      .not('garantia_dias', 'is', null)
-      .order('fecha_fin', { ascending: false })
-      .limit(200);
+  if (e1) {
+    elGar.innerHTML = `<div class="empty">Error: ${e1.message}</div>`;
+    elRec.innerHTML = '';
+    return;
+  }
 
-    if (e1) {
-      elGar.innerHTML = `<div class="empty">Error: ${esc(e1.message)}</div>`;
-    } else if (!solicitudes?.length) {
-      elGar.innerHTML = '<div class="empty">Sin garantías registradas</div>';
-    } else {
-      elGar.innerHTML = solicitudes.map(s => {
-        const socio = s.socio_asignado ? (sociosMap[s.socio_asignado]?.nombre || '—') : '—';
+  const { data: quejas, error: e2 } = await sb
+    .from('quejas')
+    .select(`
+      *,
+      solicitudes (
+        id,
+        cliente,
+        telefono,
+        socio_asignado,
+        garantia_dias,
+        garantia_expira,
+        socios (
+          nombre
+        )
+      )
+    `)
+    .order('created_at', { ascending:false });
 
-        const hoy = new Date();
-        const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
-        const vencida = exp ? exp < hoy : false;
+  if (e2) {
+    elRec.innerHTML = `<div class="empty">Error: ${e2.message}</div>`;
+  }
 
-        return `
-<div class="soporte-card" style="border-left-color:${vencida ? 'var(--err)' : 'var(--ok)'}">
-  <div style="padding:12px 16px">
-    <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:var(--ink)">
-      ${dbc(s.id)} · ${esc(s.cliente || '')}
-    </div>
-    <div style="font-size:11px;color:var(--g1)">
-      ${fmtD(s.fecha_fin)} · ${esc(s.telefono || '')}
-    </div>
+  // =========================
+  // 🛡 GARANTÍAS
+  // =========================
 
-    <div style="margin-top:8px;font-size:13px">
-      👤 Socio: ${esc(socio)}
-    </div>
+  if (!solicitudes?.length) {
+    elGar.innerHTML = '<div class="empty">Sin garantías registradas</div>';
+  } else {
 
-    <div style="margin-top:6px;font-size:13px;font-weight:700;color:${vencida ? '#D63031' : '#1A7F5A'}">
-      🛡 ${vencida ? 'Garantía vencida' : 'Garantía activa'}
-      ${exp ? ' · Vence: ' + exp.toLocaleDateString('es-ES') : ''}
-      ${s.garantia_dias != null ? ' · ' + esc(String(s.garantia_dias)) + ' días' : ''}
-    </div>
-  </div>
-</div>`;
-      }).join('');
-    }
+    elGar.innerHTML = solicitudes.map(s => {
 
-    // 2) RECLAMOS (con filtro seguro)
-    const filtro = (document.getElementById('f-reclamos')?.value || 'pendiente').toLowerCase();
-    const estadosValidos = ['pendiente', 'resuelto', 'archivado', 'todos'];
-    const estado = estadosValidos.includes(filtro) ? filtro : 'pendiente';
+      const socio = s.socios?.nombre || '—';
 
-    let qQuejas = sb
-      .from('quejas')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(200);
-
-    if (estado !== 'todos') qQuejas = qQuejas.ilike('estado', estado);
-
-    const { data: quejas, error: e2 } = await qQuejas;
-
-    if (e2) {
-      elRec.innerHTML = `<div class="empty">Error: ${esc(e2.message)}</div>`;
-      return;
-    }
-
-    if (!quejas?.length) {
-      elRec.innerHTML = '<div class="empty">Sin reclamos</div>';
-      return;
-    }
-
-    // 3) Traer solicitudes asociadas (por ids)
-    const solIds = Array.from(new Set(quejas.map(q => q.solicitud_id).filter(Boolean)));
-
-    let solMap = {};
-    if (solIds.length) {
-      const { data: sols, error: eSol } = await sb
-        .from('solicitudes')
-        .select('id,cliente,telefono,socio_asignado')
-        .in('id', solIds);
-
-      if (!eSol && sols?.length) {
-        sols.forEach(s => { solMap[s.id] = s; });
-      }
-    }
-
-    // 4) Render reclamos
-    elRec.innerHTML = quejas.map(q => {
-      const s = solMap[q.solicitud_id] || null;
-      const socio = s?.socio_asignado ? (sociosMap[s.socio_asignado]?.nombre || '—') : '—';
-      const estadoTxt = String(q.estado || 'pendiente').toLowerCase();
+      const hoy = new Date();
+      const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
+      const vencida = exp ? exp < hoy : false;
 
       return `
-<div class="soporte-card" style="border-left-color:var(--err)">
-  <div style="padding:12px 16px">
-    <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:var(--ink)">
-      ${s ? dbc(s.id) : 'db-—'} · ${esc(s?.cliente || 'Sin solicitud')}
-    </div>
-    <div style="font-size:11px;color:var(--g1)">
-      ${fmtD(q.created_at)} · <span style="color:var(--err);font-weight:800">${esc(estadoTxt)}</span>
-      ${s?.telefono ? ' · ' + esc(s.telefono) : ''}
-    </div>
+<div class="support-card">
 
-    <div style="margin-top:8px;font-size:13px">
-      👤 Socio: ${esc(socio)}
-    </div>
-
-    <div style="margin-top:6px;font-size:13px">
-      ${esc(q.descripcion || 'Sin descripción')}
-    </div>
-
-    <div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
-      ${s?.telefono ? `<a href="tel:${esc(s.telefono)}" class="btn btn-g btn-sm">Llamar</a>` : ''}
-      ${estadoTxt !== 'resuelto' ? `<button class="btn btn-y btn-sm" onclick="marcarReclamoResuelto(${q.id})">Resuelto</button>` : ''}
-      ${estadoTxt !== 'archivado' ? `<button class="btn btn-r btn-sm" onclick="archivarReclamo(${q.id})">Archivar</button>` : ''}
+  <div class="support-top">
+    <div>
+      <div class="support-code">${dbc(s.id)} · ${esc(s.telefono)}</div>
+      <div class="support-meta">${fmtD(s.fecha_fin)}</div>
     </div>
   </div>
-</div>`;
-    }).join('');
 
-  } catch (err) {
-    elGar.innerHTML = `<div class="empty">Error inesperado</div>`;
-    elRec.innerHTML = `<div class="empty">Error inesperado</div>`;
-    console.error(err);
+  <div style="margin-top:8px;font-size:13px">
+    👤 Socio: ${esc(socio)}
+  </div>
+
+  <div style="
+      margin-top:6px;
+      font-size:13px;
+      font-weight:600;
+      color:${vencida ? '#D63031' : '#1A7F5A'};
+  ">
+    🛡 ${vencida ? 'Garantía vencida' : 'Garantía activa'}
+    ${exp ? ' · Vence: ' + exp.toLocaleDateString('es-ES') : ''}
+  </div>
+
+</div>
+`;
+    }).join('');
+  }
+
+  // =========================
+  // ⚠ RECLAMOS
+  // =========================
+
+  if (!quejas?.length) {
+    elRec.innerHTML = '<div class="empty">Sin reclamos</div>';
+  } else {
+
+    elRec.innerHTML = quejas.map(q => {
+
+      const s = q.solicitudes;
+      const socio = s?.socios?.nombre || '—';
+
+      return `
+<div class="support-card">
+  <div class="support-top">
+    <div>
+      <div class="support-code">${dbc(s?.id)} · ${esc(s?.telefono || '')}</div>
+      <div class="support-meta">${fmtD(q.created_at)} · ${esc(q.estado || 'pendiente')}</div>
+    </div>
+  </div>
+
+  <div style="margin-top:8px;font-size:13px">
+    👤 Socio: ${esc(socio)}
+  </div>
+
+  <div style="margin-top:6px;font-size:13px">
+    ${esc(q.descripcion || 'Sin descripción')}
+  </div>
+
+  <div style="margin-top:10px">
+    <button class="btn btn-dark" onclick="window.open('tel:${s?.telefono || ''}')">
+      Llamar
+    </button>
+
+    <button class="btn btn-yellow"
+      onclick="marcarReclamoResuelto(${q.id})">
+      Marcar resuelto
+    </button>
+  </div>
+
+</div>
+`;
+    }).join('');
   }
 }
+
+async function resolverGar(id) { await sb.from('garantias').update({estado:'resuelto'}).eq('id',id); toast('Marcado como resuelto'); loadSoporte() }
+async function resolverQue(id) { await sb.from('quejas').update({estado:'resuelto'}).eq('id',id); toast('Marcado como resuelto'); loadSoporte() }
 
 // ══════════════════════════════════════════
 // AJUSTES
@@ -1488,47 +1448,7 @@ function loadAjsUI() {
 }
 function saveWA() { CFG.wa=document.getElementById('aj-wa').value.trim(); toast('Numero guardado') }
 function saveComision() { CFG.com=parseFloat(document.getElementById('aj-com').value)||15; toast('Comision guardada') }
-function saveTemplates() { CFG.t1=document.getElementById('aj-t1').value; CFG.t2=document.getElementById('aj-t2').value; CFG.t3=document.getElementById('aj-t3').value; toast('Templates guardados') 
-}
-// ════════════════════════════════════════
-// UI HELPERS FALTANTES (PATCH ESTABLE)
-// ════════════════════════════════════════
-
-function toast(msg) {
-  const t = document.getElementById('toast');
-  if (!t) return alert(msg);
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toast._tm);
-  toast._tm = setTimeout(() => t.classList.remove('show'), 2200);
-}
-
-function toggleCard(hdrEl) {
-  const card = hdrEl?.closest('.card');
-  if (card) card.classList.toggle('open');
-}
-
-function toggleSocioCard(hdrEl) {
-  const card = hdrEl?.closest('.socio-card');
-  if (card) card.classList.toggle('open');
-}
-
-function openModal(kind) {
-  const ov = document.getElementById('ov-' + kind);
-  if (ov) ov.classList.add('open');
-}
-
-function closeModal(kind) {
-  const ov = document.getElementById('ov-' + kind);
-  if (ov) ov.classList.remove('open');
-}
-
-function wa(tel, msg) {
-  const n = String(tel || '').replace(/[^\d]/g, '');
-  if (!n) return toast('Número inválido');
-  const url = `https://wa.me/${n}?text=${encodeURIComponent(msg || '')}`;
-  window.open(url, '_blank', 'noopener');
-}
+function saveTemplates() { CFG.t1=document.getElementById('aj-t1').value; CFG.t2=document.getElementById('aj-t2').value; CFG.t3=document.getElementById('aj-t3').value; toast('Templates guardados') }
 </script>
 </body>
 </html>
