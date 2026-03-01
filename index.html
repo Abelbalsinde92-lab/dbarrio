@@ -225,7 +225,8 @@ textarea{resize:vertical;min-height:72px}
       <div class="fe" id="es-srv">Selecciona un servicio.</div>
     </div>
     <div class="fg"><label>Descripcion del problema</label><textarea id="s-det" placeholder="Describe que falla o que necesitas..."></textarea></div>
-    <div class="cb"><input type="checkbox" id="s-cp"/><span>Acepto el uso de mis datos para coordinar el servicio. <a href="privacidad.html" target="_blank">Privacidad</a></span></div>
+    <div class="cb"><input type="checkbox" id="s-cp"/><span>Acepto <a href="terminos.html" target="_blank">Terminos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div><!-- CHANGED: texto con links a terminos y privacidad -->
+    <div class="fe" id="es-cp">Debes aceptar Terminos y Privacidad.</div><!-- CHANGED: error UI para checkbox obligatorio -->
     <div class="ok-box" id="ok-sol">Solicitud registrada. Tu codigo es:<br/><span class="ok-code" id="cod-sol"></span><span class="ok-note">Guardalo — lo necesitas para garantia, reclamo y calificacion.</span></div>
     <div class="err-box" id="err-sol"></div>
     <button class="btn btn-y" id="btn-sol" onclick="envSol()">Solicitar tecnico</button>
@@ -241,7 +242,8 @@ textarea{resize:vertical;min-height:72px}
     <div class="fg"><label>Codigo del servicio</label><input id="g-rec" type="text" placeholder="db-xxxx"/><div class="fe" id="eg-rec">Requerido.</div></div>
     <div class="fg"><label>Telefono de contacto</label><input id="g-tel" type="tel" placeholder="+53..."/><div class="fe" id="eg-tel">Invalido.</div></div>
     <div class="fg"><label>Describe la falla</label><textarea id="g-fal" placeholder="Que falla presenta el trabajo..."></textarea><div class="fe" id="eg-fal">Requerido.</div></div>
-    <div class="cb"><input type="checkbox" id="g-cp"/><span>Acepto el uso de mis datos. <a href="privacidad.html" target="_blank">Privacidad</a></span></div>
+    <div class="cb"><input type="checkbox" id="g-cp"/><span>Acepto <a href="terminos.html" target="_blank">Terminos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div><!-- CHANGED: texto con links a terminos y privacidad -->
+    <div class="fe" id="eg-cp">Debes aceptar Terminos y Privacidad.</div><!-- CHANGED: error UI para checkbox obligatorio -->
     <div class="ok-box" id="ok-gar">Garantia registrada. Nos contactaremos contigo pronto.</div>
     <div class="err-box" id="err-gar"></div>
     <button class="btn btn-k" id="btn-gar" onclick="envGar()">Enviar garantia</button>
@@ -257,7 +259,8 @@ textarea{resize:vertical;min-height:72px}
     <div class="fg"><label>Telefono de contacto</label><input id="r-tel" type="tel" placeholder="+53..."/><div class="fe" id="er-tel">Invalido.</div></div>
     <div class="fg"><label>Codigo (opcional)</label><input id="r-cod" type="text" placeholder="db-xxxx si lo tienes"/></div>
     <div class="fg"><label>Descripcion del reclamo</label><textarea id="r-msg" placeholder="Explica el problema con detalle..."></textarea><div class="fe" id="er-msg">Requerido.</div></div>
-    <div class="cb"><input type="checkbox" id="r-cp"/><span>Acepto el uso de mis datos. <a href="privacidad.html" target="_blank">Privacidad</a></span></div>
+    <div class="cb"><input type="checkbox" id="r-cp"/><span>Acepto <a href="terminos.html" target="_blank">Terminos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div><!-- CHANGED: texto con links a terminos y privacidad -->
+    <div class="fe" id="er-cp">Debes aceptar Terminos y Privacidad.</div><!-- CHANGED: error UI para checkbox obligatorio -->
     <div class="ok-box" id="ok-rec">Reclamo registrado. Lo revisaremos pronto.</div>
     <div class="err-box" id="err-rec"></div>
     <button class="btn btn-k" id="btn-rec" onclick="envRec()">Enviar reclamo</button>
@@ -355,10 +358,11 @@ async function envSol(){
   const srv=document.getElementById('s-srv').value;
   const det=document.getElementById('s-det').value.trim();
   const cp=document.getElementById('s-cp').checked;
-  ['es-cli','es-wa','es-mun','es-srv'].forEach(cE);
+  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE); // CHANGED: añadido 'es-cp' al limpiar errores
   let ok=true;
   if(!cli){sE('es-cli');ok=false}if(!vt(wa)){sE('es-wa');ok=false}
   if(!mun){sE('es-mun');ok=false}if(!srv){sE('es-srv');ok=false}
+  if(!cp){sE('es-cp');ok=false} // CHANGED: validar checkbox obligatorio
   if(!ok)return;
   setL('btn-sol',true);
   const now=new Date().toISOString();
@@ -380,9 +384,10 @@ async function envGar(){
   const tel=document.getElementById('g-tel').value.trim();
   const fal=document.getElementById('g-fal').value.trim();
   const cp=document.getElementById('g-cp').checked;
-  ['eg-rec','eg-tel','eg-fal'].forEach(cE);
+  ['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(cE); // CHANGED: añadido 'eg-cp' al limpiar errores
   let ok=true;
   if(!rec){sE('eg-rec');ok=false}if(!vt(tel)){sE('eg-tel');ok=false}if(!fal){sE('eg-fal');ok=false}
+  if(!cp){sE('eg-cp');ok=false} // CHANGED: validar checkbox obligatorio
   if(!ok)return;
   setL('btn-gar',true);
   const now=new Date().toISOString();
@@ -398,13 +403,14 @@ async function envRec(){
   const cod=document.getElementById('r-cod').value.trim();
   const msg=document.getElementById('r-msg').value.trim();
   const cp=document.getElementById('r-cp').checked;
-  ['er-tel','er-msg'].forEach(cE);
+  ['er-tel','er-msg','er-cp'].forEach(cE); // CHANGED: añadido 'er-cp' al limpiar errores
   let ok=true;
   if(!vt(tel)){sE('er-tel');ok=false}if(!msg){sE('er-msg');ok=false}
+  if(!cp){sE('er-cp');ok=false} // CHANGED: validar checkbox obligatorio
   if(!ok)return;
   setL('btn-rec',true);
   const now=new Date().toISOString();
-  const{error}=await sb.from('quejas').insert({telefono:tel,codigo_servicio:cod||null,mensaje:msg,estado:'pendiente',consent_privacidad:cp,consent_privacidad_ts:cp?now:null,consent_texto:'reclamo v2'});
+  const{error}=await sb.from('quejas').insert({telefono:tel,codigo_servicio:cod||null,descripcion:msg,estado:'pendiente',consent_privacidad:cp,consent_privacidad_ts:cp?now:null,consent_texto:'reclamo v2'}); // CHANGED: campo 'mensaje' → 'descripcion'
   setL('btn-rec',false);
   if(error){sER('err-rec','Error: '+error.message);return}
   sOK('ok-rec');document.getElementById('btn-rec').style.display='none';
@@ -512,8 +518,12 @@ async function doRecovery(){
     return;
   }
 
-  sER('err-acc', 'Listo. Revisa tu correo (y spam). Abre el enlace en Safari.');
+   sER('err-acc', 'Listo. Revisa tu correo (y spam). Abre el enlace en Safari.');
 }
+
+document.getElementById('s-cp')?.addEventListener('change', () => cE('es-cp'));
+document.getElementById('g-cp')?.addEventListener('change', () => cE('eg-cp'));
+document.getElementById('r-cp')?.addEventListener('change', () => cE('er-cp'));
 </script>
 </body>
 </html>
