@@ -170,6 +170,7 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
 .btn-wa:hover{background:rgba(37,211,102,.15)}
 .btn-full{width:100%}
 .btn-sm{padding:7px 12px;font-size:12px}
+${s.solicita_cierre ? `<button class="btn btn-y" onclick="openAprobarCierre(${s.id})">Aprobar cierre</button>` : ''}
 
 /* ── FORM INLINE ── */
 .inline-form{background:var(--bg);border-radius:var(--rs);padding:12px;margin-top:10px}
@@ -540,23 +541,6 @@ let pendingCajaTipo = null;
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
-function goIndex() { window.location.href = '/'; }
-async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
-
-function setupRealtime() {
-  sb.channel('rt-admin-solicitudes')
-    .on(
-      'postgres_changes',
-      { event: '*', schema: 'public', table: 'solicitudes' },
-      () => {
-        const opActiva = document.getElementById('sec-op')?.classList.contains('active');
-        if (opActiva) loadOp();
-        loadKPIs();
-      }
-    )
-    .subscribe();
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
   const { data: { session } } = await sb.auth.getSession();
 
@@ -578,12 +562,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
+  // ✅ REALTIME: refrescar admin cuando cambie una orden
   setupRealtime();
+
   loadAjsUI();
   loadKPIs();
   await loadSociosMap();
   loadOp();
-});
+}); // ✅ IMPORTANTE: cerrar el DOMContentLoaded
+
+// fuera del listener:
+function goIndex() { window.location.href = '/'; }
+async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
+
+// ✅ realtime fuera también
+function setupRealtime() {
+  sb.channel('rt-admin-solicitudes')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'solicitudes' },
+      () => {
+        const opActiva = document.getElementById('sec-op')?.classList.contains('active');
+        if (opActiva) loadOp();
+        loadKPIs();
+      }
+    )
+    .subscribe();
+}
+setupRealtime();
+
+loadAjsUI();
+loadKPIs();
+loadSociosMap();
+loadOp();
+
+function goIndex() { window.location.href = '/'; }
+async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
 
 // ══════════════════════════════════════════
 // UTILS
@@ -593,7 +607,7 @@ function dbc(id) { return 'db-' + id }
 function fmt(ts) { if (!ts) return '—'; const d=new Date(ts); return d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}) }
 function fmtD(ts) { if (!ts) return '—'; const d=new Date(ts); return d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}) }
 function fmtM(n) { return n != null ? '$'+parseFloat(n).toFixed(2) : '—' }
-function stars(v, n=5) { return Array.from({length:n},(_,i)=>`<span class="star-r${i<(v||0)?' on':''}">★</span>`).join('') }
+function stars(v, n=5) { return Array.from({length:n},(_,i)=>`<span class="star-r${i<(v||0)?' on':''}"">★</span>`).join('') }
 function setT(id, v) { const e=document.getElementById(id); if(e) e.textContent=v }
 
 async function marcarReclamoResuelto(id) {
@@ -607,7 +621,7 @@ async function marcarReclamoResuelto(id) {
     return;
   }
 
-  loadSoporte();
+  loadSoporte(); // vuelve a cargar la sección
 }
 
 function toast(msg, dur=2500) {
@@ -828,9 +842,11 @@ async function asignar(id) {
 async function openCompletar(id) {
   pendingCompId = id;
 
+  // limpiar estado UI
   const e = document.getElementById('err-comp');
   if (e) { e.textContent = ''; e.classList.remove('v'); }
 
+  // cargar orden para traer lo reportado por el socio
   const { data: sol, error } = await sb
     .from('solicitudes')
     .select('monto_socio,garantia_dias,nota_socio')
@@ -842,23 +858,28 @@ async function openCompletar(id) {
     return;
   }
 
+  // ✅ SI NO HAY REPORTE → no abrir (porque no hay nada que aprobar)
   if (sol.monto_socio == null) {
     toast('El socio aún no reportó el cierre (monto).');
     return;
   }
 
+  // ✅ Rellenar inputs del modal (si existen)
   const inMonto = document.getElementById('comp-monto');
   if (inMonto) inMonto.value = sol.monto_socio ?? '';
 
-  const inGar = document.getElementById('comp-gar');
+  const inGar = document.getElementById('comp-gar'); // (si lo creas en el modal)
   if (inGar) inGar.value = sol.garantia_dias ?? 0;
 
   const inNota = document.getElementById('comp-nota');
+  // aquí la nota del admin es opcional, pero podemos precargar los detalles del socio para que lo veas
   if (inNota) inNota.value = sol.nota_socio ?? '';
 
   openModal('comp');
 }
 function openRechazar(id) { pendingRechId=id; document.getElementById('rech-mot').value=''; document.getElementById('err-rech').classList.remove('v'); openModal('rech') }
+
+// ✅ REEMPLAZA TU FUNCIÓN ENTERA doCompletar() POR ESTA (admin)
 
 async function doCompletar() {
   const btn = document.getElementById('btn-comp');
@@ -875,6 +896,7 @@ async function doCompletar() {
 
   const now = new Date().toISOString();
 
+  // 1) Leer orden (incluye lo reportado por el socio)
   const { data: sol, error: es } = await sb
     .from('solicitudes')
     .select('*, socios(nombre,telefono,comision)')
@@ -883,12 +905,14 @@ async function doCompletar() {
 
   if (es || !sol) return err(es?.message || 'No se pudo cargar la orden.');
 
+  // 2) Validar que el socio reportó cierre (monto)
   const monto = sol.monto_socio != null ? parseFloat(sol.monto_socio) : NaN;
   if (isNaN(monto) || monto < 0) return err('El socio no reportó un monto válido.');
 
   const garDias = sol.garantia_dias != null ? parseInt(sol.garantia_dias, 10) : 0;
   if (isNaN(garDias) || garDias < 0) return err('Garantía inválida reportada por el socio.');
 
+  // 3) Calcular expiración ANTES del update final
   let finGarISO = null;
   if (garDias > 0) {
     const finGar = new Date();
@@ -896,15 +920,25 @@ async function doCompletar() {
     finGarISO = finGar.toISOString();
   }
 
+  // 4) Nota del admin (opcional). Si quieres que NO se edite, lo quitamos y listo.
   const notaAdmin = document.getElementById('comp-nota')?.value?.trim() || null;
 
+  // 5) UPDATE FINAL en solicitudes
   const { error: eu } = await sb.from('solicitudes').update({
     estado: 'completada',
     fecha_fin: now,
+
+    // ✅ el monto final que ve el sistema sale del socio
     monto: monto,
+
+    // opcional admin
     nota_admin: notaAdmin,
+
+    // ✅ garantía aprobada (sale del socio)
     garantia_dias: garDias,
     garantia_expira: finGarISO,
+
+    // ✅ limpiar banderas antiguas si quedaron
     solicita_cierre: false,
     cierre_ts: now,
     sub_estado: null
@@ -912,6 +946,7 @@ async function doCompletar() {
 
   if (eu) return err(eu.message);
 
+  // 6) Cobrar comisión al socio + actualizar deuda/trabajos
   if (sol?.socio_asignado) {
     const comPct = sol.socios?.comision ?? CFG.com;
     const comMonto = parseFloat((monto * comPct / 100).toFixed(2));
@@ -936,6 +971,7 @@ async function doCompletar() {
     }).eq('id', sol.socio_asignado);
   }
 
+  // 7) WA al cliente (garantía + vence + detalles)
   const socNom = sol?.socios?.nombre
     || (sol?.socio_asignado ? (sociosMap[sol.socio_asignado]?.nombre || '—') : '—');
 
@@ -946,6 +982,7 @@ async function doCompletar() {
   const garTxt = garDias > 0 ? `${garDias} días` : 'Sin garantía';
   const detallesTxt = sol?.nota_socio || '—';
 
+  // Nota: si tu template CFG.t3 no tiene {garantia}{vence}{detalles}, no se verán.
   const msgCli = (CFG.t3 || '')
     .replace('{cliente}', sol?.cliente || '')
     .replace('{code}', dbc(pendingCompId))
@@ -957,6 +994,7 @@ async function doCompletar() {
 
   if (sol?.telefono) wa(sol.telefono, msgCli);
 
+  // 8) UI final
   btn.disabled = false;
   btn.innerHTML = 'Confirmar y cerrar orden';
   closeModal('comp');
@@ -1002,7 +1040,7 @@ async function openAprobarCierre(id) {
 
   document.getElementById('comp-monto').value = sol?.monto_socio ?? '';
   document.getElementById('comp-gar').value   = sol?.garantia_dias ?? 0;
-  document.getElementById('comp-nota').value  = '';
+  document.getElementById('comp-nota').value  = ''; // nota del admin si quiere
   document.getElementById('err-comp').classList.remove('v');
 
   openModal('comp');
@@ -1052,6 +1090,7 @@ async function loadHi() {
       ? sociosMap[s.socio_asignado].nombre
       : '—';
 
+    // 🔹 Garantía
     let garantiaHTML = '';
     if (s.garantia_dias != null) {
 
@@ -1106,6 +1145,7 @@ async function loadHi() {
 // ══════════════════════════════════════════
 async function loadSocios() {
   const el = document.getElementById('lista-so');
+    // DIAG: comprobar sesión real (JWT)
   const { data: u, error: ue } = await sb.auth.getUser();
   if (ue || !u?.user) {
     el.innerHTML = `<div class="empty"><div class="empty-ico">🔒</div>Sesión no válida. Vuelve a iniciar sesión.</div>`;
@@ -1115,6 +1155,7 @@ async function loadSocios() {
   const { data, error } = await sb.from('socios').select('*').order('estado_socio').order('nombre');
   if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return }
   if (!data?.length) { el.innerHTML = '<div class="empty">Sin socios registrados</div>'; return }
+  // Pendientes primero
   const pend = data.filter(x=>!x.admitido || x.estado_socio==='pendiente');
   const rest = data.filter(x=>x.admitido && x.estado_socio!=='pendiente');
   let html = '';
@@ -1200,6 +1241,7 @@ function waAdmin(tel, msg) { wa(tel, msg) }
 // ══════════════════════════════════════════
 async function loadCaja() {
   await loadSociosMap();
+  // Socios con deuda
   const { data: socs } = await sb.from('socios').select('id,nombre,telefono,deuda').gt('deuda',0).order('deuda',{ascending:false});
   const elC = document.getElementById('lista-ca');
   if (!socs?.length) {
@@ -1219,6 +1261,7 @@ async function loadCaja() {
   </div>
 </div>`).join('');
   }
+  // Select de socios para filtro movimientos
   const selSoc = document.getElementById('f-ca-soc');
   const prevVal = selSoc.value;
   selSoc.innerHTML = '<option value="">Todos los socios</option>' + Object.values(sociosMap).filter(Boolean).map(s=>`<option value="${s.id}" ${s.id==prevVal?'selected':''}>${esc(s.nombre)}</option>`).join('');
@@ -1295,12 +1338,13 @@ async function waCobro(id) {
 // ══════════════════════════════════════════
 async function loadSoporte() {
 
-  const elGar = document.getElementById('lista-gar');
-  const elRec = document.getElementById('lista-que');
+  const elGar = document.getElementById('lista-garantias');
+  const elRec = document.getElementById('lista-reclamos');
 
   elGar.innerHTML = '<div class="loading">Cargando...</div>';
   elRec.innerHTML = '<div class="loading">Cargando...</div>';
 
+  // 1️⃣ Traer solicitudes con socio
   const { data: solicitudes, error: e1 } = await sb
     .from('solicitudes')
     .select(`
@@ -1319,6 +1363,7 @@ async function loadSoporte() {
     return;
   }
 
+  // 2️⃣ Traer quejas con solicitud asociada
   const { data: quejas, error: e2 } = await sb
     .from('quejas')
     .select(`
@@ -1351,13 +1396,13 @@ async function loadSoporte() {
 
     elGar.innerHTML = solicitudes.map(s => {
 
-      const socio = s.socios?.nombre || '—';
+  const socio = s.socios?.nombre || '—';
 
-      const hoy = new Date();
-      const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
-      const vencida = exp ? exp < hoy : false;
+  const hoy = new Date();
+  const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
+  const vencida = exp ? exp < hoy : false;
 
-      return `
+  return `
 <div class="support-card">
 
   <div class="support-top">
@@ -1383,8 +1428,7 @@ async function loadSoporte() {
 
 </div>
 `;
-    }).join('');
-  }
+}).join('');
 
   // =========================
   // ⚠ RECLAMOS
