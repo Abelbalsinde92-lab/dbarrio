@@ -702,6 +702,8 @@ function buildCardOp(s) {
     ? sociosMap[s.socio_asignado].nombre
     : null;
 
+  const rechazoSocio = (s.sub_estado === 'rechazada_por_socio');
+
   const socioTel = s.socio_asignado && sociosMap[s.socio_asignado]
     ? sociosMap[s.socio_asignado].telefono
     : null;
@@ -726,22 +728,16 @@ function buildCardOp(s) {
   const rechazoSocio = (s.sub_estado === 'rechazada_por_socio');
 
   const chipClass = {
-    pendiente:'cp',
-    asignada:'ca',
-    en_proceso:'ce',
-    cierre_reportado:'cc',
-    completada:'cc',
-    rechazada:'cr'
-  }[visual] || 'cp';
+  pendiente:'cp', asignada:'ca', en_proceso:'ce',
+  cierre_reportado:'cc', rechazada_por_socio:'cr',
+  completada:'cc', rechazada:'cr'
+}[visual] || 'cp';
 
-  const chipText  = {
-    pendiente:'pendiente',
-    asignada:'asignada',
-    en_proceso:'en proceso',
-    cierre_reportado:'cierre reportado',
-    completada:'completada',
-    rechazada:'rechazada'
-  }[visual] || visual;
+const chipText = {
+  pendiente:'pendiente', asignada:'asignada', en_proceso:'en proceso',
+  cierre_reportado:'cierre reportado', rechazada_por_socio:'rechazo socio',
+  completada:'completada', rechazada:'rechazada'
+}[visual] || visual;
   
   const btnLiberar =
   (s.estado === 'asignada' && rechazoSocio)
