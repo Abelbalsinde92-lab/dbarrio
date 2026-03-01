@@ -905,62 +905,56 @@ function openRechazar(id) { pendingRechId=id; document.getElementById('rech-mot'
 
 async function doCompletar() {
   const btn = document.getElementById('btn-comp');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="sp"></span>Procesando...';
-
+  const resetBtn = () => { btn.disabled = false; btn.innerHTML = 'Confirmar y cerrar orden'; };
   const err = (msg) => {
     const e = document.getElementById('err-comp');
     e.textContent = msg;
     e.classList.add('v');
-    btn.disabled = false;
-    btn.innerHTML = 'Confirmar y cerrar orden';
+    resetBtn();
   };
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="sp"></span>Procesando...';
+
+  if (!pendingCompId) return err('Orden inválida.');
 
   const now = new Date().toISOString();
 
-  // 1) Leer orden (incluye lo reportado por el socio)
+  // 1) Traer la solicitud (sin join raro)
   const { data: sol, error: es } = await sb
     .from('solicitudes')
-    .select('*, socios(nombre,telefono,comision)')
+    .select('*')
     .eq('id', pendingCompId)
     .single();
 
   if (es || !sol) return err(es?.message || 'No se pudo cargar la orden.');
 
-  // 2) Validar que el socio reportó cierre (monto)
+  // 2) Validar cierre reportado por el socio
   const monto = sol.monto_socio != null ? parseFloat(sol.monto_socio) : NaN;
   if (isNaN(monto) || monto < 0) return err('El socio no reportó un monto válido.');
 
   const garDias = sol.garantia_dias != null ? parseInt(sol.garantia_dias, 10) : 0;
   if (isNaN(garDias) || garDias < 0) return err('Garantía inválida reportada por el socio.');
 
-  // 3) Calcular expiración ANTES del update final
+  // 3) Calcular vencimiento garantía
   let finGarISO = null;
   if (garDias > 0) {
-    const finGar = new Date();
-    finGar.setDate(finGar.getDate() + garDias);
-    finGarISO = finGar.toISOString();
+    const fin = new Date();
+    fin.setDate(fin.getDate() + garDias);
+    finGarISO = fin.toISOString();
   }
 
-  // 4) Nota del admin (opcional). Si quieres que NO se edite, lo quitamos y listo.
+  // 4) Nota admin (opcional)
   const notaAdmin = document.getElementById('comp-nota')?.value?.trim() || null;
 
-  // 5) UPDATE FINAL en solicitudes
+  // 5) Marcar completada en solicitudes
   const { error: eu } = await sb.from('solicitudes').update({
     estado: 'completada',
     fecha_fin: now,
-
-    // ✅ el monto final que ve el sistema sale del socio
     monto: monto,
-
-    // opcional admin
     nota_admin: notaAdmin,
-
-    // ✅ garantía aprobada (sale del socio)
     garantia_dias: garDias,
     garantia_expira: finGarISO,
-
-    // ✅ limpiar banderas antiguas si quedaron
     solicita_cierre: false,
     cierre_ts: now,
     sub_estado: null
@@ -968,34 +962,59 @@ async function doCompletar() {
 
   if (eu) return err(eu.message);
 
-  // 6) Cobrar comisión al socio + actualizar deuda/trabajos
-  if (sol?.socio_asignado) {
-    const comPct = sol.socios?.comision ?? CFG.com;
-    const comMonto = parseFloat((monto * comPct / 100).toFixed(2));
-
-    await sb.from('movimientos').insert({
-      socio_id: sol.socio_asignado,
-      solicitud_id: pendingCompId,
-      tipo: 'cargo_comision',
-      monto: comMonto,
-      nota: `Comision ${comPct}% — ${dbc(pendingCompId)}`
-    });
-
-    const { data: soc } = await sb
+  // 6) Comisión / deuda socio (fetch socio real)
+  let socio = null;
+  if (sol.socio_asignado) {
+    const { data: soc, error: se } = await sb
       .from('socios')
-      .select('deuda,trabajos')
+      .select('id,nombre,telefono,comision,deuda,trabajos')
       .eq('id', sol.socio_asignado)
       .single();
 
-    await sb.from('socios').update({
-      deuda: (parseFloat(soc?.deuda || 0) + comMonto).toFixed(2),
-      trabajos: (soc?.trabajos || 0) + 1
-    }).eq('id', sol.socio_asignado);
+    if (se) return err('No pude cargar el socio para comisiones: ' + se.message);
+    socio = soc;
+
+    const comPct = (socio?.comision ?? CFG.com);
+    const comMonto = parseFloat((monto * comPct / 100).toFixed(2));
+
+    // movimiento
+    const { error: me } = await sb.from('movimientos').insert({
+      socio_id: socio.id,
+      solicitud_id: pendingCompId,
+      tipo: 'cargo_comision',
+      monto: comMonto,
+      nota: `Comisión ${comPct}% — ${dbc(pendingCompId)}`
+    });
+    if (me) return err('Movimiento comisión: ' + me.message);
+
+    // actualizar socio
+    const nuevaDeuda = (parseFloat(socio.deuda || 0) + comMonto);
+    const nuevosTrab = (parseInt(socio.trabajos || 0, 10) + 1);
+
+    const { error: sue } = await sb.from('socios').update({
+      deuda: nuevaDeuda.toFixed(2),
+      trabajos: nuevosTrab
+    }).eq('id', socio.id);
+
+    if (sue) return err('Actualizando socio: ' + sue.message);
   }
 
-  // 7) WA al cliente (garantía + vence + detalles)
-  const socNom = sol?.socios?.nombre
-    || (sol?.socio_asignado ? (sociosMap[sol.socio_asignado]?.nombre || '—') : '—');
+  // 6.1) (OPCIONAL pero recomendado) Registrar garantía en tabla "garantias"
+  // Si NO tienes esa tabla o no la usas, borra este bloque.
+  try {
+    await sb.from('garantias').insert({
+      recibo: dbc(pendingCompId),
+      telefono: sol.telefono || null,
+      falla: null,
+      estado: 'activa',
+      garantia_dias: garDias,
+      garantia_expira: finGarISO,
+      socio_id: sol.socio_asignado || null
+    });
+  } catch(_) {}
+
+  // 7) WhatsApp cliente = “enviar garantía”
+  const socNom = socio?.nombre || (sol.socio_asignado ? (sociosMap[sol.socio_asignado]?.nombre || '—') : '—');
 
   const venceTxt = finGarISO
     ? new Date(finGarISO).toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric' })
@@ -1004,23 +1023,23 @@ async function doCompletar() {
   const garTxt = garDias > 0 ? `${garDias} días` : 'Sin garantía';
   const detallesTxt = sol?.nota_socio || '—';
 
-  // Nota: si tu template CFG.t3 no tiene {garantia}{vence}{detalles}, no se verán.
+  // IMPORTANTE: asegúrate de que CFG.t3 tenga estos tokens.
   const msgCli = (CFG.t3 || '')
-    .replace('{cliente}', sol?.cliente || '')
-    .replace('{code}', dbc(pendingCompId))
-    .replace('{socio}', socNom)
-    .replace('{monto}', fmtM(monto))
-    .replace('{garantia}', garTxt)
-    .replace('{vence}', venceTxt)
-    .replace('{detalles}', detallesTxt);
+    .replaceAll('{cliente}', sol?.cliente || '')
+    .replaceAll('{code}', dbc(pendingCompId))
+    .replaceAll('{socio}', socNom)
+    .replaceAll('{monto}', fmtM(monto))
+    .replaceAll('{garantia}', garTxt)
+    .replaceAll('{vence}', venceTxt)
+    .replaceAll('{detalles}', detallesTxt);
 
   if (sol?.telefono) wa(sol.telefono, msgCli);
 
   // 8) UI final
-  btn.disabled = false;
-  btn.innerHTML = 'Confirmar y cerrar orden';
+  pendingCompId = null;
   closeModal('comp');
-  toast('Orden completada');
+  toast('Orden completada y garantía enviada');
+  resetBtn();
   loadOp();
   loadKPIs();
 }
