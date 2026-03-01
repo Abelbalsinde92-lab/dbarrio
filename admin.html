@@ -401,6 +401,14 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
     <option value="todos">Todos</option>
   </select>
 </div>
+      <div class="filters" style="margin:0 0 10px">
+  <select id="f-que" onchange="loadSoporte()">
+    <option value="pendiente" selected>Pendientes</option>
+    <option value="resuelto">Resueltos</option>
+    <option value="archivado">Archivados</option>
+    <option value="todos">Todos</option>
+  </select>
+</div>
       <div id="lista-que"><div class="loading">Cargando...</div></div>
     </div>
 
