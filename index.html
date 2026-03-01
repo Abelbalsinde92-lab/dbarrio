@@ -380,17 +380,38 @@ async function envSol(){
   if(!ok)return;
   setL('btn-sol',true);
   const now=new Date().toISOString();
-  const{data,error}=await sb.from('solicitudes').insert({
-    cliente:cli,telefono:wa,municipio:mun,direccion:dir||null,servicio:srv,
-    detalles:det||null,estado:'pendiente',fecha_ts:now,
-    consent_privacidad:cp,consent_privacidad_ts:cp?now:null,
-    consent_texto:'solicitud publica v2'
-  }).select('id').single();
-  setL('btn-sol',false);
-  if(error){sER('err-sol','Error: '+error.message);return}
-  document.getElementById('cod-sol').textContent=dbc(data.id);
-  sOK('ok-sol');document.getElementById('btn-sol').style.display='none';
+ const consentimiento = !!cp; // fuerza boolean real
+
+const { data, error } = await sb
+  .from('solicitudes')
+  .insert({
+    cliente: cli,
+    telefono: wa,
+    municipio: mun,
+    direccion: dir || null,
+    servicio: srv,
+    detalles: det || null,
+    estado: 'pendiente',
+    fecha_ts: now,
+
+    // 👇 IMPORTANTE
+    consent_privacidad: consentimiento,
+    consent_privacidad_ts: consentimiento ? now : null,
+    consent_texto: 'solicitud publica v2'
+  })
+  .select('id')
+  .single();
+
+setL('btn-sol', false);
+
+if (error) {
+  sER('err-sol', 'Error: ' + error.message);
+  return;
 }
+
+document.getElementById('cod-sol').textContent = dbc(data.id);
+sOK('ok-sol');
+document.getElementById('btn-sol').style.display = 'none';
 
 async function envGar(){
   cER('err-gar');
@@ -477,23 +498,39 @@ async function envUni(){
   }
 });
   if(ae||!ad.user){setL('btn-uni',false);sER('err-uni','Error: '+(ae?ae.message:'sin usuario'));return}
-  const { error: se } = await sb.from('socios').insert({
-  nombre: nom,
-  telefono: tel,
-  especialidad: esp,
-  zona: zona,
-  email: email,
+  // 1) sesión actual (para sacar el user.id)
+const { data: ses } = await sb.auth.getSession();
+const uid = ses?.session?.user?.id;
+if (!uid) { setL('btn-uni', false); sER('err-uni', 'Sesión no válida. Vuelve a iniciar.'); return; }
+
+// 2) insert del perfil socio
+const { error: se } = await sb.from('socios').insert({
+  auth_uid: uid,              // 👈 CLAVE
+  nombre: (nom || '').trim(),
+  telefono: String(tel || '').trim(),
+  especialidad: (esp || '').trim() || null,
+  zona: (zona || '').trim() || null,
+  email: (email || '').trim() || null,
+
   admitido: false,
   estado_socio: 'pendiente',
   comision: 15,
   deuda: 0,
   trabajos: 0
 });
-  await sb.auth.signOut();
-  setL('btn-uni',false);
-  if(se){sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);return}
-  sOK('ok-uni');document.getElementById('btn-uni').style.display='none';
+
+setL('btn-uni', false);
+
+if (se) {
+  sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message);
+  return;
 }
+
+// 3) si se guardó bien, cerramos sesión (como querías)
+await sb.auth.signOut();
+
+sOK('ok-uni');
+document.getElementById('btn-uni').style.display = 'none';
 
 async function doLogin(){
   cER('err-acc');
