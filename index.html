@@ -471,11 +471,18 @@ async function envUni(){
   }
 });
   if(ae||!ad.user){setL('btn-uni',false);sER('err-uni','Error: '+(ae?ae.message:'sin usuario'));return}
-  const{error:se}=await sb.from('socios').insert({
-    nombre:nom,telefono:tel,especialidad:esp,zona:zona,
-    email:email,auth_uid:ad.user.id,admitido:false,estado_socio:'pendiente',
-    comision:15,deuda:0,trabajos:0
-  });
+  const { error: se } = await sb.from('socios').insert({
+  nombre: nom,
+  telefono: tel,
+  especialidad: esp,
+  zona: zona,
+  email: email,
+  admitido: false,
+  estado_socio: 'pendiente',
+  comision: 15,
+  deuda: 0,
+  trabajos: 0
+});
   await sb.auth.signOut();
   setL('btn-uni',false);
   if(se){sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);return}
