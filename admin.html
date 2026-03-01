@@ -1438,21 +1438,34 @@ async function loadSoporte() {
       }).join('');
     }
 
-    // 2) RECLAMOS: traer quejas + solicitudes asociadas (para pintar socio/cliente/telefono)
-{
-  // filtro (si no existe el select, cae en "pendiente")
-  const filtro = document.getElementById('f-que')?.value || 'pendiente';
+    // 2) RECLAMOS: traer quejas (con filtro seguro)
+const filtro = (document.getElementById('f-reclamos')?.value || 'pendiente').toLowerCase();
 
-  const filtro = document.getElementById('f-que')?.value || 'pendiente';
+// valores aceptados
+const estadosValidos = ['pendiente', 'resuelto', 'archivado', 'todos'];
 
-const { data: quejasRaw, error: e2 } = await sb
+const estado = estadosValidos.includes(filtro) ? filtro : 'pendiente';
+
+let qQuejas = sb
   .from('quejas')
   .select('*')
-  .order('created_at', { ascending:false })
+  .order('created_at', { ascending: false })
   .limit(200);
+
+// ✅ CLAVE: "todos" = no aplicar filtro
+if (estado !== 'todos') {
+  qQuejas = qQuejas.eq('estado', estado);
+}
+
+const { data: quejas, error: e2 } = await qQuejas;
 
 if (e2) {
   elRec.innerHTML = `<div class="empty">Error: ${esc(e2.message)}</div>`;
+  return;
+}
+
+if (!quejas?.length) {
+  elRec.innerHTML = '<div class="empty">Sin reclamos</div>';
   return;
 }
 
