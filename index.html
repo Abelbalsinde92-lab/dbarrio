@@ -340,9 +340,11 @@ textarea{resize:vertical;min-height:72px}
 <script>
 const SURL='https://gkxtdancgkwetdniooky.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
-const sb=supabase.createClient(SURL,SKEY);
-let sv=0;
+const sb = supabase.createClient(SURL, SKEY);
 
+let sv = 0;
+
+// ───────── UI helpers ─────────
 function open_(k){document.getElementById('ov-'+k).classList.add('open');document.body.style.overflow='hidden'}
 function close_(k){document.getElementById('ov-'+k).classList.remove('open');document.body.style.overflow=''}
 function ovc(e,k){if(e.target===document.getElementById('ov-'+k))close_(k)}
@@ -354,243 +356,309 @@ function cE(id){const e=document.getElementById(id);if(e)e.classList.remove('v')
 function sOK(id){const e=document.getElementById(id);if(e)e.classList.add('v')}
 function sER(id,m){const e=document.getElementById(id);if(e){e.textContent=m;e.classList.add('v')}}
 function cER(id){const e=document.getElementById(id);if(e)e.classList.remove('v')}
-function setL(id,on){const b=document.getElementById(id);if(!b)return;if(!b._t)b._t=b.innerHTML;b.disabled=on;b.innerHTML=on?'<span class="sp"></span>Enviando...':(b._t)}
-function dbc(id){return'db-'+id}
+function setL(id,on){
+  const b=document.getElementById(id); if(!b) return;
+  if(!b._t) b._t=b.innerHTML;
+  b.disabled=on;
+  b.innerHTML = on ? '<span class="sp"></span>Enviando...' : b._t;
+}
+function dbc(id){return 'db-'+id}
 
+// ───────── SOLICITUD (anon INSERT con consentimiento) ─────────
 async function envSol(){
   cER('err-sol');
+  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
+
   const cli=document.getElementById('s-cli').value.trim();
-  const wa=document.getElementById('s-wa').value.trim();
+  const wa =document.getElementById('s-wa').value.trim();
   const mun=document.getElementById('s-mun').value.trim();
   const dir=document.getElementById('s-dir').value.trim();
   const srv=document.getElementById('s-srv').value;
   const det=document.getElementById('s-det').value.trim();
-  const cp=document.getElementById('s-cp').checked;
-  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE); // CHANGED: añadido 'es-cp' al limpiar errores
+  const cp =document.getElementById('s-cp').checked;
+
   let ok=true;
-  if(!cli){sE('es-cli');ok=false}if(!vt(wa)){sE('es-wa');ok=false}
-  if(!cp){
-  sER('err-sol','Debes aceptar la política de privacidad.');
-  setL('btn-sol',false);
-  return;
+  if(!cli){sE('es-cli');ok=false}
+  if(!vt(wa)){sE('es-wa');ok=false}
+  if(!mun){sE('es-mun');ok=false}
+  if(!srv){sE('es-srv');ok=false}
+  if(!cp){sE('es-cp');ok=false}
+  if(!ok) return;
+
+  setL('btn-sol', true);
+
+  const now = new Date().toISOString();
+  const consentimiento = !!cp;
+
+  const { data, error } = await sb
+    .from('solicitudes')
+    .insert({
+      cliente: cli,
+      telefono: wa,
+      municipio: mun,
+      direccion: dir || null,
+      servicio: srv,
+      detalles: det || null,
+      estado: 'pendiente',
+      fecha_ts: now,
+      consent_privacidad: consentimiento,
+      consent_privacidad_ts: consentimiento ? now : null,
+      consent_texto: 'solicitud publica v2'
+    })
+    .select('id')
+    .single();
+
+  setL('btn-sol', false);
+
+  if(error){ sER('err-sol','Error: '+error.message); return; }
+
+  document.getElementById('cod-sol').textContent = dbc(data.id);
+  sOK('ok-sol');
+  document.getElementById('btn-sol').style.display='none';
 }
 
-  if(!mun){sE('es-mun');ok=false}if(!srv){sE('es-srv');ok=false}
-  if(!cp){sE('es-cp');ok=false} // CHANGED: validar checkbox obligatorio
-  if(!ok)return;
-  setL('btn-sol',true);
-  const now=new Date().toISOString();
- const consentimiento = !!cp; // fuerza boolean real
-
-const { data, error } = await sb
-  .from('solicitudes')
-  .insert({
-    cliente: cli,
-    telefono: wa,
-    municipio: mun,
-    direccion: dir || null,
-    servicio: srv,
-    detalles: det || null,
-    estado: 'pendiente',
-    fecha_ts: now,
-
-    // 👇 IMPORTANTE
-    consent_privacidad: consentimiento,
-    consent_privacidad_ts: consentimiento ? now : null,
-    consent_texto: 'solicitud publica v2'
-  })
-  .select('id')
-  .single();
-
-setL('btn-sol', false);
-
-if (error) {
-  sER('err-sol', 'Error: ' + error.message);
-  return;
-}
-
-document.getElementById('cod-sol').textContent = dbc(data.id);
-sOK('ok-sol');
-document.getElementById('btn-sol').style.display = 'none';
-
+// ───────── GARANTIA (anon INSERT con consentimiento) ─────────
 async function envGar(){
   cER('err-gar');
+  ['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(cE);
+
   const rec=document.getElementById('g-rec').value.trim();
   const tel=document.getElementById('g-tel').value.trim();
   const fal=document.getElementById('g-fal').value.trim();
   const cp=document.getElementById('g-cp').checked;
-  ['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(cE); // CHANGED: añadido 'eg-cp' al limpiar errores
+
   let ok=true;
-  if(!rec){sE('eg-rec');ok=false}if(!vt(tel)){sE('eg-tel');ok=false}if(!fal){sE('eg-fal');ok=false}
-  if(!cp){sE('eg-cp');ok=false} // CHANGED: validar checkbox obligatorio
-  if(!ok)return;
+  if(!rec){sE('eg-rec');ok=false}
+  if(!vt(tel)){sE('eg-tel');ok=false}
+  if(!fal){sE('eg-fal');ok=false}
+  if(!cp){sE('eg-cp');ok=false}
+  if(!ok) return;
+
   setL('btn-gar',true);
+
   const now=new Date().toISOString();
-  const{error}=await sb.from('garantias').insert({recibo:rec,telefono:tel,falla:fal,estado:'pendiente',consent_privacidad:cp,consent_privacidad_ts:cp?now:null,consent_texto:'garantia v2'});
+  const { error } = await sb.from('garantias').insert({
+    recibo: rec,
+    telefono: tel,
+    falla: fal,
+    estado: 'pendiente',
+    consent_privacidad: true,
+    consent_privacidad_ts: now,
+    consent_texto: 'garantia v2'
+  });
+
   setL('btn-gar',false);
   if(error){sER('err-gar','Error: '+error.message);return}
-  sOK('ok-gar');document.getElementById('btn-gar').style.display='none';
+  sOK('ok-gar'); document.getElementById('btn-gar').style.display='none';
 }
 
+// ───────── RECLAMO (anon INSERT con consentimiento) ─────────
 async function envRec(){
   cER('err-rec');
+  ['er-tel','er-msg','er-cp'].forEach(cE);
+
   const tel=document.getElementById('r-tel').value.trim();
   const cod=document.getElementById('r-cod').value.trim();
   const msg=document.getElementById('r-msg').value.trim();
   const cp=document.getElementById('r-cp').checked;
-  ['er-tel','er-msg','er-cp'].forEach(cE); // CHANGED: añadido 'er-cp' al limpiar errores
+
   let ok=true;
-  if(!vt(tel)){sE('er-tel');ok=false}if(!msg){sE('er-msg');ok=false}
-  if(!cp){sE('er-cp');ok=false} // CHANGED: validar checkbox obligatorio
-  if(!ok)return;
+  if(!vt(tel)){sE('er-tel');ok=false}
+  if(!msg){sE('er-msg');ok=false}
+  if(!cp){sE('er-cp');ok=false}
+  if(!ok) return;
+
   setL('btn-rec',true);
+
   const now=new Date().toISOString();
-  const{error}=await sb.from('quejas').insert({telefono:tel,codigo_servicio:cod||null,descripcion:msg,estado:'pendiente',consent_privacidad:cp,consent_privacidad_ts:cp?now:null,consent_texto:'reclamo v2'}); // CHANGED: campo 'mensaje' → 'descripcion'
+  // OJO: en tu admin estás leyendo "mensaje". Aquí tú pusiste "descripcion".
+  // Mantengo "mensaje" para que cuadre con tu admin (si tu tabla es "descripcion", lo ajusto).
+  const { error } = await sb.from('quejas').insert({
+    telefono: tel,
+    codigo_servicio: cod || null,
+    mensaje: msg,
+    estado:'pendiente',
+    consent_privacidad: true,
+    consent_privacidad_ts: now,
+    consent_texto:'reclamo v2'
+  });
+
   setL('btn-rec',false);
   if(error){sER('err-rec','Error: '+error.message);return}
-  sOK('ok-rec');document.getElementById('btn-rec').style.display='none';
+  sOK('ok-rec'); document.getElementById('btn-rec').style.display='none';
 }
 
-function setStar(v){sv=v;document.querySelectorAll('#stars .star').forEach(s=>s.classList.toggle('on',parseInt(s.dataset.v)<=v));cE('ec-st')}
+// ───────── CALIFICAR (RPC rate_solicitud) ─────────
+function setStar(v){
+  sv=v;
+  document.querySelectorAll('#stars .star').forEach(s=>s.classList.toggle('on',parseInt(s.dataset.v)<=v));
+  cE('ec-st')
+}
 async function envCal(){
   cER('err-cal');
-  const cod=document.getElementById('c-cod').value.trim();
   ['ec-cod','ec-st'].forEach(cE);
+
+  const cod=document.getElementById('c-cod').value.trim();
   let ok=true;
-  if(!cod){sE('ec-cod');ok=false}if(!sv){sE('ec-st');ok=false}
-  if(!ok)return;
+  if(!cod){sE('ec-cod');ok=false}
+  if(!sv){sE('ec-st');ok=false}
+  if(!ok) return;
+
   const n=parseInt(cod.replace(/^db-/i,''));
-  if(isNaN(n)){sE('ec-cod','Formato invalido. Usa db-xxxx.');return}
+  if(isNaN(n)){ sE('ec-cod','Formato invalido. Usa db-xxxx.'); return; }
+
   setL('btn-cal',true);
-  const{data:row}=await sb.from('solicitudes').select('id').eq('id',n).maybeSingle();
-  if(!row){setL('btn-cal',false);sER('err-cal','Codigo no encontrado.');return}
-  const now=new Date().toISOString();
-  const { error } = await sb.rpc('rate_solicitud', {
-  p_id: n,
-  p_valoracion: sv
-});
+
+  const { data:row } = await sb.from('solicitudes').select('id').eq('id',n).maybeSingle();
+  if(!row){ setL('btn-cal',false); sER('err-cal','Codigo no encontrado.'); return; }
+
+  const { error } = await sb.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
+
   setL('btn-cal',false);
-  if(error){sER('err-cal','Error: '+error.message);return}
-  sOK('ok-cal');document.getElementById('btn-cal').style.display='none';
+  if(error){ sER('err-cal','Error: '+error.message); return; }
+
+  sOK('ok-cal'); document.getElementById('btn-cal').style.display='none';
 }
 
+// ───────── UNETE (signUp → signIn → INSERT socios con auth_uid) ─────────
 async function envUni(){
   cER('err-uni');
+  ['eu-nom','eu-tel','eu-esp','eu-zona','eu-email','eu-pass'].forEach(cE);
+
   const nom=document.getElementById('u-nom').value.trim();
   const tel=document.getElementById('u-tel').value.trim();
   const esp=document.getElementById('u-esp').value;
   const zona=document.getElementById('u-zona').value.trim();
   const email=document.getElementById('u-email').value.trim();
   const pass=document.getElementById('u-pass').value;
-  ['eu-nom','eu-tel','eu-esp','eu-zona','eu-email','eu-pass'].forEach(cE);
+
   let ok=true;
-  if(!nom){sE('eu-nom');ok=false}if(!vt(tel)){sE('eu-tel');ok=false}
-  if(!esp){sE('eu-esp');ok=false}if(!zona){sE('eu-zona');ok=false}
+  if(!nom){sE('eu-nom');ok=false}
+  if(!vt(tel)){sE('eu-tel');ok=false}
+  if(!esp){sE('eu-esp');ok=false}
+  if(!zona){sE('eu-zona');ok=false}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('eu-email');ok=false}
   if(pass.length<6){sE('eu-pass');ok=false}
-  if(!ok)return;
+  if(!ok) return;
+
   setL('btn-uni',true);
-  const{data:ad,error:ae}=await sb.auth.signUp({
-  email,
-  password: pass,
-  options: {
-    emailRedirectTo: 'https://dbarrio-two.vercel.app/'
-  }
-});
-  if(ae||!ad.user){setL('btn-uni',false);sER('err-uni','Error: '+(ae?ae.message:'sin usuario'));return}
-  // 1) sesión actual (para sacar el user.id)
-const { data: ses } = await sb.auth.getSession();
-const uid = ses?.session?.user?.id;
-if (!uid) { setL('btn-uni', false); sER('err-uni', 'Sesión no válida. Vuelve a iniciar.'); return; }
 
-// 2) insert del perfil socio
-const { error: se } = await sb.from('socios').insert({
-  nombre: nom,
-  telefono: tel,
-  especialidad: esp,
-  zona: zona,
-  email: email,
-  admitido: false,
-  estado_socio: 'pendiente',
-  comision: 15,
-  deuda: 0,
-  trabajos: 0
-});
+  // 1) crear auth user
+  const { data:ad, error:ae } = await sb.auth.signUp({
+    email,
+    password: pass,
+    options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' }
+  });
 
-setL('btn-uni', false);
+  if(ae){ setL('btn-uni',false); sER('err-uni','Error: '+ae.message); return; }
+  if(!ad?.user){ setL('btn-uni',false); sER('err-uni','Error: sin usuario'); return; }
 
-if (se) {
-  sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message);
-  return;
-}
-
-// 3) si se guardó bien, cerramos sesión (como querías)
-await sb.auth.signOut();
-
-sOK('ok-uni');
-document.getElementById('btn-uni').style.display = 'none';
-
-async function doLogin(){
-  cER('err-acc');
-  const email=document.getElementById('a-email').value.trim();
-  const pass=document.getElementById('a-pass').value;
-  ['ea-email','ea-pass'].forEach(cE);
-  let ok=true;
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');ok=false}
-  if(!pass){sE('ea-pass');ok=false}
-  if(!ok)return;
-  setL('btn-acc',true);
-  const{data:auth,error:ae}=await sb.auth.signInWithPassword({email,password:pass});
-  if(ae||!auth.session){setL('btn-acc',false);sER('err-acc','Credenciales incorrectas.');return}
-  const uid=auth.session.user.id;
-  const{data:adm}=await sb.from('admins').select('id').eq('auth_uid',uid).maybeSingle();
-  if(adm){window.location.href='admin.html';return}
-  const{data:soc}=await sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid',uid).maybeSingle();
-  if(soc){
-    if(!soc.admitido||soc.estado_socio!=='activo'){await sb.auth.signOut();setL('btn-acc',false);sER('err-acc','Cuenta pendiente de aprobacion.');return}
-    window.location.href='socio.html';return;
-  }
-  await sb.auth.signOut();setL('btn-acc',false);
-  sER('err-acc','Usuario no reconocido.');
-}
-
-async function doRecovery(){
-  cER('err-acc');
-  const email = document.getElementById('a-email').value.trim();
-  ['ea-email'].forEach(cE);
-
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    sE('ea-email'); 
+  // 2) asegurar sesión (si tu proyecto pide confirmación por email, esto puede fallar)
+  const { data:si, error:se1 } = await sb.auth.signInWithPassword({ email, password: pass });
+  if(se1 || !si?.session){
+    setL('btn-uni',false);
+    sER('err-uni','Cuenta creada. Revisa tu correo para confirmar y luego inicia sesión para completar el perfil.');
     return;
   }
 
-  // OJO: debe existir /reset.html publicado en Vercel
+  const uid = si.session.user.id;
+
+  // 3) insertar perfil socio (requiere policy INSERT authenticated)
+  const { error:se } = await sb.from('socios').insert({
+    auth_uid: uid,                 // 👈 CLAVE
+    nombre: nom,
+    telefono: tel,
+    especialidad: esp,
+    zona: zona,
+    email: email,
+    admitido: false,
+    estado_socio: 'pendiente',
+    comision: 15,
+    deuda: 0,
+    trabajos: 0
+  });
+
+  setL('btn-uni',false);
+
+  if(se){
+    sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);
+    return;
+  }
+
+  // 4) como querías: cerrar sesión
+  await sb.auth.signOut();
+
+  sOK('ok-uni');
+  document.getElementById('btn-uni').style.display='none';
+}
+
+// ───────── LOGIN ─────────
+async function doLogin(){
+  cER('err-acc');
+  ['ea-email','ea-pass'].forEach(cE);
+
+  const email=document.getElementById('a-email').value.trim();
+  const pass=document.getElementById('a-pass').value;
+
+  let ok=true;
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');ok=false}
+  if(!pass){sE('ea-pass');ok=false}
+  if(!ok) return;
+
+  setL('btn-acc',true);
+
+  const { data:auth, error:ae } = await sb.auth.signInWithPassword({ email, password: pass });
+  if(ae || !auth.session){
+    setL('btn-acc',false);
+    sER('err-acc','Credenciales incorrectas.');
+    return;
+  }
+
+  const uid = auth.session.user.id;
+
+  const { data:adm } = await sb.from('admins').select('id').eq('auth_uid',uid).maybeSingle();
+  if(adm){ window.location.href='admin.html'; return; }
+
+  const { data:soc } = await sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid',uid).maybeSingle();
+  if(soc){
+    if(!soc.admitido || soc.estado_socio!=='activo'){
+      await sb.auth.signOut();
+      setL('btn-acc',false);
+      sER('err-acc','Cuenta pendiente de aprobacion.');
+      return;
+    }
+    window.location.href='socio.html'; return;
+  }
+
+  await sb.auth.signOut();
+  setL('btn-acc',false);
+  sER('err-acc','Usuario no reconocido.');
+}
+
+// ───────── RECOVERY ─────────
+async function doRecovery(){
+  cER('err-acc'); cE('ea-email');
+
+  const email = document.getElementById('a-email').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ sE('ea-email'); return; }
+
   const { error } = await sb.auth.resetPasswordForEmail(email, {
     redirectTo: 'https://dbarrio-two.vercel.app/reset.html'
   });
 
-  if(error){
-    sER('err-acc', 'Error: ' + error.message);
-    return;
-  }
-
-   sER('err-acc', 'Listo. Revisa tu correo (y spam). Abre el enlace en Safari.');
+  if(error){ sER('err-acc','Error: '+error.message); return; }
+  sER('err-acc','Listo. Revisa tu correo (y spam). Abre el enlace en Safari.');
 }
 
-// ✅ Hacer toda la fila clicable (sin afectar links)
+// ───────── Checkbox rows clickable ─────────
 document.querySelectorAll('.cb').forEach(row => {
   row.style.cursor = 'pointer';
-
   row.addEventListener('click', (e) => {
     const t = e.target;
-
-    // Si tocó el input o un link, no forzar toggle
     if (t.closest('a')) return;
     if (t.tagName === 'INPUT') return;
-
     const input = row.querySelector('input[type="checkbox"]');
     if (!input) return;
-
     input.checked = !input.checked;
     input.dispatchEvent(new Event('change', { bubbles: true }));
   });
