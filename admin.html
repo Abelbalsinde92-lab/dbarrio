@@ -170,7 +170,6 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
 .btn-wa:hover{background:rgba(37,211,102,.15)}
 .btn-full{width:100%}
 .btn-sm{padding:7px 12px;font-size:12px}
-${s.solicita_cierre ? `<button class="btn btn-y" onclick="openAprobarCierre(${s.id})">Aprobar cierre</button>` : ''}
 
 /* ── FORM INLINE ── */
 .inline-form{background:var(--bg);border-radius:var(--rs);padding:12px;margin-top:10px}
@@ -562,20 +561,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // ✅ REALTIME: refrescar admin cuando cambie una orden
   setupRealtime();
 
   loadAjsUI();
-  loadKPIs();
   await loadSociosMap();
+  await loadKPIs();
   loadOp();
-}); // ✅ IMPORTANTE: cerrar el DOMContentLoaded
+});
 
-// fuera del listener:
+// helpers (solo una vez)
 function goIndex() { window.location.href = '/'; }
 async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
 
-// ✅ realtime fuera también
+// realtime (solo una vez)
 function setupRealtime() {
   sb.channel('rt-admin-solicitudes')
     .on(
@@ -607,7 +605,11 @@ function dbc(id) { return 'db-' + id }
 function fmt(ts) { if (!ts) return '—'; const d=new Date(ts); return d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}) }
 function fmtD(ts) { if (!ts) return '—'; const d=new Date(ts); return d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}) }
 function fmtM(n) { return n != null ? '$'+parseFloat(n).toFixed(2) : '—' }
-function stars(v, n=5) { return Array.from({length:n},(_,i)=>`<span class="star-r${i<(v||0)?' on':''}"">★</span>`).join('') }
+function stars(v, n=5) {
+  return Array.from({ length:n }, (_, i) =>
+    `<span class="star-r${i < (v || 0) ? ' on' : ''}">★</span>`
+  ).join('');
+}
 function setT(id, v) { const e=document.getElementById(id); if(e) e.textContent=v }
 
 async function marcarReclamoResuelto(id) {
@@ -741,6 +743,26 @@ function buildCardOp(s) {
        </div>`
     : '';
 
+  // ✅ Selector de socio solo si está pendiente
+  let asignarHTML = '';
+  if (s.estado === 'pendiente') {
+    const opts = Object.values(sociosMap)
+      .filter(sc => sc && sc.nombre)
+      .map(sc => `<option value="${sc.id}">${esc(sc.nombre)}</option>`)
+      .join('');
+
+    asignarHTML = `
+      <div class="inline-form" style="margin-top:10px">
+        <label>Asignar socio</label>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <select id="sel-${s.id}" style="flex:1">
+            ${opts ? `<option value="">-- Seleccionar --</option>${opts}` : `<option value="">Sin socios</option>`}
+          </select>
+          <button class="btn btn-y btn-sm" onclick="asignar(${s.id})">Asignar</button>
+        </div>
+      </div>`;
+  }
+
   const btnCompletar =
     (s.estado==='asignada' && cierreReportado)
       ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Aprobar y enviar garantía</button>`
@@ -798,12 +820,12 @@ function buildCardOp(s) {
              </div>`
           : ''
         }
-
       </div>
 
       ${cierreFlag}
+      ${asignarHTML}
 
-      <div class="actions-row" style="margin-top:10px">
+      <div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
         ${btnCompletar}
         ${btnWASocio}
         ${btnRechazar}
@@ -1027,23 +1049,6 @@ async function waSocioAsignado(id) {
     .replace('{servicio}', sol.servicio||'')
     .replace('{detalles}', sol.detalles||'Sin detalles');
   wa(soc.telefono, msg);
-}
-
-async function openAprobarCierre(id) {
-  pendingCompId = id;
-
-  const { data: sol, error } = await sb.from('solicitudes')
-    .select('monto_socio, garantia_dias, nota_socio')
-    .eq('id', id).single();
-
-  if (error) { toast('Error: '+error.message); return; }
-
-  document.getElementById('comp-monto').value = sol?.monto_socio ?? '';
-  document.getElementById('comp-gar').value   = sol?.garantia_dias ?? 0;
-  document.getElementById('comp-nota').value  = ''; // nota del admin si quiere
-  document.getElementById('err-comp').classList.remove('v');
-
-  openModal('comp');
 }
 
 // ══════════════════════════════════════════
@@ -1337,144 +1342,87 @@ async function waCobro(id) {
 // SOPORTE
 // ══════════════════════════════════════════
 async function loadSoporte() {
-
-  const elGar = document.getElementById('lista-garantias');
-  const elRec = document.getElementById('lista-reclamos');
+  const elGar = document.getElementById('lista-gar');
+  const elQue = document.getElementById('lista-que');
 
   elGar.innerHTML = '<div class="loading">Cargando...</div>';
-  elRec.innerHTML = '<div class="loading">Cargando...</div>';
+  elQue.innerHTML = '<div class="loading">Cargando...</div>';
 
-  // 1️⃣ Traer solicitudes con socio
+  // Garantías: salen de solicitudes completadas con garantía
   const { data: solicitudes, error: e1 } = await sb
     .from('solicitudes')
-    .select(`
-      *,
-      socios (
-        nombre,
-        telefono
-      )
-    `)
+    .select(`id, telefono, fecha_fin, garantia_dias, garantia_expira, socio_asignado, socios(nombre,telefono)`)
     .not('garantia_dias', 'is', null)
-    .order('fecha_fin', { ascending:false });
+    .order('fecha_fin', { ascending: false });
 
   if (e1) {
-    elGar.innerHTML = `<div class="empty">Error: ${e1.message}</div>`;
-    elRec.innerHTML = '';
+    elGar.innerHTML = `<div class="empty">Error: ${esc(e1.message)}</div>`;
+  } else if (!solicitudes?.length) {
+    elGar.innerHTML = '<div class="empty">Sin garantías registradas</div>';
+  } else {
+    elGar.innerHTML = solicitudes.map(s => {
+      const socio = s.socios?.nombre || (s.socio_asignado ? (sociosMap[s.socio_asignado]?.nombre || '—') : '—');
+      const hoy = new Date();
+      const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
+      const vencida = exp ? exp < hoy : false;
+
+      return `
+<div class="soporte-card">
+  <div class="soporte-hdr" onclick="toggleSoporteCard(this)">
+    <div class="soporte-hdr-left">
+      <div class="soporte-title">${esc(dbc(s.id))} · ${esc(s.telefono || '')}</div>
+      <div class="soporte-meta">${fmtD(s.fecha_fin)} · ${s.garantia_dias ?? 0} días</div>
+    </div>
+    <svg class="card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div class="soporte-body">
+    <div style="margin-top:6px;font-size:13px">👤 Socio: ${esc(socio)}</div>
+    <div style="margin-top:6px;font-size:13px;font-weight:700;color:${vencida ? 'var(--err)' : 'var(--ok)'}">
+      🛡 ${vencida ? 'Garantía vencida' : 'Garantía activa'}
+      ${exp ? ' · Vence: ' + exp.toLocaleDateString('es-ES') : ''}
+    </div>
+  </div>
+</div>`;
+    }).join('');
+  }
+
+  // Reclamos (quejas)
+  const { data: quejas, error: e2 } = await sb
+    .from('quejas')
+    .select(`id, telefono, codigo_servicio, mensaje, estado, created_at`)
+    .order('created_at', { ascending: false });
+
+  if (e2) {
+    elQue.innerHTML = `<div class="empty">Error: ${esc(e2.message)}</div>`;
     return;
   }
 
-  // 2️⃣ Traer quejas con solicitud asociada
-  const { data: quejas, error: e2 } = await sb
-    .from('quejas')
-    .select(`
-      *,
-      solicitudes (
-        id,
-        cliente,
-        telefono,
-        socio_asignado,
-        garantia_dias,
-        garantia_expira,
-        socios (
-          nombre
-        )
-      )
-    `)
-    .order('created_at', { ascending:false });
-
-  if (e2) {
-    elRec.innerHTML = `<div class="empty">Error: ${e2.message}</div>`;
-  }
-
-  // =========================
-  // 🛡 GARANTÍAS
-  // =========================
-
-  if (!solicitudes?.length) {
-    elGar.innerHTML = '<div class="empty">Sin garantías registradas</div>';
-  } else {
-
-    elGar.innerHTML = solicitudes.map(s => {
-
-  const socio = s.socios?.nombre || '—';
-
-  const hoy = new Date();
-  const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
-  const vencida = exp ? exp < hoy : false;
-
-  return `
-<div class="support-card">
-
-  <div class="support-top">
-    <div>
-      <div class="support-code">${dbc(s.id)} · ${esc(s.telefono)}</div>
-      <div class="support-meta">${fmtD(s.fecha_fin)}</div>
-    </div>
-  </div>
-
-  <div style="margin-top:8px;font-size:13px">
-    👤 Socio: ${esc(socio)}
-  </div>
-
-  <div style="
-      margin-top:6px;
-      font-size:13px;
-      font-weight:600;
-      color:${vencida ? '#D63031' : '#1A7F5A'};
-  ">
-    🛡 ${vencida ? 'Garantía vencida' : 'Garantía activa'}
-    ${exp ? ' · Vence: ' + exp.toLocaleDateString('es-ES') : ''}
-  </div>
-
-</div>
-`;
-}).join('');
-
-  // =========================
-  // ⚠ RECLAMOS
-  // =========================
-
   if (!quejas?.length) {
-    elRec.innerHTML = '<div class="empty">Sin reclamos</div>';
-  } else {
+    elQue.innerHTML = '<div class="empty">Sin reclamos</div>';
+    return;
+  }
 
-    elRec.innerHTML = quejas.map(q => {
+  elQue.innerHTML = quejas.map(q => {
+    return `
+<div class="soporte-card">
+  <div class="soporte-hdr" onclick="toggleSoporteCard(this)">
+    <div class="soporte-hdr-left">
+      <div class="soporte-title">${esc(q.codigo_servicio || 'Sin código')} · ${esc(q.telefono || '')}</div>
+      <div class="soporte-meta">${fmtD(q.created_at)} · ${esc(q.estado || 'pendiente')}</div>
+    </div>
+    <svg class="card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
 
-      const s = q.solicitudes;
-      const socio = s?.socios?.nombre || '—';
+  <div class="soporte-body">
+    <div style="margin-top:8px;font-size:13px">${esc(q.mensaje || 'Sin mensaje')}</div>
 
-      return `
-<div class="support-card">
-  <div class="support-top">
-    <div>
-      <div class="support-code">${dbc(s?.id)} · ${esc(s?.telefono || '')}</div>
-      <div class="support-meta">${fmtD(q.created_at)} · ${esc(q.estado || 'pendiente')}</div>
+    <div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
+      ${q.telefono ? `<button class="btn btn-k btn-sm" onclick="window.open('tel:${esc(q.telefono)}')">Llamar</button>` : ''}
+      <button class="btn btn-y btn-sm" onclick="marcarReclamoResuelto(${q.id})">Marcar resuelto</button>
     </div>
   </div>
-
-  <div style="margin-top:8px;font-size:13px">
-    👤 Socio: ${esc(socio)}
-  </div>
-
-  <div style="margin-top:6px;font-size:13px">
-    ${esc(q.descripcion || 'Sin descripción')}
-  </div>
-
-  <div style="margin-top:10px">
-    <button class="btn btn-dark" onclick="window.open('tel:${s?.telefono || ''}')">
-      Llamar
-    </button>
-
-    <button class="btn btn-yellow"
-      onclick="marcarReclamoResuelto(${q.id})">
-      Marcar resuelto
-    </button>
-  </div>
-
-</div>
-`;
-    }).join('');
-  }
+</div>`;
+  }).join('');
 }
 
 async function resolverGar(id) { await sb.from('garantias').update({estado:'resuelto'}).eq('id',id); toast('Marcado como resuelto'); loadSoporte() }
