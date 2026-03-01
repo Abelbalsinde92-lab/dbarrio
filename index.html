@@ -505,13 +505,11 @@ if (!uid) { setL('btn-uni', false); sER('err-uni', 'Sesión no válida. Vuelve a
 
 // 2) insert del perfil socio
 const { error: se } = await sb.from('socios').insert({
-  auth_uid: uid,              // 👈 CLAVE
-  nombre: (nom || '').trim(),
-  telefono: String(tel || '').trim(),
-  especialidad: (esp || '').trim() || null,
-  zona: (zona || '').trim() || null,
-  email: (email || '').trim() || null,
-
+  nombre: nom,
+  telefono: tel,
+  especialidad: esp,
+  zona: zona,
+  email: email,
   admitido: false,
   estado_socio: 'pendiente',
   comision: 15,
