@@ -251,12 +251,14 @@ function cardOrden(s) {
   const cid = 'or'+s.id;
 
   const enP = s.sub_estado === 'en_proceso';
-  const rep = s.sub_estado === 'cierre_reportado';
+const rep = s.sub_estado === 'cierre_reportado';
+const rej = s.sub_estado === 'rechazada_por_socio';
 
-  const chip =
-    rep ? '<span class="chip ce">Cierre reportado</span>' :
-    enP ? '<span class="chip ce">En proceso</span>' :
-          '<span class="chip ca">Asignada</span>';
+const chip =
+  rep ? '<span class="chip ce">Cierre reportado</span>' :
+  rej ? '<span class="chip ce" style="background:#F8D7DA;color:#721C24">Rechazo enviado</span>' :
+  enP ? '<span class="chip ce">En proceso</span>' :
+        '<span class="chip ca">Asignada</span>';
 
   return `<div class="card" id="${cid}">
     <div class="card-hdr" onclick="toggleCard('${cid}')">
@@ -323,7 +325,8 @@ function cardOrden(s) {
         ${!enP ? `<button class="btn btn-yellow" onclick="marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
         ${s.telefono ? `<a href="tel:${esc(s.telefono)}" class="btn btn-dark">Llamar cliente</a>` : ''}
         <button class="btn btn-wa btn-sm" onclick="waAdmin(${s.id})">${svgWA()} Admin</button>
-        <button class="btn btn-danger btn-sm" onclick="openF('nopuedo',${s.id})">No puedo atender</button>
+        ${!rej ? `<button class="btn btn-danger btn-sm" onclick="openF('nopuedo',${s.id})">No puedo atender</button>`
+      : `<button class="btn btn-ghost btn-sm" disabled>Ya notificaste</button>`}
       </div>
     </div>
   </div>`;
@@ -380,11 +383,17 @@ async function enviarReporte(id) {
 }
 async function confNoPuedo(id) {
   const nota = document.getElementById('nt-nopuedo-'+id).value.trim();
+  if (!nota) return alert('Escribe el motivo');
+
   const { error } = await sb.from('solicitudes').update({
-    socio_asignado: null, estado:'pendiente', sub_estado:null,
-    nota_socio: nota ? ('Rechazado por socio: '+nota) : 'Socio no disponible'
+    sub_estado: 'rechazada_por_socio',
+    motivo_rechazo_socio: nota,
+    rechazo_socio_ts: new Date().toISOString()
   }).eq('id', id);
-  if (error) { alert('Error: '+error.message); return; }
+
+  if (error) { alert('Error: ' + error.message); return; }
+
+  alert('Aviso enviado al admin. Queda pendiente de reasignación.');
   loadOrdenes();
 }
 
