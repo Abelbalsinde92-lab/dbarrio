@@ -1443,24 +1443,28 @@ async function loadSoporte() {
   // filtro (si no existe el select, cae en "pendiente")
   const filtro = document.getElementById('f-que')?.value || 'pendiente';
 
-  let qQue = sb.from('quejas')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(200);
+  const filtro = document.getElementById('f-que')?.value || 'pendiente';
 
-  if (filtro !== 'todos') qQue = qQue.eq('estado', filtro);
+const { data: quejasRaw, error: e2 } = await sb
+  .from('quejas')
+  .select('*')
+  .order('created_at', { ascending:false })
+  .limit(200);
 
-  const { data: quejas, error: e2 } = await qQue;
+if (e2) {
+  elRec.innerHTML = `<div class="empty">Error: ${esc(e2.message)}</div>`;
+  return;
+}
 
-  if (e2) {
-    elRec.innerHTML = `<div class="empty">Error: ${esc(e2.message)}</div>`;
-    return;
-  }
+const quejas = (quejasRaw || []).filter(q => {
+  if (filtro === 'todos') return true;
+  return (q.estado || 'pendiente') === filtro;
+});
 
-  if (!quejas?.length) {
-    elRec.innerHTML = '<div class="empty">Sin reclamos</div>';
-    return;
-  }
+if (!quejas.length) {
+  elRec.innerHTML = '<div class="empty">Sin reclamos</div>';
+  return;
+}
 
   // ✅ traer solicitudes de una vez (por ids)
   const solIds = Array.from(new Set(quejas.map(q => q.solicitud_id).filter(Boolean)));
