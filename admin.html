@@ -717,6 +717,14 @@ function buildCardOp(s) {
     (s.estado === 'asignada' && s.sub_estado === 'en_proceso') ? 'en_proceso' :
     s.estado;
 
+  const visual =
+  (s.estado === 'asignada' && rechazoSocio) ? 'rechazada_por_socio' :
+  (s.estado === 'asignada' && cierreReportado) ? 'cierre_reportado' :
+  (s.estado === 'asignada' && s.sub_estado === 'en_proceso') ? 'en_proceso' :
+  s.estado;
+  
+  const rechazoSocio = (s.sub_estado === 'rechazada_por_socio');
+
   const chipClass = {
     pendiente:'cp',
     asignada:'ca',
@@ -734,7 +742,32 @@ function buildCardOp(s) {
     completada:'completada',
     rechazada:'rechazada'
   }[visual] || visual;
+  
+  const btnLiberar =
+  (s.estado === 'asignada' && rechazoSocio)
+    ? `<button class="btn btn-g" onclick="liberarPorRechazo(${s.id})">Liberar / volver a pendiente</button>`
+    : '';
+  
+  const chipClass = {
+  pendiente:'cp',
+  asignada:'ca',
+  en_proceso:'ce',
+  cierre_reportado:'cc',
+  rechazada_por_socio:'cr',  // 👈
+  completada:'cc',
+  rechazada:'cr'
+}[visual] || 'cp';
 
+const chipText = {
+  pendiente:'pendiente',
+  asignada:'asignada',
+  en_proceso:'en proceso',
+  cierre_reportado:'cierre reportado',
+  rechazada_por_socio:'rechazo socio', // 👈
+  completada:'completada',
+  rechazada:'rechazada'
+}[visual] || visual;
+  
   const cierreFlag = cierreReportado
     ? `<div style="background:#E2F7EE;border:1px solid #9BD4A8;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#155724">
          ✅ Cierre reportado por el socio
@@ -743,6 +776,15 @@ function buildCardOp(s) {
        </div>`
     : '';
 
+     const rechazoFlag = rechazoSocio
+  ? `<div style="background:#FFF5F5;border:1px solid #FCA5A5;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#721C24">
+       ❌ Rechazada por el socio
+       <div style="margin-top:6px;font-weight:600">
+         ${esc(s.motivo_rechazo_socio || s.nota_socio || 'Sin motivo')}
+       </div>
+     </div>`
+  : '';
+  
   // ✅ Selector de socio solo si está pendiente
   let asignarHTML = '';
   if (s.estado === 'pendiente') {
@@ -806,6 +848,13 @@ function buildCardOp(s) {
           <span class="info-val">${esc(s.servicio||'—')}</span>
         </div>
 
+<div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
+  ${btnCompletar}
+  ${btnLiberar}
+  ${btnWASocio}
+  ${btnRechazar}
+</div>
+
         <div class="info-item info-full">
           <span class="info-label">Teléfono</span>
           <a href="tel:${esc(telLimpio)}" class="call-link">
@@ -823,6 +872,7 @@ function buildCardOp(s) {
       </div>
 
       ${cierreFlag}
+      ${rechazoFlag}
       ${asignarHTML}
 
       <div class="actions-row" style="margin-top:10px;flex-wrap:wrap">
@@ -859,6 +909,23 @@ async function asignar(id) {
     if (soc.telefono) wa(soc.telefono, msg);
   }
   loadOp();
+}
+
+async function liberarPorRechazo(id) {
+  const ok = confirm('¿Liberar la orden y devolverla a pendiente?');
+  if (!ok) return;
+
+  const { error } = await sb.from('solicitudes').update({
+    estado: 'pendiente',
+    socio_asignado: null,
+    sub_estado: null
+  }).eq('id', id);
+
+  if (error) { toast('Error: ' + error.message); return; }
+
+  toast('Orden liberada');
+  loadOp();
+  loadKPIs();
 }
 
 async function openCompletar(id) {
