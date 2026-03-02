@@ -1435,7 +1435,9 @@ async function loadCaja() {
     <button class="btn btn-y btn-sm" onclick="openCaja(${s.id},'liquidar')">Liquidar todo</button>
     <button class="btn btn-g btn-sm" onclick="openCaja(${s.id},'pago')">Registrar pago</button>
     <button class="btn btn-g btn-sm" onclick="openCaja(${s.id},'ajuste')">Ajuste</button>
-    ${s.telefono?`<button class="btn btn-wa btn-sm" onclick="waCobro(${s.id})">Cobrar WA</button>`:''}
+    ${(s.telefono && parseFloat(s.deuda)>0)
+  ? `<button class="btn btn-wa btn-sm" onclick="waCobro(${s.id})">Contactar</button>`
+  : ''}
   </div>
 </div>`).join('');
   }
@@ -1505,9 +1507,36 @@ async function loadMovs() {
 
 async function waCobro(id) {
   const soc = sociosMap[id];
-  if (!soc?.telefono) { toast('Sin telefono'); return }
-  const { data } = await sb.from('socios').select('deuda').eq('id',id).single();
-  const msg = `Hola ${soc.nombre} 👋\n\nTe recordamos que tienes una deuda pendiente de *${fmtM(data?.deuda)}* con dbarrio.\n\nPor favor coordina el pago a la brevedad.\n\n— dbarrio`;
+  if (!soc?.telefono) { 
+    toast('El socio no tiene teléfono registrado'); 
+    return; 
+  }
+
+  const { data, error } = await sb
+    .from('socios')
+    .select('deuda,nombre')
+    .eq('id', id)
+    .single();
+
+  if (error || !data) {
+    toast('No pude obtener la deuda');
+    return;
+  }
+
+  const deudaTxt = fmtM(data.deuda || 0);
+
+  const msg = `Hola ${data.nombre} 👋
+
+¿Cómo estás?
+
+Te escribimos para comentarte que actualmente tienes un saldo pendiente de *${deudaTxt}* con dbarrio.
+
+Cuando puedas, coordinamos el pago o revisamos cualquier detalle si lo necesitas.
+
+Gracias por tu trabajo y apoyo 🙌
+
+— Equipo dbarrio`;
+
   wa(soc.telefono, msg);
 }
 
