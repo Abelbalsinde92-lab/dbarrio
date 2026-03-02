@@ -442,12 +442,12 @@ setTimeout(() => {
   
 }
 
-// ───────── GARANTIA (anon INSERT con consentimiento) ─────────
+// ───────── GARANTIA = RECLAMO DE GARANTIA (RPC create_garantia_reclamo_publico) ─────────
 async function envGar(){
   cER('err-gar');
   ['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(cE);
 
-  const rec=document.getElementById('g-rec').value.trim();
+  const rec=document.getElementById('g-rec').value.trim();  // db-xxx
   const tel=document.getElementById('g-tel').value.trim();
   const fal=document.getElementById('g-fal').value.trim();
   const cp=document.getElementById('g-cp').checked;
@@ -461,20 +461,26 @@ async function envGar(){
 
   setL('btn-gar',true);
 
-  const now=new Date().toISOString();
-  const { error } = await sbPublic.from('garantias').insert({
-    recibo: rec,
-    telefono: tel,
-    falla: fal,
-    estado: 'pendiente',
-    consent_privacidad: true,
-    consent_privacidad_ts: now,
-    consent_texto: 'garantia v2'
-  });
+  try{
+    const { data, error } = await sbPublic.rpc('create_garantia_reclamo_publico', {
+      p_telefono: tel,
+      p_codigo: rec,
+      p_mensaje: fal,
+      p_consent_texto: 'reclamo garantia v1'
+    });
 
-  setL('btn-gar',false);
-  if(error){sER('err-gar','Error: '+error.message);return}
-  sOK('ok-gar'); document.getElementById('btn-gar').style.display='none';
+    setL('btn-gar',false);
+
+    if(error){ sER('err-gar','Error: '+error.message); return; }
+
+    // éxito
+    sOK('ok-gar');
+    document.getElementById('btn-gar').style.display='none';
+
+  }catch(e){
+    setL('btn-gar',false);
+    sER('err-gar','Error: '+(e?.message||e));
+  }
 }
 
 // ───────── CALIFICAR (RPC rate_solicitud) ─────────
@@ -656,7 +662,6 @@ document.querySelectorAll('.cb').forEach(row => {
 });
 document.getElementById('s-cp')?.addEventListener('change', () => cE('es-cp'));
 document.getElementById('g-cp')?.addEventListener('change', () => cE('eg-cp'));
-document.getElementById('r-cp')?.addEventListener('change', () => cE('er-cp'));
 </script>
 </body>
 </html>
