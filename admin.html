@@ -669,7 +669,11 @@ function toast(msg, dur=2500) {
   setTimeout(()=>t.classList.remove('show'), dur);
 }
 
-function wa(num, msg) { window.open('https://wa.me/'+num.replace(/\D/g,'')+'?text='+encodeURIComponent(msg), '_blank') }
+function wa(num, msg) {
+  const url = 'https://wa.me/' + String(num || '').replace(/\D/g,'') + '?text=' + encodeURIComponent(msg || '');
+  const w = window.open(url, '_blank');
+  if (!w) window.location.href = url; // fallback iOS/Safari
+}
 function copyCompMsg(){
   const ta = document.getElementById('comp-msg');
   const txt = ta?.value?.trim();
@@ -1208,7 +1212,7 @@ async function loadHi() {
   const el = document.getElementById('lista-hi');
   el.innerHTML = '<div class="loading">Cargando...</div>';
 
-  await loadSociosMap(); // importante
+  await loadSociosMap();
 
   const cli = document.getElementById('f-cli').value.trim();
   const cod = document.getElementById('f-cod').value.trim();
@@ -1217,15 +1221,15 @@ async function loadHi() {
 
   let q = sb.from('solicitudes')
     .select('*')
-    .eq('estado', 'completada')
-    .not('fecha_fin', 'is', null)
-    .order('fecha_fin', { ascending: false })
+    .eq('estado','completada')
+    .not('fecha_fin','is', null)
+    .order('fecha_fin',{ascending:false})
     .limit(100);
 
-  if (cli) q = q.ilike('cliente', '%' + cli + '%');
+  if (cli) q = q.ilike('cliente','%'+cli+'%');
 
   if (cod) {
-    const n = parseInt(cod.replace(/^db-/i, ''), 10);
+    const n = parseInt(cod.replace(/^db-/i,''));
     if (!isNaN(n)) q = q.eq('id', n);
   }
 
@@ -1245,18 +1249,21 @@ async function loadHi() {
   }
 
   el.innerHTML = data.map(s => {
-    const socNom = (s.socio_asignado && sociosMap[s.socio_asignado])
+    const socNom = s.socio_asignado && sociosMap[s.socio_asignado]
       ? sociosMap[s.socio_asignado].nombre
       : '—';
 
-    // Garantía (sin “vencida” si no quieres mostrarlo, quítalo abajo)
     let garantiaHTML = '';
-    if (s.garantia_dias != null && parseInt(s.garantia_dias, 10) > 0) {
+    if (s.garantia_dias != null) {
+      const hoy = new Date();
       const expira = s.garantia_expira ? new Date(s.garantia_expira) : null;
+      const vencida = expira ? expira < hoy : false;
+
       garantiaHTML = `
         <div style="margin-top:6px;font-size:12px">
-          🛡 Garantía: ${parseInt(s.garantia_dias,10)} días
+          🛡 Garantía: ${s.garantia_dias} días
           ${expira ? ` · Vence: ${expira.toLocaleDateString('es-ES')}` : ''}
+          ${vencida ? ` <span style="color:#D63031;font-weight:700">(VENCIDA)</span>` : ''}
         </div>
       `;
     }
@@ -1266,7 +1273,7 @@ async function loadHi() {
   <div class="hist-row">
     <div>
       <div class="hist-code">${esc(dbc(s.id))}</div>
-      <div class="hist-meta">${esc(s.cliente || '')} · ${esc(socNom)}</div>
+      <div class="hist-meta">${esc(s.cliente)} · ${esc(socNom)}</div>
     </div>
     <div style="text-align:right">
       <div class="hist-monto">${fmtM(s.monto)}</div>
@@ -1275,7 +1282,7 @@ async function loadHi() {
   </div>
 
   <div class="hist-meta" style="margin-top:6px">
-    ${esc(s.municipio || '')} · ${esc(s.servicio || '')}
+    ${esc(s.municipio||'')} · ${esc(s.servicio||'')}
   </div>
 
   ${s.valoracion ? `<div class="stars-r" style="margin-top:6px">${stars(s.valoracion)}</div>` : ''}
