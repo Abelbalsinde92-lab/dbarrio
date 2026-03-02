@@ -1289,6 +1289,27 @@ async function saveComSocio(id) {
   toast('Comision actualizada'); loadSociosMap();
 }
 
+async function rechazarSocio(socioId){
+  if(!confirm('¿Rechazar este candidato?')) return;
+
+  const { error } = await sb
+    .from('socios')
+    .update({
+      estado_socio: 'rechazado',
+      admitido: false
+    })
+    .eq('id', socioId);
+
+  if(error){
+    alert('Error al rechazar: ' + error.message);
+    return;
+  }
+
+  alert('Candidato rechazado.');
+  // aquí recargas tu lista si tienes función
+  // await cargarSociosPendientes();
+}
+
 function waAdmin(tel, msg) { wa(tel, msg) }
 
 // ══════════════════════════════════════════
