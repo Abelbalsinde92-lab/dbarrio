@@ -450,7 +450,17 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
         <label>Nota (opcional)</label>
         <textarea id="comp-nota" placeholder="Observaciones del servicio..."></textarea>
       </div>
+      
+      <div class="fg">
+  <label>Mensaje al cliente (preview)</label>
+  <textarea id="comp-msg" readonly style="min-height:140px;background:#fff"></textarea>
+</div>
 
+<div class="actions-row" style="flex-wrap:wrap">
+  <button class="btn btn-g btn-sm" onclick="copyCompMsg()">Copiar</button>
+  <button class="btn btn-wa btn-sm" id="btn-wa-cli" onclick="sendCompMsgWA()">Abrir WhatsApp</button>
+</div>
+      
       <div class="err-box" id="err-comp"></div>
 
       <button class="btn btn-y btn-full" id="btn-comp" onclick="doCompletar()">
@@ -537,6 +547,8 @@ let pendingCompId = null;
 let pendingRechId = null;
 let pendingCajaId = null;
 let pendingCajaTipo = null;
+let pendingCompMsg = null;
+let pendingCompTel = null;
 
 // ══════════════════════════════════════════
 // INIT
@@ -658,6 +670,37 @@ function toast(msg, dur=2500) {
 }
 
 function wa(num, msg) { window.open('https://wa.me/'+num.replace(/\D/g,'')+'?text='+encodeURIComponent(msg), '_blank') }
+function copyCompMsg(){
+  const ta = document.getElementById('comp-msg');
+  const txt = ta?.value?.trim();
+  if (!txt) return toast('No hay mensaje');
+
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(txt)
+      .then(()=>toast('Mensaje copiado'))
+      .catch(()=>fallbackCopy(ta));
+  } else {
+    fallbackCopy(ta);
+  }
+}
+
+function fallbackCopy(ta){
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+    toast('Mensaje copiado');
+  } catch (e) {
+    toast('Mantén presionado y copia manual');
+  }
+}
+
+function sendCompMsgWA(){
+  if (!pendingCompTel || !pendingCompMsg) 
+    return toast('Falta teléfono o mensaje');
+
+  wa(pendingCompTel, pendingCompMsg);
+}
 
 function openModal(k) { document.getElementById('ov-'+k).classList.add('open') }
 function closeModal(k) { document.getElementById('ov-'+k).classList.remove('open') }
@@ -930,34 +973,59 @@ async function openCompletar(id) {
   const e = document.getElementById('err-comp');
   if (e) { e.textContent = ''; e.classList.remove('v'); }
 
-  // cargar orden para traer lo reportado por el socio
   const { data: sol, error } = await sb
     .from('solicitudes')
-    .select('monto_socio,garantia_dias,nota_socio')
+    .select('*')
     .eq('id', id)
     .single();
 
-  if (error || !sol) {
-    toast('No pude cargar el reporte del socio');
-    return;
-  }
+  if (error || !sol) { toast('No pude cargar la orden'); return; }
 
-  // ✅ SI NO HAY REPORTE → no abrir (porque no hay nada que aprobar)
   if (sol.monto_socio == null) {
     toast('El socio aún no reportó el cierre (monto).');
     return;
   }
 
-  // ✅ Rellenar inputs del modal (si existen)
-  const inMonto = document.getElementById('comp-monto');
-  if (inMonto) inMonto.value = sol.monto_socio ?? '';
+  // Prefill inputs
+  document.getElementById('comp-monto').value = sol.monto_socio ?? '';
+  document.getElementById('comp-gar').value   = sol.garantia_dias ?? 0;
+  document.getElementById('comp-nota').value  = sol.nota_socio ?? '';
 
-  const inGar = document.getElementById('comp-gar'); // (si lo creas en el modal)
-  if (inGar) inGar.value = sol.garantia_dias ?? 0;
+  // ✅ construir preview del mensaje (ANTES de cerrar)
+  const garDias = sol.garantia_dias != null ? parseInt(sol.garantia_dias, 10) : 0;
 
-  const inNota = document.getElementById('comp-nota');
-  // aquí la nota del admin es opcional, pero podemos precargar los detalles del socio para que lo veas
-  if (inNota) inNota.value = sol.nota_socio ?? '';
+  let finGarISO = null;
+  if (garDias > 0) {
+    const fin = new Date();
+    fin.setDate(fin.getDate() + garDias);
+    finGarISO = fin.toISOString();
+  }
+
+  const socioNom = sol.socio_asignado
+    ? (sociosMap[sol.socio_asignado]?.nombre || '—')
+    : '—';
+
+  const venceTxt = finGarISO
+    ? new Date(finGarISO).toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric' })
+    : 'No aplica';
+
+  const garTxt = garDias > 0 ? `${garDias} días` : 'Sin garantía';
+  const detallesTxt = sol?.nota_socio || '—';
+
+  const msgCli = (CFG.t3 || '')
+    .replaceAll('{cliente}', sol?.cliente || '')
+    .replaceAll('{code}', dbc(id))
+    .replaceAll('{socio}', socioNom)
+    .replaceAll('{monto}', fmtM(sol.monto_socio))
+    .replaceAll('{garantia}', garTxt)
+    .replaceAll('{vence}', venceTxt)
+    .replaceAll('{detalles}', detallesTxt);
+
+  pendingCompMsg = msgCli;
+  pendingCompTel = sol?.telefono || null;
+
+  const ta = document.getElementById('comp-msg');
+  if (ta) ta.value = msgCli;
 
   openModal('comp');
 }
@@ -1095,7 +1163,6 @@ async function doCompletar() {
     .replaceAll('{vence}', venceTxt)
     .replaceAll('{detalles}', detallesTxt);
 
-  if (sol?.telefono) wa(sol.telefono, msgCli);
   if (document.getElementById('sec-hi')?.classList.contains('active')) {
   loadHi();
 }
