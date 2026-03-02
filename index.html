@@ -370,49 +370,60 @@ function setL(id,on){
 }
 function dbc(id){return 'db-'+id}
 
-// ───────── SOLICITUD (anon INSERT con consentimiento) ─────────
+// ───────── SOLICITUD (RPC: create_solicitud_publica) ─────────
 async function envSol(){
   cER('err-sol');
   ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
 
-  const cli=document.getElementById('s-cli').value.trim();
-  const wa =document.getElementById('s-wa').value.trim();
-  const mun=document.getElementById('s-mun').value.trim();
-  const dir=document.getElementById('s-dir').value.trim();
-  const srv=document.getElementById('s-srv').value;
-  const det=document.getElementById('s-det').value.trim();
-  const cp =document.getElementById('s-cp').checked;
+  const cli = document.getElementById('s-cli')?.value.trim() || '';
+  const wa  = document.getElementById('s-wa')?.value.trim() || '';
+  const mun = document.getElementById('s-mun')?.value.trim() || '';
+  const dir = document.getElementById('s-dir')?.value.trim() || '';
+  const srv = document.getElementById('s-srv')?.value || '';
+  const det = document.getElementById('s-det')?.value.trim() || '';
+  const cp  = !!document.getElementById('s-cp')?.checked;
 
-  let ok=true;
-  if(!cli){sE('es-cli');ok=false}
-  if(!vt(wa)){sE('es-wa');ok=false}
-  if(!mun){sE('es-mun');ok=false}
-  if(!srv){sE('es-srv');ok=false}
-  if(!cp){sE('es-cp');ok=false}
+  let ok = true;
+  if(!cli){ sE('es-cli'); ok=false; }
+  if(!vt(wa)){ sE('es-wa'); ok=false; }
+  if(!mun){ sE('es-mun'); ok=false; }
+  if(!srv){ sE('es-srv'); ok=false; }
+  if(!cp){ sE('es-cp'); ok=false; }
   if(!ok) return;
 
   setL('btn-sol', true);
 
-  const now = new Date().toISOString();
-  consent_privacidad: true,
-  consent_privacidad_ts: now,
-  const { data, error } = await sb.rpc('create_solicitud_publica', {
-  p_cliente: cli,
-  p_telefono: wa,
-  p_municipio: mun,
-  p_direccion: dir || '',
-  p_servicio: srv,
-  p_detalles: det || '',
-  p_consent_texto: 'solicitud publica v2'
-});
+  try {
+    // Asegura que estás realmente anon (opcional pero útil para evitar sesiones colgadas)
+    // await sb.auth.signOut();
 
-setL('btn-sol', false);
+    const { data, error } = await sb.rpc('create_solicitud_publica', {
+      p_cliente: cli,
+      p_telefono: wa,
+      p_municipio: mun,
+      p_direccion: dir,                 // '' o texto
+      p_servicio: srv,
+      p_detalles: det,                  // '' o texto
+      p_consent_texto: 'solicitud publica v2'
+    });
 
-if (error) { sER('err-sol', 'Error: ' + error.message); return; }
+    setL('btn-sol', false);
 
-document.getElementById('cod-sol').textContent = dbc(data);
-sOK('ok-sol');
-document.getElementById('btn-sol').style.display='none';
+    if(error){
+      sER('err-sol', 'Error: ' + error.message);
+      return;
+    }
+
+    // data debe ser el bigint (id) que devuelve la función
+    document.getElementById('cod-sol').textContent = dbc(data);
+    sOK('ok-sol');
+    document.getElementById('btn-sol').style.display = 'none';
+
+  } catch (e) {
+    setL('btn-sol', false);
+    sER('err-sol', 'Error: ' + (e?.message || e));
+  }
+}
 
 // ───────── GARANTIA (anon INSERT con consentimiento) ─────────
 async function envGar(){
