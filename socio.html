@@ -92,6 +92,23 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .flbl{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 textarea{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f);color:var(--ink);background:#fff;resize:vertical;min-height:60px;-webkit-appearance:none}
 textarea:focus{outline:none;border-color:var(--ink)}
+
+input, select {
+  width:100%;
+  padding:9px 11px;
+  border:1.5px solid var(--line);
+  border-radius:var(--rs);
+  font-size:14px;
+  font-family:var(--f);
+  background:#fff;
+  -webkit-appearance:none;
+}
+
+input:focus, select:focus {
+  outline:none;
+  border-color:var(--ink);
+}
+
 /* CUENTA */
 .cuenta-card{background:var(--card);border-radius:var(--r);box-shadow:0 1px 6px rgba(0,0,0,.07),0 0 0 1px rgba(0,0,0,.04);padding:20px;margin-bottom:12px}
 .cuenta-nombre{font-family:var(--fd);font-size:26px;font-weight:900;color:var(--ink);margin-bottom:4px}
@@ -282,7 +299,12 @@ if (data.estado_socio !== 'activo') { dbg('Tu estado_socio es: ' + data.estado_s
 }
 
 function goIdx() { window.location.href = 'index.html'; }
-async function exitSocio() { await sb.auth.signOut(); goIdx(); }
+async function exitSocio() {
+  try { if (rtSolic) sb.removeChannel(rtSolic); } catch(_) {}
+  try { if (rtMovs)  sb.removeChannel(rtMovs);  } catch(_) {}
+  await sb.auth.signOut();
+  goIdx();
+}
 
 const TABS = { ordenes: loadOrdenes, historial: loadHistorial, cuenta: loadCuenta };
 function goTab(name, btn) {
