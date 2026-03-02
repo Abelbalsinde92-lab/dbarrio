@@ -34,14 +34,60 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
 .topbar-logo{display:flex;align-items:flex-end;gap:4px}
 .logo-db{font-family:var(--fd);font-size:32px;font-weight:900;color:var(--y);letter-spacing:-3px;line-height:.85}
 .logo-tag{font-size:9px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:2px;padding-bottom:2px}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.kpi-bar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.topbar{
+  background:var(--ink);
+  height:54px;flex-shrink:0;
+  display:flex;align-items:center;
+  justify-content:space-between;
+  gap:10px;                 /* ✅ importante */
+  padding:0 16px;
+  padding-top:env(safe-area-inset-top,0);
+  z-index:30;
+}
+
+/* ✅ este bloque ahora puede “estirarse” */
+.topbar-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:1;                   /* ✅ clave */
+  min-width:0;              /* ✅ clave para que el overflow funcione */
+  justify-content:flex-end; /* mantiene KPIs + salir a la derecha */
+}
+
+/* ✅ el scroll se lo come SOLO la barra */
+.kpi-bar{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+
+  flex:1;                   /* ✅ clave */
+  min-width:0;              /* ✅ clave */
+}
+
+/* ✅ si quieres el efecto “fade” en bordes del scroll */
+.kpi-bar{
+  mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+}
+
 .kpi-bar::-webkit-scrollbar{display:none}
-.kpi{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:3px 10px;display:flex;flex-direction:column;align-items:center;min-width:52px;flex-shrink:0}
-.kpi-n{font-family:var(--fd);font-size:16px;font-weight:800;color:var(--y);line-height:1}
-.kpi-l{font-size:9px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.3px}
-.btn-exit{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;white-space:nowrap;transition:all .15s}
-.btn-exit:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+
+/* ✅ el botón NUNCA se aplasta */
+.btn-exit{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;
+  padding:5px 10px;
+  font-size:11px;
+  font-weight:600;
+  color:rgba(255,255,255,.5);
+  cursor:pointer;
+  white-space:nowrap;
+
+  flex:0 0 auto;            /* ✅ clave */
+}
 
 /* ── BODY LAYOUT ── */
 .body{display:flex;flex:1;overflow:hidden}
