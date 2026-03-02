@@ -586,6 +586,8 @@ function setupRealtime() {
       { event: '*', schema: 'public', table: 'solicitudes' },
       () => {
         const opActiva = document.getElementById('sec-op')?.classList.contains('active');
+        const soActiva = document.getElementById('sec-so')?.classList.contains('active');
+         if (soActiva) { loadSociosMap(); loadSocios(); }
         if (opActiva) loadOp();
         loadKPIs();
       }
@@ -1227,6 +1229,8 @@ async function loadSocios() {
 
 function buildSocioCard(s) {
   const est = s.admitido ? (s.estado_socio||'activo') : 'pendiente';
+  const r = s.rating_avg ? Math.round(parseFloat(s.rating_avg)) : 0;
+  const starsSoc = Array.from({length:5},(_,i)=>`<span class="star-r${i<r?' on':''}">★</span>`).join('');
   const chipCls = {activo:'ca',pendiente:'cp',baja:'cr'}[est]||'cp';
   const telLimpio = (s.telefono||'').replace(/\s/g,'');
   return `
@@ -1249,7 +1253,13 @@ function buildSocioCard(s) {
       <div class="info-item"><span class="info-label">Email</span><span class="info-val">${esc(s.email||'—')}</span></div>
       <div class="info-item"><span class="info-label">Deuda</span><span class="info-val" style="color:${(s.deuda||0)>0?'var(--err)':'var(--ok)'}">${fmtM(s.deuda)}</span></div>
       <div class="info-item"><span class="info-label">Trabajos</span><span class="info-val">${s.trabajos||0}</span></div>
-      <div class="info-item"><span class="info-label">Rating</span><span class="info-val">${s.rating_avg ? parseFloat(s.rating_avg).toFixed(1)+' ★' : '—'}</span></div>
+      <div class="info-item">
+  <span class="info-label">Rating</span>
+  <span class="info-val">
+    ${s.rating_avg ? parseFloat(s.rating_avg).toFixed(1)+' ★' : '—'}
+    ${s.rating_avg ? `<div class="stars-r" style="margin-top:4px">${starsSoc}</div>` : ''}
+  </span>
+</div>
       <div class="info-item"><span class="info-label">Comision</span><span class="info-val">${s.comision||15}%</span></div>
     </div>
     <div class="inline-form" style="margin-top:10px">
