@@ -601,6 +601,9 @@ function setupRealtime() {
     () => {
       const spActiva = document.getElementById('sec-sp')?.classList.contains('active');
       if (spActiva) loadSoporte();
+      const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
+
+      if (hiActiva) loadHi();
     }
   )
   .subscribe();
@@ -1073,7 +1076,9 @@ async function doCompletar() {
     .replaceAll('{detalles}', detallesTxt);
 
   if (sol?.telefono) wa(sol.telefono, msgCli);
-
+  if (document.getElementById('sec-hi')?.classList.contains('active')) {
+  loadHi();
+}
   // 8) UI final
   pendingCompId = null;
   closeModal('comp');
@@ -1116,6 +1121,8 @@ async function loadHi() {
   const el = document.getElementById('lista-hi');
   el.innerHTML = '<div class="loading">Cargando...</div>';
 
+  await loadSociosMap(); // ✅ importante (por si entras directo a historial)
+
   const cli = document.getElementById('f-cli').value.trim();
   const cod = document.getElementById('f-cod').value.trim();
   const d1  = document.getElementById('f-d1').value;
@@ -1124,34 +1131,32 @@ async function loadHi() {
   let q = sb.from('solicitudes')
     .select('*')
     .eq('estado','completada')
+    .not('fecha_fin','is', null)          // ✅ solo archivadas de verdad
     .order('fecha_fin',{ascending:false})
     .limit(100);
 
   if (cli) q = q.ilike('cliente','%'+cli+'%');
   if (cod) {
-    const n=parseInt(cod.replace(/^db-/i,''));
-    if (!isNaN(n)) q=q.eq('id',n)
+    const n = parseInt(cod.replace(/^db-/i,''));
+    if (!isNaN(n)) q = q.eq('id', n);
   }
   if (d1) q = q.gte('fecha_fin', d1);
-  if (d2) q = q.lte('fecha_fin', d2+'T23:59:59');
+  if (d2) q = q.lte('fecha_fin', d2 + 'T23:59:59');
 
   const { data, error } = await q;
 
-  if (error) {
-    el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`;
-    return;
-  }
-
-  if (!data?.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-ico">○</div>Sin resultados</div>';
-    return;
-  }
-
+  if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return; }
+  if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">○</div>Sin resultados</div>'; return; }
+  
   el.innerHTML = data.map(s => {
 
     const socNom = s.socio_asignado && sociosMap[s.socio_asignado]
       ? sociosMap[s.socio_asignado].nombre
       : '—';
+  
+}
+
+  
 
     // 🔹 Garantía
     let garantiaHTML = '';
