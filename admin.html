@@ -540,35 +540,51 @@ let pendingCajaTipo = null;
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
+<script>
 document.addEventListener('DOMContentLoaded', async () => {
-  const { data: { session } } = await sbAuth.auth.getSession();
-if(!session){
-  window.location.href = 'index.html';
-}
+  try {
+    // 1) Obtener sesión (con tu mismo client sb)
+    const { data: { session }, error: sessErr } = await sb.auth.getSession();
 
-  const { data: adm, error: admErr } = await sb
-    .from('admins')
-    .select('id')
-    .eq('auth_uid', session.user.id)
-    .maybeSingle();
+    // Si no hay sesión → fuera
+    if (sessErr || !session) {
+      window.location.href = 'index.html';
+      return;
+    }
 
-  if (admErr || !adm) {
-    await sb.auth.signOut();
-    goIndex();
-    return;
+    // 2) Verificar que es admin (tabla admins)
+    const { data: adm, error: admErr } = await sb
+      .from('admins')
+      .select('id')
+      .eq('auth_uid', session.user.id)
+      .maybeSingle();
+
+    // Si no es admin → cerrar sesión y fuera
+    if (admErr || !adm) {
+      await sb.auth.signOut();
+      window.location.href = 'index.html';
+      return;
+    }
+
+    // 3) Ya es admin → arrancar app
+    setupRealtime();
+
+    loadAjsUI();
+    await loadSociosMap();
+    await loadKPIs();
+    await loadOp();
+  } catch (e) {
+    // fallback duro
+    console.error(e);
+    try { await sb.auth.signOut(); } catch (_) {}
+    window.location.href = 'index.html';
   }
-
-  setupRealtime();
-
-  loadAjsUI();
-  await loadSociosMap();
-  await loadKPIs();
-  loadOp();
 });
+</script>
 
 // helpers (solo una vez)
-function goIndex() { window.location.href = '/'; }
-async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
+function goIndex(){ window.location.href = 'index.html'; }
+async function exitAdmin(){ await sb.auth.signOut(); goIndex(); }
 
 // realtime (solo una vez)
 function setupRealtime() {
@@ -584,9 +600,6 @@ function setupRealtime() {
     )
     .subscribe();
 }
-
-function goIndex() { window.location.href = '/'; }
-async function exitAdmin() { await sb.auth.signOut(); goIndex(); }
 
 // ══════════════════════════════════════════
 // UTILS
@@ -1419,7 +1432,7 @@ async function loadSoporte() {
   // Garantías: salen de solicitudes completadas con garantía
   const { data: solicitudes, error: e1 } = await sb
     .from('solicitudes')
-    .select(`id, telefono, fecha_fin, garantia_dias, garantia_expira, socio_asignado, socios(nombre,telefono)`)
+    .select('id, telefono, fecha_fin, garantia_dias, garantia_expira, socio_asignado')
     .not('garantia_dias', 'is', null)
     .order('fecha_fin', { ascending: false });
 
