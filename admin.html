@@ -579,34 +579,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 function goIndex(){ window.location.href = 'index.html'; }
 async function exitAdmin(){ await sb.auth.signOut(); goIndex(); }
 
-// realtime (solo una vez)
 function setupRealtime() {
+
+  // ─────────────────────────────────────
+  // CAMBIOS EN SOLICITUDES
+  // ─────────────────────────────────────
   sb.channel('rt-admin-solicitudes')
     .on(
       'postgres_changes',
       { event: '*', schema: 'public', table: 'solicitudes' },
       () => {
+
         const opActiva = document.getElementById('sec-op')?.classList.contains('active');
         const soActiva = document.getElementById('sec-so')?.classList.contains('active');
-         if (soActiva) { loadSociosMap(); loadSocios(); }
+        const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
+
+        if (soActiva) {
+          loadSociosMap();
+          loadSocios();
+        }
+
         if (opActiva) loadOp();
+
+        if (hiActiva) loadHi();   // 👈 refresca historial cuando cambia estado
+
         loadKPIs();
       }
     )
     .subscribe();
-    sb.channel('rt-admin-garantia-reclamos')
-  .on(
-    'postgres_changes',
-    { event: '*', schema: 'public', table: 'garantia_reclamos' },
-    () => {
-      const spActiva = document.getElementById('sec-sp')?.classList.contains('active');
-      if (spActiva) loadSoporte();
-      const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
 
-      if (hiActiva) loadHi();
-    }
-  )
-  .subscribe();
+
+  // ─────────────────────────────────────
+  // CAMBIOS EN RECLAMOS DE GARANTÍA
+  // ─────────────────────────────────────
+  sb.channel('rt-admin-garantia-reclamos')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'garantia_reclamos' },
+      () => {
+
+        const spActiva = document.getElementById('sec-sp')?.classList.contains('active');
+        const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
+
+        if (spActiva) loadSoporte();
+
+        if (hiActiva) loadHi();   // por si cambia algo que afecte historial
+      }
+    )
+    .subscribe();
 }
 
 sb.auth.onAuthStateChange((_event, session) => {
@@ -1121,7 +1141,7 @@ async function loadHi() {
   const el = document.getElementById('lista-hi');
   el.innerHTML = '<div class="loading">Cargando...</div>';
 
-  await loadSociosMap(); // ✅ importante (por si entras directo a historial)
+  await loadSociosMap(); // importante
 
   const cli = document.getElementById('f-cli').value.trim();
   const cod = document.getElementById('f-cod').value.trim();
@@ -1130,55 +1150,46 @@ async function loadHi() {
 
   let q = sb.from('solicitudes')
     .select('*')
-    .eq('estado','completada')
-    .not('fecha_fin','is', null)          // ✅ solo archivadas de verdad
-    .order('fecha_fin',{ascending:false})
+    .eq('estado', 'completada')
+    .not('fecha_fin', 'is', null)
+    .order('fecha_fin', { ascending: false })
     .limit(100);
 
-  if (cli) q = q.ilike('cliente','%'+cli+'%');
+  if (cli) q = q.ilike('cliente', '%' + cli + '%');
+
   if (cod) {
-    const n = parseInt(cod.replace(/^db-/i,''));
+    const n = parseInt(cod.replace(/^db-/i, ''), 10);
     if (!isNaN(n)) q = q.eq('id', n);
   }
+
   if (d1) q = q.gte('fecha_fin', d1);
   if (d2) q = q.lte('fecha_fin', d2 + 'T23:59:59');
 
   const { data, error } = await q;
 
-  if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return; }
-  if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">○</div>Sin resultados</div>'; return; }
-  
-  el.innerHTML = data.map(s => {
+  if (error) {
+    el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`;
+    return;
+  }
 
-    const socNom = s.socio_asignado && sociosMap[s.socio_asignado]
+  if (!data?.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-ico">○</div>Sin resultados</div>';
+    return;
+  }
+
+  el.innerHTML = data.map(s => {
+    const socNom = (s.socio_asignado && sociosMap[s.socio_asignado])
       ? sociosMap[s.socio_asignado].nombre
       : '—';
-  
-}
 
-  
-
-    // 🔹 Garantía
+    // Garantía (sin “vencida” si no quieres mostrarlo, quítalo abajo)
     let garantiaHTML = '';
-    if (s.garantia_dias != null) {
-
-      const hoy = new Date();
+    if (s.garantia_dias != null && parseInt(s.garantia_dias, 10) > 0) {
       const expira = s.garantia_expira ? new Date(s.garantia_expira) : null;
-      const vencida = expira ? expira < hoy : false;
-
       garantiaHTML = `
         <div style="margin-top:6px;font-size:12px">
-          🛡 Garantía: ${s.garantia_dias} días
-          ${
-            expira
-              ? ` · Vence: ${expira.toLocaleDateString('es-ES')}`
-              : ''
-          }
-          ${
-            vencida
-              ? ` <span style="color:#D63031;font-weight:700">(VENCIDA)</span>`
-              : ''
-          }
+          🛡 Garantía: ${parseInt(s.garantia_dias,10)} días
+          ${expira ? ` · Vence: ${expira.toLocaleDateString('es-ES')}` : ''}
         </div>
       `;
     }
@@ -1188,7 +1199,7 @@ async function loadHi() {
   <div class="hist-row">
     <div>
       <div class="hist-code">${esc(dbc(s.id))}</div>
-      <div class="hist-meta">${esc(s.cliente)} · ${esc(socNom)}</div>
+      <div class="hist-meta">${esc(s.cliente || '')} · ${esc(socNom)}</div>
     </div>
     <div style="text-align:right">
       <div class="hist-monto">${fmtM(s.monto)}</div>
@@ -1197,13 +1208,12 @@ async function loadHi() {
   </div>
 
   <div class="hist-meta" style="margin-top:6px">
-    ${esc(s.municipio||'')} · ${esc(s.servicio||'')}
+    ${esc(s.municipio || '')} · ${esc(s.servicio || '')}
   </div>
 
   ${s.valoracion ? `<div class="stars-r" style="margin-top:6px">${stars(s.valoracion)}</div>` : ''}
 
   ${garantiaHTML}
-
 </div>`;
   }).join('');
 }
