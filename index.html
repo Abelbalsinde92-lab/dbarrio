@@ -348,6 +348,8 @@ const sbAuth = supabase.createClient(SURL, SKEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
 });
 
+const sb = sbAuth;
+
 let sv = 0;
 
 // ───────── UI helpers ─────────
@@ -426,7 +428,7 @@ async function envSol(){
     // Asegura que estás realmente anon (opcional pero útil para evitar sesiones colgadas)
     // await sb.auth.signOut();
 
-    const { data, error } = await sb.rpc('create_solicitud_publica', {
+    const { data, error } = await sbPublic.rpc('create_solicitud_publica', {
       p_cliente: cli,
       p_telefono: wa,
       p_municipio: mun,
@@ -481,7 +483,7 @@ async function envGar(){
   setL('btn-gar',true);
 
   const now=new Date().toISOString();
-  const { error } = await sb.from('garantias').insert({
+  const { error } = await sbPublic.from('garantias').insert({
     recibo: rec,
     telefono: tel,
     falla: fal,
@@ -517,7 +519,7 @@ async function envRec(){
   const now=new Date().toISOString();
   // OJO: en tu admin estás leyendo "mensaje". Aquí tú pusiste "descripcion".
   // Mantengo "mensaje" para que cuadre con tu admin (si tu tabla es "descripcion", lo ajusto).
-  const { error } = await sb.from('quejas').insert({
+  const { error } = await sbPublic.from('quejas').insert({
     telefono: tel,
     codigo_servicio: cod || null,
     mensaje: msg,
@@ -553,10 +555,10 @@ async function envCal(){
 
   setL('btn-cal',true);
 
-  const { data:row } = await sb.from('solicitudes').select('id').eq('id',n).maybeSingle();
+  const { data:row } = await sbPublic.from('solicitudes').select('id').eq('id',n).maybeSingle();
   if(!row){ setL('btn-cal',false); sER('err-cal','Codigo no encontrado.'); return; }
 
-  const { error } = await sb.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
+  const { error } = await sbPublic.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
 
   setL('btn-cal',false);
   if(error){ sER('err-cal','Error: '+error.message); return; }
