@@ -307,17 +307,60 @@ async function loadOrdenes() {
 }
 
 function cardOrden(s) {
-  const cid = 'or'+s.id;
+  const cid = 'or' + s.id;
 
   const enP = s.sub_estado === 'en_proceso';
-const rep = s.sub_estado === 'cierre_reportado';
-const rej = s.sub_estado === 'rechazada_por_socio';
+  const rep = s.sub_estado === 'cierre_reportado';
+  const rej = s.sub_estado === 'rechazada_por_socio';
 
-const chip =
-  rep ? '<span class="chip ce">Cierre reportado</span>' :
-  rej ? '<span class="chip ce" style="background:#F8D7DA;color:#721C24">Rechazo enviado</span>' :
-  enP ? '<span class="chip ce">En proceso</span>' :
-        '<span class="chip ca">Asignada</span>';
+  const chip =
+    rep ? '<span class="chip ce">Cierre reportado</span>' :
+    rej ? '<span class="chip ce" style="background:#F8D7DA;color:#721C24">Rechazo enviado</span>' :
+    enP ? '<span class="chip ce">En proceso</span>' :
+          '<span class="chip ca">Asignada</span>';
+
+  // ✅ bloque aviso (solo texto)
+  const avisoCierre = rep ? `
+    <div style="background:#E2F7EE;border:1px solid #9BD4A8;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:12px;font-weight:700;color:#155724">
+      ✅ Ya enviaste el reporte de cierre. Espera la aprobación del admin.
+    </div>
+  ` : '';
+
+  const avisoRechazo = rej ? `
+    <div style="background:#FFF5F5;border:1px solid #FCA5A5;border-radius:10px;padding:10px 12px;margin:10px 0;font-size:12px;font-weight:700;color:#721C24">
+      ❌ Marcaste “No puedo atender”. Queda pendiente de reasignación por el admin.
+    </div>
+  ` : '';
+
+  // ✅ bloque inputs SOLO cuando está permitido reportar
+  const formInputs = (!rep && !rej) ? `
+    <div class="fg">
+      <label class="flbl">Monto cobrado ($)</label>
+      <input id="monto-cierre-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"
+             style="width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f)"/>
+    </div>
+
+    <div class="fg">
+      <label class="flbl">Garantía (días)</label>
+      <input id="gar-cierre-${s.id}" type="number" min="0" step="1" placeholder="0"
+             style="width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f)"/>
+    </div>
+
+    <div class="fg">
+      <label class="flbl">Detalle del trabajo</label>
+      <textarea id="nt-cierre-${s.id}" placeholder="Describe lo realizado..."></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-yellow" onclick="reportarCierre(${s.id})">Enviar reporte</button>
+    </div>
+  ` : (
+    rep ? `
+      <div class="actions">
+        <button class="btn btn-ghost" disabled>Reporte enviado</button>
+      </div>
+    ` : ''
+  );
 
   return `<div class="card" id="${cid}">
     <div class="card-hdr" onclick="toggleCard('${cid}')">
@@ -325,7 +368,7 @@ const chip =
         <div class="card-row">${chip}<span class="card-code">${dbc(s.id)}</span></div>
         <div class="card-meta">
           <span>${esc(s.cliente)}</span>
-          ${s.municipio?'<span>'+esc(s.municipio)+'</span>':''}
+          ${s.municipio ? '<span>' + esc(s.municipio) + '</span>' : ''}
           <span>${fmt(s.fecha_ts)}</span>
         </div>
       </div>
@@ -339,45 +382,19 @@ const chip =
         <div class="field"><span class="f-lbl">Teléfono</span>
           <span class="f-val"><a href="tel:${esc(s.telefono||'')}" style="color:var(--ink);font-weight:700;font-size:15px">${esc(s.telefono||'—')}</a></span>
         </div>
-        ${s.direccion?`<div class="field full"><span class="f-lbl">Dirección</span><span class="f-val">${esc(s.direccion)}</span></div>`:''}
-        ${s.detalles?`<div class="field full"><span class="f-lbl">Detalles</span><span class="f-val">${esc(s.detalles)}</span></div>`:''}
-        ${s.nota_admin?`<div class="field full"><span class="f-lbl">Nota del admin</span><span class="f-val">${esc(s.nota_admin)}</span></div>`:''}
+        ${s.direccion ? `<div class="field full"><span class="f-lbl">Dirección</span><span class="f-val">${esc(s.direccion)}</span></div>` : ''}
+        ${s.detalles ? `<div class="field full"><span class="f-lbl">Detalles</span><span class="f-val">${esc(s.detalles)}</span></div>` : ''}
+        ${s.nota_admin ? `<div class="field full"><span class="f-lbl">Nota del admin</span><span class="f-val">${esc(s.nota_admin)}</span></div>` : ''}
       </div>
 
       <!-- FORM: REPORTE DE CIERRE -->
       <div class="ifrm ${(!rep && !rej) ? 'open' : ''}" id="ifrm-cierre-${s.id}">
         <div class="ifrm-title">Reporte de cierre (lo que cobraste y garantía)</div>
-        ${rep ? `
-  <div style="background:#E2F7EE;border:1px solid #9BD4A8;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:12px;font-weight:700;color:#155724">
-    ✅ Ya enviaste el reporte de cierre. Espera la aprobación del admin.
-  </div>
-` : ''}
-${rej ? `
-  <div style="background:#FFF5F5;border:1px solid #FCA5A5;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:12px;font-weight:700;color:#721C24">
-    ❌ Marcaste “No puedo atender”. Queda pendiente de reasignación por el admin.
-  </div>
-` : ''}
-        
-        <div class="fg">
-          <label class="flbl">Monto cobrado ($)</label>
-          <input id="monto-cierre-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"
-                 style="width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f)"/>
-        </div>
 
-        <div class="fg">
-          <label class="flbl">Garantía (días)</label>
-          <input id="gar-cierre-${s.id}" type="number" min="0" step="1" placeholder="0"
-                 style="width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f)"/>
-        </div>
+        ${avisoCierre}
+        ${avisoRechazo}
 
-        <div class="fg">
-          <label class="flbl">Detalle del trabajo</label>
-          <textarea id="nt-cierre-${s.id}" placeholder="Describe lo realizado..."></textarea>
-        </div>
-
-        <div class="actions">
-          ${!rep ? `<button class="btn btn-yellow" onclick="reportarCierre(${s.id})">Enviar reporte</button>` : `<button class="btn btn-ghost" disabled>Reporte enviado</button>`}
-        </div>
+        ${formInputs}
       </div>
 
       <!-- FORM NO PUEDO -->
@@ -394,8 +411,10 @@ ${rej ? `
         ${!enP ? `<button class="btn btn-yellow" onclick="marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
         ${s.telefono ? `<a href="tel:${esc(s.telefono)}" class="btn btn-dark">Llamar cliente</a>` : ''}
         <button class="btn btn-wa btn-sm" onclick="waAdmin(${s.id})">${svgWA()} Admin</button>
-        ${!rej ? `<button class="btn btn-danger btn-sm" onclick="openF('nopuedo',${s.id})">No puedo atender</button>`
-      : `<button class="btn btn-ghost btn-sm" disabled>Ya notificaste</button>`}
+        ${!rej
+          ? `<button class="btn btn-danger btn-sm" onclick="openF('nopuedo',${s.id})">No puedo atender</button>`
+          : `<button class="btn btn-ghost btn-sm" disabled>Ya notificaste</button>`
+        }
       </div>
     </div>
   </div>`;
