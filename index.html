@@ -397,24 +397,22 @@ async function envSol(){
   consent_privacidad: true,
   consent_privacidad_ts: now,
   const { data, error } = await sb.rpc('create_solicitud_publica', {
-    p_cliente: cli,
-    p_telefono: wa,
-    p_municipio: mun,
-    p_direccion: dir || null,
-    p_servicio: srv,
-    p_detalles: det || null,
-    p_consent_privacidad: true, // aquí ya validaste el checkbox
-    p_consent_texto: 'solicitud publica v2'
-  });
+  p_cliente: cli,
+  p_telefono: wa,
+  p_municipio: mun,
+  p_direccion: dir || '',
+  p_servicio: srv,
+  p_detalles: det || '',
+  p_consent_texto: 'solicitud publica v2'
+});
 
-  setL('btn-sol', false);
+setL('btn-sol', false);
 
-  if (error) { sER('err-sol', 'Error: ' + error.message); return; }
+if (error) { sER('err-sol', 'Error: ' + error.message); return; }
 
-  // data es el bigint id
-  document.getElementById('cod-sol').textContent = dbc(data);
-  sOK('ok-sol');
-  document.getElementById('btn-sol').style.display = 'none';
+document.getElementById('cod-sol').textContent = dbc(data);
+sOK('ok-sol');
+document.getElementById('btn-sol').style.display='none';
 
 // ───────── GARANTIA (anon INSERT con consentimiento) ─────────
 async function envGar(){
