@@ -352,7 +352,12 @@ let sv = 0;
 
 // ───────── UI helpers ─────────
 function open_(k){document.getElementById('ov-'+k).classList.add('open');document.body.style.overflow='hidden'}
-function close_(k){document.getElementById('ov-'+k).classList.remove('open');document.body.style.overflow=''}
+function close_(k){
+  document.getElementById('ov-'+k).classList.remove('open');
+  document.body.style.overflow='';
+
+  if(k === 'sol') resetSolForm(); // 👈 limpia al cerrar
+}
 function ovc(e,k){if(e.target===document.getElementById('ov-'+k))close_(k)}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.ov.open').forEach(o=>{o.classList.remove('open');document.body.style.overflow=''})});
 
@@ -367,6 +372,30 @@ function setL(id,on){
   if(!b._t) b._t=b.innerHTML;
   b.disabled=on;
   b.innerHTML = on ? '<span class="sp"></span>Enviando...' : b._t;
+}
+function resetSolForm(){
+  document.getElementById('s-cli').value = '';
+  document.getElementById('s-wa').value  = '';
+  document.getElementById('s-mun').value = '';
+  document.getElementById('s-dir').value = '';
+  document.getElementById('s-srv').value = '';
+  document.getElementById('s-det').value = '';
+  document.getElementById('s-cp').checked = false;
+
+  // limpia mensajes
+  cER('err-sol');
+  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
+
+  // restaura botón
+  const btn = document.getElementById('btn-sol');
+  if(btn){
+    btn.style.display = '';
+    btn.disabled = false;
+  }
+
+  // oculta ok box
+  const ok = document.getElementById('ok-sol');
+  if(ok) ok.classList.remove('v');
 }
 function dbc(id){return 'db-'+id}
 
@@ -423,6 +452,13 @@ async function envSol(){
     setL('btn-sol', false);
     sER('err-sol', 'Error: ' + (e?.message || e));
   }
+  
+  // UX: deja el código visible y cierra solo
+setTimeout(() => {
+  close_('sol');           // cierra y limpia
+  window.scrollTo({ top: 0, behavior: 'smooth' }); // vuelve arriba para “curiosear”
+}, 3500);
+  
 }
 
 // ───────── GARANTIA (anon INSERT con consentimiento) ─────────
