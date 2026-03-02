@@ -174,6 +174,64 @@ const sb = supabase.createClient(SURL, SKEY, {
 });
 let mySocio = null;
 
+// ══════════════════════════════════════════
+// REALTIME (SOCIO)
+// ══════════════════════════════════════════
+let rtSolic = null;
+let rtMovs  = null;
+
+function setupRealtimeSocio() {
+  // Limpia canales previos si existían
+  try { if (rtSolic) sb.removeChannel(rtSolic); } catch(_) {}
+  try { if (rtMovs)  sb.removeChannel(rtMovs);  } catch(_) {}
+
+  if (!mySocio?.id) return;
+
+  // 1) Solicitudes asignadas a este socio
+  rtSolic = sb.channel('rt-socio-solicitudes-' + mySocio.id)
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'solicitudes',
+        // IMPORTANTE: filtro server-side (reduce ruido)
+        filter: `socio_asignado=eq.${mySocio.id}`
+      },
+      (payload) => {
+        // Refresca solo lo necesario según pestaña activa
+        const tabOrd = document.getElementById('tab-ordenes')?.classList.contains('active');
+        const tabHis = document.getElementById('tab-historial')?.classList.contains('active');
+        if (tabOrd) loadOrdenes();
+        if (tabHis) loadHistorial();
+
+        // La cuenta puede cambiar (deuda/trabajos/rating) por acciones del admin
+        // pero para no spamear: refrescamos si estás en cuenta
+        const tabCue = document.getElementById('tab-cuenta')?.classList.contains('active');
+        if (tabCue) loadCuenta();
+      }
+    )
+    .subscribe();
+
+  // 2) Movimientos del socio (si lo usas más adelante)
+  // Si ahora mismo NO lo necesitas, puedes comentar este canal.
+  rtMovs = sb.channel('rt-socio-movimientos-' + mySocio.id)
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'movimientos',
+        filter: `socio_id=eq.${mySocio.id}`
+      },
+      () => {
+        const tabCue = document.getElementById('tab-cuenta')?.classList.contains('active');
+        if (tabCue) loadCuenta();
+      }
+    )
+    .subscribe();
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
 
   // 1️⃣ Intentar leer tokens desde la URL (#access_token=...)
@@ -220,6 +278,7 @@ if (data.estado_socio !== 'activo') { dbg('Tu estado_socio es: ' + data.estado_s
   mySocio = data;
   document.getElementById('tbNombre').textContent = data.nombre;
   loadOrdenes();
+  setupRealtimeSocio();
 }
 
 function goIdx() { window.location.href = 'index.html'; }
@@ -286,9 +345,19 @@ const chip =
       </div>
 
       <!-- FORM: REPORTE DE CIERRE -->
-      <div class="ifrm open" id="ifrm-cierre-${s.id}">
+      <div class="ifrm ${(!rep && !rej) ? 'open' : ''}" id="ifrm-cierre-${s.id}">
         <div class="ifrm-title">Reporte de cierre (lo que cobraste y garantía)</div>
-
+        ${rep ? `
+  <div style="background:#E2F7EE;border:1px solid #9BD4A8;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:12px;font-weight:700;color:#155724">
+    ✅ Ya enviaste el reporte de cierre. Espera la aprobación del admin.
+  </div>
+` : ''}
+${rej ? `
+  <div style="background:#FFF5F5;border:1px solid #FCA5A5;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:12px;font-weight:700;color:#721C24">
+    ❌ Marcaste “No puedo atender”. Queda pendiente de reasignación por el admin.
+  </div>
+` : ''}
+        
         <div class="fg">
           <label class="flbl">Monto cobrado ($)</label>
           <input id="monto-cierre-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"
@@ -425,26 +494,92 @@ async function loadHistorial() {
 async function loadCuenta() {
   const el = document.getElementById('cuentaContent');
   if (!mySocio) return;
-  const { data } = await sb.from('socios').select('*').eq('id', mySocio.id).maybeSingle();
+
+  // refrescar del server (por si deuda/trabajos/rating cambian)
+  const { data, error } = await sb
+    .from('socios')
+    .select('*')
+    .eq('id', mySocio.id)
+    .maybeSingle();
+
+  if (error) {
+    el.innerHTML = errBox(error.message);
+    return;
+  }
   if (data) mySocio = data;
+
   const s = mySocio;
-  const deudaColor = (s.deuda||0) > 0 ? 'deuda-activa' : 'deuda-cero';
+  const deudaColor = (parseFloat(s.deuda || 0) > 0) ? 'deuda-activa' : 'deuda-cero';
+
   el.innerHTML = `
     <div class="cuenta-card">
       <div class="cuenta-nombre">${esc(s.nombre)}</div>
       <div class="cuenta-tag">${esc(s.especialidad||'—')} · ${esc(s.zona||'—')}</div>
+
       <div class="cuenta-grid">
-        <div class="cg-item"><span class="cg-lbl">Deuda</span><span class="cg-val ${deudaColor}">$${(s.deuda||0).toFixed(2)}</span></div>
+        <div class="cg-item"><span class="cg-lbl">Deuda</span><span class="cg-val ${deudaColor}">$${Number(s.deuda||0).toFixed(2)}</span></div>
         <div class="cg-item"><span class="cg-lbl">Trabajos</span><span class="cg-val">${s.trabajos||0}</span></div>
         <div class="cg-item"><span class="cg-lbl">Rating</span><span class="cg-val">${s.rating_avg?Number(s.rating_avg).toFixed(1):'-'}</span></div>
         <div class="cg-item"><span class="cg-lbl">Comisión</span><span class="cg-val">${s.comision||15}%</span></div>
       </div>
     </div>
+
+    <div class="cuenta-card">
+      <div class="cuenta-tag" style="margin-bottom:10px;font-weight:800;color:var(--ink)">Mis datos</div>
+
+      <div class="fg">
+        <label class="flbl">Teléfono</label>
+        <input id="p-tel" type="tel" value="${esc(s.telefono||'')}"
+          style="width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f)"/>
+      </div>
+
+      <div class="fg">
+        <label class="flbl">Zona</label>
+        <input id="p-zona" type="text" value="${esc(s.zona||'')}"
+          style="width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f)"/>
+      </div>
+
+      <div class="fg">
+        <label class="flbl">Especialidad</label>
+        <input id="p-esp" type="text" value="${esc(s.especialidad||'')}"
+          style="width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:var(--rs);font-size:14px;font-family:var(--f)"/>
+      </div>
+
+      <button class="btn btn-dark" style="width:100%" onclick="savePerfil()">Guardar cambios</button>
+      <p style="font-size:11px;color:var(--g1);margin-top:8px;line-height:1.5">
+        Mantén estos datos al día para recibir órdenes sin retrasos.
+      </p>
+    </div>
+
     <div class="cuenta-card">
       <div class="cuenta-tag" style="margin-bottom:10px;font-weight:700;color:var(--ink)">Contactar admin</div>
       <button class="btn btn-wa" style="width:100%" onclick="waAdminGeneral()">${svgWA()} Escribir al admin</button>
-      <p style="font-size:11px;color:var(--g1);margin-top:8px;line-height:1.5">Para consultas, problemas de pago o cualquier asunto operativo.</p>
-    </div>`;
+      <p style="font-size:11px;color:var(--g1);margin-top:8px;line-height:1.5">
+        Para consultas, problemas de pago o cualquier asunto operativo.
+      </p>
+    </div>
+  `;
+}
+
+async function savePerfil() {
+  if (!mySocio?.id) return;
+
+  const telefono = document.getElementById('p-tel')?.value?.trim() || null;
+  const zona = document.getElementById('p-zona')?.value?.trim() || null;
+  const especialidad = document.getElementById('p-esp')?.value?.trim() || null;
+
+  const { error } = await sb
+    .from('socios')
+    .update({ telefono, zona, especialidad })
+    .eq('id', mySocio.id);
+
+  if (error) {
+    alert('Error guardando perfil: ' + error.message);
+    return;
+  }
+
+  alert('Datos actualizados ✅');
+  loadCuenta();
 }
 
 async function waAdmin(idOrden) {
