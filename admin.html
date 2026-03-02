@@ -546,12 +546,6 @@ if(!session){
   window.location.href = 'index.html';
 }
 
-  if (!session) {
-    alert('Debes iniciar sesión primero.');
-    goIndex();
-    return;
-  }
-
   const { data: adm, error: admErr } = await sb
     .from('admins')
     .select('id')
