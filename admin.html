@@ -1217,7 +1217,7 @@ async function loadSocios() {
   if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return }
   if (!data?.length) { el.innerHTML = '<div class="empty">Sin socios registrados</div>'; return }
   // Pendientes primero
-  const pend = data.filter(x=>!x.admitido || x.estado_socio==='pendiente');
+  const pend = data.filter(x => (!x.admitido && x.estado_socio !== 'rechazado') || x.estado_socio === 'pendiente');
   const rest = data.filter(x=>x.admitido && x.estado_socio!=='pendiente');
   let html = '';
   if (pend.length) html += `<div style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--y);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Pendientes de aprobacion</div>` + pend.map(buildSocioCard).join('');
@@ -1299,6 +1299,9 @@ async function saveComSocio(id) {
 async function rechazarSocio(socioId){
   if(!confirm('¿Rechazar este candidato?')) return;
 
+  // (opcional) feedback inmediato
+  toast('Procesando...');
+
   const { error } = await sb
     .from('socios')
     .update({
@@ -1308,13 +1311,13 @@ async function rechazarSocio(socioId){
     .eq('id', socioId);
 
   if(error){
-    alert('Error al rechazar: ' + error.message);
+    toast('Error al rechazar: ' + error.message);
     return;
   }
 
-  alert('Candidato rechazado.');
-  // aquí recargas tu lista si tienes función
-  // await cargarSociosPendientes();
+  toast('Candidato rechazado');
+  await loadSocios();     // ✅ refresca UI
+  await loadSociosMap();  // ✅ actualiza cache
 }
 
 function waAdmin(tel, msg) { wa(tel, msg) }
