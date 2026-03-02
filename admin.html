@@ -22,71 +22,124 @@
 html,body{height:100%;overflow:hidden}
 body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 
-/* ── TOPBAR ── */
+/* ── TOPBAR ── (FIX: no apilar, KPI scroll, logo estable) ── */
 .topbar{
   background:var(--ink);
-  height:54px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;
-  padding-top:env(safe-area-inset-top,0);
-  z-index:30;
-}
-.topbar-logo{display:flex;align-items:flex-end;gap:4px}
-.logo-db{font-family:var(--fd);font-size:32px;font-weight:900;color:var(--y);letter-spacing:-3px;line-height:.85}
-.logo-tag{font-size:9px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:2px;padding-bottom:2px}
-.topbar{
-  background:var(--ink);
-  height:54px;flex-shrink:0;
-  display:flex;align-items:center;
+  height:54px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
   justify-content:space-between;
-  gap:10px;                 /* ✅ importante */
+  gap:10px;
   padding:0 16px;
   padding-top:env(safe-area-inset-top,0);
   z-index:30;
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
-/* ✅ este bloque ahora puede “estirarse” */
+/* Izquierda */
+.topbar-logo{
+  display:flex;
+  align-items:flex-end;
+  gap:6px;
+  flex:0 0 auto;
+  min-width:0;
+}
+.logo-db{
+  font-family:var(--fd);
+  font-size:32px;
+  font-weight:900;
+  color:var(--y);
+  letter-spacing:-3px;
+  line-height:.85;
+}
+.logo-tag{
+  font-size:9px;
+  font-weight:600;
+  color:rgba(255,255,255,.3);
+  letter-spacing:2px;
+  padding-bottom:2px;
+  white-space:nowrap;
+}
+
+/* Derecha (aquí debe ir KPI + Salir) */
 .topbar-right{
   display:flex;
   align-items:center;
+  justify-content:flex-end;
   gap:10px;
-  flex:1;                   /* ✅ clave */
-  min-width:0;              /* ✅ clave para que el overflow funcione */
-  justify-content:flex-end; /* mantiene KPIs + salir a la derecha */
+
+  flex:1;       /* ✅ se estira */
+  min-width:0;  /* ✅ permite overflow sin romper layout */
 }
 
-/* ✅ el scroll se lo come SOLO la barra */
+/* KPI bar: scroll horizontal solo aquí */
 .kpi-bar{
   display:flex;
+  align-items:stretch;
   gap:8px;
+
   overflow-x:auto;
+  overflow-y:hidden;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
 
-  flex:1;                   /* ✅ clave */
-  min-width:0;              /* ✅ clave */
+  flex:1;       /* ✅ se come el espacio disponible */
+  min-width:0;  /* ✅ importantísimo */
 }
-
-/* ✅ si quieres el efecto “fade” en bordes del scroll */
-.kpi-bar{
-  mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
-}
-
 .kpi-bar::-webkit-scrollbar{display:none}
 
-/* ✅ el botón NUNCA se aplasta */
+/* “fade” para que se vea elegante en bordes del scroll (opcional) */
+.kpi-bar{
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+}
+
+/* KPI pills */
+.kpi{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;
+  padding:3px 10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-width:52px;
+  flex-shrink:0;
+}
+.kpi-n{
+  font-family:var(--fd);
+  font-size:16px;
+  font-weight:800;
+  color:var(--y);
+  line-height:1;
+}
+.kpi-l{
+  font-size:9px;
+  font-weight:500;
+  color:rgba(255,255,255,.35);
+  letter-spacing:.3px;
+}
+
+/* Botón salir: nunca se aplasta ni baja */
 .btn-exit{
   background:rgba(255,255,255,.08);
   border:1px solid rgba(255,255,255,.1);
   border-radius:8px;
-  padding:5px 10px;
+  padding:6px 10px;
   font-size:11px;
   font-weight:600;
-  color:rgba(255,255,255,.5);
+  color:rgba(255,255,255,.55);
   cursor:pointer;
   white-space:nowrap;
+  flex:0 0 auto; /* ✅ clave */
+}
+.btn-exit:hover{color:#fff;border-color:rgba(255,255,255,.25)}
 
-  flex:0 0 auto;            /* ✅ clave */
+/* Pequeño ajuste para móviles */
+@media(max-width:420px){
+  .logo-tag{display:none;} /* ✅ evita que empuje a la derecha */
+  .kpi{min-width:48px;}
 }
 
 /* ── BODY LAYOUT ── */
@@ -136,8 +189,6 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
   .btn-menu{display:flex!important}
   .topbar-logo{gap:8px}
 }
-.btn-menu{display:none;background:none;border:none;cursor:pointer;padding:4px;-webkit-tap-highlight-color:transparent}
-
 /* ── MAIN ── */
 .main{
   flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
@@ -327,6 +378,22 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
 .sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;vertical-align:middle;margin-right:5px}
 @keyframes sp{to{transform:rotate(360deg)}}
 @media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
+/* Botón menú (solo móvil) */
+.btn-menu{
+  display:none;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:6px;
+  border-radius:10px;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-menu:active{transform:scale(.96)}
+.btn-menu:hover{background:rgba(255,255,255,.06)}
+
+@media(max-width:640px){
+  .btn-menu{display:inline-flex;}
+}
 @media(min-width:641px){.btn-menu{display:none!important}}
 </style>
 </head>
@@ -337,23 +404,31 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
 
 <!-- TOPBAR -->
 <header class="topbar">
-  <div style="display:flex;align-items:center;gap:10px">
-    <button class="btn-menu" id="btn-menu" onclick="toggleSidebar()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-    <div class="topbar-logo">
-      <span class="logo-db">db</span>
-      <span class="logo-tag">admin</span>
-    </div>
+  <!-- Botón menú (solo móvil) -->
+  <button class="btn-menu" type="button" aria-label="Menú" onclick="toggleSidebar()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,.75)">
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+
+  <div class="topbar-logo">
+    <div class="logo-db">db</div>
+    <div class="logo-tag">ADMIN</div>
   </div>
+
   <div class="topbar-right">
-    <div class="kpi-bar">
-      <div class="kpi"><span class="kpi-n" id="kP">—</span><span class="kpi-l">Pend</span></div>
-      <div class="kpi"><span class="kpi-n" id="kA">—</span><span class="kpi-l">Asig</span></div>
-      <div class="kpi"><span class="kpi-n" id="kC">—</span><span class="kpi-l">Comp</span></div>
-      <div class="kpi"><span class="kpi-n" id="kI">—</span><span class="kpi-l">Caja</span></div>
+    <div class="kpi-bar" id="kpiBar">
+      <!-- KPIs (ejemplo seguro) -->
+      <div class="kpi"><div class="kpi-n" id="kpiPend">—</div><div class="kpi-l">Pend</div></div>
+      <div class="kpi"><div class="kpi-n" id="kpiAsig">—</div><div class="kpi-l">Asig</div></div>
+      <div class="kpi"><div class="kpi-n" id="kpiComp">—</div><div class="kpi-l">Comp</div></div>
+      <div class="kpi"><div class="kpi-n" id="kpiCaja">—</div><div class="kpi-l">Caja</div></div>
     </div>
-    <button class="btn-exit" onclick="exitAdmin()">Salir</button>
+
+    <button class="btn-exit" type="button" onclick="exitAdmin()">Salir</button>
   </div>
 </header>
 
@@ -635,8 +710,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // helpers (solo una vez)
 function goIndex(){ window.location.href = 'index.html'; }
-async function exitAdmin(){ await sb.auth.signOut(); goIndex(); }
-
+async function exitAdmin(){
+  try { await sb.auth.signOut(); } catch(e){}
+  window.location.href = 'index.html';
+}
 function setupRealtime() {
 
   // ─────────────────────────────────────
@@ -771,8 +848,14 @@ function goSec(id) {
   if (id==='ca') loadCaja();
   if (id==='sp') loadSoporte();
 }
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sb-overlay').classList.toggle('open') }
-function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sb-overlay').classList.remove('open') }
+function toggleSidebar(){
+  document.querySelector('.sidebar')?.classList.toggle('open');
+  document.querySelector('.sidebar-overlay')?.classList.toggle('open');
+}
+function closeSidebar(){
+  document.querySelector('.sidebar')?.classList.remove('open');
+  document.querySelector('.sidebar-overlay')?.classList.remove('open');
+}
 
 // ══════════════════════════════════════════
 // KPIs
