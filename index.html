@@ -396,32 +396,25 @@ async function envSol(){
   const now = new Date().toISOString();
   const consentimiento = !!cp;
 
-  const { data, error } = await sb
-    .from('solicitudes')
-    .insert({
-      cliente: cli,
-      telefono: wa,
-      municipio: mun,
-      direccion: dir || null,
-      servicio: srv,
-      detalles: det || null,
-      estado: 'pendiente',
-      fecha_ts: now,
-      consent_privacidad: consentimiento,
-      consent_privacidad_ts: consentimiento ? now : null,
-      consent_texto: 'solicitud publica v2'
-    })
-    .select('id')
-    .single();
+    const { data, error } = await sb.rpc('create_solicitud_publica', {
+    p_cliente: cli,
+    p_telefono: wa,
+    p_municipio: mun,
+    p_direccion: dir || null,
+    p_servicio: srv,
+    p_detalles: det || null,
+    p_consent_privacidad: true, // aquí ya validaste el checkbox
+    p_consent_texto: 'solicitud publica v2'
+  });
 
   setL('btn-sol', false);
 
-  if(error){ sER('err-sol','Error: '+error.message); return; }
+  if (error) { sER('err-sol', 'Error: ' + error.message); return; }
 
-  document.getElementById('cod-sol').textContent = dbc(data.id);
+  // data es el bigint id
+  document.getElementById('cod-sol').textContent = dbc(data);
   sOK('ok-sol');
-  document.getElementById('btn-sol').style.display='none';
-}
+  document.getElementById('btn-sol').style.display = 'none';
 
 // ───────── GARANTIA (anon INSERT con consentimiento) ─────────
 async function envGar(){
