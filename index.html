@@ -544,26 +544,28 @@ async function envCal(){
   cER('err-cal');
   ['ec-cod','ec-st'].forEach(cE);
 
-  const cod=document.getElementById('c-cod').value.trim();
+  const cod = document.getElementById('c-cod').value.trim();
   let ok=true;
-  if(!cod){sE('ec-cod');ok=false}
-  if(!sv){sE('ec-st');ok=false}
+  if(!cod){ sE('ec-cod'); ok=false }
+  if(!sv){ sE('ec-st'); ok=false }
   if(!ok) return;
 
-  const n=parseInt(cod.replace(/^db-/i,''));
+  const n = parseInt(cod.replace(/^db-/i,''));
   if(isNaN(n)){ sE('ec-cod','Formato invalido. Usa db-xxxx.'); return; }
 
-  setL('btn-cal',true);
+  setL('btn-cal', true);
 
-  const { data:row } = await sbPublic.from('solicitudes').select('id').eq('id',n).maybeSingle();
-  if(!row){ setL('btn-cal',false); sER('err-cal','Codigo no encontrado.'); return; }
+  const { error } = await sb.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
 
-  const { error } = await sbPublic.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
+  setL('btn-cal', false);
 
-  setL('btn-cal',false);
-  if(error){ sER('err-cal','Error: '+error.message); return; }
+  if(error){
+    sER('err-cal', 'Error: ' + error.message);
+    return;
+  }
 
-  sOK('ok-cal'); document.getElementById('btn-cal').style.display='none';
+  sOK('ok-cal');
+  document.getElementById('btn-cal').style.display='none';
 }
 
 // ───────── UNETE (signUp → signIn → INSERT socios con auth_uid) ─────────
