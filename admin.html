@@ -540,33 +540,27 @@ let pendingCajaTipo = null;
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
-<script>
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // 1) Obtener sesión (con tu mismo client sb)
     const { data: { session }, error: sessErr } = await sb.auth.getSession();
 
-    // Si no hay sesión → fuera
     if (sessErr || !session) {
       window.location.href = 'index.html';
       return;
     }
 
-    // 2) Verificar que es admin (tabla admins)
     const { data: adm, error: admErr } = await sb
       .from('admins')
       .select('id')
       .eq('auth_uid', session.user.id)
       .maybeSingle();
 
-    // Si no es admin → cerrar sesión y fuera
     if (admErr || !adm) {
       await sb.auth.signOut();
       window.location.href = 'index.html';
       return;
     }
 
-    // 3) Ya es admin → arrancar app
     setupRealtime();
 
     loadAjsUI();
@@ -574,13 +568,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadKPIs();
     await loadOp();
   } catch (e) {
-    // fallback duro
     console.error(e);
     try { await sb.auth.signOut(); } catch (_) {}
     window.location.href = 'index.html';
   }
 });
-</script>
 
 // helpers (solo una vez)
 function goIndex(){ window.location.href = 'index.html'; }
@@ -600,6 +592,10 @@ function setupRealtime() {
     )
     .subscribe();
 }
+
+sb.auth.onAuthStateChange((_event, session) => {
+  if (!session) window.location.href = 'index.html';
+});
 
 // ══════════════════════════════════════════
 // UTILS
@@ -1443,7 +1439,7 @@ async function loadSoporte() {
     elGar.innerHTML = '<div class="empty">Sin garantías registradas</div>';
   } else {
     elGar.innerHTML = solicitudes.map(s => {
-      const socio = s.socios?.nombre || (s.socio_asignado ? (sociosMap[s.socio_asignado]?.nombre || '—') : '—');
+      const socio = s.socio_asignado ? (sociosMap[s.socio_asignado]?.nombre || '—') : '—';
       const hoy = new Date();
       const exp = s.garantia_expira ? new Date(s.garantia_expira) : null;
       const vencida = exp ? exp < hoy : false;
