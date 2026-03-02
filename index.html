@@ -188,10 +188,6 @@ textarea{resize:vertical;min-height:72px}
       <div class="acard-icon icb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4287f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
       <div class="acard-txt"><span class="acard-title">Garantia</span><span class="acard-desc">Si el trabajo fallo</span></div>
     </button>
-    <button class="acard" onclick="open_('gar')">
-      <div class="acard-icon icr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D63031" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-      <div class="acard-txt"><span class="acard-title">Reclamo</span><span class="acard-desc">Reportar problema</span></div>
-    </button>
     <button class="acard" onclick="open_('cal')">
       <div class="acard-icon icy"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
       <div class="acard-txt"><span class="acard-title">Calificar</span><span class="acard-desc">Control de calidad</span></div>
@@ -255,23 +251,6 @@ textarea{resize:vertical;min-height:72px}
     <div class="ok-box" id="ok-gar">Garantia registrada. Nos contactaremos contigo pronto.</div>
     <div class="err-box" id="err-gar"></div>
     <button class="btn btn-k" id="btn-gar" onclick="envGar()">Enviar garantia</button>
-  </div>
-</div></div>
-
-<!-- RECLAMO -->
-<div class="ov" id="ov-rec" onclick="ovc(event,'rec')">
-<div class="sheet">
-  <div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Reclamo</span><button class="sheet-x" onclick="close_('rec')">&times;</button></div>
-  <div class="mbody">
-    <div class="fg"><label>Telefono de contacto</label><input id="r-tel" type="tel" placeholder="+53..."/><div class="fe" id="er-tel">Invalido.</div></div>
-    <div class="fg"><label>Codigo (opcional)</label><input id="r-cod" type="text" placeholder="db-xxxx si lo tienes"/></div>
-    <div class="fg"><label>Descripcion del reclamo</label><textarea id="r-msg" placeholder="Explica el problema con detalle..."></textarea><div class="fe" id="er-msg">Requerido.</div></div>
-    <div class="cb"><input type="checkbox" id="r-cp"/><span>Acepto <a href="terminos.html" target="_blank">Terminos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div><!-- CHANGED: texto con links a terminos y privacidad -->
-    <div class="fe" id="er-cp">Debes aceptar Terminos y Privacidad.</div><!-- CHANGED: error UI para checkbox obligatorio -->
-    <div class="ok-box" id="ok-rec">Reclamo registrado. Lo revisaremos pronto.</div>
-    <div class="err-box" id="err-rec"></div>
-    <button class="btn btn-k" id="btn-rec" onclick="envRec()">Enviar reclamo</button>
   </div>
 </div></div>
 
@@ -496,42 +475,6 @@ async function envGar(){
   setL('btn-gar',false);
   if(error){sER('err-gar','Error: '+error.message);return}
   sOK('ok-gar'); document.getElementById('btn-gar').style.display='none';
-}
-
-// ───────── RECLAMO (anon INSERT con consentimiento) ─────────
-async function envRec(){
-  cER('err-rec');
-  ['er-tel','er-msg','er-cp'].forEach(cE);
-
-  const tel=document.getElementById('r-tel').value.trim();
-  const cod=document.getElementById('r-cod').value.trim();
-  const msg=document.getElementById('r-msg').value.trim();
-  const cp=document.getElementById('r-cp').checked;
-
-  let ok=true;
-  if(!vt(tel)){sE('er-tel');ok=false}
-  if(!msg){sE('er-msg');ok=false}
-  if(!cp){sE('er-cp');ok=false}
-  if(!ok) return;
-
-  setL('btn-rec',true);
-
-  const now=new Date().toISOString();
-  // OJO: en tu admin estás leyendo "mensaje". Aquí tú pusiste "descripcion".
-  // Mantengo "mensaje" para que cuadre con tu admin (si tu tabla es "descripcion", lo ajusto).
-  const { error } = await sbPublic.from('quejas').insert({
-    telefono: tel,
-    codigo_servicio: cod || null,
-    mensaje: msg,
-    estado:'pendiente',
-    consent_privacidad: true,
-    consent_privacidad_ts: now,
-    consent_texto:'reclamo v2'
-  });
-
-  setL('btn-rec',false);
-  if(error){sER('err-rec','Error: '+error.message);return}
-  sOK('ok-rec'); document.getElementById('btn-rec').style.display='none';
 }
 
 // ───────── CALIFICAR (RPC rate_solicitud) ─────────
