@@ -1514,35 +1514,21 @@ async function loadMovs() {
 
 async function waCobro(id) {
   const soc = sociosMap[id];
-  if (!soc?.telefono) { 
-    toast('El socio no tiene teléfono registrado'); 
-    return; 
-  }
+  if (!soc?.telefono) { toast('Sin teléfono'); return; }
 
-  const { data, error } = await sb
-    .from('socios')
-    .select('deuda,nombre')
-    .eq('id', id)
-    .single();
+  const { data, error } = await sb.from('socios').select('deuda').eq('id', id).single();
+  if (error) { toast('Error: ' + error.message); return; }
 
-  if (error || !data) {
-    toast('No pude obtener la deuda');
-    return;
-  }
+  const deuda = parseFloat(data?.deuda || 0);
 
-  const deudaTxt = fmtM(data.deuda || 0);
+  const msg =
+`Hola ${soc.nombre} 👋
 
-  const msg = `Hola ${data.nombre} 👋
+Te recordamos que tienes una deuda pendiente de *${fmtM(deuda)}* con dbarrio.
 
-¿Cómo estás?
+Cuando puedas, coordina el pago para mantener tu cuenta al día.
 
-Te escribimos para comentarte que actualmente tienes un saldo pendiente de *${deudaTxt}* con dbarrio.
-
-Cuando puedas, coordinamos el pago o revisamos cualquier detalle si lo necesitas.
-
-Gracias por tu trabajo y apoyo 🙌
-
-— Equipo dbarrio`;
+— dbarrio`;
 
   wa(soc.telefono, msg);
 }
