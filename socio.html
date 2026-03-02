@@ -408,8 +408,8 @@ function cardOrden(s) {
       </div>
 
       <div class="actions">
-        ${!enP ? `<button class="btn btn-yellow" onclick="marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
-        ${s.telefono ? `<a href="tel:${esc(s.telefono)}" class="btn btn-dark">Llamar cliente</a>` : ''}
+        ${(!enP && !rej && !rep) ? `<button class="btn btn-yellow" onclick="marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
+        ${s.telefono ? `<a href="${!enP ? `<button class="btn btn-yellow" onclick="marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}" class="btn btn-dark">Llamar cliente</a>` : ''}
         <button class="btn btn-wa btn-sm" onclick="waAdmin(${s.id})">${svgWA()} Admin</button>
         ${!rej
           ? `<button class="btn btn-danger btn-sm" onclick="openF('nopuedo',${s.id})">No puedo atender</button>`
@@ -421,13 +421,16 @@ function cardOrden(s) {
 }
 
 async function reportarCierre(id) {
+  if (sendingCierre[id]) return;
+  sendingCierre[id] = true;
+
   const monto = parseFloat(document.getElementById('monto-cierre-'+id).value);
   const gar   = parseInt(document.getElementById('gar-cierre-'+id).value, 10);
   const nota  = document.getElementById('nt-cierre-'+id).value.trim();
 
-  if (isNaN(monto) || monto <= 0) return alert('Monto inválido');
-  if (isNaN(gar) || gar < 0) return alert('Garantía inválida');
-  if (!nota) return alert('Describe el trabajo realizado');
+  if (isNaN(monto) || monto <= 0) { sendingCierre[id] = false; return alert('Monto inválido'); }
+  if (isNaN(gar) || gar < 0)      { sendingCierre[id] = false; return alert('Garantía inválida'); }
+  if (!nota)                      { sendingCierre[id] = false; return alert('Describe el trabajo realizado'); }
 
   const { error } = await sb.from('solicitudes').update({
     monto_socio: monto,
@@ -435,11 +438,12 @@ async function reportarCierre(id) {
     nota_socio: nota,
     cierre_ts: new Date().toISOString(),
     sub_estado: 'cierre_reportado',
-    solicita_cierre: false  // por si quedó de antes
+    solicita_cierre: false
   }).eq('id', id);
 
-  if (error) return alert('Error: ' + error.message);
+  if (error) { sendingCierre[id] = false; return alert('Error: ' + error.message); }
 
+  sendingCierre[id] = false;
   alert('Reporte enviado al admin');
   loadOrdenes();
 }
