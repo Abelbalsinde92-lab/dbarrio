@@ -395,8 +395,7 @@ async function envSol(){
 
   const now = new Date().toISOString();
   const consentimiento = !!cp;
-
-    const { data, error } = await sb.rpc('create_solicitud_publica', {
+  const { data, error } = await sb.rpc('create_solicitud_publica', {
     p_cliente: cli,
     p_telefono: wa,
     p_municipio: mun,
