@@ -1422,10 +1422,10 @@ async function waCobro(id) {
 // ══════════════════════════════════════════
 async function loadSoporte() {
   const elGar = document.getElementById('lista-gar');
+  const elQue = document.getElementById('lista-que');
 
   elGar.innerHTML = '<div class="loading">Cargando...</div>';
   elQue.innerHTML = '<div class="loading">Cargando...</div>';
-
   // Garantías: salen de solicitudes completadas con garantía
   const { data: solicitudes, error: e1 } = await sb
     .from('solicitudes')
@@ -1463,8 +1463,13 @@ async function loadSoporte() {
 </div>`;
     }).join('');
   }
+} 
 
-async function resolverGar(id) { await sb.from('garantias').update({estado:'resuelto'}).eq('id',id); toast('Marcado como resuelto'); loadSoporte() }
+async function resolverGar(id) {
+  await sb.from('garantias').update({estado:'resuelto'}).eq('id',id);
+  toast('Marcado como resuelto');
+  loadSoporte();
+}
 
 // ══════════════════════════════════════════
 // AJUSTES
