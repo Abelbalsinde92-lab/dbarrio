@@ -541,7 +541,10 @@ let pendingCajaTipo = null;
 // INIT
 // ══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async () => {
-  const { data: { session } } = await sb.auth.getSession();
+  const { data: { session } } = await sbAuth.auth.getSession();
+if(!session){
+  window.location.href = 'index.html';
+}
 
   if (!session) {
     alert('Debes iniciar sesión primero.');
