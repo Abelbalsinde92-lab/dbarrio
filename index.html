@@ -141,15 +141,65 @@ textarea{resize:vertical;min-height:72px}
 .btn-y .sp{border-color:rgba(28,28,46,.2);border-top-color:var(--ink)}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
+/* =========================
+   LOGO — Variante 2
+   ========================= */
+
+.logo{
+  display:flex;
+  align-items:flex-end;
+  gap:10px;
+  text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+
+.logo-mark{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:34px;
+  min-width:34px;
+  padding:0 10px;
+  border-radius:10px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  font-family:'Barlow Condensed', system-ui, sans-serif;
+  font-weight:900;
+  font-size:18px;
+  letter-spacing:-1px;
+  line-height:1;
+  color:#F5C116;
+}
+
+.logo-word{
+  display:inline-flex;
+  align-items:baseline;
+  font-family:'DM Sans', system-ui, sans-serif;
+  font-weight:800;
+  font-size:30px;
+  letter-spacing:-1px;
+  line-height:1;
+}
+
+.logo-d{ color:#ffffff; }
+.logo-barrio{ color:#F5C116; }
+
+@media (max-width:480px){
+  .logo-word{ font-size:26px; letter-spacing:-.8px; }
+  .logo-mark{ height:30px; min-width:30px; padding:0 8px; font-size:16px; }
+}
 </style>
 </head>
 <body>
 
 <header class="header">
-  <a href="#" class="logo">
-    <span class="logo-db">db</span>
-    <span class="logo-word">dbarrio</span>
-  </a>
+  <a href="#" class="logo" aria-label="dbarrio">
+  <span class="logo-mark" aria-hidden="true">db</span>
+  <span class="logo-word" aria-hidden="true">
+    <span class="logo-d">d</span><span class="logo-barrio">barrio</span>
+  </span>
+</a>
   <nav class="nav">
     <a href="privacidad.html" target="_blank">Privacidad</a>
     <a href="terminos.html" target="_blank">Terminos</a>
