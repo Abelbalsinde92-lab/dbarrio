@@ -38,8 +38,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   padding-top:calc(var(--th) + env(safe-area-inset-top,0));
   padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0));
 }
-/* CONTENT */
-.content{padding-top:var(--th);padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0))}
 /* TABS */
 .tab{display:none;padding:14px 14px 0}
 .tab.active{display:block}
@@ -441,24 +439,25 @@ function cardOrden(s) {
 
   const avisoCierre = rep ? `
     <div style="background:var(--ok-bg);border:1px solid rgba(78,203,160,.3);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:12px;font-weight:700;color:#1E7A5A">
-      \u2705 Ya enviaste el reporte de cierre. Espera la aprobaci\u00f3n del admin.
+      ✅ Ya enviaste el reporte de cierre. Espera la aprobación del admin.
     </div>
   ` : '';
 
   const avisoRechazo = rej ? `
     <div style="background:var(--err-bg);border:1px solid rgba(224,92,92,.25);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:12px;font-weight:700;color:var(--err)">
-      \u274c Marcaste "No puedo atender". Queda pendiente de reasignaci\u00f3n por el admin.
+      ❌ Marcaste "No puedo atender". Queda pendiente de reasignación por el admin.
     </div>
   ` : '';
 
-  const formInputs = (!rep && !rej) ? `
+  // Form de cierre (solo si NO está reportado y NO rechazado)
+  const cierreForm = (!rep && !rej) ? `
     <div class="fg">
       <label class="flbl">Monto cobrado ($)</label>
       <input id="monto-cierre-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"/>
     </div>
 
     <div class="fg">
-      <label class="flbl">Garant\u00eda (d\u00edas)</label>
+      <label class="flbl">Garantía (días)</label>
       <input id="gar-cierre-${s.id}" type="number" min="0" step="1" placeholder="0"/>
     </div>
 
@@ -468,22 +467,13 @@ function cardOrden(s) {
     </div>
 
     <div class="actions">
-  <!-- Cliente: WhatsApp con mensajes -->
-  ${s.telefono ? `
-    <button class="btn btn-state primary" onclick="stop(event); waCliente(${s.id}, 'encamino')">Voy en camino</button>
-    <button class="btn btn-state" onclick="stop(event); waCliente(${s.id}, 'coordinar')">Coordinar hora</button>
-    <button class="btn btn-state" onclick="stop(event); waCliente(${s.id}, 'aqui')">Estoy aquí</button>
-  ` : ''}
-
-  <!-- Admin: WhatsApp -->
-  <button class="btn btn-wa full" onclick="stop(event); waAdmin(${s.id})">${svgWA()} Admin</button>
-
-  <!-- No puedo atender -->
-  ${!rej
-    ? `<button class="btn btn-danger full" onclick="stop(event); openF('nopuedo',${s.id})">No puedo atender</button>`
-    : `<button class="btn btn-ghost full" disabled>Ya notificaste</button>`
-  }
-</div>
+      <button class="btn btn-yellow full" onclick="stop(event); reportarCierre(${s.id}, this)">Enviar reporte</button>
+    </div>
+  ` : `
+    <div class="actions">
+      <button class="btn btn-ghost full" disabled>Reporte enviado</button>
+    </div>
+  `;
 
   return `<div class="card" id="${cid}">
     <div class="card-hdr" onclick="toggleCard('${cid}')">
@@ -495,61 +485,65 @@ function cardOrden(s) {
           <span>${fmt(s.fecha_ts)}</span>
         </div>
       </div>
-      <span class="card-toggle">\u25be</span>
+      <span class="card-toggle">▾</span>
     </div>
 
     <div class="card-body">
       <div class="fields">
-        <div class="field"><span class="f-lbl">Servicio</span><span class="f-val">${esc(s.servicio||'\u2014')}</span></div>
-        <div class="field"><span class="f-lbl">Municipio</span><span class="f-val">${esc(s.municipio||'\u2014')}</span></div>
-        <div class="field"><span class="f-lbl">Tel\u00e9fono</span>
-          <span class="f-val"><a href="tel:${esc(s.telefono||'')}" style="color:var(--ink);font-weight:700;font-size:15px">${esc(s.telefono||'\u2014')}</a></span>
+        <div class="field"><span class="f-lbl">Servicio</span><span class="f-val">${esc(s.servicio||'—')}</span></div>
+        <div class="field"><span class="f-lbl">Municipio</span><span class="f-val">${esc(s.municipio||'—')}</span></div>
+
+        <div class="field"><span class="f-lbl">Teléfono</span>
+          <span class="f-val">
+            <a href="tel:${esc(s.telefono||'')}" style="color:var(--ink);font-weight:700;font-size:15px">${esc(s.telefono||'—')}</a>
+          </span>
         </div>
-        ${s.direccion ? `<div class="field full"><span class="f-lbl">Direcci\u00f3n</span><span class="f-val">${esc(s.direccion)}</span></div>` : ''}
+
+        ${s.direccion ? `<div class="field full"><span class="f-lbl">Dirección</span><span class="f-val">${esc(s.direccion)}</span></div>` : ''}
         ${s.detalles ? `<div class="field full"><span class="f-lbl">Detalles</span><span class="f-val">${esc(s.detalles)}</span></div>` : ''}
         ${s.nota_admin ? `<div class="field full"><span class="f-lbl">Nota del admin</span><span class="f-val">${esc(s.nota_admin)}</span></div>` : ''}
       </div>
-      
+
+      <!-- Botón para abrir/cerrar reporte -->
       <div class="actions">
-  <button class="btn btn-soft full" onclick="toggleCierre(event, ${s.id})">
-    Reporte de cierre
-  </button>
-</div>
-      
-      <div class="ifrm" id="ifrm-cierre-${s.id}">
-        <div class="ifrm-title">Reporte de cierre (lo que cobraste y garant\u00eda)</div>
-
-        ${avisoCierre}
-        ${avisoRechazo}
-
-        ${formInputs}
+        <button class="btn btn-soft full" onclick="toggleCierre(event, ${s.id})">Reporte de cierre</button>
       </div>
 
+      <!-- Caja de reporte -->
+      <div class="ifrm" id="ifrm-cierre-${s.id}">
+        <div class="ifrm-title">Reporte de cierre (lo que cobraste y garantía)</div>
+        ${avisoCierre}
+        ${avisoRechazo}
+        ${cierreForm}
+      </div>
+
+      <!-- No puedo atender -->
       <div class="ifrm" id="ifrm-nopuedo-${s.id}">
-        <div class="ifrm-title">\u00bfPor qu\u00e9 no puedes atender?</div>
+        <div class="ifrm-title">¿Por qué no puedes atender?</div>
         <div class="fg"><textarea id="nt-nopuedo-${s.id}" placeholder="Motivo..."></textarea></div>
         <div class="actions">
-          <button class="btn btn-danger" onclick="confNoPuedo(${s.id})">Confirmar</button>
-          <button class="btn btn-ghost" onclick="closeF('nopuedo',${s.id})">Cancelar</button>
+          <button class="btn btn-danger full" onclick="stop(event); confNoPuedo(${s.id})">Confirmar</button>
+          <button class="btn btn-ghost full" onclick="stop(event); closeF('nopuedo',${s.id})">Cancelar</button>
         </div>
       </div>
 
+      <!-- Acciones principales -->
       <div class="actions">
-  ${(!enP && !rej && !rep) ? `<button class="btn btn-yellow full" onclick="stop(event); marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
+        ${(!enP && !rej && !rep) ? `<button class="btn btn-yellow full" onclick="stop(event); marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
 
-  ${s.telefono ? `
-    <button class="btn btn-dark full" onclick="stop(event); waCliente('${esc(s.telefono)}', msgCamino(${JSON.stringify({id:s.id})}))">Voy en camino</button>
-    <button class="btn btn-ghost" onclick="stop(event); waCliente('${esc(s.telefono)}', msgHora(${JSON.stringify({id:s.id})}))">Coordinar hora</button>
-    <button class="btn btn-ghost" onclick="stop(event); waCliente('${esc(s.telefono)}', msgEstoyAqui(${JSON.stringify({id:s.id})}))">Estoy aquí</button>
-  ` : ''}
+        ${s.telefono ? `
+          <button class="btn btn-state primary" onclick="stop(event); waCliente(${s.id}, 'encamino')">Voy en camino</button>
+          <button class="btn btn-state" onclick="stop(event); waCliente(${s.id}, 'coordinar')">Coordinar hora</button>
+          <button class="btn btn-state" onclick="stop(event); waCliente(${s.id}, 'aqui')">Estoy aquí</button>
+        ` : ''}
 
-  <button class="btn btn-wa full" onclick="stop(event); waAdmin(${s.id})">${svgWA()} Admin</button>
+        <button class="btn btn-wa full" onclick="stop(event); waAdmin(${s.id})">${svgWA()} Admin</button>
 
-  ${!rej
-    ? `<button class="btn btn-danger full" onclick="stop(event); openF('nopuedo',${s.id})">No puedo atender</button>`
-    : `<button class="btn btn-ghost full" disabled>Ya notificaste</button>`
-  }
-</div>
+        ${!rej
+          ? `<button class="btn btn-danger full" onclick="stop(event); openF('nopuedo',${s.id})">No puedo atender</button>`
+          : `<button class="btn btn-ghost full" disabled>Ya notificaste</button>`
+        }
+      </div>
     </div>
   </div>`;
 }
@@ -780,21 +774,6 @@ function openWA(num, txt) {
   const n = String(num).replace(/\D/g,'');
   const url = 'https://wa.me/' + n + '?text=' + encodeURIComponent(txt);
   window.location.href = url; // Safari-friendly
-}
-
-function waCliente(tel, msg){
-  if(!tel) return alert('Cliente sin teléfono');
-  openWA(tel, msg);
-}
-
-function msgCamino(s){
-  return `Hola, soy *${mySocio.nombre}* de *dbarrio*.\nVoy en camino por la orden *${dbc(s.id)}*.\n¿Sigues disponible?`;
-}
-function msgHora(s){
-  return `Hola, soy *${mySocio.nombre}* de *dbarrio*.\nSobre la orden *${dbc(s.id)}*.\n¿Te viene bien en ~30-45 min?`;
-}
-function msgEstoyAqui(s){
-  return `Hola, soy *${mySocio.nombre}* de *dbarrio*.\nYa estoy en el lugar por *${dbc(s.id)}*.\n¿Me confirmas la entrada o referencia?`;
 }
 
 /* Corta propagación para que NO “bloquee” dentro de cards */
