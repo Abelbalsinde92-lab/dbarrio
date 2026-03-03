@@ -22,380 +22,111 @@
 html,body{height:100%;overflow:hidden}
 body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 
-/* ── TOPBAR ── (FIX: no apilar, KPI scroll, logo estable) ── */
+/* ===== TOPBAR FIX + KPI LOOK (PEGAR AL FINAL DEL STYLE) ===== */
+
 .topbar{
   background:var(--ink);
-  height:54px;
-  flex-shrink:0;
-  display:flex;
-  align-items:center;
+  height:54px;flex-shrink:0;
+  display:flex;align-items:center;
   justify-content:space-between;
-  gap:10px;
+  gap:12px;
   padding:0 16px;
   padding-top:env(safe-area-inset-top,0);
   z-index:30;
-  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
-/* Izquierda */
-.topbar-logo{
-  display:flex;
-  align-items:flex-end;
-  gap:6px;
-  flex:0 0 auto;
-  min-width:0;
-}
-.logo-db{
-  font-family:var(--fd);
-  font-size:32px;
-  font-weight:900;
-  color:var(--y);
-  letter-spacing:-3px;
-  line-height:.85;
-}
-.logo-tag{
-  font-size:9px;
-  font-weight:600;
-  color:rgba(255,255,255,.3);
-  letter-spacing:2px;
-  padding-bottom:2px;
-  white-space:nowrap;
-}
+/* izquierda */
+.topbar-logo{display:flex;align-items:flex-end;gap:8px;flex:0 0 auto}
+.logo-db{font-family:var(--fd);font-size:32px;font-weight:900;color:var(--y);letter-spacing:-3px;line-height:.85}
+.logo-tag{font-size:9px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:2px;padding-bottom:3px}
 
-/* Derecha (aquí debe ir KPI + Salir) */
+/* derecha (kpis + salir) */
 .topbar-right{
   display:flex;
   align-items:center;
+  gap:12px;
+  flex:1;
+  min-width:0;
   justify-content:flex-end;
-  gap:10px;
-
-  flex:1;       /* ✅ se estira */
-  min-width:0;  /* ✅ permite overflow sin romper layout */
 }
 
-/* KPI bar: scroll horizontal solo aquí */
+/* barra KPI scrolleable */
 .kpi-bar{
   display:flex;
-  align-items:stretch;
-  gap:8px;
-
+  align-items:center;
+  gap:10px;
   overflow-x:auto;
-  overflow-y:hidden;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
 
-  flex:1;       /* ✅ se come el espacio disponible */
-  min-width:0;  /* ✅ importantísimo */
+  flex:1;
+  min-width:0;
+
+  padding:2px 0;
 }
 .kpi-bar::-webkit-scrollbar{display:none}
 
-/* “fade” para que se vea elegante en bordes del scroll (opcional) */
+/* opcional: fade a los bordes */
 .kpi-bar{
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
-          mask-image: linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+  mask-image:linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
 }
 
-/* KPI pills */
+/* KPI “pill” compacto */
 .kpi{
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:8px;
-  padding:3px 10px;
+  height:40px;
+  min-width:74px;
+  padding:6px 12px;
+
   display:flex;
   flex-direction:column;
   align-items:center;
-  min-width:52px;
-  flex-shrink:0;
+  justify-content:center;
+  gap:2px;
+
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+  flex:0 0 auto;
 }
+
+/* número protagonista */
 .kpi-n{
   font-family:var(--fd);
-  font-size:16px;
-  font-weight:800;
-  color:var(--y);
+  font-size:22px;
+  font-weight:900;
   line-height:1;
-}
-.kpi-l{
-  font-size:9px;
-  font-weight:500;
-  color:rgba(255,255,255,.35);
-  letter-spacing:.3px;
+  color:var(--y);
+  font-variant-numeric: tabular-nums;
+  letter-spacing:.2px;
 }
 
-/* Botón salir: nunca se aplasta ni baja */
+/* label discreto */
+.kpi-l{
+  font-size:10px;
+  font-weight:800;
+  line-height:1;
+  color:rgba(255,255,255,.35);
+  letter-spacing:.6px;
+  text-transform:uppercase;
+}
+
+/* botón salir no se aplasta */
 .btn-exit{
   background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:8px;
-  padding:6px 10px;
-  font-size:11px;
-  font-weight:600;
-  color:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  padding:9px 14px;
+  font-size:12px;
+  font-weight:800;
+  color:rgba(255,255,255,.65);
   cursor:pointer;
   white-space:nowrap;
-  flex:0 0 auto; /* ✅ clave */
+
+  flex:0 0 auto;
 }
-.btn-exit:hover{color:#fff;border-color:rgba(255,255,255,.25)}
-
-/* Pequeño ajuste para móviles */
-@media(max-width:420px){
-  .logo-tag{display:none;} /* ✅ evita que empuje a la derecha */
-  .kpi{min-width:48px;}
-}
-
-/* ── BODY LAYOUT ── */
-.body{display:flex;flex:1;overflow:hidden}
-
-/* ── SIDEBAR ── */
-.sidebar{
-  width:200px;flex-shrink:0;
-  background:var(--ink2);
-  display:flex;flex-direction:column;
-  overflow-y:auto;
-  scrollbar-width:none;
-  padding:16px 0;
-  padding-bottom:env(safe-area-inset-bottom,16px);
-  transition:transform .25s cubic-bezier(.4,0,.2,1);
-}
-.sidebar::-webkit-scrollbar{display:none}
-.sb-item{
-  display:flex;align-items:center;gap:10px;
-  padding:12px 16px;
-  font-family:var(--fd);font-size:18px;font-weight:700;
-  color:rgba(255,255,255,.45);
-  cursor:pointer;
-  border-left:3px solid transparent;
-  transition:all .15s;
-  user-select:none;
-  -webkit-tap-highlight-color:transparent;
-}
-.sb-item svg{opacity:.5;flex-shrink:0;transition:opacity .15s}
-.sb-item:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.04)}
-.sb-item.active{color:var(--y);border-left-color:var(--y);background:rgba(245,193,22,.06)}
-.sb-item.active svg{opacity:1;stroke:var(--y)}
-
-/* MOBILE SIDEBAR */
-@media(max-width:640px){
-  .sidebar{
-    position:fixed;top:0;left:0;bottom:0;
-    z-index:50;
-    transform:translateX(-100%);
-    box-shadow:4px 0 24px rgba(0,0,0,.3);
-  }
-  .sidebar.open{transform:translateX(0)}
-  .sidebar-overlay{
-    display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:49;
-  }
-  .sidebar-overlay.open{display:block}
-  .btn-menu{display:flex!important}
-  .topbar-logo{gap:8px}
-}
-/* ── MAIN ── */
-.main{
-  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
-  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
-  padding:0;
-}
-.section{display:none;padding:14px 14px;padding-bottom:calc(20px + env(safe-area-inset-bottom,0))}
-.section.active{display:block}
-
-/* ── SECTION HEADER ── */
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.sec-title{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--ink);letter-spacing:.1px}
-.sec-sub{font-size:11px;color:var(--g1);margin-top:1px}
-
-/* ── CARD BASE ── */
-.card{
-  background:var(--card);
-  border-radius:var(--r);
-  border-left:4px solid var(--y);
-  box-shadow:0 2px 8px rgba(0,0,0,.07);
-  margin-bottom:10px;
-  overflow:hidden;
-  transition:box-shadow .15s;
-}
-.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1)}
-.card-hdr{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px;
-  cursor:pointer;
-  user-select:none;
-  -webkit-tap-highlight-color:transparent;
-  gap:10px;
-}
-.card-hdr-left{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
-.card-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.card-code{font-family:var(--fd);font-size:16px;font-weight:800;color:var(--ink);letter-spacing:.3px}
-.card-name{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-detail{font-size:12px;color:var(--g1)}
-.card-hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.card-chevron{transition:transform .2s;color:var(--g2);flex-shrink:0}
-.card.open .card-chevron{transform:rotate(180deg)}
-.card-body{display:none;padding:0 16px 16px;border-top:1px solid var(--line)}
-.card.open .card-body{display:block}
-
-/* ── STATUS CHIPS ── */
-.chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.2px;line-height:1.4;flex-shrink:0}
-.cp{background:#FFF3CD;color:#92600A;border:1px solid #F0D070}
-.ca{background:#D4EDDA;color:#155724;border:1px solid #9BD4A8}
-.cc{background:#D1ECF1;color:#0C5460;border:1px solid #8DD4DC}
-.cr{background:#F8D7DA;color:#721C24;border:1px solid #F0A0A8}
-.ce{background:#E2D9F3;color:#4B2D8B;border:1px solid #C4AAE8}
-.cw{background:rgba(245,193,22,.15);color:#92600A;border:1px solid rgba(245,193,22,.3)}
-
-/* ── CARD INFO GRID ── */
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin:12px 0}
-.info-item{display:flex;flex-direction:column;gap:2px}
-.info-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g1)}
-.info-val{font-size:13px;font-weight:600;color:var(--ink);word-break:break-word}
-.info-full{grid-column:1/-1}
-
-/* ── ACTION BUTTONS ── */
-.actions{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.actions-row{display:flex;gap:8px}
-.btn{border:none;border-radius:var(--rs);font-size:13px;font-weight:700;font-family:var(--f);cursor:pointer;padding:10px 14px;transition:all .12s;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
-.btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn-y{background:var(--y);color:var(--ink)}
-.btn-y:hover{background:var(--yd)}
-.btn-k{background:var(--ink);color:#fff}
-.btn-k:hover{background:var(--ink2)}
-.btn-g{background:var(--bg);color:var(--ink);border:1.5px solid var(--line)}
-.btn-g:hover{background:var(--line)}
-.btn-r{background:#FFF0F0;color:var(--err);border:1.5px solid rgba(214,48,49,.2)}
-.btn-r:hover{background:rgba(214,48,49,.1)}
-.btn-wa{background:#EDFDF5;color:#1A5C38;border:1.5px solid rgba(37,211,102,.3);font-weight:700}
-.btn-wa:hover{background:rgba(37,211,102,.15)}
-.btn-full{width:100%}
-.btn-sm{padding:7px 12px;font-size:12px}
-
-/* ── FORM INLINE ── */
-.inline-form{background:var(--bg);border-radius:var(--rs);padding:12px;margin-top:10px}
-.inline-form label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.inline-form input,.inline-form select,.inline-form textarea{width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;font-family:var(--f);color:var(--ink);background:#fff;transition:border-color .15s;-webkit-appearance:none;appearance:none}
-.inline-form input:focus,.inline-form select:focus,.inline-form textarea:focus{outline:none;border-color:var(--ink)}
-.inline-form textarea{resize:none;min-height:56px}
-
-/* ── CALL LINK ── */
-.call-link{display:inline-flex;align-items:center;gap:5px;color:var(--ink);text-decoration:none;font-weight:600;font-size:13px;background:rgba(28,28,46,.05);padding:5px 10px;border-radius:8px;transition:background .12s}
-.call-link:hover{background:rgba(28,28,46,.1)}
-
-/* ── SOCIOS TABLE → CARDS ── */
-.socio-card{background:var(--card);border-radius:var(--r);padding:0;margin-bottom:8px;border-left:4px solid var(--line);box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden}
-.socio-card.pendiente{border-left-color:var(--y)}
-.socio-card.activo{border-left-color:var(--ok)}
-.socio-card.baja{border-left-color:var(--err)}
-.socio-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;gap:10px;-webkit-tap-highlight-color:transparent}
-.socio-hdr-left{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
-.socio-name{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
-.socio-meta{font-size:12px;color:var(--g1)}
-.socio-body{display:none;padding:0 16px 14px;border-top:1px solid var(--line)}
-.socio-card.open .socio-body{display:block}
-
-/* ── CAJA ── */
-.caja-card{background:var(--card);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;border-left:4px solid var(--err);box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.caja-hdr{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.caja-nombre{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
-.caja-deuda{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--err);line-height:1}
-.caja-sub{font-size:11px;color:var(--g1)}
-
-/* MOV LIST */
-.mov-item{background:var(--bg);border-radius:var(--rs);padding:10px 12px;margin-top:6px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.mov-left{display:flex;flex-direction:column;gap:2px}
-.mov-tipo{font-size:12px;font-weight:700;color:var(--ink)}
-.mov-nota{font-size:11px;color:var(--g1)}
-.mov-monto{font-family:var(--fd);font-size:17px;font-weight:800}
-.mov-monto.cargo{color:var(--err)}
-.mov-monto.pago{color:var(--ok)}
-
-/* ── FILTROS ── */
-.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.filters input,.filters select{flex:1;min-width:120px;padding:8px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;font-family:var(--f);background:#fff;color:var(--ink);-webkit-appearance:none;appearance:none}
-.filters input:focus,.filters select:focus{outline:none;border-color:var(--ink)}
-
-/* ── HISTORIAL CARDS ── */
-.hist-card{background:var(--card);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;border-left:4px solid var(--ok);box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.hist-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.hist-code{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink)}
-.hist-monto{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink)}
-.hist-meta{font-size:12px;color:var(--g1);margin-top:4px}
-.stars-r{display:flex;gap:2px;margin-top:6px}
-.star-r{font-size:14px;color:var(--line)}
-.star-r.on{color:var(--y)}
-
-/* ── AJUSTES (no tabla, todo cards) ── */
-.setting-card{background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.setting-title{font-family:var(--fd);font-size:17px;font-weight:800;color:var(--ink);margin-bottom:10px}
-.setting-card label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.setting-card input,.setting-card select,.setting-card textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;font-family:var(--f);color:var(--ink);background:#FAFAFA;transition:border-color .15s;-webkit-appearance:none}
-.setting-card input:focus,.setting-card select:focus,.setting-card textarea:focus{outline:none;border-color:var(--ink)}
-.setting-card textarea{resize:vertical;min-height:80px}
-
-/* ── SOPORTE ── */
-.soporte-card{background:var(--card);border-radius:var(--r);border-left:4px solid var(--ink3);box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:8px;overflow:hidden}
-.soporte-hdr{padding:12px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;-webkit-tap-highlight-color:transparent}
-.soporte-hdr-left{display:flex;flex-direction:column;gap:2px}
-.soporte-title{font-size:13px;font-weight:700;color:var(--ink)}
-.soporte-meta{font-size:11px;color:var(--g1)}
-.soporte-body{display:none;padding:0 16px 14px;border-top:1px solid var(--line)}
-.soporte-card.open .soporte-body{display:block}
-
-/* ── EMPTY / LOADING ── */
-.empty{text-align:center;padding:40px 20px;color:var(--g2);font-size:13px}
-.empty-ico{font-size:32px;margin-bottom:8px;opacity:.4}
-.loading{text-align:center;padding:32px 20px;color:var(--g1);font-size:13px}
-
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0));
-  left:50%;transform:translateX(-50%) translateY(80px);
-  background:var(--ink);color:#fff;
-  padding:10px 20px;border-radius:24px;
-  font-size:13px;font-weight:600;
-  white-space:nowrap;
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-  z-index:999;pointer-events:none;
-  box-shadow:0 4px 16px rgba(0,0,0,.3);
-}
-.toast.show{transform:translateX(-50%) translateY(0)}
-
-/* ── MODAL ── */
-.ov{display:none;position:fixed;inset:0;background:rgba(15,15,28,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:200;align-items:flex-end;justify-content:center}
-.ov.open{display:flex}
-.sheet{background:var(--card);width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom,28px);max-height:80svh;overflow-y:auto;animation:shu .25s cubic-bezier(.22,.72,0,1) both}
-@keyframes shu{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.pill{width:36px;height:4px;background:var(--line);border-radius:4px;margin:10px auto}
-.sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;margin-bottom:12px}
-.sheet-title{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--ink)}
-.sheet-x{background:var(--line);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--g1);display:flex;align-items:center;justify-content:center}
-.mbody{padding:0 20px 20px}
-.fg{margin-bottom:12px}
-.fg label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;font-family:var(--f);color:var(--ink);background:#FAFAFA;-webkit-appearance:none}
-.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--ink)}
-.fg textarea{resize:none;min-height:72px}
-.err-box{display:none;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13px;color:var(--err)}
-.err-box.v{display:block}
-.sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;vertical-align:middle;margin-right:5px}
-@keyframes sp{to{transform:rotate(360deg)}}
-@media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
-/* Botón menú (solo móvil) */
-.btn-menu{
-  display:none;
-  background:none;
-  border:none;
-  cursor:pointer;
-  padding:6px;
-  border-radius:10px;
-  -webkit-tap-highlight-color:transparent;
-}
-.btn-menu:active{transform:scale(.96)}
-.btn-menu:hover{background:rgba(255,255,255,.06)}
-
-@media(max-width:640px){
-  .btn-menu{display:inline-flex;}
-}
-@media(min-width:641px){.btn-menu{display:none!important}}
-</style>
+.btn-exit:active{transform:scale(.98)}
 </head>
 <body>
 
@@ -404,34 +135,34 @@ body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);fo
 
 <!-- TOPBAR -->
 <header class="topbar">
-  <!-- Botón menú (solo móvil) -->
-  <button class="btn-menu" type="button" aria-label="Menú" onclick="toggleSidebar()">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,.75)">
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </button>
-
   <div class="topbar-logo">
     <div class="logo-db">db</div>
     <div class="logo-tag">ADMIN</div>
   </div>
 
   <div class="topbar-right">
-    <div class="kpi-bar" id="kpiBar">
-      <!-- KPIs (ejemplo seguro) -->
-      <div class="kpi"><div class="kpi-n" id="kpiPend">—</div><div class="kpi-l">Pend</div></div>
-      <div class="kpi"><div class="kpi-n" id="kpiAsig">—</div><div class="kpi-l">Asig</div></div>
-      <div class="kpi"><div class="kpi-n" id="kpiComp">—</div><div class="kpi-l">Comp</div></div>
-      <div class="kpi"><div class="kpi-n" id="kpiCaja">—</div><div class="kpi-l">Caja</div></div>
+    <div class="kpi-bar" aria-label="Resumen">
+      <div class="kpi">
+        <div class="kpi-n" id="kpiPend">0</div>
+        <div class="kpi-l">Pend</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-n" id="kpiAsig">0</div>
+        <div class="kpi-l">Asig</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-n" id="kpiComp">0</div>
+        <div class="kpi-l">Comp</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-n" id="kpiCaja">$0</div>
+        <div class="kpi-l">Caja</div>
+      </div>
     </div>
 
-    <button class="btn-exit" type="button" onclick="exitAdmin()">Salir</button>
+    <button class="btn-exit" onclick="exitAdmin()">Salir</button>
   </div>
 </header>
-
 <div class="body">
   <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
@@ -1798,6 +1529,24 @@ function loadAjsUI() {
 function saveWA() { CFG.wa=document.getElementById('aj-wa').value.trim(); toast('Numero guardado') }
 function saveComision() { CFG.com=parseFloat(document.getElementById('aj-com').value)||15; toast('Comision guardada') }
 function saveTemplates() { CFG.t1=document.getElementById('aj-t1').value; CFG.t2=document.getElementById('aj-t2').value; CFG.t3=document.getElementById('aj-t3').value; toast('Templates guardados') }
+// ===== KPI SAFE SETTERS (nunca muestra "—") =====
+function setKpis({ pend=0, asig=0, comp=0, caja=0 } = {}) {
+  const nPend = document.getElementById('kpiPend');
+  const nAsig = document.getElementById('kpiAsig');
+  const nComp = document.getElementById('kpiComp');
+  const nCaja = document.getElementById('kpiCaja');
+
+  if (nPend) nPend.textContent = Number.isFinite(+pend) ? String(+pend) : '0';
+  if (nAsig) nAsig.textContent = Number.isFinite(+asig) ? String(+asig) : '0';
+  if (nComp) nComp.textContent = Number.isFinite(+comp) ? String(+comp) : '0';
+
+  // Caja: deja $0 si no hay número
+  const c = Number(caja);
+  if (nCaja) nCaja.textContent = Number.isFinite(c) ? ('$' + c.toFixed(0)) : '$0';
+}
+
+// Pon 0s desde el arranque (evita guiones mientras carga)
+setKpis({ pend:0, asig:0, comp:0, caja:0 });
 </script>
 </body>
 </html>
