@@ -310,22 +310,93 @@ textarea{resize:vertical;min-height:72px}
 <div class="ov" id="ov-sol" onclick="ovc(event,'sol')">
 <div class="sheet">
   <div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Solicitar tecnico</span><button class="sheet-x" onclick="close_('sol')">&times;</button></div>
+  <div class="sheet-hdr">
+    <span class="sheet-title">Solicitar técnico</span>
+    <button class="sheet-x" onclick="close_('sol')">&times;</button>
+  </div>
+
   <div class="mbody">
-    <div class="fg"><label>Nombre completo</label><input id="s-cli" type="text" placeholder="Tu nombre"/><div class="fe" id="es-cli">Requerido.</div></div>
-    <div class="fg"><label>WhatsApp</label><input id="s-wa" type="tel" placeholder="+53 5XXX XXXX"/><div class="fe" id="es-wa">Numero invalido.</div></div>
-    <div class="fg"><label>Municipio</label><input id="s-mun" type="text" placeholder="Donde necesitas el servicio"/><div class="fe" id="es-mun">Requerido.</div></div>
-    <div class="fg"><label>Direccion (opcional)</label><input id="s-dir" type="text" placeholder="Calle, numero, referencias..."/></div>
-    <div class="fg"><label>Tipo de servicio</label>
-      <select id="s-srv"><option value="">-- Seleccionar --</option><option>Electrodomesticos</option><option>Plomeria</option><option>Electricidad</option><option>Refrigeracion</option><option>Television / audio</option><option>Computadoras</option><option>Celulares</option><option>Cerrajeria</option><option>Otro</option></select>
+
+    <!-- NUEVO: mensaje fase lanzamiento (no promete disponibilidad) -->
+    <div class="hint" style="margin-bottom:12px">
+      Estamos <strong>activando la red por municipios</strong>. Si aún no hay técnico disponible en tu zona,
+      tu solicitud queda registrada y te avisamos por WhatsApp cuando podamos atender.
+    </div>
+
+    <div class="fg">
+      <label>Nombre completo</label>
+      <input id="s-cli" type="text" placeholder="Tu nombre"/>
+      <div class="fe" id="es-cli">Requerido.</div>
+    </div>
+
+    <div class="fg">
+      <label>WhatsApp</label>
+      <input id="s-wa" type="tel" placeholder="+53 5XXX XXXX"/>
+      <div class="fe" id="es-wa">Número inválido.</div>
+    </div>
+
+    <div class="fg">
+      <label>Municipio</label>
+      <input id="s-mun" type="text" placeholder="Dónde necesitas el servicio"/>
+      <div class="fe" id="es-mun">Requerido.</div>
+    </div>
+
+    <div class="fg">
+      <label>Dirección (opcional)</label>
+      <input id="s-dir" type="text" placeholder="Calle, número, referencias..."/>
+    </div>
+
+    <div class="fg">
+      <label>Tipo de servicio</label>
+      <select id="s-srv">
+        <option value="">-- Seleccionar --</option>
+        <option>Electrodomésticos</option>
+        <option>Plomería</option>
+        <option>Electricidad</option>
+        <option>Refrigeración</option>
+        <option>Televisión / audio</option>
+        <option>Computadoras</option>
+        <option>Celulares</option>
+        <option>Cerrajería</option>
+        <option>Otro</option>
+      </select>
       <div class="fe" id="es-srv">Selecciona un servicio.</div>
     </div>
-    <div class="fg"><label>Descripcion del problema</label><textarea id="s-det" placeholder="Describe que falla o que necesitas..."></textarea></div>
-    <div class="cb"><input type="checkbox" id="s-cp"/><span>Acepto <a href="terminos.html" target="_blank">Terminos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div><!-- CHANGED: texto con links a terminos y privacidad -->
-    <div class="fe" id="es-cp">Debes aceptar Terminos y Privacidad.</div><!-- CHANGED: error UI para checkbox obligatorio -->
-    <div class="ok-box" id="ok-sol">Solicitud registrada. Tu codigo es:<br/><span class="ok-code" id="cod-sol"></span><span class="ok-note">Guardalo — lo necesitas para garantia, reclamo y calificacion.</span></div>
+
+    <div class="fg">
+      <label>Descripción del problema</label>
+      <textarea id="s-det" placeholder="Describe qué falla o qué necesitas... (marca, modelo y desde cuándo)"></textarea>
+    </div>
+
+    <!-- NUEVO: microcopy confianza -->
+    <p class="hint" style="margin-top:-4px;margin-bottom:10px">
+      Te daremos un <strong>código</strong> para seguimiento, garantía, reclamo y calificación.
+    </p>
+
+    <div class="cb">
+      <input type="checkbox" id="s-cp"/>
+      <span>
+        Acepto <a href="terminos.html" target="_blank">Términos</a> y
+        <a href="privacidad.html" target="_blank">Privacidad</a>.
+      </span>
+    </div>
+    <div class="fe" id="es-cp">Debes aceptar Términos y Privacidad.</div>
+
+    <div class="ok-box" id="ok-sol">
+      Solicitud registrada. Tu código es:<br/>
+      <span class="ok-code" id="cod-sol"></span>
+      <span class="ok-note">Guárdalo — lo necesitas para garantía, reclamo y calificación.</span>
+    </div>
+
     <div class="err-box" id="err-sol"></div>
-    <button class="btn btn-y" id="btn-sol" onclick="envSol()">Solicitar tecnico</button>
+
+    <button class="btn btn-y" id="btn-sol" onclick="envSol()">Registrar solicitud</button>
+
+    <!-- NUEVO: nota final (sin humo, pero tranquiliza) -->
+    <p class="hint" style="margin-top:10px">
+      Si tu caso es urgente, escribe “URGENTE” en la descripción para priorizar cuando haya disponibilidad.
+    </p>
+
   </div>
 </div></div>
 
