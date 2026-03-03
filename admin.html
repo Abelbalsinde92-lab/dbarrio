@@ -1,135 +1,84 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<style>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-<meta name="theme-color" content="#1C1C2E"/>
-<title>dbarrio — admin</title>
-<link rel="icon" type="image/svg+xml" href="icon.svg"/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
-  --ink:#1C1C2E;--ink2:#2E2E45;--ink3:#454562;
-  --bg:#ECEAE5;--card:#FFFFFF;--line:#E0DDD7;
-  --g1:#6B6B7E;--g2:#A8A4A0;
-  --err:#D63031;--ok:#00856F;--wa:#25D366;
-  --r:14px;--rs:10px;
-  --f:'Outfit',sans-serif;--fd:'Barlow Condensed',sans-serif;
-}
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#1C1C2E"/>
+  <title>dbarrio — admin</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
-html,body{height:100%;overflow:hidden}
-body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
+      --ink:#1C1C2E;--ink2:#2E2E45;--ink3:#454562;
+      --bg:#ECEAE5;--card:#FFFFFF;--line:#E0DDD7;
+      --g1:#6B6B7E;--g2:#A8A4A0;
+      --err:#D63031;--ok:#00856F;--wa:#25D366;
+      --r:14px;--rs:10px;
+      --f:'Outfit',sans-serif;--fd:'Barlow Condensed',sans-serif;
+    }
 
-/* ===== TOPBAR FIX + KPI LOOK (PEGAR AL FINAL DEL STYLE) ===== */
+    html,body{height:100%;overflow:hidden}
+    body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 
-.topbar{
-  background:var(--ink);
-  height:54px;flex-shrink:0;
-  display:flex;align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:0 16px;
-  padding-top:env(safe-area-inset-top,0);
-  z-index:30;
-}
+    /* ===== TOPBAR FIX + KPI LOOK ===== */
+    .topbar{
+      background:var(--ink);
+      height:54px;flex-shrink:0;
+      display:flex;align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:0 16px;
+      padding-top:env(safe-area-inset-top,0);
+      z-index:30;
+    }
+    .topbar-logo{display:flex;align-items:flex-end;gap:8px;flex:0 0 auto}
+    .logo-db{font-family:var(--fd);font-size:32px;font-weight:900;color:var(--y);letter-spacing:-3px;line-height:.85}
+    .logo-tag{font-size:9px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:2px;padding-bottom:3px}
 
-/* izquierda */
-.topbar-logo{display:flex;align-items:flex-end;gap:8px;flex:0 0 auto}
-.logo-db{font-family:var(--fd);font-size:32px;font-weight:900;color:var(--y);letter-spacing:-3px;line-height:.85}
-.logo-tag{font-size:9px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:2px;padding-bottom:3px}
+    .topbar-right{display:flex;align-items:center;gap:12px;flex:1;min-width:0;justify-content:flex-end}
+    .kpi-bar{
+      display:flex;align-items:center;gap:10px;
+      overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+      flex:1;min-width:0;padding:2px 0;
+      mask-image:linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+    }
+    .kpi-bar::-webkit-scrollbar{display:none}
 
-/* derecha (kpis + salir) */
-.topbar-right{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex:1;
-  min-width:0;
-  justify-content:flex-end;
-}
-
-/* barra KPI scrolleable */
-.kpi-bar{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  overflow-x:auto;
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-
-  flex:1;
-  min-width:0;
-
-  padding:2px 0;
-}
-.kpi-bar::-webkit-scrollbar{display:none}
-
-/* opcional: fade a los bordes */
-.kpi-bar{
-  mask-image:linear-gradient(to right, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
-}
-
-/* KPI “pill” compacto */
-.kpi{
-  height:40px;
-  min-width:74px;
-  padding:6px 12px;
-
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:2px;
-
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:12px;
-
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
-  flex:0 0 auto;
-}
-
-/* número protagonista */
-.kpi-n{
-  font-family:var(--fd);
-  font-size:22px;
-  font-weight:900;
-  line-height:1;
-  color:var(--y);
-  font-variant-numeric: tabular-nums;
-  letter-spacing:.2px;
-}
-
-/* label discreto */
-.kpi-l{
-  font-size:10px;
-  font-weight:800;
-  line-height:1;
-  color:rgba(255,255,255,.35);
-  letter-spacing:.6px;
-  text-transform:uppercase;
-}
-
-/* botón salir no se aplasta */
-.btn-exit{
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:12px;
-  padding:9px 14px;
-  font-size:12px;
-  font-weight:800;
-  color:rgba(255,255,255,.65);
-  cursor:pointer;
-  white-space:nowrap;
-
-  flex:0 0 auto;
-}
-.btn-exit:active{transform:scale(.98)}
-</head>
-<body>
+    .kpi{
+      height:40px;min-width:74px;padding:6px 12px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:12px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+      flex:0 0 auto;
+    }
+    .kpi-n{
+      font-family:var(--fd);
+      font-size:22px;font-weight:900;line-height:1;
+      color:var(--y);
+      font-variant-numeric: tabular-nums;
+      letter-spacing:.2px;
+    }
+    .kpi-l{
+      font-size:10px;font-weight:800;line-height:1;
+      color:rgba(255,255,255,.35);
+      letter-spacing:.6px;text-transform:uppercase;
+    }
+    .btn-exit{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:12px;
+      padding:9px 14px;
+      font-size:12px;font-weight:800;
+      color:rgba(255,255,255,.65);
+      cursor:pointer;white-space:nowrap;
+      flex:0 0 auto;
+    }
+    .btn-exit:active{transform:scale(.98)}
 
 <div class="toast" id="toast"></div>
 <div class="sidebar-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
@@ -597,12 +546,17 @@ async function loadKPIs() {
     sb.from('solicitudes').select('estado'),
     sb.from('movimientos').select('monto').eq('tipo','cargo_comision')
   ]);
+
   const s = solic || [];
-  setT('kP', s.filter(x=>x.estado==='pendiente').length);
-  setT('kA', s.filter(x=>x.estado==='asignada').length);
-  setT('kC', s.filter(x=>x.estado==='completada').length);
+  const pend = s.filter(x=>x.estado==='pendiente').length;
+  const asig = s.filter(x=>x.estado==='asignada').length;
+  const comp = s.filter(x=>x.estado==='completada').length;
+
   const ing = (movs||[]).reduce((a,m)=>a+parseFloat(m.monto||0),0);
-  setT('kI', '$'+ing.toFixed(0));
+  const caja = Number.isFinite(ing) ? ing : 0;
+
+  // ✅ usa tus IDs reales
+  setKpis({ pend, asig, comp, caja });
 }
 
 // ══════════════════════════════════════════
