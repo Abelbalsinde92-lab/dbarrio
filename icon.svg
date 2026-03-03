@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <clipPath id="sq-clip">
+      <path d="M 220 0 L 804 0 C 925.50 0 1024 98.50 1024 220 L 1024 804 C 1024 925.50 925.50 1024 804 1024 L 220 1024 C 98.50 1024 0 925.50 0 804 L 0 220 C 0 98.50 98.50 0 220 0 Z"/>
+    </clipPath>
+    <radialGradient id="bg-d" cx="30%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#21213C"/>
+      <stop offset="100%" stop-color="#1A1A2E"/>
+    </radialGradient>
+    <linearGradient id="shine-d" x1="0" y1="0" x2="0" y2="0.3">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.05)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <path d="M 220 0 L 804 0 C 925.50 0 1024 98.50 1024 220 L 1024 804 C 1024 925.50 925.50 1024 804 1024 L 220 1024 C 98.50 1024 0 925.50 0 804 L 0 220 C 0 98.50 98.50 0 220 0 Z" fill="url(#bg-d)"/>
+  <!-- Subtle top shine -->
+  <rect clip-path="url(#sq-clip)" x="0" y="0" width="1024" height="307" fill="url(#shine-d)"/>
+  <!-- db lettermark -->
+  <text
+    x="522" y="672"
+    text-anchor="middle"
+    font-family="&apos;DM Sans&apos;, &apos;Helvetica Neue&apos;, Arial, sans-serif"
+    font-weight="800"
+    font-style="italic"
+    font-size="578"
+    fill="#F5C116"
+  >db</text>
+</svg>
