@@ -135,12 +135,56 @@ input:focus, select:focus {
 /* EMPTY */
 .vacio{text-align:center;padding:36px 20px;font-size:14px;color:var(--g1)}
 .cargando{text-align:center;padding:28px;font-size:13px;color:var(--g1)}
+/* ===== BRAND (Var 3) ===== */
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:0 0 auto;
+}
+
+.brand-mark{
+  font-family:var(--fd);
+  font-size:28px;
+  font-weight:900;
+  color:var(--y);
+  letter-spacing:-2px;
+  line-height:1;
+}
+
+.brand-name{
+  font-family:var(--fd);
+  font-size:16px;
+  font-weight:900;
+  color:rgba(255,255,255,.75);
+  letter-spacing:.3px;
+}
+
+/* Ajuste nombre usuario */
+.tb-nombre{
+  flex:1;
+  min-width:0;
+  text-align:right;
+  margin-right:10px;
+  font-size:12px;
+  font-weight:600;
+  color:rgba(255,255,255,.45);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 </style>
 </head>
 <body>
 <header class="topbar">
-  <a href="#" class="tb-logo">db</a>
-  <span class="tb-nombre" id="tbNombre">&mdash;</span>
+  <div class="brand">
+    <span class="brand-mark">db</span>
+    <span class="brand-name">dbarrio</span>
+  </div>
+
+  <span class="tb-nombre" id="tbNombre">—</span>
+
   <button class="tb-exit" onclick="exitSocio()">Salir</button>
 </header>
 
