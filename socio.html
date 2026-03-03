@@ -84,17 +84,32 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .ifrm{display:none;background:var(--bg);border-radius:var(--rs);padding:14px;margin-top:10px;border:1.5px solid var(--line)}
 .ifrm.open{display:block}
 .ifrm-title{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-/* ACTIONS */
-.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:none;border-radius:var(--rs);padding:9px 14px;font-size:13px;font-weight:600;font-family:var(--f);cursor:pointer;transition:opacity .12s,transform .1s;-webkit-tap-highlight-color:transparent;white-space:nowrap;text-decoration:none}
-.btn:active{transform:scale(.96)}
-.btn-dark{background:var(--ink);color:#fff}
-.btn-yellow{background:var(--y);color:var(--ink);font-weight:700}
-.btn-ghost{background:var(--line);color:var(--ink)}
-.btn-danger{background:var(--err-bg);color:var(--err);border:1.5px solid rgba(224,92,92,.25)}
-.btn-wa{background:var(--wa);color:#fff}
-.btn-sm{padding:7px 11px;font-size:12px}
+/* ACCIONES: layout limpio */
+.actions{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:8px;
+  margin-top:10px;
+}
+
+.actions .btn{
+  width:100%;
+  justify-content:center;
+}
+
+/* Botón principal arriba (full) */
+.actions .btn.full{ grid-column: 1 / -1; }
+
+/* Reporte de cierre: por defecto cerrado y más compacto */
+.ifrm{ display:none; }
+.ifrm.open{ display:block; }
+
+/* Botón para abrir/cerrar reporte */
+.btn-soft{
+  background: var(--line);
+  color: var(--ink);
+  border: 1.5px solid rgba(0,0,0,.05);
+}
 /* CHIPS */
 .chip{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.2px;white-space:nowrap;text-transform:uppercase}
 .ca{background:var(--y-bg);color:#7A5800}
@@ -450,8 +465,14 @@ function cardOrden(s) {
         ${s.detalles ? `<div class="field full"><span class="f-lbl">Detalles</span><span class="f-val">${esc(s.detalles)}</span></div>` : ''}
         ${s.nota_admin ? `<div class="field full"><span class="f-lbl">Nota del admin</span><span class="f-val">${esc(s.nota_admin)}</span></div>` : ''}
       </div>
-
-      <div class="ifrm ${(!rep && !rej) ? 'open' : ''}" id="ifrm-cierre-${s.id}">
+      
+      <div class="actions">
+  <button class="btn btn-soft full" onclick="toggleCierre(event, ${s.id})">
+    Reporte de cierre
+  </button>
+</div>
+      
+      <div class="ifrm" id="ifrm-cierre-${s.id}">
         <div class="ifrm-title">Reporte de cierre (lo que cobraste y garant\u00eda)</div>
 
         ${avisoCierre}
@@ -470,17 +491,21 @@ function cardOrden(s) {
       </div>
 
       <div class="actions">
-        ${(!enP && !rej && !rep) ? `<button class="btn btn-yellow" onclick="marcarEnProceso(${s.id})">Lleg\u00e9 / En proceso</button>` : ''}
-        ${s.telefono ? `
-  <button class="btn btn-dark btn-sm" onclick="waCliente('${esc(s.telefono)}', msgCamino(${JSON.stringify({id:s.id})}))">Voy en camino</button>
-  <button class="btn btn-ghost btn-sm" onclick="waCliente('${esc(s.telefono)}', msgHora(${JSON.stringify({id:s.id})}))">Coordinar hora</button>
-  <button class="btn btn-ghost btn-sm" onclick="waCliente('${esc(s.telefono)}', msgEstoyAqui(${JSON.stringify({id:s.id})}))">Estoy aquí</button>
-` : ''}
-        ${!rej
-          ? `<button class="btn btn-danger btn-sm" onclick="openF('nopuedo',${s.id})">No puedo atender</button>`
-          : `<button class="btn btn-ghost btn-sm" disabled>Ya notificaste</button>`
-        }
-      </div>
+  ${(!enP && !rej && !rep) ? `<button class="btn btn-yellow full" onclick="stop(event); marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
+
+  ${s.telefono ? `
+    <button class="btn btn-dark full" onclick="stop(event); waCliente('${esc(s.telefono)}', msgCamino(${JSON.stringify({id:s.id})}))">Voy en camino</button>
+    <button class="btn btn-ghost" onclick="stop(event); waCliente('${esc(s.telefono)}', msgHora(${JSON.stringify({id:s.id})}))">Coordinar hora</button>
+    <button class="btn btn-ghost" onclick="stop(event); waCliente('${esc(s.telefono)}', msgEstoyAqui(${JSON.stringify({id:s.id})}))">Estoy aquí</button>
+  ` : ''}
+
+  <button class="btn btn-wa full" onclick="stop(event); waAdmin(${s.id})">${svgWA()} Admin</button>
+
+  ${!rej
+    ? `<button class="btn btn-danger full" onclick="stop(event); openF('nopuedo',${s.id})">No puedo atender</button>`
+    : `<button class="btn btn-ghost full" disabled>Ya notificaste</button>`
+  }
+</div>
     </div>
   </div>`;
 }
@@ -685,23 +710,29 @@ function openWA(num, txt) {
   const url = 'https://wa.me/' + n + '?text=' + encodeURIComponent(txt);
   window.location.href = url; // Safari-friendly
 }
+
 function waCliente(tel, msg){
   if(!tel) return alert('Cliente sin teléfono');
-  const n = String(tel).replace(/\D/g,'');
-  const url = 'https://wa.me/' + n + '?text=' + encodeURIComponent(msg);
-  window.location.href = url;
+  openWA(tel, msg);
 }
 
 function msgCamino(s){
-  return `Hola *${mySocio.nombre}* de *dbarrio*.\nVoy en camino para tu servicio *${dbc(s.id)}*.\n\n¿Sigues disponible ahora?`;
+  return `Hola, soy *${mySocio.nombre}* de *dbarrio*.\nVoy en camino por la orden *${dbc(s.id)}*.\n¿Sigues disponible?`;
 }
-
 function msgHora(s){
-  return `Hola *${mySocio.nombre}* de *dbarrio*.\nPuedo pasar por tu servicio *${dbc(s.id)}*.\n\n¿Te viene bien en ~30-45 min?`;
+  return `Hola, soy *${mySocio.nombre}* de *dbarrio*.\nSobre la orden *${dbc(s.id)}*.\n¿Te viene bien en ~30-45 min?`;
+}
+function msgEstoyAqui(s){
+  return `Hola, soy *${mySocio.nombre}* de *dbarrio*.\nYa estoy en el lugar por *${dbc(s.id)}*.\n¿Me confirmas la entrada o referencia?`;
 }
 
-function msgEstoyAqui(s){
-  return `Hola *${mySocio.nombre}* de *dbarrio*.\nYa estoy en el lugar para la orden *${dbc(s.id)}*.\n¿Me confirmas la entrada o referencia?`;
+/* Corta propagación para que NO “bloquee” dentro de cards */
+function stop(e){ if(e){ e.preventDefault(); e.stopPropagation(); } }
+
+/* Mostrar/Ocultar reporte de cierre */
+function toggleCierre(e, id){
+  stop(e);
+  document.getElementById('ifrm-cierre-'+id)?.classList.toggle('open');
 }
 
 function svgWA(){return`<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.057-.002-.115-.003-.172-.003-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`}
