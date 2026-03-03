@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Generar iconos dbarrio</title>
+<style>
+body{font-family:system-ui;background:#111;color:#fff;text-align:center;padding:40px}
+button{padding:12px 20px;margin:10px;border-radius:8px;border:none;background:#F5C116;color:#111;font-weight:700}
+canvas{display:none}
+</style>
+</head>
+<body>
+
+<h2>Generar iconos dbarrio</h2>
+<p>Pulsa cada botón y se descargará el icono listo.</p>
+
+<button onclick="exportIcon(16)">Descargar db-16.png</button>
+<button onclick="exportIcon(32)">Descargar db-32.png</button>
+<button onclick="exportIcon(180)">Descargar db-180.png</button>
+<button onclick="exportIcon(192)">Descargar db-192.png</button>
+<button onclick="exportIcon(512)">Descargar db-512.png</button>
+
+<canvas id="c"></canvas>
+
+<script>
+
+const svg = `
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+<defs>
+<radialGradient id="bg-d" cx="30%" cy="25%" r="80%">
+<stop offset="0%" stop-color="#21213C"/>
+<stop offset="100%" stop-color="#1A1A2E"/>
+</radialGradient>
+</defs>
+<rect width="1024" height="1024" rx="220" fill="url(#bg-d)"/>
+<text x="512" y="680" text-anchor="middle"
+font-family="Arial, sans-serif"
+font-weight="800"
+font-style="italic"
+font-size="580"
+fill="#F5C116">db</text>
+</svg>
+`;
+
+function exportIcon(size){
+
+const img = new Image();
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+const svgBlob = new Blob([svg],{type:"image/svg+xml"});
+const url = URL.createObjectURL(svgBlob);
+
+img.onload = function(){
+
+canvas.width = size;
+canvas.height = size;
+
+ctx.drawImage(img,0,0,size,size);
+
+const link = document.createElement("a");
+link.download = `db-${size}.png`;
+link.href = canvas.toDataURL("image/png");
+link.click();
+
+URL.revokeObjectURL(url);
+}
+
+img.src = url;
+}
+
+</script>
+</body>
+</html>
