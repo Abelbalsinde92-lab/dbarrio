@@ -214,6 +214,40 @@
       .sidebar-overlay.open{display:block}
       .main{padding:12px}
     }
+    /* ✅ BOTÓN MENU (hamburguesa) */
+.btn-menu{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:38px;height:38px;
+  border-radius:12px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.11);
+  color:rgba(255,255,255,.75);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-menu:active{ transform:scale(.98); }
+
+/* ✅ EN MÓVIL: mostrar botón y sidebar “deslizable” */
+@media(max-width:640px){
+  .btn-menu{ display:inline-flex; }
+
+  /* Sidebar debajo del topbar */
+  .sidebar{
+    position:fixed;
+    left:0;
+    top:54px;      /* tu topbar mide 54px */
+    bottom:0;
+    width:220px;
+    z-index:26;
+    transform:translateX(-100%);
+    transition:transform .25s cubic-bezier(.4,0,.2,1);
+  }
+  .sidebar.open{ transform:translateX(0); }
+
+  .sidebar-overlay{ z-index:25; }
+}
   </style>
 </head>
 <body>
@@ -223,6 +257,15 @@
 
 <!-- TOPBAR -->
 <header class="topbar">
+  
+   <button class="btn-menu" type="button" aria-label="Menú" onclick="toggleSidebar()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+      <line x1="4" y1="6" x2="20" y2="6"/>
+      <line x1="4" y1="12" x2="20" y2="12"/>
+      <line x1="4" y1="18" x2="20" y2="18"/>
+    </svg>
+  </button>
+  
   <div class="topbar-logo">
     <div class="logo-db">db</div>
     <div class="logo-tag">ADMIN</div>
