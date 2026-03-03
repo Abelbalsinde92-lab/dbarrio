@@ -1,37 +1,45 @@
 <!DOCTYPE html>
-<html lang="es">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-<meta name="theme-color" content="#1A1A2E"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="theme-color" content="#1A1A2E"/>
 
-<title>dbarrio — servicios tecnicos</title>
+  <title>dbarrio — servicios tecnicos</title>
 
-<!-- ICONOS CORRECTOS (NO SVG) -->
-<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/db-icon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/db-icon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/db-icon-180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/db-icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="assets/icons/db-icon-512.png">
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="db-32.png?v=1">
+  <link rel="icon" type="image/png" sizes="16x16" href="db-16.png?v=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="db-180.png?v=1">
+  <link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=1">
+  <link rel="icon" type="image/png" sizes="512x512" href="db-512.png?v=1">
 
-<link rel="manifest" href="manifest.json"/>
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json?v=1">
 
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
-  --ink:#1C1C2E;--ink2:#2E2E45;
-  --bg:#F0EDE8;--card:#FFFFFF;
-  --line:#E5E2DC;--g1:#6B6B7E;--g2:#B8B4AE;
-  --err:#D63031;--ok:#00856F;
-  --r:14px;--f:'Outfit',sans-serif;--fd:'Barlow Condensed',sans-serif;
-}
-html{background:var(--ink)}
-body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  <style>
+    /* AQUÍ VA SOLO CSS. Nada de <link> ni <meta> ni <manifest>. */
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
+      --ink:#1C1C2E;--ink2:#2E2E45;
+      --bg:#F0EDE8;--card:#FFFFFF;
+      --line:#E5E2DC;--g1:#6B6B7E;--g2:#B8B4AE;
+      --err:#D63031;--ok:#00856F;
+      --r:14px;--f:'Outfit',sans-serif;--fd:'Barlow Condensed',sans-serif;
+    }
+
+    html{background:var(--ink)}
+    body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+    /* ... pega aquí TODO tu CSS (tu código) ... */
+  </style>
+</head>
 
 /* HEADER */
 .header{position:sticky;top:0;z-index:40;background:var(--ink);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;padding-top:env(safe-area-inset-top,0)}
