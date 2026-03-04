@@ -618,6 +618,61 @@ function cardOrden(s) {
   </div>`;
 }
 
+/* =========================
+   NAV FINAL (FORZADO)
+   ========================= */
+.bottom-nav{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  z-index:999;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  background:var(--ink);
+  border-top:2px solid var(--y);
+
+  height:calc(var(--nav) + env(safe-area-inset-bottom,0));
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
+
+.bnav-btn{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+
+  padding:8px 0 10px;
+  border:none;
+  background:none;
+
+  color:rgba(255,255,255,.45);
+  -webkit-tap-highlight-color:transparent;
+}
+
+.bnav-btn.active{ color:var(--y); }
+
+.bnav-ic{
+  width:22px;
+  height:22px;
+  display:block;
+}
+
+.bnav-lbl{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.3px;
+  line-height:1;
+}
+
+/* para que el contenido no quede debajo del nav */
+.content{
+  padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 14px) !important;
+}
+
 </style>
 </head>
 <body>
