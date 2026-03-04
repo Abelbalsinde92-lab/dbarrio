@@ -448,6 +448,54 @@ textarea:focus, input:focus, select:focus{
    ========================= */
 .vacio{text-align:center;padding:36px 20px;font-size:14px;color:rgba(28,28,46,.55)}
 .cargando{text-align:center;padding:28px;font-size:13px;color:rgba(28,28,46,.55)}
+/* ===== FIX BARRA INFERIOR ===== */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+
+  height:72px;
+
+  background:var(--ink);
+
+  border-top:2px solid var(--y);
+  z-index:50;
+}
+
+.bnav-btn{
+  flex:1;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  gap:4px;
+
+  border:none;
+  background:none;
+
+  color:rgba(255,255,255,.45);
+
+  padding:6px 0;
+}
+
+.bnav-ic{
+  width:22px;
+  height:22px;
+}
+
+.bnav-lbl{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.3px;
+}
 </style>
 </head>
 <body>
