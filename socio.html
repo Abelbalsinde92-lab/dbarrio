@@ -397,10 +397,11 @@ textarea:focus, input:focus, select:focus{
 }
 
 .btn-gps{
-  background: rgba(245,193,22,.16);
-  border: 1px solid rgba(245,193,22,.35);
-  color: var(--ink);
-  font-weight: 900;
+  background:#FFF3C6;
+  border:1px solid #E8C34D;
+  color:#6A5200;
+  font-weight:800;
+  box-shadow:none;
 }
 
 /* =========================
@@ -789,7 +790,14 @@ function cardOrden(s) {
       <div class="fields">
         <div class="field"><span class="f-lbl">Servicio</span><span class="f-val">${esc(s.servicio||'—')}</span></div>
         <div class="field"><span class="f-lbl">Municipio</span><span class="f-val">${esc(s.municipio||'—')}</span></div>
-
+    
+    <div class="field full">
+<button class="btn btn-gps full"
+onclick="stop(event); openGPS(${s.id})">
+📍 Abrir mapa
+</button>
+</div>
+    
         <div class="field"><span class="f-lbl">Teléfono</span>
           <span class="f-val">
             <a href="tel:${esc(s.telefono||'')}" style="color:var(--ink);font-weight:700;font-size:15px">${esc(s.telefono||'—')}</a>
@@ -823,10 +831,6 @@ function cardOrden(s) {
           <button class="btn btn-ghost full" onclick="stop(event); closeF('nopuedo',${s.id})">Cancelar</button>
         </div>
       </div>
-
-      <button class="btn btn-gps full" onclick="stop(event); openGPS(${s.id})">
-  📍 Abrir mapa (GPS)
-</button>
 
       <!-- Acciones principales -->
       <div class="actions">
