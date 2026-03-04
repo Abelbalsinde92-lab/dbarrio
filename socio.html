@@ -396,6 +396,13 @@ textarea:focus, input:focus, select:focus{
   box-shadow:none;
 }
 
+.btn-gps{
+  background: rgba(245,193,22,.16);
+  border: 1px solid rgba(245,193,22,.35);
+  color: var(--ink);
+  font-weight: 900;
+}
+
 /* =========================
    CUENTA
    ========================= */
@@ -817,6 +824,10 @@ function cardOrden(s) {
         </div>
       </div>
 
+      <button class="btn btn-gps full" onclick="stop(event); openGPS(${s.id})">
+  📍 Abrir mapa (GPS)
+</button>
+
       <!-- Acciones principales -->
       <div class="actions">
         ${(!enP && !rej && !rep) ? `<button class="btn btn-yellow full" onclick="stop(event); marcarEnProceso(${s.id})">Llegué / En proceso</button>` : ''}
@@ -1064,6 +1075,35 @@ function openWA(num, txt) {
   const n = String(num).replace(/\D/g,'');
   const url = 'https://wa.me/' + n + '?text=' + encodeURIComponent(txt);
   window.location.href = url; // Safari-friendly
+}
+
+async function openGPS(idOrden){
+  const { data:s, error } = await sb
+    .from('solicitudes')
+    .select('direccion,municipio')
+    .eq('id', idOrden)
+    .maybeSingle();
+
+  if (error) return alert('Error leyendo dirección: ' + error.message);
+
+  const dir = (s?.direccion || '').trim();
+  const mun = (s?.municipio || '').trim();
+
+  // Si no hay dirección, al menos abre el municipio
+  const q = (dir ? `${dir}, ${mun}` : mun).trim();
+  if (!q) return alert('Esta orden no tiene dirección ni municipio.');
+
+  const enc = encodeURIComponent(q);
+
+  // Preferencia: Google Maps (funciona bien en iPhone y Android)
+  const gmaps = `https://www.google.com/maps/search/?api=1&query=${enc}`;
+
+  // Alternativa: Apple Maps
+  const amaps = `https://maps.apple.com/?q=${enc}`;
+
+  // Safari-friendly: navegar en la misma pestaña
+  // Puedes cambiar a amaps si prefieres Apple Maps
+  window.location.href = gmaps;
 }
 
 /* Corta propagación para que NO “bloquee” dentro de cards */
