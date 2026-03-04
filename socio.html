@@ -468,6 +468,27 @@ textarea:focus, input:focus, select:focus{
   z-index:50;
 }
 
+/* ===== FIX BARRA INFERIOR DBARRIO ===== */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+
+  height:72px;
+
+  background:var(--ink);
+
+  border-top:2px solid var(--y);
+
+  z-index:50;
+}
+
 .bnav-btn{
   flex:1;
 
@@ -484,6 +505,12 @@ textarea:focus, input:focus, select:focus{
   color:rgba(255,255,255,.45);
 
   padding:6px 0;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.bnav-btn.active{
+  color:var(--y);
 }
 
 .bnav-ic{
