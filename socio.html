@@ -467,81 +467,7 @@ textarea:focus, input:focus, select:focus{
    ========================= */
 .vacio{text-align:center;padding:36px 20px;font-size:14px;color:rgba(28,28,46,.55)}
 .cargando{text-align:center;padding:28px;font-size:13px;color:rgba(28,28,46,.55)}
-/* ===== FIX BARRA INFERIOR ===== */
 
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-
-  height:72px;
-
-  background:var(--ink);
-
-  border-top:2px solid var(--y);
-  z-index:50;
-}
-
-/* ===== FIX BARRA INFERIOR DBARRIO ===== */
-
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-
-  height:72px;
-
-  background:var(--ink);
-
-  border-top:2px solid var(--y);
-
-  z-index:50;
-}
-
-.bnav-btn{
-  flex:1;
-
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-
-  gap:4px;
-
-  border:none;
-  background:none;
-
-  color:rgba(255,255,255,.45);
-
-  padding:6px 0;
-
-  -webkit-tap-highlight-color:transparent;
-}
-
-.bnav-btn.active{
-  color:var(--y);
-}
-
-.bnav-ic{
-  width:22px;
-  height:22px;
-}
-
-.bnav-lbl{
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:.3px;
-}
 </style>
 </head>
 <body>
@@ -799,13 +725,27 @@ function cardOrden(s) {
 
     <div class="card-body">
       <div class="fields">
-        <div class="field"><span class="f-lbl">Servicio</span><span class="f-val">${esc(s.servicio||'—')}</span></div>
-        <div class="field"><span class="f-lbl">Municipio</span><span class="f-val">${esc(s.municipio||'—')}</span></div>
-    
-    <div class="field full">
-<button class="btn btn-gps full"
-onclick="stop(event); openGPS(${s.id})">
-📍 Abrir mapa
+       <div class="field"><span class="f-lbl">Servicio</span><span class="f-val">${esc(s.servicio||'—')}</span></div>
+<div class="field"><span class="f-lbl">Municipio</span><span class="f-val">${esc(s.municipio||'—')}</span></div>
+
+<div class="field"><span class="f-lbl">Teléfono</span>
+  <span class="f-val">
+    <a href="tel:${esc(s.telefono||'')}" style="color:var(--ink);font-weight:800;font-size:15px">${esc(s.telefono||'—')}</a>
+  </span>
+</div>
+
+${s.direccion ? `
+  <div class="field full">
+    <span class="f-lbl">Dirección</span>
+    <span class="f-val dir-row">
+      ${esc(s.direccion)}
+      <span class="gps-mini" onclick="stop(event); openGPS(${s.id})" title="Abrir mapa">📍</span>
+    </span>
+  </div>
+` : ''}
+
+${s.detalles ? `<div class="field full"><span class="f-lbl">Detalles</span><span class="f-val">${esc(s.detalles)}</span></div>` : ''}
+${s.nota_admin ? `<div class="field full"><span class="f-lbl">Nota del admin</span><span class="f-val">${esc(s.nota_admin)}</span></div>` : ''}
 </button>
 </div>
     
