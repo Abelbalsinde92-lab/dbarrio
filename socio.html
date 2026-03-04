@@ -7,32 +7,31 @@
 <title>dbarrio &mdash; t&eacute;cnico</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet"/>
 <style>
-/* =====================================================
-   dbarrio · Área de Socio — CSS v3 "Uber Edition"
-   ▸ Mismas clases, misma lógica. Solo look & feel.
-   ▸ Elevación agresiva · Tipografía con jerarquía dura
-   ▸ Botones sólidos sin ornamentos · Nav con indicador
-===================================================== */
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root{
   --y:#F5C116;--yd:#C9980D;
-  --y-bg:rgba(245,193,22,.11);
+  --y-bg:rgba(245,193,22,.12);
+
   --ink:#1A1A2E;--ink2:#24243C;--ink3:#454562;
-  --bg:#F0EDE8;--card:#FFFFFF;--line:#E8E5DF;
-  --g1:#8A8A9A;--g2:#C8C5BF;
-  --ok:#27AE60;--ok-bg:rgba(39,174,96,.1);
-  --err:#E05C5C;--err-bg:rgba(224,92,92,.1);
+
+  /* bajo el sol: fondo claro + card blanca real */
+  --bg:#F4F2EE;
+  --card:#FFFFFF;
+  --line:rgba(28,28,46,.12);
+
+  --g1:rgba(28,28,46,.55);
+  --g2:rgba(28,28,46,.25);
+
+  --ok:#1E7A5A;--ok-bg:rgba(78,203,160,.12);
+  --err:#E05C5C;--err-bg:rgba(224,92,92,.12);
+
   --wa:#25D366;
-  --r:16px;--rs:10px;
+
+  --r:16px;--rs:12px;
   --f:'DM Sans',system-ui,sans-serif;
   --fd:'Barlow Condensed',system-ui,sans-serif;
-  --th:58px;--nav:68px;
-  /* Elevation system */
-  --sh-1:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --sh-2:0 4px 12px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.05);
-  --sh-3:0 12px 32px rgba(0,0,0,.12),0 3px 8px rgba(0,0,0,.07);
+
+  --th:54px;--nav:62px;
 }
 
 html{background:var(--ink)}
@@ -47,371 +46,421 @@ body{
   overscroll-behavior:none;
 }
 
-/* ─── TOPBAR ─── */
+/* =========================
+   TOPBAR (safe-area OK)
+   ========================= */
 .topbar{
   position:fixed;top:0;left:0;right:0;z-index:50;
   height:calc(var(--th) + env(safe-area-inset-top,0));
-  padding:env(safe-area-inset-top,0) 18px 0;
+  padding:env(safe-area-inset-top,0) 16px 0;
   background:var(--ink);
   display:flex;align-items:center;gap:12px;
-  /* Hairline inferior como Uber, sin color llamativo */
-  border-bottom:1px solid rgba(255,255,255,.05);
-  /* Sombra sutil para profundidad */
-  box-shadow:0 2px 16px rgba(0,0,0,.35);
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-/* ─── CONTENT ─── */
+.brand{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.brand-mark{
+  font-family:var(--fd);
+  font-size:28px;
+  font-weight:900;
+  color:var(--y);
+  letter-spacing:-2px;
+  line-height:1;
+}
+.brand-name{
+  font-family:var(--fd);
+  font-size:16px;
+  font-weight:900;
+  color:rgba(255,255,255,.78);
+  letter-spacing:.3px;
+}
+
+/* nombre usuario */
+.tb-nombre{
+  flex:1;
+  min-width:0;
+  text-align:right;
+  margin-right:10px;
+  font-size:12px;
+  font-weight:700;
+  color:rgba(255,255,255,.55);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* botón salir premium */
+.tb-exit{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.20);
+  color: rgba(255,255,255,.92);
+  border-radius: 12px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  font-family: var(--f);
+  -webkit-tap-highlight-color:transparent;
+  box-shadow: 0 12px 26px rgba(0,0,0,.22);
+}
+.tb-exit:active{transform:scale(.98);opacity:.92}
+
+/* =========================
+   CONTENT (safe-area OK)
+   ========================= */
 .content{
   padding-top:calc(var(--th) + env(safe-area-inset-top,0));
   padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0));
 }
 
-/* ─── TABS ─── */
-.tab{display:none;padding:16px 14px 0}
+/* =========================
+   TABS
+   ========================= */
+.tab{display:none;padding:14px 14px 0}
 .tab.active{display:block}
 
-/* ─── BOTTOM NAV — Uber style: indicador activo sobre icono ─── */
+/* =========================
+   BOTTOM NAV
+   ========================= */
 .bottom-nav{
   position:fixed;bottom:0;left:0;right:0;z-index:50;
   background:var(--ink);
   display:flex;
   padding-bottom:env(safe-area-inset-bottom,0);
-  /* Sin borde de color — línea de luz */
-  border-top:1px solid rgba(255,255,255,.07);
+  border-top:2px solid var(--y);
   height:var(--nav);
-  box-shadow:0 -8px 24px rgba(0,0,0,.28);
 }
 
 .bnav-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:5px;background:none;border:none;cursor:pointer;
-  color:rgba(255,255,255,.32);
+  flex:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;
+  background:none;border:none;cursor:pointer;
+  color:rgba(255,255,255,.42);
   font-family:var(--f);
   -webkit-tap-highlight-color:transparent;
-  transition:color .15s;
-  position:relative;
+  transition:color .15s, transform .1s;
 }
-/* Indicador pill amarillo ENCIMA del icono activo */
-.bnav-btn.active::before{
-  content:"";
-  position:absolute;
-  top:0;left:50%;transform:translateX(-50%);
-  width:28px;height:3px;
-  background:var(--y);
-  border-radius:0 0 4px 4px;
-}
-.bnav-btn.active{color:#fff}
-.bnav-ic{width:21px;height:21px}
-.bnav-lbl{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+.bnav-btn:active{transform:scale(.98)}
+.bnav-btn.active{color:var(--y)}
+.bnav-ic{width:20px;height:20px}
+.bnav-lbl{font-size:10px;font-weight:800;letter-spacing:.3px}
 
-/* ─── CARDS — Uber: sin borde izquierdo, elevación pura ─── */
+/* =========================
+   CARDS (legible bajo sol)
+   ========================= */
 .card{
   background:var(--card);
-  border-radius:var(--r);
-  /* Borde sutil top amarillo en lugar de left — más limpio */
-  border-top:2px solid var(--y);
-  border-left:none;
-  box-shadow:var(--sh-2);
-  margin-bottom:10px;
+  border-radius:18px;
+  border:1px solid rgba(28,28,46,.10);
+  border-left:4px solid var(--y);
+  box-shadow: 0 16px 34px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.05);
+  margin-bottom:12px;
   overflow:hidden;
 }
 
 .card-hdr{
   display:flex;align-items:center;
-  padding:14px 16px;
-  cursor:pointer;gap:10px;
+  padding:13px 14px;
+  cursor:pointer;
+  gap:10px;
   -webkit-tap-highlight-color:transparent;
   user-select:none;
+  background: linear-gradient(180deg, rgba(245,193,22,.12), rgba(245,193,22,0));
 }
-.card-hdr:active{background:rgba(0,0,0,.025)}
+.card-hdr:active{background:rgba(0,0,0,.02)}
 
 .card-top{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
 .card-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 
 .card-code{
   font-family:var(--fd);
-  font-size:16px;font-weight:800;
-  color:var(--ink);letter-spacing:.4px;
+  font-size:15px;
+  font-weight:900;
+  color:rgba(28,28,46,.95);
+  letter-spacing:.3px;
 }
-.card-meta{font-size:11px;color:var(--g1);display:flex;gap:8px;flex-wrap:wrap}
+
+.card-meta{
+  font-size:11px;
+  color:rgba(28,28,46,.55);
+  display:flex;gap:8px;flex-wrap:wrap;
+}
+
 .card-toggle{
-  font-size:18px;color:var(--g2);flex-shrink:0;
-  transition:transform .2s var(--ease,cubic-bezier(.4,0,.2,1));
+  font-size:17px;
+  color:rgba(28,28,46,.30);
+  flex-shrink:0;
+  transition:transform .2s;
 }
 .card.open .card-toggle{transform:rotate(180deg)}
+
 .card-body{
   display:none;
-  padding:0 16px 16px;
-  border-top:1px solid var(--line);
+  padding:0 14px 14px;
+  border-top:1px solid rgba(28,28,46,.10);
 }
 .card.open .card-body{display:block}
 
-/* ─── FIELDS ─── */
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;padding:14px 0 12px}
-.field{display:flex;flex-direction:column;gap:3px}
-.field.full{grid-column:1/-1}
-.f-lbl{
-  font-size:10px;font-weight:700;
-  color:var(--g1);text-transform:uppercase;letter-spacing:.5px;
+/* =========================
+   FIELDS
+   ========================= */
+.fields{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 14px;
+  padding:12px 0 12px;
 }
-.f-val{font-size:13px;font-weight:600;color:var(--ink);line-height:1.45}
+.field{display:flex;flex-direction:column;gap:2px}
+.field.full{grid-column:1/-1}
 
-/* ─── INLINE FORM ─── */
+.f-lbl{
+  font-size:10px;
+  font-weight:900;
+  color:rgba(28,28,46,.55);
+  text-transform:uppercase;
+  letter-spacing:.45px;
+}
+.f-val{
+  font-size:13px;
+  font-weight:650;
+  color:rgba(28,28,46,.92);
+  line-height:1.4;
+}
+
+/* =========================
+   INLINE FORMS
+   ========================= */
 .ifrm{
   display:none;
-  background:var(--bg);
-  border-radius:var(--rs);
-  padding:16px;margin-top:12px;
-  border:1.5px solid var(--line);
+  background:rgba(28,28,46,.03);
+  border-radius:14px;
+  padding:14px;
+  margin-top:10px;
+  border:1px solid rgba(28,28,46,.10);
 }
 .ifrm.open{display:block}
+
 .ifrm-title{
-  font-size:11px;font-weight:800;
-  color:var(--ink3);text-transform:uppercase;
-  letter-spacing:.6px;margin-bottom:12px;
+  font-size:11px;
+  font-weight:900;
+  color:rgba(28,28,46,.70);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:10px;
 }
 
-/* ─── BOTONES — Uber: sólidos, pill, sin gradientes ─── */
+/* =========================
+   CHIPS
+   ========================= */
+.chip{
+  display:inline-flex;align-items:center;
+  padding:4px 9px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.25px;
+  white-space:nowrap;
+  text-transform:uppercase;
+}
+.ca{background:var(--y-bg);color:#7A5800}
+.ce{background:var(--ok-bg);color:var(--ok)}
+
+/* =========================
+   FORM INPUTS
+   ========================= */
+.fg{margin-bottom:11px}
+.flbl{
+  display:block;
+  font-size:10px;
+  font-weight:900;
+  color:rgba(28,28,46,.55);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:4px;
+}
+
+textarea, input, select{
+  width:100%;
+  padding:10px 12px;
+  border:1.5px solid rgba(28,28,46,.14);
+  border-radius:12px;
+  font-size:14px;
+  font-family:var(--f);
+  background:#fff;
+  color:var(--ink);
+  -webkit-appearance:none;
+}
+textarea{resize:vertical;min-height:60px}
+textarea:focus, input:focus, select:focus{
+  outline:none;
+  border-color:var(--y);
+  box-shadow:0 0 0 3px rgba(245,193,22,.18);
+}
+
+/* =========================
+   ACTIONS + BUTTONS (vida)
+   ========================= */
 .actions{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  margin-top:14px;
+  margin-top:12px;
 }
-.actions .btn{
-  flex:1 1 auto;
-  min-height:46px;
-  /* Pill shape — Uber signature */
-  border-radius:50px;
-}
-.actions .btn.full{flex:1 1 100%}
 
+/* base button */
 .btn{
-  position:relative;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
+  flex:1 1 auto;
+  min-height:44px;
+  border-radius:14px;
+  padding:11px 14px;
+  font-size:13px;
+  font-weight:900;
   font-family:var(--f);
-  font-weight:800;
-  font-size:14px;
-  letter-spacing:.2px;
-  border:none;
   cursor:pointer;
-  padding:11px 20px;
-  border-radius:50px;
+  border:1px solid rgba(28,28,46,.10);
+  background:#F2F2F4;
+  color:rgba(28,28,46,.92);
+  box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  -webkit-tap-highlight-color:transparent;
+  position:relative;
   transform:translateZ(0);
-  transition:transform .1s,opacity .1s,box-shadow .15s;
-  /* Sin shine pseudo-element — botones sólidos y planos */
+  transition:transform .12s, opacity .12s;
 }
-.btn:active{transform:scale(.97);opacity:.92}
+.btn:active{transform:scale(.98);opacity:.95}
 
-/* Shine desactivado — Uber es plano */
-.btn::before{display:none}
+/* full width helper */
+.actions .btn.full{flex: 1 1 100%}
 
-/* Botón primario: negro absoluto sobre fondo claro */
-.btn-primary{
+/* shine */
+.btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.26), rgba(255,255,255,0));
+  opacity:.10;
+  pointer-events:none;
+}
+
+/* specific variants */
+.btn-dark{
   background:var(--ink);
   color:#fff;
-  box-shadow:var(--sh-2);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow: 0 14px 28px rgba(28,28,46,.25);
 }
-.btn-primary:active{box-shadow:var(--sh-1)}
-
-/* WA: verde sólido */
-.btn-wa{
-  background:var(--wa);
-  color:#fff;
-  box-shadow:0 6px 20px rgba(37,211,102,.28);
+.btn-yellow{
+  background:var(--y);
+  color:rgba(28,28,46,.95);
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow: 0 14px 28px rgba(245,193,22,.22);
 }
-.btn-wa:active{box-shadow:0 2px 8px rgba(37,211,102,.2)}
+.btn-yellow:active{opacity:.92}
 
-/* Danger: rojo claro — "No puedo atender" */
-.btn-danger{
-  background:var(--err-bg);
-  color:var(--err);
-  border:1.5px solid rgba(224,92,92,.25);
+.btn-ghost{
+  background:rgba(28,28,46,.06);
+  border:1px solid rgba(28,28,46,.12);
+  color:rgba(28,28,46,.88);
   box-shadow:none;
 }
 
-/* State buttons: Uber usa dos variantes muy claras */
+.btn-wa{
+  background:var(--wa);
+  color:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow: 0 16px 34px rgba(37,211,102,.22);
+}
+
+/* botón “Reporte de cierre” */
+.btn-soft{
+  background:rgba(28,28,46,.06);
+  border:1px solid rgba(28,28,46,.14);
+  color:rgba(28,28,46,.92);
+  box-shadow:none;
+}
+
+/* botones estado */
 .btn-state{
-  background:var(--bg);
-  border:1.5px solid var(--line);
-  color:var(--ink);
-  font-weight:800;
-  box-shadow:var(--sh-1);
+  background:#F2F2F4;
+  border:1px solid rgba(28,28,46,.16);
+  color:rgba(28,28,46,.92);
+  font-weight:950;
 }
 .btn-state.primary{
   background:var(--ink);
   color:#fff;
-  border:none;
-  box-shadow:var(--sh-2);
-}
-.btn-state.primary:active{opacity:.9}
-
-/* ─── CHIPS — más compactos y definidos ─── */
-.chip{
-  display:inline-flex;align-items:center;
-  padding:3px 10px;
-  border-radius:50px;
-  font-size:10px;font-weight:800;
-  letter-spacing:.3px;white-space:nowrap;text-transform:uppercase;
-}
-.ca{background:var(--y-bg);color:#7A5800;border:1px solid rgba(245,193,22,.25)}
-.ce{background:var(--ok-bg);color:#1A6B3E;border:1px solid rgba(39,174,96,.2)}
-
-/* ─── FORM INPUTS — iOS-native feel ─── */
-.fg{margin-bottom:13px}
-.flbl{
-  display:block;font-size:10px;font-weight:800;
-  color:var(--g1);text-transform:uppercase;
-  letter-spacing:.6px;margin-bottom:5px;
-}
-textarea{
-  width:100%;padding:11px 13px;
-  border:1.5px solid var(--line);
-  border-radius:var(--rs);
-  font-size:16px; /* iOS: 16px evita zoom */
-  font-family:var(--f);color:var(--ink);
-  background:var(--card);
-  resize:vertical;min-height:64px;
-  -webkit-appearance:none;
-  box-shadow:var(--sh-1);
-  transition:border-color .15s,box-shadow .15s;
-}
-textarea:focus{
-  outline:none;
-  border-color:var(--y);
-  box-shadow:0 0 0 3px var(--y-bg),var(--sh-1);
-}
-input,select{
-  width:100%;
-  padding:11px 13px;
-  border:1.5px solid var(--line);
-  border-radius:var(--rs);
-  font-size:16px; /* iOS: evita zoom */
-  font-family:var(--f);
-  background:var(--card);
-  color:var(--ink);
-  -webkit-appearance:none;
-  box-shadow:var(--sh-1);
-  transition:border-color .15s,box-shadow .15s;
-}
-input:focus,select:focus{
-  outline:none;
-  border-color:var(--y);
-  box-shadow:0 0 0 3px var(--y-bg),var(--sh-1);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow: 0 14px 28px rgba(28,28,46,.25);
 }
 
-/* ─── CUENTA — Dashboard Uber style ─── */
+/* peligro */
+.btn-danger{
+  background:rgba(224,92,92,.12);
+  border:1px solid rgba(224,92,92,.30);
+  color:rgba(224,92,92,.95);
+  box-shadow:none;
+}
+
+/* disabled */
+.btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+
+/* =========================
+   CUENTA
+   ========================= */
 .cuenta-card{
-  background:var(--ink);
-  border-radius:var(--r);
-  box-shadow:var(--sh-3);
-  padding:22px 20px;
+  background:var(--card);
+  border-radius:18px;
+  border:1px solid rgba(28,28,46,.10);
+  box-shadow: 0 16px 34px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.04);
+  padding:20px;
   margin-bottom:12px;
-  /* Patrón sutil de puntos */
-  background-image:
-    radial-gradient(circle,rgba(245,193,22,.08) 1px,transparent 1px);
-  background-size:20px 20px;
-  background-color:var(--ink);
-  position:relative;
-  overflow:hidden;
-}
-/* Acento amarillo: línea inferior */
-.cuenta-card::after{
-  content:"";
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:3px;
-  background:linear-gradient(90deg,var(--y) 0%,transparent 70%);
 }
 .cuenta-nombre{
   font-family:var(--fd);
-  font-size:28px;font-weight:900;
-  color:#fff;
-  margin-bottom:3px;
-  letter-spacing:-.3px;
+  font-size:26px;
+  font-weight:900;
+  color:rgba(28,28,46,.95);
+  margin-bottom:4px
 }
-.cuenta-tag{font-size:12px;color:rgba(255,255,255,.4);font-weight:500}
-.cuenta-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
-.cg-item{display:flex;flex-direction:column;gap:4px}
-.cg-lbl{
-  font-size:10px;font-weight:700;
-  color:rgba(255,255,255,.35);
-  text-transform:uppercase;letter-spacing:.5px;
-}
-.cg-val{
-  font-size:22px;font-weight:900;
-  color:#fff;font-family:var(--fd);
-  letter-spacing:-.2px;
-}
+.cuenta-tag{font-size:12px;color:rgba(28,28,46,.55)}
+
+.cuenta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.cg-item{display:flex;flex-direction:column;gap:3px}
+.cg-lbl{font-size:10px;font-weight:900;color:rgba(28,28,46,.55);text-transform:uppercase;letter-spacing:.4px}
+.cg-val{font-size:18px;font-weight:900;color:rgba(28,28,46,.95);font-family:var(--fd)}
 .cg-val.deuda-activa{color:var(--err)}
 .cg-val.deuda-cero{color:var(--ok)}
 
-/* ─── HISTORIAL ROW ─── */
+/* =========================
+   HISTORIAL
+   ========================= */
 .hist-card{
   background:var(--card);
-  border-radius:var(--r);
-  border-left:none;
-  /* Indicador izq apenas visible */
-  border-left:3px solid var(--line);
-  box-shadow:var(--sh-1);
-  padding:14px 16px;margin-bottom:8px;
-  display:flex;align-items:center;gap:14px;
-  transition:box-shadow .15s;
+  border-radius:18px;
+  border:1px solid rgba(28,28,46,.10);
+  border-left:4px solid rgba(28,28,46,.18);
+  box-shadow: 0 14px 30px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.04);
+  padding:14px;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:12px;
 }
-.hist-card:active{box-shadow:var(--sh-2)}
 .hist-info{flex:1;min-width:0}
-.hist-code{
-  font-family:var(--fd);
-  font-size:15px;font-weight:800;color:var(--ink);
-}
-.hist-meta{font-size:11px;color:var(--g1);margin-top:3px}
+.hist-code{font-family:var(--fd);font-size:14px;font-weight:900;color:rgba(28,28,46,.95)}
+.hist-meta{font-size:11px;color:rgba(28,28,46,.55);margin-top:2px}
 .hist-right{text-align:right;flex-shrink:0}
-.hist-monto{
-  font-family:var(--fd);
-  font-size:17px;font-weight:900;
-  color:var(--ok);
-}
-.hist-stars{font-size:12px;color:var(--y);margin-top:2px}
+.hist-monto{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ok)}
+.hist-stars{font-size:12px;color:var(--y)}
 
-/* ─── EMPTY / LOADING ─── */
-.vacio{
-  text-align:center;padding:44px 20px;
-  font-size:14px;color:var(--g1);font-weight:500;
-}
-.cargando{
-  text-align:center;padding:32px;
-  font-size:13px;color:var(--g1);font-weight:500;
-}
-
-/* ─── BRAND — topbar ─── */
-.brand{
-  display:flex;align-items:center;
-  gap:8px;flex:0 0 auto;
-}
-.brand-mark{
-  font-family:var(--fd);
-  font-size:30px;font-weight:900;
-  color:var(--y);letter-spacing:-2px;line-height:1;
-}
-.brand-name{
-  font-family:var(--fd);
-  font-size:15px;font-weight:800;
-  color:rgba(255,255,255,.6);letter-spacing:.5px;
-  text-transform:uppercase;
-}
-
-/* ─── NOMBRE USUARIO topbar ─── */
-.tb-nombre{
-  flex:1;min-width:0;
-  text-align:right;margin-right:8px;
-  font-size:12px;font-weight:700;
-  color:rgba(255,255,255,.38);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  text-transform:uppercase;letter-spacing:.3px;
-}
-
+/* =========================
+   EMPTY / LOADING
+   ========================= */
+.vacio{text-align:center;padding:36px 20px;font-size:14px;color:rgba(28,28,46,.55)}
+.cargando{text-align:center;padding:28px;font-size:13px;color:rgba(28,28,46,.55)}
 </style>
 </head>
 <body>
