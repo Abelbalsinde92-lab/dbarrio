@@ -132,9 +132,9 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 
 /* CTA de estados (encamino / coordinar / aqui) */
 .btn-state{
-  background: rgba(28,28,46,.08);
-  border: 1px solid rgba(28,28,46,.12);
-  color: var(--ink);
+  background:#E9E7E3;
+  border:1px solid #D4D1CA;
+  color:var(--ink);
   font-weight:800;
 }
 
@@ -232,6 +232,89 @@ input:focus, select:focus {
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+}
+/* =========================
+   PATCH PREMIUM + SOL
+   Pegar al FINAL del <style>
+   ========================= */
+
+/* 1) Botón SALIR (topbar) */
+.tb-exit{
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.88);
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: var(--f);
+  -webkit-tap-highlight-color:transparent;
+  box-shadow: 0 10px 22px rgba(0,0,0,.20);
+}
+.tb-exit:active{ transform: scale(.98); opacity:.92; }
+
+/* 2) Card legible bajo el sol */
+.card{
+  background: #FFFFFF;                 /* más contraste */
+  border: 1px solid rgba(28,28,46,.10);
+  border-left: 4px solid var(--y);
+  box-shadow: 0 14px 34px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.05);
+}
+
+.card-hdr{
+  background: linear-gradient(180deg, rgba(245,193,22,.10), rgba(245,193,22,0));
+}
+
+.card-body{
+  border-top: 1px solid rgba(28,28,46,.10);
+}
+
+.f-lbl{ color: rgba(28,28,46,.55); }
+.f-val{ color: rgba(28,28,46,.92); }
+
+/* 3) btn-soft (Reporte de cierre) */
+.btn-soft{
+  background: rgba(28,28,46,.06);
+  border: 1px solid rgba(28,28,46,.14);
+  color: rgba(28,28,46,.92);
+  font-weight: 900;
+  box-shadow: none;
+}
+.btn-soft:active{ transform: scale(.98); opacity:.95; }
+
+/* 4) Botones “estado” más claros y pro */
+.btn{
+  border: 1px solid rgba(28,28,46,.10);
+}
+
+.btn-state{
+  background:#F2F2F4;                  /* mejor que #E9E7E3 bajo sol */
+  border:1px solid rgba(28,28,46,.16);
+  color: rgba(28,28,46,.92);
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(0,0,0,.10);
+}
+
+.btn-state.primary{
+  background: var(--ink);
+  color:#fff;
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 14px 28px rgba(28,28,46,.25);
+}
+
+/* Admin WA más “app” */
+.btn-wa{
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 14px 30px rgba(37,211,102,.22);
+}
+
+/* No puedo atender: se entiende que es peligro pero no grita */
+.btn-danger{
+  background: rgba(224,92,92,.12);
+  border: 1px solid rgba(224,92,92,.28);
+  color: rgba(224,92,92,.95);
+  box-shadow: none;
 }
 </style>
 </head>
