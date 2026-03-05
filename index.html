@@ -470,22 +470,71 @@ textarea{resize:vertical;min-height:72px}
   <div class="pill"></div>
   <div class="sheet-hdr"><span class="sheet-title">Unete como tecnico</span><button class="sheet-x" onclick="close_('uni')">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Nombre completo</label><input id="u-nom" type="text" placeholder="Tu nombre"/><div class="fe" id="eu-nom">Requerido.</div></div>
-    <div class="fg"><label>Telefono / WhatsApp</label><input id="u-tel" type="tel" placeholder="+53..."/><div class="fe" id="eu-tel">Invalido.</div></div>
+
+    <div class="fg"><label>Nombre completo</label>
+      <input id="u-nom" type="text" placeholder="Tu nombre"/>
+      <div class="fe" id="eu-nom">Requerido.</div>
+    </div>
+
+    <div class="fg"><label>Telefono / WhatsApp</label>
+      <input id="u-tel" type="tel" placeholder="+53..."/>
+      <div class="fe" id="eu-tel">Invalido.</div>
+    </div>
+
     <div class="fg"><label>Especialidad</label>
-      <select id="u-esp"><option value="">-- Seleccionar --</option><option>Electrodomesticos</option><option>Plomeria</option><option>Electricidad</option><option>Refrigeracion</option><option>Television / audio</option><option>Computadoras</option><option>Celulares</option><option>Cerrajeria</option><option>Multidisciplinario</option></select>
+      <select id="u-esp">
+        <option value="">-- Seleccionar --</option>
+        <option>Electrodomesticos</option>
+        <option>Plomeria</option>
+        <option>Electricidad</option>
+        <option>Refrigeracion</option>
+        <option>Television / audio</option>
+        <option>Computadoras</option>
+        <option>Celulares</option>
+        <option>Cerrajeria</option>
+        <option>Multidisciplinario</option>
+      </select>
       <div class="fe" id="eu-esp">Requerido.</div>
     </div>
-    <div class="fg"><label>Zona / Municipio</label><input id="u-zona" type="text" placeholder="Donde trabajas"/><div class="fe" id="eu-zona">Requerido.</div></div>
+
+    <div class="fg"><label>Años de experiencia</label>
+      <select id="u-exp">
+        <option value="">-- Seleccionar --</option>
+        <option>Menos de 1 año</option>
+        <option>1 – 3 años</option>
+        <option>3 – 5 años</option>
+        <option>Mas de 5 años</option>
+      </select>
+      <div class="fe" id="eu-exp">Requerido.</div>
+    </div>
+
+    <div class="fg"><label>Zona / Municipio</label>
+      <input id="u-zona" type="text" placeholder="Donde trabajas"/>
+      <div class="fe" id="eu-zona">Requerido.</div>
+    </div>
+
     <div class="sep">Crear cuenta</div>
-    <div class="fg"><label>Correo electronico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com"/><div class="fe" id="eu-email">Correo invalido.</div></div>
-    <div class="fg"><label>Contrasena</label><input id="u-pass" type="password" placeholder="Minimo 6 caracteres"/><div class="fe" id="eu-pass">Minimo 6 caracteres.</div></div>
+
+    <div class="fg"><label>Correo electronico</label>
+      <input id="u-email" type="email" placeholder="correo@ejemplo.com"/>
+      <div class="fe" id="eu-email">Correo invalido.</div>
+    </div>
+
+    <div class="fg"><label>Contrasena</label>
+      <input id="u-pass" type="password" placeholder="Minimo 6 caracteres"/>
+      <div class="fe" id="eu-pass">Minimo 6 caracteres.</div>
+    </div>
+
     <p class="hint">Tu solicitud queda <strong>pendiente de aprobacion</strong>. Te avisamos por WhatsApp cuando puedas operar.</p>
+
     <div class="ok-box" id="ok-uni">Cuenta creada. Tu solicitud esta en revision. Te contactaremos pronto.</div>
     <div class="err-box" id="err-uni"></div>
+
     <button class="btn btn-k" id="btn-uni" onclick="envUni()">Crear cuenta</button>
+
   </div>
-</div></div>
+</div>
+</div>
 
 <!-- ACCESO -->
 <div class="ov" id="ov-acc" onclick="ovc(event,'acc')">
@@ -711,25 +760,27 @@ async function envCal(){
 // ───────── UNETE (signUp → signIn → INSERT socios con auth_uid) ─────────
 async function envUni(){
   cER('err-uni');
-  ['eu-nom','eu-tel','eu-esp','eu-zona','eu-email','eu-pass'].forEach(cE);
+  ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(cE);
 
-  const nom=document.getElementById('u-nom').value.trim();
-  const tel=document.getElementById('u-tel').value.trim();
-  const esp=document.getElementById('u-esp').value;
-  const zona=document.getElementById('u-zona').value.trim();
-  const email=document.getElementById('u-email').value.trim();
-  const pass=document.getElementById('u-pass').value;
+  const nom = document.getElementById('u-nom').value.trim();
+  const tel = document.getElementById('u-tel').value.trim();
+  const esp = document.getElementById('u-esp').value;
+  const exp = document.getElementById('u-exp')?.value || '';   // 👈 NUEVO
+  const zona = document.getElementById('u-zona').value.trim();
+  const email = document.getElementById('u-email').value.trim();
+  const pass = document.getElementById('u-pass').value;
 
-  let ok=true;
-  if(!nom){sE('eu-nom');ok=false}
-  if(!vt(tel)){sE('eu-tel');ok=false}
-  if(!esp){sE('eu-esp');ok=false}
-  if(!zona){sE('eu-zona');ok=false}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('eu-email');ok=false}
-  if(pass.length<6){sE('eu-pass');ok=false}
+  let ok = true;
+  if(!nom){ sE('eu-nom'); ok=false; }
+  if(!vt(tel)){ sE('eu-tel'); ok=false; }
+  if(!esp){ sE('eu-esp'); ok=false; }
+  if(!exp){ sE('eu-exp'); ok=false; }                          // 👈 NUEVO
+  if(!zona){ sE('eu-zona'); ok=false; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ sE('eu-email'); ok=false; }
+  if(pass.length < 6){ sE('eu-pass'); ok=false; }
   if(!ok) return;
 
-  setL('btn-uni',true);
+  setL('btn-uni', true);
 
   // 1) crear auth user
   const { data:ad, error:ae } = await sb.auth.signUp({
@@ -738,14 +789,14 @@ async function envUni(){
     options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' }
   });
 
-  if(ae){ setL('btn-uni',false); sER('err-uni','Error: '+ae.message); return; }
-  if(!ad?.user){ setL('btn-uni',false); sER('err-uni','Error: sin usuario'); return; }
+  if(ae){ setL('btn-uni', false); sER('err-uni', 'Error: ' + ae.message); return; }
+  if(!ad?.user){ setL('btn-uni', false); sER('err-uni', 'Error: sin usuario'); return; }
 
   // 2) asegurar sesión (si tu proyecto pide confirmación por email, esto puede fallar)
   const { data:si, error:se1 } = await sb.auth.signInWithPassword({ email, password: pass });
   if(se1 || !si?.session){
-    setL('btn-uni',false);
-    sER('err-uni','Cuenta creada. Revisa tu correo para confirmar y luego inicia sesión para completar el perfil.');
+    setL('btn-uni', false);
+    sER('err-uni', 'Cuenta creada. Revisa tu correo para confirmar y luego inicia sesión para completar el perfil.');
     return;
   }
 
@@ -757,6 +808,7 @@ async function envUni(){
     nombre: nom,
     telefono: tel,
     especialidad: esp,
+    experiencia: exp,              // 👈 NUEVO (campo en tabla)
     zona: zona,
     email: email,
     admitido: false,
@@ -766,10 +818,10 @@ async function envUni(){
     trabajos: 0
   });
 
-  setL('btn-uni',false);
+  setL('btn-uni', false);
 
   if(se){
-    sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);
+    sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message);
     return;
   }
 
@@ -777,7 +829,7 @@ async function envUni(){
   await sb.auth.signOut();
 
   sOK('ok-uni');
-  document.getElementById('btn-uni').style.display='none';
+  document.getElementById('btn-uni').style.display = 'none';
 }
 
 // ───────── LOGIN ─────────
