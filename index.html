@@ -39,9 +39,6 @@
 
 /* HEADER */
 .header{position:sticky;top:0;z-index:40;background:var(--ink);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;padding-top:env(safe-area-inset-top,0)}
-.logo{display:flex;align-items:flex-end;gap:5px;text-decoration:none}
-.logo-db{font-family:var(--fd);font-size:36px;font-weight:900;color:var(--y);letter-spacing:-3px;line-height:.85}
-.logo-word{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:2.5px;padding-bottom:2px}
 .nav{display:flex;gap:6px}
 .nav a{font-size:11px;font-weight:500;color:rgba(255,255,255,.45);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:20px;transition:all .15s}
 .nav a:hover{color:var(--y);border-color:rgba(245,193,22,.3)}
@@ -154,77 +151,81 @@ textarea{resize:vertical;min-height:72px}
 .btn-y .sp{border-color:rgba(28,28,46,.2);border-top-color:var(--ink)}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
-/* =========================
-   LOGO — Variante 2
-   ========================= */
 
-.logo{
+/* =========================
+   TOPBAR BRAND (igual que ADMIN)
+   ========================= */
+.db-brand{
   display:flex;
-  align-items:flex-end;
+  flex:1 1 auto;
+  align-items:center;
   gap:10px;
-  text-decoration:none;
+  min-width:0;
   -webkit-tap-highlight-color:transparent;
   user-select:none;
+  text-decoration:none;
 }
 
-.logo-mark{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  height:34px;
-  min-width:34px;
-  padding:0 10px;
-  border-radius:10px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.10);
-  font-family:'Barlow Condensed', system-ui, sans-serif;
+.db-iconbox{
+  width:40px; height:40px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  display:grid; place-items:center;
+  flex:0 0 auto;
+}
+
+.db-icon{
+  font-family:'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
   font-weight:900;
-  font-size:18px;
-  letter-spacing:-1px;
-  line-height:1;
-  color:#F5C116;
-}
-
-.logo-word{
-  display:inline-flex;
-  align-items:baseline;
-  font-family:'DM Sans', system-ui, sans-serif;
-  font-weight:800;
-  font-size:30px;
+  font-size:22px;
   letter-spacing:-1px;
   line-height:1;
 }
+.db-icon .d{color:#E6E6E6}
+.db-icon .b{color:#F5C116}
 
-.logo-d{ color:#ffffff; }
-.logo-barrio{ color:#F5C116; }
+.db-wordmark{
+  font-family:'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
+  font-weight:900;
+  font-size:28px;
+  letter-spacing:-0.6px;
+  line-height:1;
+  white-space:nowrap;
+}
+.db-wordmark .d{color:#E6E6E6}
+.db-wordmark .rest{color:#F5C116}
 
-@media (max-width:480px){
-  .logo-word{ font-size:26px; letter-spacing:-.8px; }
-  .logo-mark{ height:30px; min-width:30px; padding:0 8px; font-size:16px; }
+.db-tag{
+  margin-left:6px;
+  font-weight:900;
+  letter-spacing:.5px;
+  color:rgba(255,255,255,.50);
+  font-size:12px;
+  white-space:nowrap;
 }
 
-<!-- Favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/db-icon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/db-icon-16.png">
-
-<!-- Apple (iPhone / iPad Home Screen) -->
-<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/db-icon-180.png">
-
-<!-- Android / Chrome -->
-<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/db-icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="assets/icons/db-icon-512.png">
-
-<meta name="theme-color" content="#1A1A2E">
+@media (max-width: 560px){
+  .db-wordmark{ display:none; }
+  .db-tag{ display:none; }
 }
 </style>
 </head>
 <body>
 
 <header class="header">
-  <a href="#" class="logo">
-    <span class="logo-db">db</span>
-    <span class="logo-word">dbarrio</span>
+  <a href="#" class="db-brand" aria-label="dbarrio">
+    <span class="db-iconbox" aria-hidden="true">
+      <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
+    </span>
+
+    <span class="db-wordmark">
+      <span class="d">d</span><span class="rest">barrio</span>
+    </span>
+
+    <span class="db-tag">SERVICIOS</span>
   </a>
+
   <nav class="nav">
     <a href="privacidad.html" target="_blank">Privacidad</a>
     <a href="terminos.html" target="_blank">Terminos</a>
