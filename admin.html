@@ -310,12 +310,13 @@
 
 /* ===== RIGHT SIDE ===== */
 .topbar-right{
-  margin-left:auto;
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:12px;
   min-width:0;
 }
+
+.kpi-pill{ min-width:0; } /* ayuda a que flex no haga cosas raras */
 
 .btn-exit{
   height:44px;
@@ -408,84 +409,56 @@
 /* ===== KPI pill + drawer (mobile-first) ===== */
 .kpi-wrap{ position:relative; display:flex; align-items:center; }
 
+/* ===== KPI PILL (swipe en móvil, fijo en desktop) ===== */
 .kpi-pill{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:18px;
+
   padding:10px 14px;
   border-radius:18px;
+
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.10);
-  color:#fff;
-  cursor:pointer;
-  -webkit-tap-highlight-color:transparent;
   box-shadow:0 18px 34px rgba(0,0,0,.22);
   backdrop-filter: blur(10px);
-}
 
-.kpi-pill-item{
-  font-family: var(--fd,'Barlow Condensed',system-ui,sans-serif);
-  font-weight:900;
-  font-size:22px;
-  line-height:1;
-  letter-spacing:.5px;
-  min-width:18px;
+  /* 👇 móvil: si no cabe, se desliza */
+  max-width: min(62vw, 420px);
+  overflow-x:auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.kpi-pill::-webkit-scrollbar{ display:none; }
+
+.kpi-item{
+  flex:0 0 auto;             /* 👈 no se aplasta */
+  min-width: 62px;           /* 👈 asegura espacio para label */
   text-align:center;
-  opacity:.95;
-}
-.kpi-pill-item.money{ min-width:58px; }
-.kpi-caret{ opacity:.55; font-size:14px; transform:translateY(-1px); }
-
-.kpi-drawer{
-  position:absolute;
-  right:0;
-  top: calc(100% + 10px);
-  display:none;
-  gap:16px;
-  padding:12px 14px;
-  border-radius:18px;
-  background:rgba(26,26,46,.92);
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow:0 22px 50px rgba(0,0,0,.35);
-  backdrop-filter: blur(12px);
-  z-index:999;
-  white-space:nowrap;
 }
 
-.kpi-wrap.open .kpi-drawer{ display:flex; }
-.kpi-wrap.open .kpi-caret{ transform:rotate(180deg) translateY(1px); }
-
-.kpi{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  padding:4px 6px;
-  min-width:60px;
-}
 .kpi-n{
-  font-family: var(--fd,'Barlow Condensed',system-ui,sans-serif);
+  font-family: var(--fd, 'Barlow Condensed', system-ui, sans-serif);
   font-weight:900;
   font-size:22px;
-  color:#fff;
   line-height:1;
+  color:#fff;
 }
 .kpi-l{
+  margin-top:6px;
   font-size:10px;
   font-weight:900;
   letter-spacing:.9px;
   color:rgba(255,255,255,.45);
 }
 
-/* desktop: que no sea drawer, que se vea siempre */
+.kpi-item.money{ min-width: 86px; }
+
+/* Desktop: fijo completo (sin swipe, sin max-width) */
 @media (min-width: 860px){
-  .kpi-pill{ display:none; }
-  .kpi-drawer{
-    position:static;
-    display:flex !important;
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.10);
-    box-shadow:0 18px 34px rgba(0,0,0,.18);
+  .kpi-pill{
+    max-width:none;
+    overflow:visible;
   }
 }
    </style>
@@ -521,13 +494,7 @@
   <div class="topbar-right">
     <!-- KPI (pill + drawer) -->
 <div class="kpi-wrap">
-  <button class="kpi-pill" type="button" onclick="toggleKpi()" aria-label="Abrir resumen">
-    <div class="kpi-pill-item"><span id="kpiPend">0</span></div>
-    <div class="kpi-pill-item"><span id="kpiAsig">0</span></div>
-    <div class="kpi-pill-item"><span id="kpiComp">0</span></div>
-    <div class="kpi-pill-item money"><span id="kpiCaja">$0</span></div>
-    <span class="kpi-caret">▾</span>
-  </button>
+  <div class="kpi-pill
 
   <div class="kpi-drawer" id="kpiDrawer" aria-label="Resumen detallado">
     <div class="kpi">
