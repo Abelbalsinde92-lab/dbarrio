@@ -28,73 +28,6 @@
     html,body{height:100%;overflow:hidden}
     body{display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
 
-    /* =========================
-   TOPBAR ADMIN — layout pro
-   ========================= */
-
-.topbar{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-/* botón menú sin romper altura */
-.btn-menu{
-  display:grid;
-  place-items:center;
-  width:42px;
-  height:42px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-  color:rgba(255,255,255,.92);
-  cursor:pointer;
-  -webkit-tap-highlight-color:transparent;
-}
-.btn-menu:active{ transform:scale(.98); opacity:.92; }
-
-/* zona central del logo: que no empuje a los KPI */
-.topbar .db-brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width:0;
-  flex: 0 1 auto;       /* puede encoger */
-}
-
-/* wordmark: el que se recorta si falta espacio */
-.topbar .db-wordmark{
-  min-width:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-/* ADMIN tag */
-.db-tag{
-  margin-left:8px;
-  font-weight:900;
-  letter-spacing:.5px;
-  color:rgba(255,255,255,.55);
-  font-size:12px;
-  flex:0 0 auto;
-}
-
-/* derecha: KPIs + salir */
-.topbar-right{
-  margin-left:auto;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex: 0 0 auto;
-}
-
-/* si en móvil falta espacio, ocultamos etiquetas KPI */
-@media (max-width: 420px){
-  .kpi-l{ display:none; }
-  .db-tag{ display:none; } /* ADMIN se oculta en móviles muy pequeños */
-}
-
     /* LAYOUT */
     .body{display:flex;flex:1;overflow:hidden}
 
@@ -301,6 +234,160 @@
 
   .sidebar-overlay{ z-index:25; }
 }
+
+/* =========================
+   ADMIN TOPBAR — FIX TOTAL
+   Pegar al FINAL del <style>
+   ========================= */
+
+/* Topbar base (oscuro) */
+.topbar{
+  position: sticky; /* o fixed si lo usabas así */
+  top: 0;
+  z-index: 80;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding: 12px 14px;
+  background: #1A1A2E;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+/* Botón menú */
+.btn-menu{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:rgba(255,255,255,.92);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-menu:active{ transform:scale(.98); opacity:.92; }
+
+/* Marca (logo) */
+.db-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;          /* permite recortar */
+  flex: 0 1 auto;
+}
+
+.db-iconbox{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.db-icon{
+  font-family:'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
+  font-weight:900;
+  font-size:22px;
+  letter-spacing:-1px;
+  line-height:1;
+}
+.db-icon .d{ color:#E6E6E6; }
+.db-icon .b{ color:#F5C116; }
+
+/* Wordmark */
+.db-wordmark{
+  font-family:'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
+  font-weight:900;
+  font-size:26px;
+  letter-spacing:-.8px;
+  line-height:1;
+  color:rgba(255,255,255,.92);
+
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.db-wordmark .d{ color:#E6E6E6; }
+.db-wordmark .rest{ color:#F5C116; }
+
+/* Tag (ADMIN) */
+.db-tag{
+  margin-left:6px;
+  font-weight:900;
+  letter-spacing:.5px;
+  color:rgba(255,255,255,.55);
+  font-size:12px;
+  flex:0 0 auto;
+}
+
+/* Right zone */
+.topbar-right{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex: 0 0 auto;
+}
+
+/* KPIs: fuerza fila horizontal */
+.kpi-bar{
+  display:flex !important;
+  align-items:center;
+  gap:10px;
+  padding:6px 8px;
+  border-radius:14px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.kpi{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-width:44px;
+}
+
+.kpi-n{
+  font-family:'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
+  font-weight:900;
+  font-size:18px;
+  line-height:1;
+  color: rgba(255,255,255,.92);
+}
+.kpi-l{
+  margin-top:2px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.4px;
+  color: rgba(255,255,255,.45);
+  text-transform:uppercase;
+}
+
+/* Salir */
+.btn-exit{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.20);
+  color: rgba(255,255,255,.92);
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-exit:active{ transform:scale(.98); opacity:.92; }
+
+/* Móvil: si aprieta, ocultamos etiquetas KPI */
+@media (max-width: 420px){
+  .kpi-l{ display:none; }
+  .db-tag{ display:none; }
+}nm
   </style>
 </head>
 <body>
@@ -308,7 +395,6 @@
 <div class="toast" id="toast"></div>
 <div class="sidebar-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
 
-<!-- TOPBAR -->
 <header class="topbar">
 
   <button class="btn-menu" type="button" aria-label="Menú" onclick="toggleSidebar()">
@@ -324,7 +410,7 @@
       <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
     </span>
 
-    <span class="db-wordmark topbar">
+    <span class="db-wordmark">
       <span class="d">d</span><span class="rest">barrio</span>
     </span>
 
@@ -353,6 +439,7 @@
 
     <button class="btn-exit" onclick="exitAdmin()">Salir</button>
   </div>
+
 </header>
 <div class="body">
   <!-- SIDEBAR -->
