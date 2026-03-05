@@ -246,8 +246,17 @@
   background:#1A1A2E;
   display:flex;
   align-items:center;
+  justify-content:space-between; /* ✅ CLAVE */
   gap:12px;
   border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.topbar-right{
+  margin-left:auto;           /* ✅ empuja a la derecha */
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
 }
 
 .btn-menu{
@@ -336,47 +345,28 @@
 
 /* ===== KPI PILL (swipe en móvil, fijo en desktop) ===== */
 .kpi-pill{
-  display:flex;
+  height:44px;                 /* ✅ nunca más alto que el topbar */
+  padding:6px 12px;            /* ✅ menos padding vertical */
   align-items:center;
-  gap:18px;
+  border-radius:16px;
 
-  padding:10px 14px;
-  border-radius:18px;
-
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow:0 18px 34px rgba(0,0,0,.22);
-  backdrop-filter: blur(10px);
-
-  /* 👇 móvil: si no cabe, se desliza */
-  max-width: min(62vw, 420px);
+  max-width:min(62vw, 420px);
   overflow-x:auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  overflow-y:hidden;           /* ✅ importante */
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
 }
-.kpi-pill::-webkit-scrollbar{ display:none; }
+.kpi-pill::-webkit-scrollbar{display:none;}
 
 .kpi-item{
-  flex:0 0 auto;             /* 👈 no se aplasta */
-  min-width: 62px;           /* 👈 asegura espacio para label */
+  flex:0 0 auto;
+  min-width:56px;
   text-align:center;
-}
-
-.kpi-n{
-  font-family: var(--fd, 'Barlow Condensed', system-ui, sans-serif);
-  font-weight:900;
-  font-size:22px;
   line-height:1;
-  color:#fff;
-}
-.kpi-l{
-  margin-top:6px;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.9px;
-  color:rgba(255,255,255,.45);
 }
 
+.kpi-n{ font-size:22px; line-height:1; }
+.kpi-l{ margin-top:4px; font-size:10px; line-height:1; }
 .kpi-item.money{ min-width: 86px; }
 
 /* Desktop: fijo completo (sin swipe, sin max-width) */
