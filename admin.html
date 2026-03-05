@@ -492,25 +492,26 @@
   </div>
 
   <div class="topbar-right">
-    <!-- KPI (pill + drawer) -->
+<!-- KPI (pill swipe móvil / fijo desktop) -->
 <div class="kpi-wrap">
-  <div class="kpi-pill
-
-  <div class="kpi-drawer" id="kpiDrawer" aria-label="Resumen detallado">
-    <div class="kpi">
-      <div class="kpi-n" id="kpiPend2">0</div>
+  <div class="kpi-pill" aria-label="Resumen">
+    <div class="kpi-item">
+      <div class="kpi-n" id="kpiPend">0</div>
       <div class="kpi-l">PEND</div>
     </div>
-    <div class="kpi">
-      <div class="kpi-n" id="kpiAsig2">0</div>
+
+    <div class="kpi-item">
+      <div class="kpi-n" id="kpiAsig">0</div>
       <div class="kpi-l">ASIG</div>
     </div>
-    <div class="kpi">
-      <div class="kpi-n" id="kpiComp2">0</div>
+
+    <div class="kpi-item">
+      <div class="kpi-n" id="kpiComp">0</div>
       <div class="kpi-l">COMP</div>
     </div>
-    <div class="kpi">
-      <div class="kpi-n" id="kpiCaja2">$0</div>
+
+    <div class="kpi-item money">
+      <div class="kpi-n" id="kpiCaja">$0</div>
       <div class="kpi-l">CAJA</div>
     </div>
   </div>
@@ -1175,17 +1176,15 @@ function saveComision() { CFG.com=parseFloat(document.getElementById('aj-com').v
 function saveTemplates() { CFG.t1=document.getElementById('aj-t1').value; CFG.t2=document.getElementById('aj-t2').value; CFG.t3=document.getElementById('aj-t3').value; toast('Templates guardados') }
 
 function setKpis({ pend=0, asig=0, comp=0, caja=0 } = {}) {
-  const nPend = document.getElementById('kpiPend');// espejo en drawer
-document.getElementById('kpiPend2').textContent = document.getElementById('kpiPend').textContent;
-document.getElementById('kpiAsig2').textContent = document.getElementById('kpiAsig').textContent;
-document.getElementById('kpiComp2').textContent = document.getElementById('kpiComp').textContent;
-document.getElementById('kpiCaja2').textContent = document.getElementById('kpiCaja').textContent;
+  const nPend = document.getElementById('kpiPend');
   const nAsig = document.getElementById('kpiAsig');
   const nComp = document.getElementById('kpiComp');
   const nCaja = document.getElementById('kpiCaja');
+
   if (nPend) nPend.textContent = Number.isFinite(+pend) ? String(+pend) : '0';
   if (nAsig) nAsig.textContent = Number.isFinite(+asig) ? String(+asig) : '0';
   if (nComp) nComp.textContent = Number.isFinite(+comp) ? String(+comp) : '0';
+
   const c = Number(caja);
   if (nCaja) nCaja.textContent = Number.isFinite(c) ? ('$' + c.toFixed(0)) : '$0';
 }
