@@ -259,7 +259,8 @@
 
 /* ===== BRAND ===== */
 .db-brand{
-  display:flex:1 1 auto;
+  display:flex;
+  flex:1 1 auto;
   align-items:center;
   gap:10px;
   min-width:0; /* important para truncar */
@@ -305,6 +306,13 @@
 }
 
 /* ===== RIGHT SIDE ===== */
+.topbar-right{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
 .kpi-pill{ min-width:0; } /* ayuda a que flex no haga cosas raras */
 
 .btn-exit{
@@ -332,6 +340,8 @@
 
   flex:0 0 auto;
   max-width:52vw;
+  display:flex;
+  gap:10px;
   overflow-x:auto;
   overflow-y:hidden;           /* ✅ importante */
   -webkit-overflow-scrolling:touch;
