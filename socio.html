@@ -54,25 +54,9 @@ body{
   height:calc(var(--th) + env(safe-area-inset-top,0));
   padding:env(safe-area-inset-top,0) 16px 0;
   background:var(--ink);
-  display:flex;align-items:center;gap:12px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
   border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.brand{display:flex;align-items:center;gap:10px;flex:0 0 auto}
-.brand-mark{
-  font-family:var(--fd);
-  font-size:28px;
-  font-weight:900;
-  color:var(--y);
-  letter-spacing:-2px;
-  line-height:1;
-}
-.brand-name{
-  font-family:var(--fd);
-  font-size:16px;
-  font-weight:900;
-  color:rgba(255,255,255,.78);
-  letter-spacing:.3px;
 }
 
 /* nombre usuario */
@@ -80,7 +64,6 @@ body{
   flex:1;
   min-width:0;
   text-align:right;
-  margin-right:10px;
   font-size:12px;
   font-weight:700;
   color:rgba(255,255,255,.55);
@@ -104,6 +87,63 @@ body{
   box-shadow: 0 12px 26px rgba(0,0,0,.22);
 }
 .tb-exit:active{transform:scale(.98);opacity:.92}
+
+/* =========================
+   BRAND (igual que ADMIN)
+   ========================= */
+.db-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+  text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+
+.db-iconbox{
+  width:40px; height:40px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  display:grid; place-items:center;
+  flex:0 0 auto;
+}
+
+.db-icon{
+  font-family:var(--fd);
+  font-weight:900;
+  font-size:22px;
+  letter-spacing:-1px;
+  line-height:1;
+}
+.db-icon .d{color:#E6E6E6}
+.db-icon .b{color:#F5C116}
+
+.db-wordmark{
+  font-family:var(--fd);
+  font-weight:900;
+  font-size:28px;
+  letter-spacing:-0.6px;
+  line-height:1;
+  white-space:nowrap;
+}
+.db-wordmark .d{color:#E6E6E6}
+.db-wordmark .rest{color:#F5C116}
+
+.db-tag{
+  margin-left:6px;
+  font-weight:900;
+  letter-spacing:.5px;
+  color:rgba(255,255,255,.50);
+  font-size:12px;
+  white-space:nowrap;
+}
+
+@media (max-width:560px){
+  .db-wordmark{display:none;}
+  .db-tag{display:none;}
+}
 
 /* =========================
    CONTENT (safe-area OK)
@@ -526,17 +566,19 @@ textarea:focus, input:focus, select:focus{
 </head>
 <body>
 <header class="topbar">
- <div class="db-brand">
-  <span class="db-iconbox" aria-hidden="true">
-    <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
-  </span>
-  <span class="db-wordmark topbar">
-    <span class="d">d</span><span class="rest">barrio</span>
-  </span>
-</div>
+  <div class="db-brand" aria-label="dbarrio">
+    <span class="db-iconbox" aria-hidden="true">
+      <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
+    </span>
+
+    <span class="db-wordmark">
+      <span class="d">d</span><span class="rest">barrio</span>
+    </span>
+
+    <span class="db-tag">TÉCNICO</span>
+  </div>
 
   <span class="tb-nombre" id="tbNombre">—</span>
-
   <button class="tb-exit" onclick="exitSocio()">Salir</button>
 </header>
 
