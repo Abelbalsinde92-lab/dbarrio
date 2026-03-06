@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
   <meta name="theme-color" content="#1A1A2E"/>
   <title>dbarrio &mdash; admin</title>
-  <link rel="icon" type="image/svg+xml" href="icon.svg"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/db-icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/db-icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/db-icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/db-icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/icons/db-icon-512.png">
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet"/>
 
   <style>
@@ -236,14 +240,6 @@
   justify-content:space-between; /* ✅ CLAVE */
   gap:12px;
   border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.topbar-right{
-  margin-left:auto;           /* ✅ empuja a la derecha */
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
 }
 
 .btn-menu{
@@ -647,10 +643,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function goIndex(){ window.location.href = 'index.html'; }
-async function exitAdmin(){ try { await sb.auth.signOut(); } catch(e){} window.location.href = 'index.html'; }
-
+async function exitAdmin(){
+  try { sb.removeAllChannels(); } catch(_) {}
+  try { await sb.auth.signOut(); } catch(e){}
+  window.location.href = 'index.html';
+}
 
 function setupRealtime() {
+  try { sb.removeAllChannels(); } catch(_) {}
+
   sb.channel('rt-admin-solicitudes')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'solicitudes' }, () => {
       const opActiva = document.getElementById('sec-op')?.classList.contains('active');
@@ -733,17 +734,6 @@ function goSec(id) {
 }
 function toggleSidebar(){ document.querySelector('.sidebar')?.classList.toggle('open'); document.querySelector('.sidebar-overlay')?.classList.toggle('open'); }
 function closeSidebar(){ document.querySelector('.sidebar')?.classList.remove('open'); document.querySelector('.sidebar-overlay')?.classList.remove('open'); }
-
-function toggleKpi(){
-  document.querySelector('.kpi-wrap')?.classList.toggle('open');
-}
-
-/* Cierra el drawer tocando fuera */
-document.addEventListener('click', (e)=>{
-  const w = document.querySelector('.kpi-wrap');
-  if(!w) return;
-  if(!w.contains(e.target)) w.classList.remove('open');
-});
 
 async function loadKPIs() {
   const [{ data: solic }, { data: movs }] = await Promise.all([
