@@ -649,25 +649,55 @@ document.addEventListener('DOMContentLoaded', async () => {
 function goIndex(){ window.location.href = 'index.html'; }
 async function exitAdmin(){ try { await sb.auth.signOut(); } catch(e){} window.location.href = 'index.html'; }
 
+
 function setupRealtime() {
   sb.channel('rt-admin-solicitudes')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'solicitudes' }, () => {
       const opActiva = document.getElementById('sec-op')?.classList.contains('active');
       const soActiva = document.getElementById('sec-so')?.classList.contains('active');
       const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
+      const caActiva = document.getElementById('sec-ca')?.classList.contains('active');
+      const spActiva = document.getElementById('sec-sp')?.classList.contains('active');
+
       if (soActiva) { loadSociosMap(); loadSocios(); }
       if (opActiva) loadOp();
       if (hiActiva) loadHi();
+      if (caActiva) loadCaja();
+      if (spActiva) loadSoporte();
+
       loadKPIs();
-    }).subscribe();
+    })
+    .subscribe();
 
   sb.channel('rt-admin-garantia-reclamos')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'garantia_reclamos' }, () => {
       const spActiva = document.getElementById('sec-sp')?.classList.contains('active');
       const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
+
       if (spActiva) loadSoporte();
       if (hiActiva) loadHi();
-    }).subscribe();
+    })
+    .subscribe();
+
+  sb.channel('rt-admin-socios')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'socios' }, () => {
+      const soActiva = document.getElementById('sec-so')?.classList.contains('active');
+      const caActiva = document.getElementById('sec-ca')?.classList.contains('active');
+
+      loadSociosMap();
+      if (soActiva) loadSocios();
+      if (caActiva) loadCaja();
+    })
+    .subscribe();
+
+  sb.channel('rt-admin-movimientos')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'movimientos' }, () => {
+      const caActiva = document.getElementById('sec-ca')?.classList.contains('active');
+
+      if (caActiva) loadCaja();
+      loadKPIs();
+    })
+    .subscribe();
 }
 
 sb.auth.onAuthStateChange((_event, session) => { if (!session) window.location.href = 'index.html'; });
