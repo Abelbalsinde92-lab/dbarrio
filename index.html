@@ -927,5 +927,12 @@ document.querySelectorAll('.cb').forEach(row => {
 document.getElementById('s-cp')?.addEventListener('change', () => cE('es-cp'));
 document.getElementById('g-cp')?.addEventListener('change', () => cE('eg-cp'));
 </script>
+}
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
+</script>
 </body>
 </html>
