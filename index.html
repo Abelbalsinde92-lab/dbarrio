@@ -257,14 +257,6 @@ textarea{resize:vertical;min-height:72px}
       <span class="stat-l">Respuesta</span>
     </div>
   
-  <div id="socios-activos" style="
-text-align:center;
-font-size:12px;
-color:rgba(255,255,255,.40);
-margin-top:10px">
-Cargando técnicos activos...
-</div>
-  
   <div style="text-align:center;font-size:12px;color:rgba(255,255,255,.35);margin-top:10px">
 Técnicos independientes verificados por la plataforma
 </div>
@@ -940,26 +932,6 @@ document.getElementById('g-cp')?.addEventListener('change', () => cE('eg-cp'));
 </script>
 
 <script>
-
-// ───────── CONTADOR TECNICOS ACTIVOS ─────────
-async function cargarSociosActivos(){
-
-  const { count, error } = await sbPublic
-    .from('socios')
-    .select('*', { count: 'exact', head: true })
-    .eq('admitido', true)
-    .eq('estado_socio', 'activo');
-
-  if(error) return;
-
-  const el = document.getElementById('socios-activos');
-
-  if(el){
-    el.textContent = count + ' técnicos activos en La Habana';
-  }
-}
-
-cargarSociosActivos();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
