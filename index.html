@@ -518,16 +518,16 @@ textarea{resize:vertical;min-height:72px}
       <div class="fe" id="eu-esp">Requerido.</div>
     </div>
 
-    <div class="fg"><label>Años de experiencia</label>
-      <select id="u-exp">
-        <option value="">-- Seleccionar --</option>
-        <option>Menos de 1 año</option>
-        <option>1 – 3 años</option>
-        <option>3 – 5 años</option>
-        <option>Mas de 5 años</option>
-      </select>
-      <div class="fe" id="eu-exp">Requerido.</div>
-    </div>
+  <div class="fg"><label>Años de experiencia</label>
+  <select id="u-exp">
+    <option value="">-- Seleccionar --</option>
+    <option value="0">Menos de 1 año</option>
+    <option value="1">1 – 3 años</option>
+    <option value="3">3 – 5 años</option>
+    <option value="5">Mas de 5 años</option>
+  </select>
+  <div class="fe" id="eu-exp">Requerido.</div>
+</div>
 
     <div class="fg"><label>Zona / Municipio</label>
       <input id="u-zona" type="text" placeholder="Donde trabajas"/>
@@ -927,7 +927,18 @@ document.querySelectorAll('.cb').forEach(row => {
 document.getElementById('s-cp')?.addEventListener('change', () => cE('es-cp'));
 document.getElementById('g-cp')?.addEventListener('change', () => cE('eg-cp'));
 </script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
 }
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
+</script>
 
 <script>
 if ('serviceWorker' in navigator) {
