@@ -245,9 +245,9 @@ textarea{resize:vertical;min-height:72px}
 </h1>
 
   <p class="hero-desc">
-  Reparaciones del hogar sin complicaciones.
-  Electricidad, plomería, refrigeración y más.
-  Solicita el servicio y coordinamos un técnico en tu zona.
+  Reparaciones del hogar en La Habana sin complicaciones.
+  Electricidad, plomería, refrigeración y más en un solo lugar.
+  Solicita el servicio y coordinamos un técnico en tu municipio.
   Guarda tu código <span class="code-badge">db-xxxx</span> para seguimiento, garantía y calificación.
 </p>
 
@@ -256,6 +256,14 @@ textarea{resize:vertical;min-height:72px}
       <span class="stat-n">24h</span>
       <span class="stat-l">Respuesta</span>
     </div>
+  
+  <div id="socios-activos" style="
+text-align:center;
+font-size:12px;
+color:rgba(255,255,255,.40);
+margin-top:10px">
+Cargando técnicos activos...
+</div>
   
   <div style="text-align:center;font-size:12px;color:rgba(255,255,255,.35);margin-top:10px">
 Técnicos independientes verificados por la plataforma
@@ -391,7 +399,7 @@ Técnicos independientes verificados por la plataforma
 
     <div class="fg">
       <label>Municipio</label>
-      <input id="s-mun" type="text" placeholder="Dónde necesitas el servicio"/>
+      <input id="s-mun" type="text" placeholder="Municipio en La Habana"/>
       <div class="fe" id="es-mun">Requerido.</div>
     </div>
 
@@ -932,6 +940,27 @@ document.getElementById('g-cp')?.addEventListener('change', () => cE('eg-cp'));
 </script>
 
 <script>
+
+// ───────── CONTADOR TECNICOS ACTIVOS ─────────
+async function cargarSociosActivos(){
+
+  const { count, error } = await sbPublic
+    .from('socios')
+    .select('*', { count: 'exact', head: true })
+    .eq('admitido', true)
+    .eq('estado_socio', 'activo');
+
+  if(error) return;
+
+  const el = document.getElementById('socios-activos');
+
+  if(el){
+    el.textContent = count + ' técnicos activos en La Habana';
+  }
+}
+
+cargarSociosActivos();
+
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
