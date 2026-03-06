@@ -639,10 +639,12 @@ let mySocio = null;
 
 let rtSolic = null;
 let rtMovs  = null;
+let rtSocio = null;
 
 function setupRealtimeSocio() {
   try { if (rtSolic) sb.removeChannel(rtSolic); } catch(_) {}
   try { if (rtMovs)  sb.removeChannel(rtMovs);  } catch(_) {}
+  try { if (rtSocio) sb.removeChannel(rtSocio); } catch(_) {}
 
   if (!mySocio?.id) return;
 
@@ -655,12 +657,13 @@ function setupRealtimeSocio() {
         table: 'solicitudes',
         filter: `socio_asignado=eq.${mySocio.id}`
       },
-      (payload) => {
+      () => {
         const tabOrd = document.getElementById('tab-ordenes')?.classList.contains('active');
         const tabHis = document.getElementById('tab-historial')?.classList.contains('active');
+        const tabCue = document.getElementById('tab-cuenta')?.classList.contains('active');
+
         if (tabOrd) loadOrdenes();
         if (tabHis) loadHistorial();
-        const tabCue = document.getElementById('tab-cuenta')?.classList.contains('active');
         if (tabCue) loadCuenta();
       }
     )
@@ -681,31 +684,35 @@ function setupRealtimeSocio() {
       }
     )
     .subscribe();
+
+  rtSocio = sb.channel('rt-socio-perfil-' + mySocio.id)
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'socios',
+        filter: `id=eq.${mySocio.id}`
+      },
+      async () => {
+        const { data } = await sb
+          .from('socios')
+          .select('*')
+          .eq('id', mySocio.id)
+          .maybeSingle();
+
+        if (data) {
+          mySocio = data;
+          const tb = document.getElementById('tbNombre');
+          if (tb) tb.textContent = data.nombre || '—';
+        }
+
+        const tabCue = document.getElementById('tab-cuenta')?.classList.contains('active');
+        if (tabCue) loadCuenta();
+      }
+    )
+    .subscribe();
 }
-
-document.addEventListener('DOMContentLoaded', async () => {
-
-  const hash = window.location.hash || '';
-  if (hash.startsWith('#')) {
-    const p = new URLSearchParams(hash.slice(1));
-    const access_token = p.get('access_token');
-    const refresh_token = p.get('refresh_token');
-
-    if (access_token && refresh_token) {
-      await sb.auth.setSession({ access_token, refresh_token });
-      history.replaceState(null, '', window.location.pathname);
-    }
-  }
-
-  const { data:{ session } } = await sb.auth.getSession();
-
-  if (session) {
-    await init(session);
-    return;
-  }
-
-  goIdx();
-});
 
 async function init(session) {
   if (document.body.dataset.ok) return;
