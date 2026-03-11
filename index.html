@@ -398,10 +398,18 @@ textarea{resize:vertical;min-height:72px}
     </div>
 
     <div class="fg">
-      <label>WhatsApp</label>
-      <input id="s-wa" type="tel" placeholder="+53 5XXX XXXX"/>
-      <div class="fe" id="es-wa">Número inválido.</div>
-    </div>
+  <label>WhatsApp</label>
+  <div class="phone-row">
+    <select id="s-code">
+      <option value="+53" selected>Cuba (+53)</option>
+      <option value="+34">España (+34)</option>
+      <option value="+1">EE. UU. (+1)</option>
+      <option value="+52">México (+52)</option>
+    </select>
+    <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
+  </div>
+  <div class="fe" id="es-wa">Número inválido.</div>
+</div>
 
     <div class="fg">
       <label>Municipio</label>
@@ -705,13 +713,33 @@ function resetSolForm(){
 }
 function dbc(id){return 'db-'+id}
 
+function normalizarTelefonoSol(){
+  const code = document.getElementById('s-code')?.value || '+53';
+  const telInput = document.getElementById('s-wa');
+  const err = document.getElementById('es-wa');
+
+  const numero = (telInput?.value || '').replace(/\D/g,'');
+
+  if(!numero || numero.length < 6 || numero.length > 15){
+    if(err) err.classList.add('v');
+    return null;
+  }
+
+  if(err) err.classList.remove('v');
+
+  return {
+    completo: `${code}${numero}`,
+    whatsapp: `${code}${numero}`.replace(/\D/g,'')
+  };
+}
+
 // ───────── SOLICITUD (RPC: create_solicitud_publica) ─────────
 async function envSol(){
   cER('err-sol');
   ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
 
   const cli = document.getElementById('s-cli')?.value.trim() || '';
-  const wa  = document.getElementById('s-wa')?.value.trim() || '';
+  const telData = normalizarTelefonoSol();
   const mun = document.getElementById('s-mun')?.value.trim() || '';
   const dir = document.getElementById('s-dir')?.value.trim() || '';
   const srv = document.getElementById('s-srv')?.value || '';
@@ -720,7 +748,7 @@ async function envSol(){
 
   let ok = true;
   if(!cli){ sE('es-cli'); ok=false; }
-  if(!vt(wa)){ sE('es-wa'); ok=false; }
+  if(!telData){ sE('es-wa'); ok=false; }
   if(!mun){ sE('es-mun'); ok=false; }
   if(!srv){ sE('es-srv'); ok=false; }
   if(!cp){ sE('es-cp'); ok=false; }
@@ -734,7 +762,7 @@ async function envSol(){
 
     const { data, error } = await sbPublic.rpc('create_solicitud_publica', {
       p_cliente: cli,
-      p_telefono: wa,
+      p_telefono: telData.completo,
       p_municipio: mun,
       p_direccion: dir,                 // '' o texto
       p_servicio: srv,
