@@ -913,7 +913,6 @@ async function envUni(){
   if(!ok) return;
 
   const telefono = telData.completo;
-  const whatsapp = telData.whatsapp;
 
   setL('btn-uni', true);
 
@@ -959,7 +958,6 @@ async function envUni(){
       auth_uid: uid,
       nombre: nom,
       telefono: telefono,
-      whatsapp: whatsapp,
       especialidad: esp,
       experiencia_anios: parseInt(exp,10),
       zona: zona,
