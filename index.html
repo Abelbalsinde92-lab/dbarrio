@@ -733,6 +733,26 @@ function normalizarTelefonoSol(){
   };
 }
 
+function normalizarTelefonoUni(){
+  const code = document.getElementById('u-code')?.value || '+53';
+  const telInput = document.getElementById('u-tel');
+  const err = document.getElementById('eu-tel');
+
+  const numero = (telInput?.value || '').replace(/\D/g,'');
+
+  if(!numero || numero.length < 6 || numero.length > 15){
+    if(err) err.classList.add('v');
+    return null;
+  }
+
+  if(err) err.classList.remove('v');
+
+  return {
+    completo: `${code}${numero}`,
+    whatsapp: `${code}${numero}`.replace(/\D/g,'')
+  };
+}
+
 // ───────── SOLICITUD (RPC: create_solicitud_publica) ─────────
 async function envSol(){
   cER('err-sol');
@@ -868,194 +888,6 @@ async function envCal(){
 
   sOK('ok-cal');
   document.getElementById('btn-cal').style.display='none';
-}
-
-async function envUni(){
-  cER('err-uni');
-  ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(cE);
-
-  const nom  = document.getElementById('u-nom').value.trim();
-  const telData = normalizarTelefonoUni();
-  const esp  = document.getElementById('u-esp').value;
-  const exp  = document.getElementById('u-exp').value;
-  const zona = document.getElementById('u-zona').value.trim();
-  const email= document.getElementById('u-email').value.trim();
-  const pass = document.getElementById('u-pass').value;
-
-  let ok = true;
-  if(!nom){ sE('eu-nom'); ok=false; }
-  if(!telData){ sE('eu-tel'); ok=false; }
-  if(!esp){ sE('eu-esp'); ok=false; }
-  if(!exp){ sE('eu-exp'); ok=false; }
-  if(!zona){ sE('eu-zona'); ok=false; }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ sE('eu-email'); ok=false; }
-  if(pass.length < 6){ sE('eu-pass'); ok=false; }
-  if(!ok) return;
-
-  const telefono = telData.completo;
-  const whatsapp = telData.whatsapp;
-
-  setL('btn-uni', true);
-
-  try {
-    // 1) crear auth user
-    const { data: ad, error: ae } = await sb.auth.signUp({
-      email,
-      password: pass,
-      options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' }
-    });
-
-    if(ae){
-      setL('btn-uni', false);
-      sER('err-uni', 'Error: ' + ae.message);
-      return;
-    }
-
-    if(!ad?.user){
-      setL('btn-uni', false);
-      sER('err-uni', 'Error: sin usuario');
-      return;
-    }
-
-    // 2) asegurar sesión
-    const { data: si, error: se1 } = await sb.auth.signInWithPassword({ email, password: pass });
-
-    if(se1 || !si?.session){
-      setL('btn-uni', false);
-      sER('err-uni', 'Cuenta creada. Revisa tu correo para confirmar y luego inicia sesión para completar el perfil.');
-      return;
-    }
-
-    const uid = si.session.user.id;
-
-    // 3) insertar perfil socio
-    const { error: se } = await sb.from('socios').insert({
-      auth_uid: uid,
-      nombre: nom,
-      telefono: telefono,
-      whatsapp: whatsapp,
-      especialidad: esp,
-      experiencia_anios: parseInt(exp, 10),
-      zona: zona,
-      email: email,
-      admitido: false,
-      estado_socio: 'pendiente',
-      comision: 15,
-      deuda: 0,
-      trabajos: 0
-    });
-
-    setL('btn-uni', false);
-
-    if(se){
-      sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message);
-      return;
-    }
-
-    // 4) cerrar sesión
-    await sb.auth.signOut();
-
-    sOK('ok-uni');
-    document.getElementById('btn-uni').style.display = 'none';
-
-  } catch(e){
-    setL('btn-uni', false);
-    sER('err-uni', 'Error: ' + (e?.message || e));
-  }
-}
-
-// ───────── UNETE (signUp → signIn → INSERT socios con auth_uid) ─────────
-async function envUni(){
-  cER('err-uni');
-  ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(cE);
-
-  const nom  = document.getElementById('u-nom').value.trim();
-  const telData = normalizarTelefonoUni();
-  const esp  = document.getElementById('u-esp').value;
-  const exp  = document.getElementById('u-exp').value;
-  const zona = document.getElementById('u-zona').value.trim();
-  const email= document.getElementById('u-email').value.trim();
-  const pass = document.getElementById('u-pass').value;
-
-  let ok = true;
-  if(!nom){ sE('eu-nom'); ok=false; }
-  if(!telData){ sE('eu-tel'); ok=false; }
-  if(!esp){ sE('eu-esp'); ok=false; }
-  if(!exp){ sE('eu-exp'); ok=false; }
-  if(!zona){ sE('eu-zona'); ok=false; }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ sE('eu-email'); ok=false; }
-  if(pass.length < 6){ sE('eu-pass'); ok=false; }
-  if(!ok) return;
-
-  const telefono = telData.completo;
-  const whatsapp = telData.whatsapp;
-
-  setL('btn-uni', true);
-
-  try {
-    // 1) crear auth user
-    const { data: ad, error: ae } = await sb.auth.signUp({
-      email,
-      password: pass,
-      options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' }
-    });
-
-    if(ae){
-      setL('btn-uni', false);
-      sER('err-uni', 'Error: ' + ae.message);
-      return;
-    }
-
-    if(!ad?.user){
-      setL('btn-uni', false);
-      sER('err-uni', 'Error: sin usuario');
-      return;
-    }
-
-    // 2) asegurar sesión
-    const { data: si, error: se1 } = await sb.auth.signInWithPassword({ email, password: pass });
-
-    if(se1 || !si?.session){
-      setL('btn-uni', false);
-      sER('err-uni', 'Cuenta creada. Revisa tu correo para confirmar y luego inicia sesión para completar el perfil.');
-      return;
-    }
-
-    const uid = si.session.user.id;
-
-    // 3) insertar perfil socio
-    const { error: se } = await sb.from('socios').insert({
-  auth_uid: uid,
-  nombre: nom,
-  telefono: telefono,
-  especialidad: esp,
-  experiencia_anios: parseInt(exp, 10),
-  zona: zona,
-  email: email,
-  admitido: false,
-  estado_socio: 'pendiente',
-  comision: 15,
-  deuda: 0,
-  trabajos: 0
-});
-
-    setL('btn-uni', false);
-
-    if(se){
-      sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message);
-      return;
-    }
-
-    // 4) cerrar sesión
-    await sb.auth.signOut();
-
-    sOK('ok-uni');
-    document.getElementById('btn-uni').style.display = 'none';
-
-  } catch(e){
-    setL('btn-uni', false);
-    sER('err-uni', 'Error: ' + (e?.message || e));
-  }
 }
 
 // ───────── LOGIN ─────────
