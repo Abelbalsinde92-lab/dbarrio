@@ -780,10 +780,30 @@ function buildCardOp(s) {
   const chipText = {pendiente:'pendiente',asignada:'asignada',en_proceso:'en proceso',cierre_reportado:'cierre reportado',rechazada_por_socio:'rechazo socio',completada:'completada',rechazada:'rechazada'}[visual] || visual;
   const cierreFlag = cierreReportado ? `<div style="background:var(--ok-bg);border:1px solid rgba(78,203,160,.25);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#1E7A5A">\u2705 Cierre reportado por el socio${s.monto_socio != null ? `<div style="margin-top:4px">Monto: ${fmtM(s.monto_socio)}</div>` : ``}${s.garantia_dias != null ? `<div>Garant\u00eda: ${s.garantia_dias} d\u00edas</div>` : ``}</div>` : '';
   const rechazoFlag = rechazoSocio ? `<div style="background:var(--err-bg);border:1px solid rgba(224,92,92,.22);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:var(--err)">\u274c Rechazada por el socio<div style="margin-top:6px;font-weight:600">${esc(s.motivo_rechazo_socio || s.nota_socio || 'Sin motivo')}</div></div>` : '';
-  let asignarHTML = '';
-  if (s.estado === 'pendiente') {
-    const opts = Object.values(sociosMap).filter(sc => sc && sc.nombre).map(sc => `<option value="${sc.id}">${esc(sc.nombre)}</option>`).join('');
-    asignarHTML = `<div class="inline-form" style="margin-top:10px"><label>Asignar socio</label><div style="display:flex;gap:8px;margin-top:4px"><select id="sel-${s.id}" style="flex:1">${opts ? `<option value="">-- Seleccionar --</option>${opts}` : `<option value="">Sin socios</option>`}</select><button class="btn btn-y btn-sm" onclick="asignar(${s.id})">Asignar</button></div></div>`;
+    let asignarHTML = '';
+  if (s.estado === 'pendiente' || s.estado === 'asignada') {
+    const opts = Object.values(sociosMap)
+      .filter(sc => sc && sc.nombre)
+      .map(sc => {
+        const selected = String(sc.id) === String(s.socio_asignado) ? 'selected' : '';
+        return `<option value="${sc.id}" ${selected}>${esc(sc.nombre)}</option>`;
+      })
+      .join('');
+
+    const textoLabel = s.estado === 'pendiente' ? 'Asignar socio' : 'Reasignar socio';
+    const textoBtn   = s.estado === 'pendiente' ? 'Asignar' : 'Reasignar';
+    const accionBtn  = s.estado === 'pendiente' ? `asignar(${s.id})` : `reasignar(${s.id})`;
+
+    asignarHTML = `
+      <div class="inline-form" style="margin-top:10px">
+        <label>${textoLabel}</label>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <select id="sel-${s.id}" style="flex:1">
+            ${opts ? `<option value="">-- Seleccionar --</option>${opts}` : `<option value="">Sin socios</option>`}
+          </select>
+          <button class="btn btn-y btn-sm" onclick="${accionBtn}">${textoBtn}</button>
+        </div>
+      </div>`;
   }
   const btnCompletar = (s.estado === 'asignada' && cierreReportado) ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Aprobar y enviar garant\u00eda</button>` : '';
   const btnLiberar = (s.estado === 'asignada' && rechazoSocio) ? `<button class="btn btn-g" onclick="liberarPorRechazo(${s.id})">Liberar / volver a pendiente</button>` : '';
@@ -829,6 +849,68 @@ async function asignar(id) {
     if (soc.telefono) wa(soc.telefono, msg);
   }
   loadOp();
+}
+
+async function reasignar(id) {
+  const sel = document.getElementById('sel-' + id);
+  if (!sel?.value) { toast('Selecciona un socio'); return; }
+
+  const nuevoSocioId = parseInt(sel.value);
+
+  const { data: sol, error: eSol } = await sb
+    .from('solicitudes')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (eSol || !sol) {
+    toast('No se pudo cargar la orden');
+    return;
+  }
+
+  if (!['pendiente', 'asignada'].includes(sol.estado)) {
+    toast('Esta orden no se puede reasignar en su estado actual');
+    return;
+  }
+
+  if (String(sol.socio_asignado || '') === String(nuevoSocioId)) {
+    toast('La orden ya está asignada a ese socio');
+    return;
+  }
+
+  const { error } = await sb
+    .from('solicitudes')
+    .update({
+      socio_asignado: nuevoSocioId,
+      estado: 'asignada',
+      sub_estado: null,
+      motivo_rechazo_socio: null
+    })
+    .eq('id', id);
+
+  if (error) {
+    toast('Error: ' + error.message);
+    return;
+  }
+
+  toast('Orden reasignada');
+
+  if (sociosMap[nuevoSocioId]) {
+    const soc = sociosMap[nuevoSocioId];
+    const msg = CFG.t1
+      .replace('{socio}', soc.nombre)
+      .replace('{code}', dbc(id))
+      .replace('{cliente}', sol.cliente || '')
+      .replace('{municipio}', sol.municipio || '')
+      .replace('{telefono}', sol.telefono || '')
+      .replace('{servicio}', sol.servicio || '')
+      .replace('{detalles}', sol.detalles || 'Sin detalles');
+
+    if (soc.telefono) wa(soc.telefono, msg);
+  }
+
+  loadOp();
+  loadKPIs();
 }
 
 async function liberarPorRechazo(id) {
