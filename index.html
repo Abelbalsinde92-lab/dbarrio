@@ -6,24 +6,18 @@
   <meta name="theme-color" content="#1A1A2E"/>
   <title>dbarrio — servicios técnicos</title>
 
-  <!-- Icons -->
   <link rel="icon" type="image/png" sizes="32x32" href="db-32.png?v=1">
   <link rel="icon" type="image/png" sizes="16x16" href="db-16.png?v=1">
   <link rel="apple-touch-icon" sizes="180x180" href="db-180.png?v=1">
   <link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=1">
   <link rel="icon" type="image/png" sizes="512x512" href="db-512.png?v=1">
-
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json?v=1">
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
   <style>
-    /* AQUÍ VA SOLO CSS. Nada de <link> ni <meta> ni <manifest>. */
-
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
       --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
@@ -37,197 +31,163 @@
     html{background:var(--ink)}
     body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-/* HEADER */
-.header{position:sticky;top:0;z-index:40;background:var(--ink);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;padding-top:env(safe-area-inset-top,0)}
-.nav{display:flex;gap:6px}
-.nav a{font-size:11px;font-weight:500;color:rgba(255,255,255,.45);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:20px;transition:all .15s}
-.nav a:hover{color:var(--y);border-color:rgba(245,193,22,.3)}
+    /* HEADER */
+    .header{position:sticky;top:0;z-index:40;background:var(--ink);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;padding-top:env(safe-area-inset-top,0)}
+    .nav{display:flex;gap:6px}
+    .nav a{font-size:11px;font-weight:500;color:rgba(255,255,255,.45);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:20px;transition:all .15s}
+    .nav a:hover{color:var(--y);border-color:rgba(245,193,22,.3)}
 
-/* HERO */
-.hero{background:var(--ink);padding:28px 16px 0;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px),repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px)}
-.hero-wm{position:absolute;right:-10px;top:-20px;font-family:var(--fd);font-size:200px;font-weight:900;color:rgba(245,193,22,.045);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none}
-.hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(245,193,22,.1);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:4px 12px 4px 8px;margin-bottom:14px}
-.hero-dot{width:7px;height:7px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 6px rgba(245,193,22,0)}}
-.hero-chip-txt{font-size:11px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.3px}
-.hero-title{font-family:var(--fd);font-size:46px;font-weight:900;font-style:italic;color:#fff;line-height:.92;letter-spacing:-.5px;margin-bottom:12px;position:relative;z-index:1}
-.hero-title em{font-style:normal;color:var(--y);display:block}
-.hero-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;max-width:300px;margin-bottom:28px;position:relative;z-index:1}
-.code-badge{display:inline-flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle;margin:0 2px}
-.hero-stats{display:flex;border-top:1px solid rgba(255,255,255,.07);margin:0 -16px}
-.stat{flex:1;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:2px;border-right:1px solid rgba(255,255,255,.07)}
-.stat:last-child{border-right:none}
-.stat-n{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--y);line-height:1}
-.stat-l{font-size:10px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.3px}
-.hero-curve{height:26px;background:var(--bg);border-radius:26px 26px 0 0;margin-top:-1px}
+    /* HERO */
+    .hero{background:var(--ink);padding:28px 16px 0;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px),repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px)}
+    .hero-wm{position:absolute;right:-10px;top:-20px;font-family:var(--fd);font-size:200px;font-weight:900;color:rgba(245,193,22,.045);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none}
+    .hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(245,193,22,.1);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:4px 12px 4px 8px;margin-bottom:14px}
+    .hero-dot{width:7px;height:7px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 6px rgba(245,193,22,0)}}
+    .hero-chip-txt{font-size:11px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.3px}
+    .hero-title{font-family:var(--fd);font-size:46px;font-weight:900;font-style:italic;color:#fff;line-height:.92;letter-spacing:-.5px;margin-bottom:12px;position:relative;z-index:1}
+    .hero-title em{font-style:normal;color:var(--y);display:block}
+    .hero-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;max-width:300px;margin-bottom:28px;position:relative;z-index:1}
+    .code-badge{display:inline-flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle;margin:0 2px}
+    .hero-stats{display:flex;border-top:1px solid rgba(255,255,255,.07);margin:0 -16px}
+    .stat{flex:1;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:2px;border-right:1px solid rgba(255,255,255,.07)}
+    .stat:last-child{border-right:none}
+    .stat-n{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--y);line-height:1}
+    .stat-l{font-size:10px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.3px}
+    .hero-curve{height:26px;background:var(--bg);border-radius:26px 26px 0 0;margin-top:-1px}
 
-/* CONTENT */
-.content{padding:4px 14px 40px;padding-bottom:calc(40px + env(safe-area-inset-bottom,0));display:flex;flex-direction:column;gap:10px}
+    /* CONTENT */
+    .content{padding:4px 14px 40px;padding-bottom:calc(40px + env(safe-area-inset-bottom,0));display:flex;flex-direction:column;gap:10px}
 
-/* CTA */
-.btn-cta{width:100%;border:none;cursor:pointer;background:var(--y);border-radius:var(--r);display:flex;align-items:stretch;overflow:hidden;box-shadow:0 4px 20px rgba(245,193,22,.35);transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
-.btn-cta:active{transform:scale(.97);box-shadow:0 2px 8px rgba(245,193,22,.2)}
-.btn-cta-body{flex:1;padding:18px 20px;text-align:left}
-.cta-title{font-family:var(--fd);font-size:25px;font-weight:900;color:var(--ink);letter-spacing:.2px;line-height:1;display:block}
-.cta-sub{font-size:12px;font-weight:600;color:rgba(28,28,46,.55);display:block;margin-top:2px}
-.btn-cta-ico{width:56px;background:rgba(28,28,46,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.acard{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:transform .1s;box-shadow:0 1px 4px rgba(0,0,0,.05);-webkit-tap-highlight-color:transparent;text-align:left;width:100%}
-.acard:active{transform:scale(.97)}
-.acard.row{flex-direction:row;align-items:center;justify-content:space-between}
-.acard.hl{background:var(--yl);border-color:rgba(245,193,22,.35)}
-.acard.dk{background:#F4F3F8;border-color:rgba(28,28,46,.1)}
-.acard-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.icy{background:rgba(245,193,22,.15)} .icb{background:rgba(66,135,245,.1)}
-.icr{background:rgba(214,48,49,.08)}  .ico{background:rgba(237,137,54,.1)}
-.ick{background:rgba(28,28,46,.07)}
-.acard-txt{display:flex;flex-direction:column;gap:2px;flex:1}
-.acard-title{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
-.acard-desc{font-size:11px;font-weight:500;color:var(--g1)}
-.tip{text-align:center;font-size:12px;color:var(--g1);padding:4px 10px}
-.tip-chip{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:12px;font-weight:800;padding:2px 8px;border-radius:5px;vertical-align:middle;margin:0 2px;letter-spacing:.5px}
+    /* CTA */
+    .btn-cta{width:100%;border:none;cursor:pointer;background:var(--y);border-radius:var(--r);display:flex;align-items:stretch;overflow:hidden;box-shadow:0 4px 20px rgba(245,193,22,.35);transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
+    .btn-cta:active{transform:scale(.97);box-shadow:0 2px 8px rgba(245,193,22,.2)}
+    .btn-cta-body{flex:1;padding:18px 20px;text-align:left}
+    .cta-title{font-family:var(--fd);font-size:25px;font-weight:900;color:var(--ink);letter-spacing:.2px;line-height:1;display:block}
+    .cta-sub{font-size:12px;font-weight:600;color:rgba(28,28,46,.55);display:block;margin-top:2px}
+    .btn-cta-ico{width:56px;background:rgba(28,28,46,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .acard{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:transform .1s;box-shadow:0 1px 4px rgba(0,0,0,.05);-webkit-tap-highlight-color:transparent;text-align:left;width:100%}
+    .acard:active{transform:scale(.97)}
+    .acard.row{flex-direction:row;align-items:center;justify-content:space-between}
+    .acard.hl{background:var(--yl);border-color:rgba(245,193,22,.35)}
+    .acard.dk{background:#F4F3F8;border-color:rgba(28,28,46,.1)}
+    .acard-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .icy{background:rgba(245,193,22,.15)} .icb{background:rgba(66,135,245,.1)}
+    .icr{background:rgba(214,48,49,.08)}  .ico{background:rgba(237,137,54,.1)}
+    .ick{background:rgba(28,28,46,.07)}   .icg{background:rgba(0,133,111,.1)}
+    .acard-txt{display:flex;flex-direction:column;gap:2px;flex:1}
+    .acard-title{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
+    .acard-desc{font-size:11px;font-weight:500;color:var(--g1)}
+    .tip{text-align:center;font-size:12px;color:var(--g1);padding:4px 10px}
+    .tip-chip{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:12px;font-weight:800;padding:2px 8px;border-radius:5px;vertical-align:middle;margin:0 2px;letter-spacing:.5px}
 
-/* ANIMATIONS */
-@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.hero{animation:up .35s ease both}
-.btn-cta{animation:up .3s ease .08s both}
-.grid2{animation:up .3s ease .14s both}
-.a1{animation:up .3s ease .2s both}
-.a2{animation:up .3s ease .25s both}
-.a3{animation:up .3s ease .29s both}
+    /* ANIMACIONES */
+    @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .hero{animation:up .35s ease both}
+    .btn-cta{animation:up .3s ease .08s both}
+    .grid2{animation:up .3s ease .14s both}
+    .a1{animation:up .3s ease .2s both}
+    .a2{animation:up .3s ease .25s both}
+    .a3{animation:up .3s ease .29s both}
 
-/* MODAL SYSTEM */
-.ov{display:none;position:fixed;inset:0;background:rgba(15,15,28,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:200;align-items:flex-end;justify-content:center}
-.ov.open{display:flex}
-.sheet{background:var(--card);width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom,28px);max-height:92svh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideup .26s cubic-bezier(.22,.72,0,1) both}
-@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.pill{width:36px;height:4px;background:var(--line);border-radius:4px;margin:10px auto}
-.sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;margin-bottom:14px}
-.sheet-title{font-family:var(--fd);font-size:23px;font-weight:800;color:var(--ink);letter-spacing:.1px}
-.sheet-x{background:var(--line);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--g1);display:flex;align-items:center;justify-content:center}
-.sheet-x:hover{background:var(--g2)}
-.mbody{padding:0 20px 20px}
-.fg{margin-bottom:13px}
-label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
-input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:var(--f);color:var(--ink);background:#FAFAFA;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+    /* TRACKER CARD (db-xxxx interactivo) */
+    .tracker-card{
+      background:var(--ink);border-radius:var(--r);padding:16px 18px;
+      display:flex;align-items:center;gap:14px;cursor:pointer;
+      transition:transform .12s;-webkit-tap-highlight-color:transparent;
+    }
+    .tracker-card:active{transform:scale(.98)}
+    .tracker-input-row{display:flex;gap:8px;margin-top:10px}
+    .tracker-input-row input{
+      flex:1;padding:10px 12px;border:1.5px solid rgba(255,255,255,.15);
+      border-radius:10px;font-size:14px;font-family:var(--f);color:#fff;
+      background:rgba(255,255,255,.07);outline:none;
+      -webkit-appearance:none;
+    }
+    .tracker-input-row input::placeholder{color:rgba(255,255,255,.3)}
+    .tracker-input-row input:focus{border-color:var(--y);background:rgba(245,193,22,.07)}
+    .tracker-input-row button{
+      padding:0 16px;background:var(--y);color:var(--ink);border:none;
+      border-radius:10px;font-family:var(--f);font-size:13px;font-weight:700;
+      cursor:pointer;white-space:nowrap;flex-shrink:0;
+    }
+    .tracker-input-row button:active{opacity:.85}
+    .tracker-result{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.6;display:none}
+    .tracker-result.v{display:block}
+    .tracker-result.ok{background:rgba(78,203,160,.12);border:1px solid rgba(78,203,160,.25);color:#00856F}
+    .tracker-result.err{background:rgba(214,48,49,.08);border:1px solid rgba(214,48,49,.2);color:#D63031}
+    .tr-code{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--y);letter-spacing:1px;display:block;margin-bottom:4px}
+    .tr-estado{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:5px;font-size:11px;font-weight:700;margin-bottom:4px}
+    .tr-info{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6}
 
-.phone-row{
-  display:grid;
-  grid-template-columns:140px 1fr;
-  gap:10px;
-}
+    /* STATUS CHIPS */
+    .st-pendiente{background:rgba(245,193,22,.15);color:#C9980D}
+    .st-asignada{background:rgba(77,168,218,.15);color:#2778A0}
+    .st-completada{background:rgba(78,203,160,.15);color:#00856F}
+    .st-rechazada{background:rgba(214,48,49,.1);color:#D63031}
 
-.phone-row select,
-.phone-row input{
-  width:100%;
-}
+    /* MODALS */
+    .ov{display:none;position:fixed;inset:0;background:rgba(15,15,28,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:200;align-items:flex-end;justify-content:center}
+    .ov.open{display:flex}
+    .sheet{background:var(--card);width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom,28px);max-height:92svh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideup .26s cubic-bezier(.22,.72,0,1) both}
+    @keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    .pill{width:36px;height:4px;background:var(--line);border-radius:4px;margin:10px auto}
+    .sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;margin-bottom:14px}
+    .sheet-title{font-family:var(--fd);font-size:23px;font-weight:800;color:var(--ink);letter-spacing:.1px}
+    .sheet-x{background:var(--line);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--g1);display:flex;align-items:center;justify-content:center}
+    .sheet-x:hover{background:var(--g2)}
+    .mbody{padding:0 20px 20px}
+    .fg{margin-bottom:13px}
+    label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+    input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:var(--f);color:var(--ink);background:#FAFAFA;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+    .phone-row{display:grid;grid-template-columns:140px 1fr;gap:10px}
+    .phone-row select,.phone-row input{width:100%}
+    @media (max-width:520px){.phone-row{grid-template-columns:1fr}}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);background:#fff;box-shadow:0 0 0 3px rgba(28,28,46,.06)}
+    textarea{resize:vertical;min-height:72px}
+    .fe{font-size:11px;color:var(--err);margin-top:4px;display:none}
+    .fe.v{display:block}
+    .cb{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;cursor:pointer}
+    .cb input[type=checkbox]{width:18px;height:18px;margin-top:1px;flex-shrink:0;accent-color:var(--ink)}
+    .cb input[type="checkbox"]{-webkit-appearance:checkbox!important;appearance:checkbox!important;accent-color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:4px}
+    .cb span{font-size:12px;color:var(--g1);line-height:1.55}
+    .cb a{color:var(--ink)}
+    .sep{display:flex;align-items:center;gap:10px;margin:14px 0 12px;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px}
+    .sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--line)}
+    .stars{display:flex;gap:10px;padding:4px 0}
+    .star{font-size:34px;cursor:pointer;color:var(--line);transition:color .1s,transform .1s;user-select:none;line-height:1}
+    .star.on{color:var(--y)}
+    .star:active{transform:scale(.82)}
+    .btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:var(--f);cursor:pointer;margin-top:14px;transition:background .14s,transform .1s;-webkit-tap-highlight-color:transparent}
+    .btn:active{transform:scale(.97)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .btn-y{background:var(--y);color:var(--ink)}
+    .btn-y:hover{background:var(--yd)}
+    .btn-k{background:var(--ink);color:#fff}
+    .btn-k:hover{background:var(--ink2)}
+    .ok-box{display:none;background:linear-gradient(135deg,#EDFAF3,#D4F0E4);border:1.5px solid #8DD4AA;border-radius:10px;padding:16px 18px;margin-top:14px;font-size:13px;color:var(--ok);line-height:1.7}
+    .ok-box.v{display:block}
+    .ok-code{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:24px;font-weight:900;padding:4px 14px;border-radius:8px;margin:6px 0 4px;letter-spacing:1px}
+    .ok-note{display:block;font-size:11px;color:#1A7F5A;margin-top:4px}
+    .err-box{display:none;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--err)}
+    .err-box.v{display:block}
+    .hint{font-size:12px;color:var(--g1);line-height:1.55;margin-top:6px}
+    .sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
+    .btn-y .sp{border-color:rgba(28,28,46,.2);border-top-color:var(--ink)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
 
-@media (max-width:520px){
-  .phone-row{
-    grid-template-columns:1fr;
-  }
-}
-
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);background:#fff;box-shadow:0 0 0 3px rgba(28,28,46,.06)}
-textarea{resize:vertical;min-height:72px}
-.fe{font-size:11px;color:var(--err);margin-top:4px;display:none}
-.fe.v{display:block}
-.cb{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
-.cb input[type=checkbox]{width:18px;height:18px;margin-top:1px;flex-shrink:0;accent-color:var(--ink);cursor:pointer}
-.cb input[type="checkbox"]{
-  -webkit-appearance: checkbox !important;
-  appearance: checkbox !important;
-  accent-color: var(--ink);
-  background: #fff;
-  border: 1.5px solid var(--line);
-  border-radius: 4px;
-}
-.cb span{font-size:12px;color:var(--g1);line-height:1.55}
-.cb a{color:var(--ink)}
-.sep{display:flex;align-items:center;gap:10px;margin:14px 0 12px;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px}
-.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--line)}
-.stars{display:flex;gap:10px;padding:4px 0}
-.star{font-size:34px;cursor:pointer;color:var(--line);transition:color .1s,transform .1s;user-select:none;line-height:1}
-.star.on{color:var(--y)}
-.star:active{transform:scale(.82)}
-.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:var(--f);cursor:pointer;margin-top:14px;transition:background .14s,transform .1s;-webkit-tap-highlight-color:transparent}
-.btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn-y{background:var(--y);color:var(--ink)}
-.btn-y:hover{background:var(--yd)}
-.btn-k{background:var(--ink);color:#fff}
-.btn-k:hover{background:var(--ink2)}
-.ok-box{display:none;background:linear-gradient(135deg,#EDFAF3,#D4F0E4);border:1.5px solid #8DD4AA;border-radius:10px;padding:16px 18px;margin-top:14px;font-size:13px;color:var(--ok);line-height:1.7}
-.ok-box.v{display:block}
-.ok-code{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:24px;font-weight:900;padding:4px 14px;border-radius:8px;margin:6px 0 4px;letter-spacing:1px}
-.ok-note{display:block;font-size:11px;color:#1A7F5A;margin-top:4px}
-.err-box{display:none;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--err)}
-.err-box.v{display:block}
-.hint{font-size:12px;color:var(--g1);line-height:1.55;margin-top:6px}
-.sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
-.btn-y .sp{border-color:rgba(28,28,46,.2);border-top-color:var(--ink)}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
-
-/* =========================
-   TOPBAR BRAND (igual que ADMIN)
-   ========================= */
-.db-brand{
-  display:flex;
-  flex:1 1 auto;
-  align-items:center;
-  gap:10px;
-  min-width:0;
-  -webkit-tap-highlight-color:transparent;
-  user-select:none;
-  text-decoration:none;
-}
-
-.db-iconbox{
-  width:40px; height:40px;
-  border-radius:14px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.14);
-  display:grid; place-items:center;
-  flex:0 0 auto;
-}
-
-.db-icon{
-  font-family:'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
-  font-weight:900;
-  font-size:22px;
-  letter-spacing:-1px;
-  line-height:1;
-}
-.db-icon .d{color:#E6E6E6}
-.db-icon .b{color:#F5C116}
-
-.db-wordmark{
-  font-family:'Barlow Condensed', Impact, 'Arial Narrow', sans-serif;
-  font-weight:900;
-  font-size:28px;
-  letter-spacing:-0.6px;
-  line-height:1;
-  white-space:nowrap;
-}
-.db-wordmark .d{color:#E6E6E6}
-.db-wordmark .rest{color:#F5C116}
-
-.db-tag{
-  margin-left:6px;
-  font-weight:900;
-  letter-spacing:.5px;
-  color:rgba(255,255,255,.50);
-  font-size:12px;
-  white-space:nowrap;
-}
-
-@media (max-width: 560px){
-  .db-wordmark{ display:none; }
-  .db-tag{ display:none; }
-}
-</style>
+    /* BRAND */
+    .db-brand{display:flex;flex:1 1 auto;align-items:center;gap:10px;min-width:0;-webkit-tap-highlight-color:transparent;user-select:none;text-decoration:none}
+    .db-iconbox{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;flex:0 0 auto}
+    .db-icon{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1}
+    .db-icon .d{color:#E6E6E6} .db-icon .b{color:#F5C116}
+    .db-wordmark{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.6px;line-height:1;white-space:nowrap}
+    .db-wordmark .d{color:#E6E6E6} .db-wordmark .rest{color:#F5C116}
+    .db-tag{margin-left:6px;font-weight:900;letter-spacing:.5px;color:rgba(255,255,255,.50);font-size:12px;white-space:nowrap}
+    @media(max-width:560px){.db-wordmark{display:none}.db-tag{display:none}}
+  </style>
 </head>
 <body>
 
@@ -236,14 +196,9 @@ textarea{resize:vertical;min-height:72px}
     <span class="db-iconbox" aria-hidden="true">
       <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
     </span>
-
-    <span class="db-wordmark">
-      <span class="d">d</span><span class="rest">barrio</span>
-    </span>
-
+    <span class="db-wordmark"><span class="d">d</span><span class="rest">barrio</span></span>
     <span class="db-tag">SERVICIOS</span>
   </a>
-
   <nav class="nav">
     <a href="privacidad.html" target="_blank">Privacidad</a>
     <a href="terminos.html" target="_blank">Terminos</a>
@@ -252,129 +207,101 @@ textarea{resize:vertical;min-height:72px}
 
 <section class="hero">
   <div class="hero-wm">db</div>
-
   <div class="hero-chip">
     <span class="hero-dot"></span>
     <span class="hero-chip-txt">Activo ahora</span>
   </div>
-
-  <h1 class="hero-title">
-  Encuentra un técnico <em>cerca de ti.</em>
-</h1>
-
+  <h1 class="hero-title">Encuentra un técnico <em>cerca de ti.</em></h1>
   <p class="hero-desc">
-  Reparaciones del hogar en La Habana sin complicaciones.
-  Electricidad, plomería, refrigeración y más en un solo lugar.
-  Solicita el servicio y coordinamos un técnico en tu municipio.
-  Guarda tu código <span class="code-badge">db-xxxx</span> para seguimiento, garantía y calificación.
-</p>
-
+    Reparaciones del hogar en La Habana sin complicaciones.
+    Electricidad, plomería, refrigeración y más en un solo lugar.
+    Solicita el servicio y coordinamos un técnico en tu municipio.
+    Guarda tu código <span class="code-badge">db-xxxx</span> para seguimiento, garantía y calificación.
+  </p>
   <div class="hero-stats">
-    <div class="stat">
-      <span class="stat-n">24h</span>
-      <span class="stat-l">Respuesta</span>
-    </div>
-  
-    <div class="stat">
-      <span class="stat-n">Técnicos</span>
-      <span class="stat-l">Verificados</span>
-    </div>
-
-    <div class="stat">
-      <span class="stat-n">WhatsApp</span>
-      <span class="stat-l">Directo</span>
-    </div>
+    <div class="stat"><span class="stat-n">24h</span><span class="stat-l">Respuesta</span></div>
+    <div class="stat"><span class="stat-n">Técnicos</span><span class="stat-l">Verificados</span></div>
+    <div class="stat"><span class="stat-n">WhatsApp</span><span class="stat-l">Directo</span></div>
   </div>
 </section>
 <div class="hero-curve"></div>
 
 <div class="content">
+
   <button class="btn-cta" onclick="open_('sol')">
     <div class="btn-cta-body">
       <span class="cta-title">Solicitar servicio</span>
-<span class="cta-sub">Un técnico se pondrá en contacto contigo</span>
+      <span class="cta-sub">Un técnico se pondrá en contacto contigo</span>
     </div>
     <div class="btn-cta-ico">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(28,28,46,.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
     </div>
   </button>
 
- <div class="grid2">
+  <div class="grid2">
+    <button class="acard" onclick="open_('gar')">
+      <div class="acard-icon icb">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4287f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div class="acard-txt">
+        <span class="acard-title">Garantía</span>
+        <span class="acard-desc">Si el trabajo falló</span>
+      </div>
+    </button>
 
-  <button class="acard" onclick="open_('gar')">
-    <div class="acard-icon icb">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4287f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        <polyline points="9 12 11 14 15 10"/>
-      </svg>
-    </div>
-    <div class="acard-txt">
-      <span class="acard-title">Garantía</span>
-      <span class="acard-desc">Si el trabajo falló</span>
-    </div>
-  </button>
+    <button class="acard" onclick="open_('cal')">
+      <div class="acard-icon icy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="acard-txt">
+        <span class="acard-title">Calificar</span>
+        <span class="acard-desc">Control de calidad</span>
+      </div>
+    </button>
 
-  <button class="acard" onclick="open_('cal')">
-    <div class="acard-icon icy">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-    </div>
-    <div class="acard-txt">
-      <span class="acard-title">Calificar</span>
-      <span class="acard-desc">Control de calidad</span>
-    </div>
-  </button>
+    <button class="acard hl" onclick="open_('uni')">
+      <div class="acard-icon ico">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DD6B20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="acard-txt">
+        <span class="acard-title">Únete</span>
+        <span class="acard-desc">Trabaja con nosotros</span>
+      </div>
+    </button>
 
-  <button class="acard hl" onclick="open_('uni')">
-    <div class="acard-icon ico">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DD6B20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-    </div>
-    <div class="acard-txt">
-      <span class="acard-title">Únete</span>
-      <span class="acard-desc">Trabaja con nosotros</span>
-    </div>
-  </button>
-
-  <!-- NUEVO BOTON ZONA DB -->
-  <button class="acard" onclick="location.href='zona-db.html'">
-    <div class="acard-icon icy">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 19h16"/>
-        <path d="M6 17V9l6-4 6 4v8"/>
-        <path d="M10 17v-4h4v4"/>
-      </svg>
-    </div>
-    <div class="acard-txt">
-      <span class="acard-title">Zona db</span>
-      <span class="acard-desc">Tips del barrio</span>
-    </div>
-  </button>
-
-</div>
+    <button class="acard" onclick="location.href='zona-db.html'">
+      <div class="acard-icon icy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 17V9l6-4 6 4v8"/><path d="M10 17v-4h4v4"/></svg>
+      </div>
+      <div class="acard-txt">
+        <span class="acard-title">Zona db</span>
+        <span class="acard-desc">Tips del barrio</span>
+      </div>
+    </button>
+  </div>
 
   <button class="acard row dk a1" onclick="open_('acc')">
     <div class="acard-icon ick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#454562" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-    <div class="acard-txt"><span class="acard-title">Acceso privado</span><span class="acard-desc">Admin y socios verificados</span></div>
+    <div class="acard-txt"><span class="acard-title">Acceso privado</span><span class="acard-desc">Admin, encargados y socios verificados</span></div>
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8B4AE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
   </button>
 
-  <div class="a2" style="background:var(--ink);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;gap:14px">
-    <div style="flex:1">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);margin-bottom:6px">Código de seguimiento</div>
-      <div style="font-family:var(--fd);font-size:26px;font-weight:900;color:var(--y);letter-spacing:1px;line-height:1">db-xxxx</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:4px">Guárdalo — garantía, reclamo y calificación</div>
+  <!-- ── TRACKER INTERACTIVO db-xxxx ── -->
+  <div class="a2" style="background:var(--ink);border-radius:var(--r);padding:16px 18px">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);margin-bottom:8px">Consultar mi orden</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:10px">Ingresa tu código para ver el estado</div>
+    <div class="tracker-input-row">
+      <input id="tr-cod" type="text" placeholder="db-xxxx" maxlength="12"
+        oninput="this.value=this.value.replace(/[^0-9db\-]/gi,'').toLowerCase()"
+        onkeydown="if(event.key==='Enter')buscarOrden()"/>
+      <button onclick="buscarOrden()">Buscar</button>
     </div>
-    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="rgba(245,193,22,.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+    <div class="tracker-result" id="tr-result"></div>
   </div>
+
 </div>
 
-<!-- SOLICITAR -->
+<!-- ══ MODAL SOLICITAR ══ -->
 <div class="ov" id="ov-sol" onclick="ovc(event,'sol')">
 <div class="sheet">
   <div class="pill"></div>
@@ -382,10 +309,7 @@ textarea{resize:vertical;min-height:72px}
     <span class="sheet-title">Solicitar técnico</span>
     <button class="sheet-x" onclick="close_('sol')">&times;</button>
   </div>
-
   <div class="mbody">
-
-    <!-- NUEVO: mensaje fase lanzamiento (no promete disponibilidad) -->
     <div class="hint" style="margin-bottom:12px">
       Estamos <strong>activando la red por municipios</strong>. Si aún no hay técnico disponible en tu zona,
       tu solicitud queda registrada y te avisamos por WhatsApp cuando podamos atender.
@@ -398,23 +322,37 @@ textarea{resize:vertical;min-height:72px}
     </div>
 
     <div class="fg">
-  <label>WhatsApp</label>
-  <div class="phone-row">
-    <select id="s-code">
-      <option value="+53" selected>Cuba (+53)</option>
-      <option value="+34">España (+34)</option>
-      <option value="+1">EE. UU. (+1)</option>
-      <option value="+52">México (+52)</option>
-    </select>
-    <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
-  </div>
-  <div class="fe" id="es-wa">Número inválido.</div>
-</div>
+      <label>WhatsApp</label>
+      <div class="phone-row">
+        <select id="s-code">
+          <option value="+53" selected>Cuba (+53)</option>
+          <option value="+34">España (+34)</option>
+          <option value="+1">EE. UU. (+1)</option>
+          <option value="+52">México (+52)</option>
+        </select>
+        <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
+      </div>
+      <div class="fe" id="es-wa">Número inválido.</div>
+    </div>
 
     <div class="fg">
       <label>Municipio</label>
       <input id="s-mun" type="text" placeholder="Municipio en La Habana"/>
       <div class="fe" id="es-mun">Requerido.</div>
+    </div>
+
+    <!-- ── NUEVO: Zona ── -->
+    <div class="fg">
+      <label>Zona</label>
+      <select id="s-zona">
+        <option value="">-- Seleccionar zona --</option>
+        <option value="norte">Norte</option>
+        <option value="sur">Sur</option>
+        <option value="centro">Centro</option>
+        <option value="este">Este</option>
+        <option value="oeste">Oeste</option>
+      </select>
+      <div class="fe" id="es-zona">Selecciona una zona.</div>
     </div>
 
     <div class="fg">
@@ -444,17 +382,13 @@ textarea{resize:vertical;min-height:72px}
       <textarea id="s-det" placeholder="Describe qué falla o qué necesitas... (marca, modelo y desde cuándo)"></textarea>
     </div>
 
-    <!-- NUEVO: microcopy confianza -->
     <p class="hint" style="margin-top:-4px;margin-bottom:10px">
       Te daremos un <strong>código</strong> para seguimiento, garantía, reclamo y calificación.
     </p>
 
     <div class="cb">
       <input type="checkbox" id="s-cp"/>
-      <span>
-        Acepto <a href="terminos.html" target="_blank">Términos</a> y
-        <a href="privacidad.html" target="_blank">Privacidad</a>.
-      </span>
+      <span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span>
     </div>
     <div class="fe" id="es-cp">Debes aceptar Términos y Privacidad.</div>
 
@@ -463,20 +397,15 @@ textarea{resize:vertical;min-height:72px}
       <span class="ok-code" id="cod-sol"></span>
       <span class="ok-note">Guárdalo — lo necesitas para garantía, reclamo y calificación.</span>
     </div>
-
     <div class="err-box" id="err-sol"></div>
-
     <button class="btn btn-y" id="btn-sol" onclick="envSol()">Registrar solicitud</button>
-
-    <!-- NUEVO: nota final (sin humo, pero tranquiliza) -->
     <p class="hint" style="margin-top:10px">
-      Si tu caso es urgente, escribe “URGENTE” en la descripción para priorizar cuando haya disponibilidad.
+      Si tu caso es urgente, escribe "URGENTE" en la descripción para priorizar cuando haya disponibilidad.
     </p>
-
   </div>
 </div></div>
 
-<!-- GARANTIA -->
+<!-- ══ MODAL GARANTÍA ══ -->
 <div class="ov" id="ov-gar" onclick="ovc(event,'gar')">
   <div class="sheet">
     <div class="pill"></div>
@@ -490,37 +419,29 @@ textarea{resize:vertical;min-height:72px}
         <input id="g-rec" type="text" placeholder="db-xxxx"/>
         <div class="fe" id="eg-rec">Requerido.</div>
       </div>
-
       <div class="fg">
         <label>Teléfono de contacto</label>
         <input id="g-tel" type="tel" placeholder="+53..."/>
         <div class="fe" id="eg-tel">Inválido.</div>
       </div>
-
       <div class="fg">
         <label>Describe la falla</label>
         <textarea id="g-fal" placeholder="Qué falla presenta el trabajo..."></textarea>
         <div class="fe" id="eg-fal">Requerido.</div>
       </div>
-
       <div class="cb">
         <input type="checkbox" id="g-cp"/>
-        <span>
-          Acepto <a href="terminos.html" target="_blank">Términos</a> y
-          <a href="privacidad.html" target="_blank">Privacidad</a>.
-        </span>
+        <span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span>
       </div>
-
       <div class="fe" id="eg-cp">Debes aceptar Términos y Privacidad.</div>
       <div class="ok-box" id="ok-gar">Garantía registrada. Nos contactaremos contigo pronto.</div>
       <div class="err-box" id="err-gar"></div>
-
       <button class="btn btn-k" id="btn-gar" onclick="envGar()">Enviar garantía</button>
     </div>
   </div>
 </div>
 
-<!-- CALIFICAR -->
+<!-- ══ MODAL CALIFICAR ══ -->
 <div class="ov" id="ov-cal" onclick="ovc(event,'cal')">
 <div class="sheet">
   <div class="pill"></div>
@@ -529,7 +450,11 @@ textarea{resize:vertical;min-height:72px}
     <div class="fg"><label>Código del servicio</label><input id="c-cod" type="text" placeholder="db-xxxx"/><div class="fe" id="ec-cod">Requerido.</div></div>
     <div class="fg"><label>Valoración</label>
       <div class="stars" id="stars">
-        <span class="star" data-v="1" onclick="setStar(1)">★</span><span class="star" data-v="2" onclick="setStar(2)">★</span><span class="star" data-v="3" onclick="setStar(3)">★</span><span class="star" data-v="4" onclick="setStar(4)">★</span><span class="star" data-v="5" onclick="setStar(5)">★</span>
+        <span class="star" data-v="1" onclick="setStar(1)">★</span>
+        <span class="star" data-v="2" onclick="setStar(2)">★</span>
+        <span class="star" data-v="3" onclick="setStar(3)">★</span>
+        <span class="star" data-v="4" onclick="setStar(4)">★</span>
+        <span class="star" data-v="5" onclick="setStar(5)">★</span>
       </div>
       <div class="fe" id="ec-st">Selecciona al menos una estrella.</div>
     </div>
@@ -539,7 +464,7 @@ textarea{resize:vertical;min-height:72px}
   </div>
 </div></div>
 
-<!-- UNETE -->
+<!-- ══ MODAL ÚNETE ══ -->
 <div class="ov" id="ov-uni" onclick="ovc(event,'uni')">
   <div class="sheet">
     <div class="pill"></div>
@@ -548,13 +473,11 @@ textarea{resize:vertical;min-height:72px}
       <button class="sheet-x" onclick="close_('uni')">&times;</button>
     </div>
     <div class="mbody">
-
       <div class="fg">
         <label>Nombre completo</label>
         <input id="u-nom" type="text" placeholder="Tu nombre"/>
         <div class="fe" id="eu-nom">Requerido.</div>
       </div>
-
       <div class="fg">
         <label>Teléfono / WhatsApp</label>
         <div class="phone-row">
@@ -568,24 +491,18 @@ textarea{resize:vertical;min-height:72px}
         </div>
         <div class="fe" id="eu-tel">Introduce un número válido.</div>
       </div>
-
       <div class="fg">
         <label>Especialidad</label>
         <select id="u-esp">
           <option value="">-- Seleccionar --</option>
-          <option>Electrodomésticos</option>
-          <option>Plomería</option>
-          <option>Electricidad</option>
-          <option>Refrigeración</option>
-          <option>Televisión / audio</option>
-          <option>Computadoras</option>
-          <option>Celulares</option>
-          <option>Cerrajería</option>
+          <option>Electrodomésticos</option><option>Plomería</option>
+          <option>Electricidad</option><option>Refrigeración</option>
+          <option>Televisión / audio</option><option>Computadoras</option>
+          <option>Celulares</option><option>Cerrajería</option>
           <option>Multidisciplinario</option>
         </select>
         <div class="fe" id="eu-esp">Requerido.</div>
       </div>
-
       <div class="fg">
         <label>Años de experiencia</label>
         <select id="u-exp">
@@ -597,39 +514,31 @@ textarea{resize:vertical;min-height:72px}
         </select>
         <div class="fe" id="eu-exp">Requerido.</div>
       </div>
-
       <div class="fg">
         <label>Zona / Municipio</label>
         <input id="u-zona" type="text" placeholder="Dónde trabajas"/>
         <div class="fe" id="eu-zona">Requerido.</div>
       </div>
-
       <div class="sep">Crear cuenta</div>
-
       <div class="fg">
         <label>Correo electrónico</label>
         <input id="u-email" type="email" placeholder="correo@ejemplo.com"/>
         <div class="fe" id="eu-email">Correo inválido.</div>
       </div>
-
       <div class="fg">
         <label>Contraseña</label>
         <input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/>
         <div class="fe" id="eu-pass">Mínimo 6 caracteres.</div>
       </div>
-
       <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisamos por WhatsApp cuando puedas operar.</p>
-
       <div class="ok-box" id="ok-uni">Cuenta creada. Tu solicitud está en revisión. Te contactaremos pronto.</div>
       <div class="err-box" id="err-uni"></div>
-
       <button class="btn btn-k" id="btn-uni" onclick="envUni()">Crear cuenta</button>
-
     </div>
   </div>
 </div>
 
-<!-- ACCESO -->
+<!-- ══ MODAL ACCESO ══ -->
 <div class="ov" id="ov-acc" onclick="ovc(event,'acc')">
 <div class="sheet">
   <div class="pill"></div>
@@ -638,421 +547,374 @@ textarea{resize:vertical;min-height:72px}
     <div class="fg"><label>Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com"/><div class="fe" id="ea-email">Inválido.</div></div>
     <div class="fg"><label>Contraseña</label><input id="a-pass" type="password" placeholder="••••••••"/><div class="fe" id="ea-pass">Requerido.</div></div>
     <div class="err-box" id="err-acc"></div>
-<button class="btn btn-k" id="btn-acc" onclick="doLogin()">Entrar</button>
-
-<!-- NUEVO: recovery -->
-<button class="btn btn-y" id="btn-rec-pass" onclick="doRecovery()" style="margin-top:10px">
-  Olvidé mi contraseña
-</button>
-<p class="hint">Te enviaremos un enlace para crear una nueva contraseña.</p>
+    <button class="btn btn-k" id="btn-acc" onclick="doLogin()">Entrar</button>
+    <button class="btn btn-y" id="btn-rec-pass" onclick="doRecovery()" style="margin-top:10px">Olvidé mi contraseña</button>
+    <p class="hint">Te enviaremos un enlace para crear una nueva contraseña.</p>
   </div>
 </div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SURL='https://gkxtdancgkwetdniooky.supabase.co';
-const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
+const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+
 const sbPublic = supabase.createClient(SURL, SKEY, {
   auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
 });
-
 const sbAuth = supabase.createClient(SURL, SKEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
 });
-
 const sb = sbAuth;
 
 let sv = 0;
 
-// ───────── UI helpers ─────────
-function open_(k){document.getElementById('ov-'+k).classList.add('open');document.body.style.overflow='hidden'}
-function close_(k){
+// ── UI helpers ──
+function open_(k) { document.getElementById('ov-'+k).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function close_(k) {
   document.getElementById('ov-'+k).classList.remove('open');
-  document.body.style.overflow='';
-
-  if(k === 'sol') resetSolForm(); // 👈 limpia al cerrar
+  document.body.style.overflow = '';
+  if (k === 'sol') resetSolForm();
 }
-function ovc(e,k){if(e.target===document.getElementById('ov-'+k))close_(k)}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.ov.open').forEach(o=>{o.classList.remove('open');document.body.style.overflow=''})});
+function ovc(e, k) { if (e.target === document.getElementById('ov-'+k)) close_(k); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.ov.open').forEach(o => { o.classList.remove('open'); document.body.style.overflow = ''; });
+});
 
-function vt(t){return String(t||'').trim().length>=6}
-function sE(id,m){const e=document.getElementById(id);if(e){if(m)e.textContent=m;e.classList.add('v')}}
-function cE(id){const e=document.getElementById(id);if(e)e.classList.remove('v')}
-function sOK(id){const e=document.getElementById(id);if(e)e.classList.add('v')}
-function sER(id,m){const e=document.getElementById(id);if(e){e.textContent=m;e.classList.add('v')}}
-function cER(id){const e=document.getElementById(id);if(e)e.classList.remove('v')}
-function setL(id,on){
-  const b=document.getElementById(id); if(!b) return;
-  if(!b._t) b._t=b.innerHTML;
-  b.disabled=on;
+function vt(t) { return String(t||'').trim().length >= 6; }
+function sE(id, m) { const e = document.getElementById(id); if (e) { if (m) e.textContent = m; e.classList.add('v'); } }
+function cE(id) { const e = document.getElementById(id); if (e) e.classList.remove('v'); }
+function sOK(id) { const e = document.getElementById(id); if (e) e.classList.add('v'); }
+function sER(id, m) { const e = document.getElementById(id); if (e) { e.textContent = m; e.classList.add('v'); } }
+function cER(id) { const e = document.getElementById(id); if (e) e.classList.remove('v'); }
+function setL(id, on) {
+  const b = document.getElementById(id); if (!b) return;
+  if (!b._t) b._t = b.innerHTML;
+  b.disabled = on;
   b.innerHTML = on ? '<span class="sp"></span>Enviando...' : b._t;
 }
-function resetSolForm(){
-  document.getElementById('s-cli').value = '';
-  document.getElementById('s-wa').value  = '';
-  document.getElementById('s-mun').value = '';
-  document.getElementById('s-dir').value = '';
-  document.getElementById('s-srv').value = '';
-  document.getElementById('s-det').value = '';
-  document.getElementById('s-cp').checked = false;
+function dbc(id) { return 'db-' + id; }
 
-  // limpia mensajes
+function resetSolForm() {
+  ['s-cli','s-wa','s-mun','s-dir','s-det'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  ['s-srv','s-zona'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  const cp = document.getElementById('s-cp'); if(cp) cp.checked = false;
   cER('err-sol');
-  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
-
-  // restaura botón
+  ['es-cli','es-wa','es-mun','es-zona','es-srv','es-cp'].forEach(cE);
   const btn = document.getElementById('btn-sol');
-  if(btn){
-    btn.style.display = '';
-    btn.disabled = false;
-  }
-
-  // oculta ok box
+  if (btn) { btn.style.display = ''; btn.disabled = false; }
   const ok = document.getElementById('ok-sol');
-  if(ok) ok.classList.remove('v');
+  if (ok) ok.classList.remove('v');
 }
-function dbc(id){return 'db-'+id}
 
-function normalizarTelefonoSol(){
-  const code = document.getElementById('s-code')?.value || '+53';
-  const telInput = document.getElementById('s-wa');
-  const err = document.getElementById('es-wa');
+function normalizarTelefono(codeId, telId, errId) {
+  const code   = document.getElementById(codeId)?.value || '+53';
+  const numero = (document.getElementById(telId)?.value || '').replace(/\D/g, '');
+  const err    = document.getElementById(errId);
+  if (!numero || numero.length < 6 || numero.length > 15) { if (err) err.classList.add('v'); return null; }
+  if (err) err.classList.remove('v');
+  return { completo: `${code}${numero}`, whatsapp: `${code}${numero}`.replace(/\D/g,'') };
+}
 
-  const numero = (telInput?.value || '').replace(/\D/g,'');
+// ── BUSCAR ORDEN (tracker) ──
+async function buscarOrden() {
+  const input = document.getElementById('tr-cod');
+  const result = document.getElementById('tr-result');
+  const raw = (input?.value || '').trim().toLowerCase();
+  if (!raw) return;
 
-  if(!numero || numero.length < 6 || numero.length > 15){
-    if(err) err.classList.add('v');
-    return null;
+  const n = parseInt(raw.replace(/^db-/i, ''));
+  if (isNaN(n)) {
+    result.className = 'tracker-result err v';
+    result.innerHTML = 'Formato inválido. Usa <strong>db-xxxx</strong>';
+    return;
   }
 
-  if(err) err.classList.remove('v');
+  result.className = 'tracker-result v';
+  result.innerHTML = '<span style="color:rgba(255,255,255,.4);font-size:12px">Buscando...</span>';
 
-  return {
-    completo: `${code}${numero}`,
-    whatsapp: `${code}${numero}`.replace(/\D/g,'')
-  };
-}
+  const { data, error } = await sbPublic
+    .from('solicitudes')
+    .select('id, estado, servicio, municipio, created_at, fecha_fin')
+    .eq('id', n)
+    .maybeSingle();
 
-function normalizarTelefonoUni(){
-  const code = document.getElementById('u-code')?.value || '+53';
-  const telInput = document.getElementById('u-tel');
-  const err = document.getElementById('eu-tel');
-
-  const numero = (telInput?.value || '').replace(/\D/g,'');
-
-  if(!numero || numero.length < 6 || numero.length > 15){
-    if(err) err.classList.add('v');
-    return null;
+  if (error || !data) {
+    result.className = 'tracker-result err v';
+    result.innerHTML = 'Código no encontrado. Verifica que sea correcto.';
+    return;
   }
 
-  if(err) err.classList.remove('v');
+  const estadoLabel = {
+    pendiente:  '⏳ Pendiente',
+    asignada:   '🔧 En proceso',
+    completada: '✅ Completada',
+    rechazada:  '❌ Rechazada',
+  }[data.estado] || data.estado;
 
-  return {
-    completo: `${code}${numero}`,
-    whatsapp: `${code}${numero}`.replace(/\D/g,'')
-  };
+  const chipClass = `tr-estado st-${data.estado}`;
+  const fecha = data.created_at ? new Date(data.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'2-digit' }) : '—';
+  const fechaFin = data.fecha_fin ? new Date(data.fecha_fin).toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'2-digit' }) : null;
+
+  result.className = 'tracker-result ok v';
+  result.style.background = 'rgba(255,255,255,.05)';
+  result.style.border = '1px solid rgba(255,255,255,.1)';
+  result.style.color = '#fff';
+  result.innerHTML = `
+    <span class="tr-code">${dbc(data.id)}</span>
+    <span class="${chipClass}">${estadoLabel}</span>
+    <div class="tr-info">
+      ${data.servicio ? `<div>🔩 ${data.servicio}</div>` : ''}
+      ${data.municipio ? `<div>📍 ${data.municipio}</div>` : ''}
+      <div>📅 Solicitado: ${fecha}</div>
+      ${fechaFin ? `<div>✅ Completado: ${fechaFin}</div>` : ''}
+    </div>`;
 }
 
-// ───────── SOLICITUD (RPC: create_solicitud_publica) ─────────
-async function envSol(){
+// ── SOLICITUD ──
+async function envSol() {
   cER('err-sol');
-  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
+  ['es-cli','es-wa','es-mun','es-zona','es-srv','es-cp'].forEach(cE);
 
-  const cli = document.getElementById('s-cli')?.value.trim() || '';
-  const telData = normalizarTelefonoSol();
-  const mun = document.getElementById('s-mun')?.value.trim() || '';
-  const dir = document.getElementById('s-dir')?.value.trim() || '';
-  const srv = document.getElementById('s-srv')?.value || '';
-  const det = document.getElementById('s-det')?.value.trim() || '';
-  const cp  = !!document.getElementById('s-cp')?.checked;
+  const cli    = document.getElementById('s-cli')?.value.trim() || '';
+  const telData = normalizarTelefono('s-code', 's-wa', 'es-wa');
+  const mun    = document.getElementById('s-mun')?.value.trim() || '';
+  const zona   = document.getElementById('s-zona')?.value || '';
+  const dir    = document.getElementById('s-dir')?.value.trim() || '';
+  const srv    = document.getElementById('s-srv')?.value || '';
+  const det    = document.getElementById('s-det')?.value.trim() || '';
+  const cp     = !!document.getElementById('s-cp')?.checked;
 
   let ok = true;
-  if(!cli){ sE('es-cli'); ok=false; }
-  if(!telData){ sE('es-wa'); ok=false; }
-  if(!mun){ sE('es-mun'); ok=false; }
-  if(!srv){ sE('es-srv'); ok=false; }
-  if(!cp){ sE('es-cp'); ok=false; }
-  if(!ok) return;
+  if (!cli)    { sE('es-cli'); ok = false; }
+  if (!telData){ sE('es-wa'); ok = false; }
+  if (!mun)    { sE('es-mun'); ok = false; }
+  if (!zona)   { sE('es-zona', 'Selecciona una zona.'); ok = false; }
+  if (!srv)    { sE('es-srv'); ok = false; }
+  if (!cp)     { sE('es-cp'); ok = false; }
+  if (!ok) return;
 
   setL('btn-sol', true);
 
   try {
-    // Asegura que estás realmente anon (opcional pero útil para evitar sesiones colgadas)
-    // await sb.auth.signOut();
-
     const { data, error } = await sbPublic.rpc('create_solicitud_publica', {
-      p_cliente: cli,
-      p_telefono: telData.completo,
-      p_municipio: mun,
-      p_direccion: dir,                 // '' o texto
-      p_servicio: srv,
-      p_detalles: det,                  // '' o texto
+      p_cliente:       cli,
+      p_telefono:      telData.completo,
+      p_municipio:     mun,
+      p_direccion:     dir,
+      p_servicio:      srv,
+      p_detalles:      det,
       p_consent_texto: 'solicitud publica v2'
     });
 
     setL('btn-sol', false);
 
-    if(error){
-      sER('err-sol', 'Error: ' + error.message);
-      return;
+    if (error) { sER('err-sol', 'Error: ' + error.message); return; }
+
+    // ── Asignar zona a la solicitud recién creada ──
+    if (data && zona) {
+      await sbPublic.from('solicitudes').update({ zona }).eq('id', data);
     }
 
-    // data debe ser el bigint (id) que devuelve la función
     document.getElementById('cod-sol').textContent = dbc(data);
     sOK('ok-sol');
     document.getElementById('btn-sol').style.display = 'none';
+
+    setTimeout(() => {
+      close_('sol');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 6000);
 
   } catch (e) {
     setL('btn-sol', false);
     sER('err-sol', 'Error: ' + (e?.message || e));
   }
-  
-  // UX: deja el código visible y cierra solo
-setTimeout(() => {
-  close_('sol');           // cierra y limpia
-  window.scrollTo({ top: 0, behavior: 'smooth' }); // vuelve arriba para “curiosear”
-}, 6000);
-  
 }
 
-// ───────── GARANTIA = RECLAMO DE GARANTIA (RPC create_garantia_reclamo_publico) ─────────
-async function envGar(){
+// ── GARANTIA ──
+async function envGar() {
   cER('err-gar');
   ['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(cE);
 
-  const rec=document.getElementById('g-rec').value.trim();  // db-xxx
-  const tel=document.getElementById('g-tel').value.trim();
-  const fal=document.getElementById('g-fal').value.trim();
-  const cp=document.getElementById('g-cp').checked;
+  const rec = document.getElementById('g-rec').value.trim();
+  const tel = document.getElementById('g-tel').value.trim();
+  const fal = document.getElementById('g-fal').value.trim();
+  const cp  = document.getElementById('g-cp').checked;
 
-  let ok=true;
-  if(!rec){sE('eg-rec');ok=false}
-  if(!vt(tel)){sE('eg-tel');ok=false}
-  if(!fal){sE('eg-fal');ok=false}
-  if(!cp){sE('eg-cp');ok=false}
-  if(!ok) return;
+  let ok = true;
+  if (!rec) { sE('eg-rec'); ok = false; }
+  if (!vt(tel)) { sE('eg-tel'); ok = false; }
+  if (!fal) { sE('eg-fal'); ok = false; }
+  if (!cp)  { sE('eg-cp'); ok = false; }
+  if (!ok) return;
 
-  setL('btn-gar',true);
-
-  try{
-    const { data, error } = await sbPublic.rpc('create_garantia_reclamo_publico', {
-      p_telefono: tel,
-      p_codigo: rec,
-      p_mensaje: fal,
-      p_consent_texto: 'reclamo garantia v1'
+  setL('btn-gar', true);
+  try {
+    const { error } = await sbPublic.rpc('create_garantia_reclamo_publico', {
+      p_telefono: tel, p_codigo: rec, p_mensaje: fal, p_consent_texto: 'reclamo garantia v1'
     });
-
-    setL('btn-gar',false);
-
-    if(error){ sER('err-gar','Error: '+error.message); return; }
-
-    // éxito
+    setL('btn-gar', false);
+    if (error) { sER('err-gar', 'Error: ' + error.message); return; }
     sOK('ok-gar');
-    document.getElementById('btn-gar').style.display='none';
-
-  }catch(e){
-    setL('btn-gar',false);
-    sER('err-gar','Error: '+(e?.message||e));
+    document.getElementById('btn-gar').style.display = 'none';
+  } catch (e) {
+    setL('btn-gar', false);
+    sER('err-gar', 'Error: ' + (e?.message || e));
   }
 }
 
-// ───────── CALIFICAR (RPC rate_solicitud) ─────────
-function setStar(v){
-  sv=v;
-  document.querySelectorAll('#stars .star').forEach(s=>s.classList.toggle('on',parseInt(s.dataset.v)<=v));
-  cE('ec-st')
+// ── CALIFICAR ──
+function setStar(v) {
+  sv = v;
+  document.querySelectorAll('#stars .star').forEach(s => s.classList.toggle('on', parseInt(s.dataset.v) <= v));
+  cE('ec-st');
 }
-async function envCal(){
+async function envCal() {
   cER('err-cal');
   ['ec-cod','ec-st'].forEach(cE);
 
   const cod = document.getElementById('c-cod').value.trim();
-  let ok=true;
-  if(!cod){ sE('ec-cod'); ok=false }
-  if(!sv){ sE('ec-st'); ok=false }
-  if(!ok) return;
+  let ok = true;
+  if (!cod) { sE('ec-cod'); ok = false; }
+  if (!sv)  { sE('ec-st'); ok = false; }
+  if (!ok) return;
 
-  const n = parseInt(cod.replace(/^db-/i,''));
-  if(isNaN(n)){ sE('ec-cod','Formato invalido. Usa db-xxxx.'); return; }
+  const n = parseInt(cod.replace(/^db-/i, ''));
+  if (isNaN(n)) { sE('ec-cod', 'Formato invalido. Usa db-xxxx.'); return; }
 
   setL('btn-cal', true);
-
   const { error } = await sb.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
-
   setL('btn-cal', false);
-
-  if(error){
-    sER('err-cal', 'Error: ' + error.message);
-    return;
-  }
-
+  if (error) { sER('err-cal', 'Error: ' + error.message); return; }
   sOK('ok-cal');
-  document.getElementById('btn-cal').style.display='none';
+  document.getElementById('btn-cal').style.display = 'none';
 }
 
-async function envUni(){
+// ── ÚNETE ──
+async function envUni() {
   cER('err-uni');
   ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(cE);
 
-  const nom  = document.getElementById('u-nom').value.trim();
-  const telData = normalizarTelefonoUni();
-  const esp  = document.getElementById('u-esp').value;
-  const exp  = document.getElementById('u-exp').value;
-  const zona = document.getElementById('u-zona').value.trim();
-  const email= document.getElementById('u-email').value.trim();
-  const pass = document.getElementById('u-pass').value;
+  const nom   = document.getElementById('u-nom').value.trim();
+  const telData = normalizarTelefono('u-code', 'u-tel', 'eu-tel');
+  const esp   = document.getElementById('u-esp').value;
+  const exp   = document.getElementById('u-exp').value;
+  const zona  = document.getElementById('u-zona').value.trim();
+  const email = document.getElementById('u-email').value.trim();
+  const pass  = document.getElementById('u-pass').value;
 
   let ok = true;
-  if(!nom){ sE('eu-nom'); ok=false; }
-  if(!telData){ sE('eu-tel'); ok=false; }
-  if(!esp){ sE('eu-esp'); ok=false; }
-  if(!exp){ sE('eu-exp'); ok=false; }
-  if(!zona){ sE('eu-zona'); ok=false; }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ sE('eu-email'); ok=false; }
-  if(pass.length < 6){ sE('eu-pass'); ok=false; }
-  if(!ok) return;
-
-  const telefono = telData.completo;
+  if (!nom)    { sE('eu-nom'); ok = false; }
+  if (!telData){ sE('eu-tel'); ok = false; }
+  if (!esp)    { sE('eu-esp'); ok = false; }
+  if (!exp)    { sE('eu-exp'); ok = false; }
+  if (!zona)   { sE('eu-zona'); ok = false; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('eu-email'); ok = false; }
+  if (pass.length < 6) { sE('eu-pass'); ok = false; }
+  if (!ok) return;
 
   setL('btn-uni', true);
-
   try {
-
-    // 1️⃣ crear usuario en Supabase Auth
     const { data: ad, error: ae } = await sb.auth.signUp({
-      email,
-      password: pass,
-      options: {
-        emailRedirectTo: 'https://dbarrio-two.vercel.app/'
-      }
+      email, password: pass,
+      options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' }
     });
+    if (ae || !ad?.user) { setL('btn-uni', false); sER('err-uni', 'Error: ' + (ae?.message || 'Error creando usuario.')); return; }
 
-    if(ae){
-      setL('btn-uni', false);
-      sER('err-uni', 'Error: ' + ae.message);
-      return;
-    }
+    const { data: si, error: se1 } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (se1 || !si?.session) { setL('btn-uni', false); sER('err-uni', 'Cuenta creada. Revisa tu correo y luego inicia sesión.'); return; }
 
-    if(!ad?.user){
-      setL('btn-uni', false);
-      sER('err-uni', 'Error creando usuario.');
-      return;
-    }
-
-    // 2️⃣ iniciar sesión para obtener session
-    const { data: si, error: se1 } = await sb.auth.signInWithPassword({
-      email,
-      password: pass
-    });
-
-    if(se1 || !si?.session){
-      setL('btn-uni', false);
-      sER('err-uni','Cuenta creada. Revisa tu correo y luego inicia sesión.');
-      return;
-    }
-
-    const uid = si.session.user.id;
-
-    // 3️⃣ guardar perfil en tabla socios
     const { error: se } = await sb.from('socios').insert({
-      auth_uid: uid,
-      nombre: nom,
-      telefono: telefono,
-      especialidad: esp,
-      experiencia_anios: parseInt(exp,10),
-      zona: zona,
-      email: email,
-      admitido: false,
-      estado_socio: 'pendiente',
-      comision: 15,
-      deuda: 0,
-      trabajos: 0
+      auth_uid: si.session.user.id, nombre: nom, telefono: telData.completo,
+      especialidad: esp, experiencia_anios: parseInt(exp, 10), zona, email,
+      admitido: false, estado_socio: 'pendiente', comision: 15, deuda: 0, trabajos: 0
     });
 
-    setL('btn-uni', false);
-
-    if(se){
-      sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);
-      return;
-    }
-
-    // 4️⃣ cerrar sesión
     await sb.auth.signOut();
-
+    setL('btn-uni', false);
+    if (se) { sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message); return; }
     sOK('ok-uni');
     document.getElementById('btn-uni').style.display = 'none';
-
-  } catch(e){
+  } catch (e) {
     setL('btn-uni', false);
-    sER('err-uni','Error: '+(e?.message || e));
+    sER('err-uni', 'Error: ' + (e?.message || e));
   }
 }
 
-// ───────── LOGIN ─────────
-async function doLogin(){
+// ── LOGIN — admin + encargado + socio ──
+async function doLogin() {
   cER('err-acc');
   ['ea-email','ea-pass'].forEach(cE);
 
-  const email=document.getElementById('a-email').value.trim();
-  const pass=document.getElementById('a-pass').value;
+  const email = document.getElementById('a-email').value.trim();
+  const pass  = document.getElementById('a-pass').value;
 
-  let ok=true;
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');ok=false}
-  if(!pass){sE('ea-pass');ok=false}
-  if(!ok) return;
+  let ok = true;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('ea-email'); ok = false; }
+  if (!pass) { sE('ea-pass'); ok = false; }
+  if (!ok) return;
 
-  setL('btn-acc',true);
+  setL('btn-acc', true);
 
-  const { data:auth, error:ae } = await sb.auth.signInWithPassword({ email, password: pass });
-  if(ae || !auth.session){
-    setL('btn-acc',false);
-    sER('err-acc','Credenciales incorrectas.');
+  const { data: auth, error: ae } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (ae || !auth.session) {
+    setL('btn-acc', false);
+    sER('err-acc', 'Credenciales incorrectas.');
     return;
   }
 
   const uid = auth.session.user.id;
 
-  const { data:adm } = await sb.from('admins').select('id').eq('auth_uid',uid).maybeSingle();
-  if(adm){ window.location.href='admin.html'; return; }
+  // 1. ¿Es admin?
+  const { data: adm } = await sb.from('admins').select('id').eq('auth_uid', uid).maybeSingle();
+  if (adm) { window.location.href = 'admin.html'; return; }
 
-  const { data:soc } = await sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid',uid).maybeSingle();
-  if(soc){
-    if(!soc.admitido || soc.estado_socio!=='activo'){
+  // 2. ¿Es encargado activo?
+  const { data: enc } = await sb.from('encargados').select('id,activo').eq('auth_uid', uid).maybeSingle();
+  if (enc) {
+    if (!enc.activo) {
       await sb.auth.signOut();
-      setL('btn-acc',false);
-      sER('err-acc','Cuenta pendiente de aprobación.');
+      setL('btn-acc', false);
+      sER('err-acc', 'Tu cuenta de encargado está desactivada. Contacta al administrador.');
       return;
     }
-    window.location.href='socio.html'; return;
+    window.location.href = 'admin.html';
+    return;
+  }
+
+  // 3. ¿Es socio activo?
+  const { data: soc } = await sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid', uid).maybeSingle();
+  if (soc) {
+    if (!soc.admitido || soc.estado_socio !== 'activo') {
+      await sb.auth.signOut();
+      setL('btn-acc', false);
+      sER('err-acc', 'Cuenta pendiente de aprobación.');
+      return;
+    }
+    window.location.href = 'socio.html';
+    return;
   }
 
   await sb.auth.signOut();
-  setL('btn-acc',false);
-  sER('err-acc','Usuario no reconocido.');
+  setL('btn-acc', false);
+  sER('err-acc', 'Usuario no reconocido.');
 }
 
-// ───────── RECOVERY ─────────
-async function doRecovery(){
+// ── RECOVERY ──
+async function doRecovery() {
   cER('err-acc'); cE('ea-email');
-
   const email = document.getElementById('a-email').value.trim();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ sE('ea-email'); return; }
-
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('ea-email'); return; }
   const { error } = await sb.auth.resetPasswordForEmail(email, {
     redirectTo: 'https://dbarrio-two.vercel.app/reset.html'
   });
-
-  if(error){ sER('err-acc','Error: '+error.message); return; }
-  sER('err-acc','Listo. Revisa tu correo (y spam). Abre el enlace en Safari.');
+  if (error) { sER('err-acc', 'Error: ' + error.message); return; }
+  sER('err-acc', 'Listo. Revisa tu correo (y spam). Abre el enlace en Safari.');
 }
 
-// ───────── Checkbox rows clickable ─────────
+// ── Checkbox rows clickables ──
 document.querySelectorAll('.cb').forEach(row => {
-  row.style.cursor = 'pointer';
-  row.addEventListener('click', (e) => {
-    const t = e.target;
-    if (t.closest('a')) return;
-    if (t.tagName === 'INPUT') return;
+  row.addEventListener('click', e => {
+    if (e.target.closest('a') || e.target.tagName === 'INPUT') return;
     const input = row.querySelector('input[type="checkbox"]');
     if (!input) return;
     input.checked = !input.checked;
@@ -1064,7 +926,6 @@ document.getElementById('g-cp')?.addEventListener('change', () => cE('eg-cp'));
 </script>
 
 <script>
-
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
