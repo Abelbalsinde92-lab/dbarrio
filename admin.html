@@ -797,8 +797,10 @@ function toggleSoporteCard(el) { el.closest('.soporte-card').classList.toggle('o
 function goSec(id) {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));
-  document.getElementById('sec-'+id).classList.add('active');
-  document.getElementById('nav-'+id).classList.add('active');
+  const targetSec = document.getElementById('sec-'+id);
+  if (targetSec) { targetSec.style.display = ''; targetSec.classList.add('active'); }
+  const targetNav = document.getElementById('nav-'+id);
+  if (targetNav) targetNav.classList.add('active');
   closeSidebar();
   if (id==='hi') loadHi();
   if (id==='so') { loadSociosMap(); loadSocios(); }
