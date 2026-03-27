@@ -617,9 +617,9 @@ function normalizarTelefono(codeId, telId, errId) {
 
 // ── BUSCAR ORDEN (tracker) ──
 async function buscarOrden() {
-  const input = document.getElementById('tr-cod');
+  const input  = document.getElementById('tr-cod');
   const result = document.getElementById('tr-result');
-  const raw = (input?.value || '').trim().toLowerCase();
+  const raw    = (input?.value || '').trim().toLowerCase();
   if (!raw) return;
 
   const n = parseInt(raw.replace(/^db-/i, ''));
@@ -632,39 +632,38 @@ async function buscarOrden() {
   result.className = 'tracker-result v';
   result.innerHTML = '<span style="color:rgba(255,255,255,.4);font-size:12px">Buscando...</span>';
 
-  const { data, error } = await sbPublic
-    .from('solicitudes')
-    .select('id, estado, servicio, municipio, created_at, fecha_fin')
-    .eq('id', n)
-    .maybeSingle();
+  const { data, error } = await sbPublic.rpc('get_estado_solicitud', { p_id: n });
 
-  if (error || !data) {
+  if (error || !data || data.length === 0) {
     result.className = 'tracker-result err v';
-    result.innerHTML = 'Código no encontrado. Verifica que sea correcto.';
+    result.innerHTML = error
+      ? 'Error: ' + error.message
+      : 'Código no encontrado. Verifica que sea correcto.';
     return;
   }
+
+  const sol = data[0];
 
   const estadoLabel = {
     pendiente:  '⏳ Pendiente',
     asignada:   '🔧 En proceso',
     completada: '✅ Completada',
     rechazada:  '❌ Rechazada',
-  }[data.estado] || data.estado;
+  }[sol.estado] || sol.estado;
 
-  const chipClass = `tr-estado st-${data.estado}`;
-  const fecha = data.created_at ? new Date(data.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'2-digit' }) : '—';
-  const fechaFin = data.fecha_fin ? new Date(data.fecha_fin).toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'2-digit' }) : null;
+  const fecha    = sol.created_at ? new Date(sol.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'2-digit' }) : '—';
+  const fechaFin = sol.fecha_fin  ? new Date(sol.fecha_fin).toLocaleDateString('es-ES',  { day:'2-digit', month:'2-digit', year:'2-digit' }) : null;
 
   result.className = 'tracker-result ok v';
   result.style.background = 'rgba(255,255,255,.05)';
   result.style.border = '1px solid rgba(255,255,255,.1)';
   result.style.color = '#fff';
   result.innerHTML = `
-    <span class="tr-code">${dbc(data.id)}</span>
-    <span class="${chipClass}">${estadoLabel}</span>
+    <span class="tr-code">${dbc(sol.id)}</span>
+    <span class="tr-estado st-${sol.estado}">${estadoLabel}</span>
     <div class="tr-info">
-      ${data.servicio ? `<div>🔩 ${data.servicio}</div>` : ''}
-      ${data.municipio ? `<div>📍 ${data.municipio}</div>` : ''}
+      ${sol.servicio  ? `<div>🔩 ${sol.servicio}</div>`  : ''}
+      ${sol.municipio ? `<div>📍 ${sol.municipio}</div>` : ''}
       <div>📅 Solicitado: ${fecha}</div>
       ${fechaFin ? `<div>✅ Completado: ${fechaFin}</div>` : ''}
     </div>`;
