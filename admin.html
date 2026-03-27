@@ -1043,38 +1043,63 @@ async function doCompletar() {
   const resetBtn = () => { btn.disabled = false; btn.innerHTML = 'Confirmar y cerrar orden'; };
   const err = (msg) => { const e = document.getElementById('err-comp'); e.textContent = msg; e.classList.add('v'); resetBtn(); };
   btn.disabled = true; btn.innerHTML = '<span class="sp"></span>Procesando...';
-  if (!pendingCompId) return err('Orden inv\u00e1lida.');
+  if (!pendingCompId) return err('Orden inválida.');
   const now = new Date().toISOString();
   const { data: sol, error: es } = await sb.from('solicitudes').select('*').eq('id', pendingCompId).single();
   if (es || !sol) return err(es?.message || 'No se pudo cargar la orden.');
   const monto = sol.monto_socio != null ? parseFloat(sol.monto_socio) : NaN;
-  if (isNaN(monto) || monto < 0) return err('El socio no report\u00f3 un monto v\u00e1lido.');
+  if (isNaN(monto) || monto < 0) return err('El socio no reportó un monto válido.');
   const garDias = sol.garantia_dias != null ? parseInt(sol.garantia_dias, 10) : 0;
-  if (isNaN(garDias) || garDias < 0) return err('Garant\u00eda inv\u00e1lida reportada por el socio.');
+  if (isNaN(garDias) || garDias < 0) return err('Garantía inválida reportada por el socio.');
   let finGarISO = null;
   if (garDias > 0) { const fin = new Date(); fin.setDate(fin.getDate() + garDias); finGarISO = fin.toISOString(); }
   const notaAdmin = document.getElementById('comp-nota')?.value?.trim() || null;
   const { error: eu } = await sb.from('solicitudes').update({ estado: 'completada', fecha_fin: now, monto: monto, nota_admin: notaAdmin, garantia_dias: garDias, garantia_expira: finGarISO, solicita_cierre: false, cierre_ts: now, sub_estado: null }).eq('id', pendingCompId);
   if (eu) return err(eu.message);
   let socio = null;
+  let comMonto = 0;
   if (sol.socio_asignado) {
     const { data: soc, error: se } = await sb.from('socios').select('id,nombre,telefono,comision,deuda,trabajos').eq('id', sol.socio_asignado).single();
     if (se) return err('No pude cargar el socio para comisiones: ' + se.message);
     socio = soc;
     const comPct = (socio?.comision ?? CFG.com);
-    const comMonto = parseFloat((monto * comPct / 100).toFixed(2));
-    const { error: me } = await sb.from('movimientos').insert({ socio_id: socio.id, solicitud_id: pendingCompId, tipo: 'cargo_comision', monto: comMonto, nota: `Comisi\u00f3n ${comPct}% \u2014 ${dbc(pendingCompId)}` });
-    if (me) return err('Movimiento comisi\u00f3n: ' + me.message);
+    comMonto = parseFloat((monto * comPct / 100).toFixed(2));
+    const { error: me } = await sb.from('movimientos').insert({ socio_id: socio.id, solicitud_id: pendingCompId, tipo: 'cargo_comision', monto: comMonto, nota: `Comisión ${comPct}% — ${dbc(pendingCompId)}` });
+    if (me) return err('Movimiento comisión: ' + me.message);
     const nuevaDeuda = (parseFloat(socio.deuda || 0) + comMonto);
     const nuevosTrab = (parseInt(socio.trabajos || 0, 10) + 1);
     const { error: sue } = await sb.from('socios').update({ deuda: nuevaDeuda.toFixed(2), trabajos: nuevosTrab }).eq('id', socio.id);
     if (sue) return err('Actualizando socio: ' + sue.message);
   }
+
+  // ── COMISIÓN ENCARGADO (5% sobre comisión del socio) ──
+  if (sol.zona && comMonto > 0) {
+    const { data: enc } = await sb
+      .from('encargados')
+      .select('id, nombre, comision_pct')
+      .eq('zona', sol.zona)
+      .eq('activo', true)
+      .maybeSingle();
+
+    if (enc) {
+      const pctEnc = parseFloat(enc.comision_pct || 5);
+      const montoEnc = parseFloat((comMonto * pctEnc / 100).toFixed(2));
+      await sb.from('movimientos').insert({
+        socio_id: null,
+        solicitud_id: pendingCompId,
+        tipo: 'comision_encargado',
+        monto: montoEnc,
+        nota: `Comisión encargado ${pctEnc}% — ${enc.nombre} — ${dbc(pendingCompId)}`
+      });
+    }
+  }
+  // ──────────────────────────────────────────────────────
+
   try { await sb.from('garantias').insert({ recibo: dbc(pendingCompId), telefono: sol.telefono || null, falla: null, estado: 'activa', garantia_dias: garDias, garantia_expira: finGarISO, socio_id: sol.socio_asignado || null }); } catch(_) {}
   if (document.getElementById('sec-hi')?.classList.contains('active')) loadHi();
   pendingCompId = null;
   closeModal('comp');
-  toast('Orden completada y garant\u00eda enviada');
+  toast('Orden completada y garantía enviada');
   resetBtn(); loadOp(); loadKPIs();
 }
 
