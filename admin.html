@@ -372,7 +372,15 @@
   .db-tag{ display:none; }
   .btn-exit{ padding:0 10px; font-size:12px; }
 }
-   </style>
+
+    /* ══ ENCARGADOS SYSTEM ══ */
+    .enc-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .enc-info{display:flex;flex-direction:column;gap:3px;min-width:0}
+    .enc-name{font-size:14px;font-weight:700;color:var(--ink)}
+    .enc-meta{font-size:12px;color:var(--g1)}
+    .enc-zone{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:var(--blue-bg);color:var(--blue);border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+    .enc-actions{display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0}
+      </style>
 </head>
 <body>
 
@@ -459,6 +467,10 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
       Ajustes
     </div>
+    <div class="sb-item" id="nav-enc" onclick="goSec('enc')" style="display:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      Encargados
+    </div>
   </nav>
 
   <!-- MAIN -->
@@ -541,6 +553,18 @@
       </div>
     </div>
 
+    <!-- ENCARGADOS -->
+    <div class="section" id="sec-enc" style="display:none">
+      <div class="sec-hdr">
+        <div><div class="sec-title">Encargados</div><div class="sec-sub">Gestores por zona</div></div>
+        <button class="btn btn-y btn-sm" onclick="openCrearEncargado()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nuevo
+        </button>
+      </div>
+      <div id="lista-enc"><div class="loading">Cargando...</div></div>
+    </div>
+
   </main>
 </div>
 
@@ -594,6 +618,27 @@
   </div>
 </div>
 
+<!-- MODAL ENCARGADO -->
+<div class="ov" id="ov-enc" onclick="if(event.target===this)closeModal('enc')">
+  <div class="sheet">
+    <div class="pill"></div>
+    <div class="sheet-hdr">
+      <span class="sheet-title">Nuevo encargado</span>
+      <button class="sheet-x" onclick="closeModal('enc')">&times;</button>
+    </div>
+    <div class="mbody">
+      <div class="fg"><label>Nombre</label><input id="enc-nombre" type="text" placeholder="Nombre completo"/></div>
+      <div class="fg"><label>Teléfono</label><input id="enc-tel" type="tel" placeholder="Número WhatsApp"/></div>
+      <div class="fg"><label>Zona</label><input id="enc-zona" type="text" placeholder="Ej: norte, centro, sur"/></div>
+      <div style="background:var(--blue-bg);border:1px solid rgba(77,168,218,.25);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--blue);font-weight:500;line-height:1.6">
+        ℹ️ El encargado debe registrarse con su cuenta en la plataforma. Al iniciar sesión por primera vez, su usuario se vincula automáticamente a esta zona. Asegúrate de crear el usuario en Supabase Auth con el mismo email.
+      </div>
+      <div class="err-box" id="err-enc"></div>
+      <button class="btn btn-y btn-full" id="btn-enc" onclick="doCrearEncargado()">Crear encargado</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // CONFIG
@@ -616,6 +661,11 @@ const CFG = {
   set t3(v)  { localStorage.setItem('db_t3', v) },
 };
 
+// ── ENCARGADOS SYSTEM ──
+let USER_ROLE = 'admin';   // 'admin' | 'encargado'
+let USER_ZONA = null;       // zona asignada al encargado
+let USER_ENC_ID = null;     // id en tabla encargados
+
 let sociosMap = {};
 let pendingCompId = null;
 let pendingRechId = null;
@@ -628,10 +678,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const { data: { session }, error: sessErr } = await sb.auth.getSession();
     if (sessErr || !session) { window.location.href = 'index.html'; return; }
-    const { data: adm, error: admErr } = await sb.from('admins').select('id').eq('auth_uid', session.user.id).maybeSingle();
-    if (admErr || !adm) { await sb.auth.signOut(); window.location.href = 'index.html'; return; }
+
+    // 1. Verificar si es admin
+    const { data: adm } = await sb.from('admins').select('id').eq('auth_uid', session.user.id).maybeSingle();
+
+    if (adm) {
+      USER_ROLE = 'admin';
+    } else {
+      // 2. Verificar si es encargado activo
+      const { data: enc } = await sb.from('encargados').select('id,zona,nombre').eq('auth_uid', session.user.id).eq('activo', true).maybeSingle();
+      if (enc) {
+        USER_ROLE = 'encargado';
+        USER_ZONA = enc.zona;
+        USER_ENC_ID = enc.id;
+      } else {
+        await sb.auth.signOut();
+        window.location.href = 'index.html';
+        return;
+      }
+    }
+
+    // 3. Aplicar UI segun rol
+    applyRoleUI();
     setupRealtime();
-    loadAjsUI();
+    if (USER_ROLE === 'admin') loadAjsUI();
     await loadSociosMap();
     await loadKPIs();
     await loadOp();
@@ -652,8 +722,13 @@ async function exitAdmin(){
 function setupRealtime() {
   try { sb.removeAllChannels(); } catch(_) {}
 
-  sb.channel('rt-admin-solicitudes')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'solicitudes' }, () => {
+  // Encargados solo escuchan su zona; admins escuchan todo
+  const solFilter = (USER_ROLE === 'encargado' && USER_ZONA)
+    ? { event: '*', schema: 'public', table: 'solicitudes', filter: `zona=eq.${USER_ZONA}` }
+    : { event: '*', schema: 'public', table: 'solicitudes' };
+
+  sb.channel('rt-solicitudes')
+    .on('postgres_changes', solFilter, () => {
       const opActiva = document.getElementById('sec-op')?.classList.contains('active');
       const soActiva = document.getElementById('sec-so')?.classList.contains('active');
       const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
@@ -663,40 +738,38 @@ function setupRealtime() {
       if (soActiva) { loadSociosMap(); loadSocios(); }
       if (opActiva) loadOp();
       if (hiActiva) loadHi();
-      if (caActiva) loadCaja();
-      if (spActiva) loadSoporte();
-
+      if (caActiva && USER_ROLE === 'admin') loadCaja();
+      if (spActiva && USER_ROLE === 'admin') loadSoporte();
       loadKPIs();
     })
     .subscribe();
 
-  sb.channel('rt-admin-garantia-reclamos')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'garantia_reclamos' }, () => {
-      const spActiva = document.getElementById('sec-sp')?.classList.contains('active');
-      const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
+  if (USER_ROLE === 'admin') {
+    sb.channel('rt-garantia-reclamos')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'garantia_reclamos' }, () => {
+        const spActiva = document.getElementById('sec-sp')?.classList.contains('active');
+        const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
+        if (spActiva) loadSoporte();
+        if (hiActiva) loadHi();
+      })
+      .subscribe();
 
-      if (spActiva) loadSoporte();
-      if (hiActiva) loadHi();
-    })
-    .subscribe();
+    sb.channel('rt-admin-movimientos')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'movimientos' }, () => {
+        const caActiva = document.getElementById('sec-ca')?.classList.contains('active');
+        if (caActiva) loadCaja();
+        loadKPIs();
+      })
+      .subscribe();
+  }
 
-  sb.channel('rt-admin-socios')
+  sb.channel('rt-socios')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'socios' }, () => {
       const soActiva = document.getElementById('sec-so')?.classList.contains('active');
       const caActiva = document.getElementById('sec-ca')?.classList.contains('active');
-
       loadSociosMap();
       if (soActiva) loadSocios();
-      if (caActiva) loadCaja();
-    })
-    .subscribe();
-
-  sb.channel('rt-admin-movimientos')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'movimientos' }, () => {
-      const caActiva = document.getElementById('sec-ca')?.classList.contains('active');
-
-      if (caActiva) loadCaja();
-      loadKPIs();
+      if (caActiva && USER_ROLE === 'admin') loadCaja();
     })
     .subscribe();
 }
@@ -730,12 +803,25 @@ function goSec(id) {
   if (id==='hi') loadHi();
   if (id==='so') { loadSociosMap(); loadSocios(); }
   if (id==='ca') loadCaja();
-  if (id==='sp') loadSoporte();
+  if (id==='sp' && USER_ROLE==='admin') loadSoporte();
+  if (id==='enc' && USER_ROLE==='admin') loadEncargados();
 }
 function toggleSidebar(){ document.querySelector('.sidebar')?.classList.toggle('open'); document.querySelector('.sidebar-overlay')?.classList.toggle('open'); }
 function closeSidebar(){ document.querySelector('.sidebar')?.classList.remove('open'); document.querySelector('.sidebar-overlay')?.classList.remove('open'); }
 
 async function loadKPIs() {
+  if (USER_ROLE === 'encargado' && USER_ZONA) {
+    const { data: solic } = await sb.from('solicitudes').select('estado').eq('zona', USER_ZONA);
+    const s = solic || [];
+    setKpis({
+      pend: s.filter(x=>x.estado==='pendiente').length,
+      asig: s.filter(x=>x.estado==='asignada').length,
+      comp: s.filter(x=>x.estado==='completada').length,
+      caja: 0
+    });
+    return;
+  }
+  // Admin: consulta global completa
   const [{ data: solic }, { data: movs }] = await Promise.all([
     sb.from('solicitudes').select('estado'),
     sb.from('movimientos').select('monto').eq('tipo','cargo_comision')
@@ -758,7 +844,10 @@ async function loadOp() {
   const el = document.getElementById('lista-op');
   el.innerHTML = '<div class="loading">Cargando...</div>';
   await loadSociosMap();
-  const { data, error } = await sb.from('solicitudes').select('*').in('estado',['pendiente','asignada']).order('created_at',{ascending:true});
+  // Encargados: filtrar por su zona
+  let qOp = sb.from('solicitudes').select('*').in('estado',['pendiente','asignada']).order('created_at',{ascending:true});
+  if (USER_ROLE === 'encargado' && USER_ZONA) qOp = qOp.eq('zona', USER_ZONA);
+  const { data, error } = await qOp;
   if (error) { el.innerHTML = `<div class="empty"><div class="empty-ico">\u26a0</div>Error: ${esc(error.message)}</div>`; return }
   if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">\u2713</div>Sin ordenes activas</div>'; return }
   el.innerHTML = data.map(buildCardOp).join('');
@@ -1013,6 +1102,7 @@ async function loadHi() {
   const d1  = document.getElementById('f-d1').value;
   const d2  = document.getElementById('f-d2').value;
   let q = sb.from('solicitudes').select('*').eq('estado','completada').not('fecha_fin','is', null).order('fecha_fin',{ascending:false}).limit(100);
+  if (USER_ROLE === 'encargado' && USER_ZONA) q = q.eq('zona', USER_ZONA);
   if (cli) q = q.ilike('cliente','%'+cli+'%');
   if (cod) { const n = parseInt(cod.replace(/^db-/i,'')); if (!isNaN(n)) q = q.eq('id', n); }
   if (d1) q = q.gte('fecha_fin', d1);
@@ -1291,6 +1381,121 @@ function setKpis({ pend=0, asig=0, comp=0, caja=0 } = {}) {
   if (nCaja) nCaja.textContent = Number.isFinite(c) ? ('$' + c.toFixed(0)) : '$0';
 }
 setKpis({ pend:0, asig:0, comp:0, caja:0 });
+// ════════════════════════════════════════════
+// ENCARGADOS SYSTEM — funciones nuevas
+// ════════════════════════════════════════════
+
+function applyRoleUI() {
+  const isEnc = USER_ROLE === 'encargado';
+
+  // Actualizar tag de rol en topbar
+  const tag = document.querySelector('.db-tag');
+  if (tag) {
+    if (isEnc) {
+      tag.textContent = 'ZONA: ' + (USER_ZONA || '').toUpperCase();
+      tag.style.cssText = 'margin-left:6px;font-weight:900;font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(77,168,218,.18);color:var(--blue);white-space:nowrap';
+    }
+  }
+
+  if (isEnc) {
+    // Ocultar secciones no permitidas para encargados
+    ['nav-ca','nav-sp','nav-aj','nav-enc'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    // Ocultar KPI Caja
+    const kpiParent = document.getElementById('kpiCaja')?.closest('.kpi-item');
+    if (kpiParent) kpiParent.style.display = 'none';
+    // Ocultar sections
+    ['sec-ca','sec-sp','sec-aj','sec-enc'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.style.display = 'none'; el.classList.remove('active'); }
+    });
+  } else {
+    // Admin: mostrar boton de Encargados
+    const encNav = document.getElementById('nav-enc');
+    if (encNav) encNav.style.display = 'flex';
+  }
+}
+
+// ── CRUD Encargados ──
+async function loadEncargados() {
+  const el = document.getElementById('lista-enc');
+  if (!el) return;
+  el.innerHTML = '<div class="loading">Cargando...</div>';
+  const { data, error } = await sb.from('encargados').select('*').order('nombre');
+  if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return; }
+  if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">◎</div>Sin encargados registrados</div>'; return; }
+  el.innerHTML = data.map(buildEncargadoCard).join('');
+}
+
+function buildEncargadoCard(e) {
+  const chipClass = e.activo ? 'ca' : 'cr';
+  const chipTxt   = e.activo ? 'activo' : 'inactivo';
+  const actLabel  = e.activo ? 'Desactivar' : 'Activar';
+  const actClass  = e.activo ? 'btn-r' : 'btn-g';
+  return `
+  <div class="enc-card">
+    <div class="enc-info">
+      <span class="enc-name">${esc(e.nombre)}</span>
+      <span class="enc-meta">${e.telefono || '\u2014'}</span>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:wrap">
+        <span class="enc-zone">\u{1F4CD} ${esc(e.zona || '\u2014')}</span>
+        <span class="chip ${chipClass}">${chipTxt}</span>
+        ${e.auth_uid ? '<span style="font-size:10px;color:var(--ok);font-weight:700">\u2713 vinculado</span>' : '<span style="font-size:10px;color:var(--g2);font-weight:700">sin vincular</span>'}
+      </div>
+    </div>
+    <div class="enc-actions">
+      <button class="btn ${actClass} btn-sm" onclick="toggleEncargadoActivo(${e.id},${!e.activo})">${actLabel}</button>
+      ${e.telefono ? `<button class="btn btn-wa btn-sm" onclick="waAdmin('${esc(e.telefono || '')}','Hola ${esc(e.nombre)}, te escribimos desde dbarrio.')">WA</button>` : ''}
+    </div>
+  </div>`;
+}
+
+function openCrearEncargado() {
+  ['enc-nombre','enc-tel','enc-zona'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  const err = document.getElementById('err-enc');
+  if (err) { err.textContent = ''; err.classList.remove('v'); }
+  const btn = document.getElementById('btn-enc');
+  if (btn) { btn.disabled = false; btn.textContent = 'Crear encargado'; }
+  openModal('enc');
+}
+
+async function doCrearEncargado() {
+  const nombre = document.getElementById('enc-nombre')?.value.trim();
+  const tel    = document.getElementById('enc-tel')?.value.trim();
+  const zona   = document.getElementById('enc-zona')?.value.trim().toLowerCase();
+  const err    = document.getElementById('err-enc');
+  const btn    = document.getElementById('btn-enc');
+
+  const showErr = (msg) => { if(err){err.textContent=msg;err.classList.add('v');} if(btn){btn.disabled=false;btn.textContent='Crear encargado';} };
+
+  if (!nombre) return showErr('El nombre es obligatorio.');
+  if (!zona)   return showErr('La zona es obligatoria (ej: norte, sur, centro).');
+
+  if (btn) { btn.disabled=true; btn.innerHTML='<span class="sp"></span> Creando...'; }
+
+  const { error } = await sb.from('encargados').insert({
+    nombre,
+    telefono: tel || null,
+    zona,
+    activo: true
+  });
+
+  if (error) return showErr('Error: ' + error.message);
+
+  closeModal('enc');
+  toast('Encargado creado \u2713');
+  loadEncargados();
+}
+
+async function toggleEncargadoActivo(id, activo) {
+  const { error } = await sb.from('encargados').update({ activo }).eq('id', id);
+  if (error) { toast('Error: ' + error.message); return; }
+  toast(activo ? 'Encargado activado' : 'Encargado desactivado');
+  loadEncargados();
+}
+
 </script>
 </body>
 </html>
