@@ -244,7 +244,10 @@
     </div>
     <div class="section" id="sec-hi">
       <div class="sec-hdr"><div><div class="sec-title">Historial</div><div class="sec-sub">Ordenes completadas</div></div></div>
-      <div class="filters"><input id="f-cli" type="text" placeholder="Cliente..." oninput="loadHi()"/><input id="f-cod" type="text" placeholder="db-..." oninput="loadHi()"/><input id="f-d1" type="date" onchange="loadHi()"/><input id="f-d2" type="date" onchange="loadHi()"/></div>
+      <div class="filters"><input id="f-cli" type="text" placeholder="Cliente..." oninput="window._hiPage=0;loadHi()"/></div>
+<input id="f-cod" type="text" placeholder="db-..." oninput="window._hiPage=0;loadHi()"/>
+<input id="f-d1" type="date" onchange="window._hiPage=0;loadHi()"/>
+<input id="f-d2" type="date" onchange="window._hiPage=0;loadHi()"/>
       <div id="lista-hi"><div class="loading">Cargando...</div></div>
     </div>
    <div class="section" id="sec-so">
@@ -748,6 +751,7 @@ async function waSocioAsignado(id) {
 }
 
 async function loadHi() {
+  if (window._hiPage === undefined) window._hiPage = 0;
   const el = document.getElementById('lista-hi');
   el.innerHTML = '<div class="loading">Cargando...</div>';
   await loadSociosMap();
@@ -755,7 +759,7 @@ async function loadHi() {
   const cod = document.getElementById('f-cod').value.trim();
   const d1  = document.getElementById('f-d1').value;
   const d2  = document.getElementById('f-d2').value;
-  let q = sb.from('solicitudes').select('*').eq('estado','completada').not('fecha_fin','is', null).order('fecha_fin',{ascending:false}).limit(100);
+  let q = sb.from('solicitudes').select('*', { count: 'exact' }).eq('estado','completada').not('fecha_fin','is', null).order('fecha_fin',{ascending:false}).range(window._hiPage * 20, (window._hiPage * 20) + 19);
   if (USER_ROLE === 'encargado' && USER_ZONA) q = q.eq('zona', USER_ZONA);
   if (cli) q = q.ilike('cliente','%'+cli+'%');
   if (cod) { const n = parseInt(cod.replace(/^db-/i,'')); if (!isNaN(n)) q = q.eq('id', n); }
@@ -767,9 +771,30 @@ async function loadHi() {
   el.innerHTML = data.map(s => {
     const socNom = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].nombre : '\u2014';
     let garantiaHTML = '';
-    if (s.garantia_dias != null) { const hoy = new Date(); const expira = s.garantia_expira ? new Date(s.garantia_expira) : null; const vencida = expira ? expira < hoy : false; garantiaHTML = `<div style="margin-top:6px;font-size:12px">\u{1F6E1} Garant\u00eda: ${s.garantia_dias} d\u00edas${expira ? ` \u00b7 Vence: ${expira.toLocaleDateString('es-ES')}` : ''}${vencida ? ` <span style="color:var(--err);font-weight:700">(VENCIDA)</span>` : ''}</div>`; }
+    if (s.garantia_dias != null) {
+      const hoy = new Date();
+      const expira = s.garantia_expira ? new Date(s.garantia_expira) : null;
+      const vencida = expira ? expira < hoy : false;
+      garantiaHTML = `<div style="margin-top:6px;font-size:12px">\u{1F6E1} Garant\u00eda: ${s.garantia_dias} d\u00edas${expira ? ` \u00b7 Vence: ${expira.toLocaleDateString('es-ES')}` : ''}${vencida ? ` <span style="color:var(--err);font-weight:700">(VENCIDA)</span>` : ''}</div>`;
+    }
     return `<div class="hist-card"><div class="hist-row"><div><div class="hist-code">${esc(dbc(s.id))}</div><div class="hist-meta">${esc(s.cliente)} \u00b7 ${esc(socNom)}</div></div><div style="text-align:right"><div class="hist-monto">${fmtM(s.monto)}</div><div class="hist-meta">${fmtD(s.fecha_fin)}</div></div></div><div class="hist-meta" style="margin-top:6px">${esc(s.municipio||'')} \u00b7 ${esc(s.servicio||'')}</div>${s.valoracion ? `<div class="stars-r" style="margin-top:6px">${stars(s.valoracion)}</div>` : ''}${garantiaHTML}</div>`;
   }).join('');
+
+  // Paginación
+  const totalPages = Math.ceil(count / 20);
+  if (totalPages > 1) {
+    const pag = document.createElement('div');
+    pag.style.cssText = 'display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap';
+    for (let i = 0; i < totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i + 1;
+      btn.className = 'btn btn-sm ' + (i === window._hiPage ? 'btn-k' : 'btn-g');
+      btn.style.minWidth = '36px';
+      btn.onclick = () => { window._hiPage = i; loadHi(); };
+      pag.appendChild(btn);
+    }
+    el.appendChild(pag);
+  }
 }
 
 async function loadSocios() {
