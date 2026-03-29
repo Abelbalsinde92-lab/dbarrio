@@ -165,42 +165,45 @@
       .sidebar.open{transform:translateX(0);box-shadow:4px 0 20px rgba(26,26,46,.25)}
       .sidebar-overlay.open{display:block}
       .main{padding:12px}
+      .btn-menu{display:inline-flex}
+      .sidebar{position:fixed;left:0;top:54px;bottom:0;width:220px;z-index:26;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+      .sidebar.open{transform:translateX(0)}
+      .sidebar-overlay{z-index:25}
     }
-    @media(max-width:640px){
-      .btn-menu{ display:inline-flex; }
-      .sidebar{position:fixed;left:0;top:54px;bottom:0;width:220px;z-index:26;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);}
-      .sidebar.open{ transform:translateX(0); }
-      .sidebar-overlay{ z-index:25; }
-    }
-    .topbar{position:fixed;top:0;left:0;right:0;z-index:60;height:calc(var(--th,54px) + env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 14px 0;background:#1A1A2E;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.08);}
-    .btn-menu{width:44px;height:44px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;display:grid;place-items:center;-webkit-tap-highlight-color:transparent;}
+    .topbar{position:fixed;top:0;left:0;right:0;z-index:60;height:calc(var(--th,54px) + env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 14px 0;background:#1A1A2E;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .btn-menu{width:44px;height:44px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;display:grid;place-items:center;-webkit-tap-highlight-color:transparent}
     .btn-menu:active{transform:scale(.98);opacity:.9}
-    .db-brand{display:flex;flex:1 1 auto;align-items:center;gap:10px;min-width:0;}
-    .db-iconbox{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;flex:0 0 auto;}
-    .db-icon{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1;}
+    .db-brand{display:flex;flex:1 1 auto;align-items:center;gap:10px;min-width:0}
+    .db-iconbox{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;flex:0 0 auto}
+    .db-icon{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1}
     .db-icon .d{color:#E6E6E6} .db-icon .b{color:#F5C116}
-    .db-wordmark{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.6px;line-height:1;white-space:nowrap;}
+    .db-wordmark{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.6px;line-height:1;white-space:nowrap}
     .db-wordmark .d{color:#E6E6E6} .db-wordmark .rest{color:#F5C116}
-    .db-tag{margin-left:6px;font-weight:900;letter-spacing:.5px;color:rgba(255,255,255,.50);font-size:12px;white-space:nowrap;}
-    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;min-width:0;}
-    .kpi-pill{min-width:0;}
-    .btn-exit{height:44px;padding:0 14px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font-weight:900;font-size:13px;-webkit-tap-highlight-color:transparent;}
+    .db-tag{margin-left:6px;font-weight:900;letter-spacing:.5px;color:rgba(255,255,255,.50);font-size:12px;white-space:nowrap}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;min-width:0}
+    .kpi-pill{min-width:0}
+    .btn-exit{height:44px;padding:0 14px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font-weight:900;font-size:13px;-webkit-tap-highlight-color:transparent}
     .btn-exit:active{transform:scale(.98);opacity:.9}
-    .kpi-wrap{position:relative;display:flex;align-items:center;flex:0 0 auto;}
-    .kpi-pill{height:44px;padding:6px 12px;align-items:center;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;flex:0 0 auto;max-width:52vw;display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-    .kpi-pill::-webkit-scrollbar{display:none;}
-    .kpi-item{flex:0 0 auto;min-width:56px;text-align:center;line-height:1;}
-    .kpi-n{font-size:22px;line-height:1;}
-    .kpi-l{margin-top:4px;font-size:10px;line-height:1;color:rgba(255,255,255,.65);}
-    .kpi-item.money{min-width:86px;}
-    @media(min-width:860px){.kpi-pill{max-width:none;overflow:visible;}}
-    @media(max-width:560px){.db-wordmark{display:none;}.db-tag{display:none;}.btn-exit{padding:0 10px;font-size:12px;}}
+    .kpi-wrap{position:relative;display:flex;align-items:center;flex:0 0 auto}
+    .kpi-pill{height:44px;padding:6px 12px;align-items:center;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;flex:0 0 auto;max-width:52vw;display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .kpi-pill::-webkit-scrollbar{display:none}
+    .kpi-item{flex:0 0 auto;min-width:56px;text-align:center;line-height:1}
+    .kpi-n{font-size:22px;line-height:1}
+    .kpi-l{margin-top:4px;font-size:10px;line-height:1;color:rgba(255,255,255,.65)}
+    .kpi-item.money{min-width:86px}
+    @media(min-width:860px){.kpi-pill{max-width:none;overflow:visible}}
+    @media(max-width:560px){.db-wordmark{display:none}.db-tag{display:none}.btn-exit{padding:0 10px;font-size:12px}}
     .enc-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
     .enc-info{display:flex;flex-direction:column;gap:3px;min-width:0}
     .enc-name{font-size:14px;font-weight:700;color:var(--ink)}
     .enc-meta{font-size:12px;color:var(--g1)}
     .enc-zone{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:var(--blue-bg);color:var(--blue);border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
     .enc-actions{display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0}
+    /* LOGS */
+    .log-item{background:var(--card);border:1px solid var(--line);border-radius:var(--rs);padding:10px 14px;display:flex;align-items:flex-start;gap:10px}
+    .log-accion{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:5px;background:var(--y-bg);color:#9A7200;white-space:nowrap;flex-shrink:0}
+    .log-detail{font-size:12px;color:var(--g1);line-height:1.5;flex:1;min-width:0}
+    .log-time{font-size:11px;color:var(--g2);white-space:nowrap;flex-shrink:0}
   </style>
 </head>
 <body>
@@ -236,51 +239,55 @@
     <div class="sb-item" id="nav-sp" onclick="goSec('sp')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Soporte</div>
     <div class="sb-item" id="nav-aj" onclick="goSec('aj')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>Ajustes</div>
     <div class="sb-item" id="nav-enc" onclick="goSec('enc')" style="display:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Encargados</div>
+    <div class="sb-item" id="nav-log" onclick="goSec('log')" style="display:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Actividad</div>
   </nav>
   <main class="main">
+    <!-- OPERACION -->
     <div class="section active" id="sec-op">
       <div class="sec-hdr"><div><div class="sec-title">Operacion</div><div class="sec-sub">Ordenes activas</div></div><button class="btn btn-g btn-sm" onclick="loadOp()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Actualizar</button></div>
       <div id="lista-op"><div class="loading">Cargando...</div></div>
     </div>
+    <!-- HISTORIAL — filtros correctamente dentro del div -->
     <div class="section" id="sec-hi">
       <div class="sec-hdr"><div><div class="sec-title">Historial</div><div class="sec-sub">Ordenes completadas</div></div></div>
-      <div class="filters"><input id="f-cli" type="text" placeholder="Cliente..." oninput="window._hiPage=0;loadHi()"/></div>
-<input id="f-cod" type="text" placeholder="db-..." oninput="window._hiPage=0;loadHi()"/>
-<input id="f-d1" type="date" onchange="window._hiPage=0;loadHi()"/>
-<input id="f-d2" type="date" onchange="window._hiPage=0;loadHi()"/>
+      <div class="filters">
+        <input id="f-cli" type="text" placeholder="Cliente..." oninput="window._hiPage=0;loadHi()"/>
+        <input id="f-cod" type="text" placeholder="db-..." oninput="window._hiPage=0;loadHi()"/>
+        <input id="f-d1" type="date" onchange="window._hiPage=0;loadHi()"/>
+        <input id="f-d2" type="date" onchange="window._hiPage=0;loadHi()"/>
+      </div>
       <div id="lista-hi"><div class="loading">Cargando...</div></div>
     </div>
-   <div class="section" id="sec-so">
-  <div class="sec-hdr"><div><div class="sec-title">Socios</div><div class="sec-sub">Tecnicos registrados</div></div></div>
-  <div class="filters">
-    <input id="f-so-nom" type="text" placeholder="Nombre..." oninput="filtrarSocios()"/>
-    <select id="f-so-esp" onchange="filtrarSocios()">
-      <option value="">Todas las especialidades</option>
-      <option>Electrodomésticos</option>
-      <option>Plomería</option>
-      <option>Electricidad</option>
-      <option>Refrigeración</option>
-      <option>Televisión / audio</option>
-      <option>Computadoras</option>
-      <option>Celulares</option>
-      <option>Cerrajería</option>
-      <option>Multidisciplinario</option>
-    </select>
-    <select id="f-so-est" onchange="filtrarSocios()">
-      <option value="">Todos los estados</option>
-      <option value="activo">Activos</option>
-      <option value="pendiente">Pendientes</option>
-      <option value="baja">Baja</option>
-    </select>
-    <input id="f-so-zona" type="text" placeholder="Zona..." oninput="filtrarSocios()"/>
-  </div>
-  <div id="lista-so"><div class="loading">Cargando...</div></div>
-</div>
+    <!-- SOCIOS -->
+    <div class="section" id="sec-so">
+      <div class="sec-hdr"><div><div class="sec-title">Socios</div><div class="sec-sub">Tecnicos registrados</div></div></div>
+      <div class="filters">
+        <input id="f-so-nom" type="text" placeholder="Nombre..." oninput="filtrarSocios()"/>
+        <select id="f-so-esp" onchange="filtrarSocios()">
+          <option value="">Todas las especialidades</option>
+          <option>Electrodomésticos</option><option>Plomería</option>
+          <option>Electricidad</option><option>Refrigeración</option>
+          <option>Televisión / audio</option><option>Computadoras</option>
+          <option>Celulares</option><option>Cerrajería</option>
+          <option>Multidisciplinario</option>
+        </select>
+        <select id="f-so-est" onchange="filtrarSocios()">
+          <option value="">Todos los estados</option>
+          <option value="activo">Activos</option>
+          <option value="pendiente">Pendientes</option>
+          <option value="baja">Baja</option>
+        </select>
+        <input id="f-so-zona" type="text" placeholder="Zona..." oninput="filtrarSocios()"/>
+      </div>
+      <div id="lista-so"><div class="loading">Cargando...</div></div>
+    </div>
+    <!-- CAJA -->
     <div class="section" id="sec-ca">
       <div class="sec-hdr"><div><div class="sec-title">Caja</div><div class="sec-sub">Deudas y movimientos</div></div></div>
       <div id="lista-ca"></div>
       <div style="margin-top:16px"><div style="font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);margin-bottom:10px">Movimientos</div><div class="filters"><select id="f-ca-soc" onchange="loadMovs()"><option value="">Todos los socios</option></select></div><div id="lista-movs"></div></div>
     </div>
+    <!-- SOPORTE -->
     <div class="section" id="sec-sp">
       <div class="sec-hdr"><div><div class="sec-title">Soporte</div><div class="sec-sub">Garantias y reclamos</div></div></div>
       <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:var(--g1);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Garantias (informativo)</div>
@@ -288,15 +295,22 @@
       <div style="margin-top:14px;font-family:var(--fd);font-size:16px;font-weight:800;color:var(--g1);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Reclamos de garantia</div>
       <div id="lista-gar-rec"><div class="loading">Cargando...</div></div>
     </div>
+    <!-- AJUSTES -->
     <div class="section" id="sec-aj">
       <div class="sec-hdr"><div><div class="sec-title">Ajustes</div><div class="sec-sub">Configuracion del sistema</div></div></div>
       <div class="setting-card"><div class="setting-title">Comision global</div><div class="fg"><label>Porcentaje por defecto (%)</label><input type="number" id="aj-com" min="0" max="100" step="1" value="15"/></div><button class="btn btn-k btn-full" onclick="saveComision()">Guardar comision</button></div>
       <div class="setting-card"><div class="setting-title">WhatsApp admin</div><div class="fg"><label>Numero (con codigo de pais, sin +)</label><input type="tel" id="aj-wa" placeholder="34627493593"/></div><button class="btn btn-k btn-full" onclick="saveWA()">Guardar numero</button></div>
       <div class="setting-card"><div class="setting-title">Templates de mensajes</div><div class="fg"><label>Asignacion a socio</label><textarea id="aj-t1" rows="4"></textarea></div><div class="fg"><label>Aprobacion de socio</label><textarea id="aj-t2" rows="4"></textarea></div><div class="fg"><label>Orden completada (cliente)</label><textarea id="aj-t3" rows="4"></textarea></div><button class="btn btn-k btn-full" onclick="saveTemplates()">Guardar templates</button></div>
     </div>
+    <!-- ENCARGADOS -->
     <div class="section" id="sec-enc" style="display:none">
       <div class="sec-hdr"><div><div class="sec-title">Encargados</div><div class="sec-sub">Gestores por zona</div></div><button class="btn btn-y btn-sm" onclick="openCrearEncargado()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Nuevo</button></div>
       <div id="lista-enc"><div class="loading">Cargando...</div></div>
+    </div>
+    <!-- ACTIVIDAD -->
+    <div class="section" id="sec-log" style="display:none">
+      <div class="sec-hdr"><div><div class="sec-title">Actividad</div><div class="sec-sub">Registro de acciones</div></div></div>
+      <div id="lista-log"><div class="loading">Cargando...</div></div>
     </div>
   </main>
 </div>
@@ -314,21 +328,18 @@
     <button class="btn btn-y btn-full" id="btn-comp" onclick="doCompletar()">Confirmar y cerrar orden</button>
   </div></div>
 </div>
-
 <!-- MODAL RECHAZAR -->
 <div class="ov" id="ov-rech" onclick="if(event.target===this)closeModal('rech')">
   <div class="sheet"><div class="pill"></div><div class="sheet-hdr"><span class="sheet-title">Rechazar orden</span><button class="sheet-x" onclick="closeModal('rech')">&times;</button></div>
   <div class="mbody"><div class="fg"><label>Motivo del rechazo</label><textarea id="rech-mot" placeholder="Indica el motivo..."></textarea></div><div class="err-box" id="err-rech"></div><button class="btn btn-r btn-full" id="btn-rech" onclick="doRechazar()">Rechazar orden</button></div>
   </div>
 </div>
-
 <!-- MODAL CAJA -->
 <div class="ov" id="ov-caja" onclick="if(event.target===this)closeModal('caja')">
   <div class="sheet"><div class="pill"></div><div class="sheet-hdr"><span class="sheet-title" id="caja-title">Movimiento</span><button class="sheet-x" onclick="closeModal('caja')">&times;</button></div>
   <div class="mbody"><div class="fg"><label>Monto ($)</label><input id="caja-monto" type="number" min="0" step="0.01" placeholder="0.00"/></div><div class="fg"><label>Nota (opcional)</label><input id="caja-nota" type="text" placeholder=""/></div><div class="err-box" id="err-caja"></div><button class="btn btn-k btn-full" id="btn-caja" onclick="doCajaOp()">Confirmar</button></div>
   </div>
 </div>
-
 <!-- MODAL ENCARGADO -->
 <div class="ov" id="ov-enc" onclick="if(event.target===this)closeModal('enc')">
   <div class="sheet"><div class="pill"></div><div class="sheet-hdr"><span class="sheet-title">Nuevo encargado</span><button class="sheet-x" onclick="closeModal('enc')">&times;</button></div>
@@ -351,16 +362,16 @@ const sb = supabase.createClient(SURL, SKEY, {
 });
 
 const CFG = {
-  get wa()   { return localStorage.getItem('db_wa')  || '34627493593' },
-  set wa(v)  { localStorage.setItem('db_wa', v) },
-  get com()  { return parseFloat(localStorage.getItem('db_com') || '15') },
-  set com(v) { localStorage.setItem('db_com', v) },
-  get t1()   { return localStorage.getItem('db_t1') || 'Hola {socio} \u{1F44B}\n\nNueva orden asignada \u2014 *{code}*\n\n\u{1F4CD} Cliente: {cliente}\n\u{1F3E0} {municipio}\n\u{1F4DE} {telefono}\n\u{1F527} {servicio}\n\u{1F4DD} {detalles}\n\nConfirma recepcion respondiendo este mensaje.\n\n\u2014 dbarrio' },
-  set t1(v)  { localStorage.setItem('db_t1', v) },
-  get t2()   { return localStorage.getItem('db_t2') || 'Hola {socio} \u{1F44B}\n\nTu cuenta en dbarrio ha sido *aprobada* \u2705\n\nYa puedes acceder al panel en dbarrio.com con tu email y contrasena.\n\nCualquier duda respondeme por aqui.\n\n\u2014 dbarrio' },
-  set t2(v)  { localStorage.setItem('db_t2', v) },
-  get t3() { return localStorage.getItem('db_t3') || `Hola {cliente} \u{1F44B}\n\nTu servicio fue *aprobado y completado* \u2705\n\nC\u00f3digo: *{code}*\nT\u00e9cnico: {socio}\nImporte: {monto}\n\nGarant\u00eda: {garantia}\nVence: {vence}\n\nDetalles:\n{detalles}\n\n\u2014 dbarrio` },
-  set t3(v)  { localStorage.setItem('db_t3', v) },
+  get wa()  { return localStorage.getItem('db_wa')  || '34627493593' },
+  set wa(v) { localStorage.setItem('db_wa', v) },
+  get com() { return parseFloat(localStorage.getItem('db_com') || '15') },
+  set com(v){ localStorage.setItem('db_com', v) },
+  get t1()  { return localStorage.getItem('db_t1') || 'Hola {socio} \u{1F44B}\n\nNueva orden asignada \u2014 *{code}*\n\n\u{1F4CD} Cliente: {cliente}\n\u{1F3E0} {municipio}\n\u{1F4DE} {telefono}\n\u{1F527} {servicio}\n\u{1F4DD} {detalles}\n\nConfirma recepcion respondiendo este mensaje.\n\n\u2014 dbarrio' },
+  set t1(v) { localStorage.setItem('db_t1', v) },
+  get t2()  { return localStorage.getItem('db_t2') || 'Hola {socio} \u{1F44B}\n\nTu cuenta en dbarrio ha sido *aprobada* \u2705\n\nYa puedes acceder al panel en dbarrio.com con tu email y contrasena.\n\nCualquier duda respondeme por aqui.\n\n\u2014 dbarrio' },
+  set t2(v) { localStorage.setItem('db_t2', v) },
+  get t3()  { return localStorage.getItem('db_t3') || `Hola {cliente} \u{1F44B}\n\nTu servicio fue *aprobado y completado* \u2705\n\nC\u00f3digo: *{code}*\nT\u00e9cnico: {socio}\nImporte: {monto}\n\nGarant\u00eda: {garantia}\nVence: {vence}\n\nDetalles:\n{detalles}\n\n\u2014 dbarrio` },
+  set t3(v) { localStorage.setItem('db_t3', v) },
 };
 
 let USER_ROLE = 'admin';
@@ -378,25 +389,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const { data: { session }, error: sessErr } = await sb.auth.getSession();
     if (sessErr || !session) { window.location.href = 'index.html'; return; }
-
     const { data: adm } = await sb.from('admins').select('id').eq('auth_uid', session.user.id).maybeSingle();
     if (adm) {
       USER_ROLE = 'admin';
     } else {
       const { data: enc } = await sb.from('encargados').select('id,zona,nombre').eq('auth_uid', session.user.id).eq('activo', true).maybeSingle();
-      if (enc) {
-        USER_ROLE = 'encargado';
-        USER_ZONA = enc.zona;
-        USER_ENC_ID = enc.id;
-      } else {
-        await sb.auth.signOut();
-        window.location.href = 'index.html';
-        return;
-      }
+      if (enc) { USER_ROLE = 'encargado'; USER_ZONA = enc.zona; USER_ENC_ID = enc.id; }
+      else { await sb.auth.signOut(); window.location.href = 'index.html'; return; }
     }
-
     applyRoleUI();
-    suscribirPush(); // → notificaciones push
+    suscribirPush();
     setupRealtime();
     if (USER_ROLE === 'admin') loadAjsUI();
     await loadSociosMap();
@@ -421,55 +423,45 @@ function setupRealtime() {
   const solFilter = (USER_ROLE === 'encargado' && USER_ZONA)
     ? { event: '*', schema: 'public', table: 'solicitudes', filter: `zona=eq.${USER_ZONA}` }
     : { event: '*', schema: 'public', table: 'solicitudes' };
-
   sb.channel('rt-solicitudes')
     .on('postgres_changes', solFilter, () => {
-      const opActiva = document.getElementById('sec-op')?.classList.contains('active');
-      const soActiva = document.getElementById('sec-so')?.classList.contains('active');
-      const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
-      const caActiva = document.getElementById('sec-ca')?.classList.contains('active');
-      const spActiva = document.getElementById('sec-sp')?.classList.contains('active');
-      if (soActiva) { loadSociosMap(); loadSocios(); }
-      if (opActiva) loadOp();
-      if (hiActiva) loadHi();
-      if (caActiva && USER_ROLE === 'admin') loadCaja();
-      if (spActiva && USER_ROLE === 'admin') loadSoporte();
+      const opA = document.getElementById('sec-op')?.classList.contains('active');
+      const soA = document.getElementById('sec-so')?.classList.contains('active');
+      const hiA = document.getElementById('sec-hi')?.classList.contains('active');
+      const caA = document.getElementById('sec-ca')?.classList.contains('active');
+      const spA = document.getElementById('sec-sp')?.classList.contains('active');
+      if (soA) { loadSociosMap(); loadSocios(); }
+      if (opA) loadOp();
+      if (hiA) loadHi();
+      if (caA && USER_ROLE === 'admin') loadCaja();
+      if (spA && USER_ROLE === 'admin') loadSoporte();
       loadKPIs();
-    })
-    .subscribe();
-
+    }).subscribe();
   if (USER_ROLE === 'admin') {
     sb.channel('rt-garantia-reclamos')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'garantia_reclamos' }, () => {
-        const spActiva = document.getElementById('sec-sp')?.classList.contains('active');
-        const hiActiva = document.getElementById('sec-hi')?.classList.contains('active');
-        if (spActiva) loadSoporte();
-        if (hiActiva) loadHi();
+        const spA = document.getElementById('sec-sp')?.classList.contains('active');
+        const hiA = document.getElementById('sec-hi')?.classList.contains('active');
+        if (spA) loadSoporte(); if (hiA) loadHi();
       }).subscribe();
-
     sb.channel('rt-admin-movimientos')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'movimientos' }, () => {
-        const caActiva = document.getElementById('sec-ca')?.classList.contains('active');
-        if (caActiva) loadCaja();
-        loadKPIs();
+        const caA = document.getElementById('sec-ca')?.classList.contains('active');
+        if (caA) loadCaja(); loadKPIs();
       }).subscribe();
   }
-
   sb.channel('rt-socios')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'socios' }, () => {
-      const soActiva = document.getElementById('sec-so')?.classList.contains('active');
-      const caActiva = document.getElementById('sec-ca')?.classList.contains('active');
+      const soA = document.getElementById('sec-so')?.classList.contains('active');
+      const caA = document.getElementById('sec-ca')?.classList.contains('active');
       loadSociosMap();
-      if (soActiva) loadSocios();
-      if (caActiva && USER_ROLE === 'admin') loadCaja();
+      if (soA) loadSocios();
+      if (caA && USER_ROLE === 'admin') loadCaja();
     }).subscribe();
 }
 
 sb.auth.onAuthStateChange((_event, session) => {
-  if (!session) {
-    toast('Sesión expirada. Redirigiendo...');
-    setTimeout(() => { window.location.href = 'index.html'; }, 2000);
-  }
+  if (!session) { toast('Sesión expirada. Redirigiendo...'); setTimeout(() => { window.location.href = 'index.html'; }, 2000); }
 });
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
@@ -503,6 +495,7 @@ function goSec(id) {
   if (id==='ca') loadCaja();
   if (id==='sp' && USER_ROLE==='admin') loadSoporte();
   if (id==='enc' && USER_ROLE==='admin') loadEncargados();
+  if (id==='log' && USER_ROLE==='admin') loadActivityLog();
 }
 function toggleSidebar(){ document.querySelector('.sidebar')?.classList.toggle('open'); document.querySelector('.sidebar-overlay')?.classList.toggle('open'); }
 function closeSidebar(){ document.querySelector('.sidebar')?.classList.remove('open'); document.querySelector('.sidebar-overlay')?.classList.remove('open'); }
@@ -523,58 +516,9 @@ async function loadKPIs() {
   setKpis({ pend: s.filter(x=>x.estado==='pendiente').length, asig: s.filter(x=>x.estado==='asignada').length, comp: s.filter(x=>x.estado==='completada').length, caja: Number.isFinite(ing) ? ing : 0 });
 }
 
-async function loadSocios() {
-  const el = document.getElementById('lista-so');
-  const { data: u, error: ue } = await sb.auth.getUser();
-  if (ue || !u?.user) { el.innerHTML = `<div class="empty"><div class="empty-ico">\u{1F512}</div>Sesi\u00f3n no v\u00e1lida.</div>`; return; }
-  el.innerHTML = '<div class="loading">Cargando...</div>';
-  const { data, error } = await sb.from('socios').select('*').order('estado_socio').order('nombre');
-  if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return; }
-  if (!data?.length) { el.innerHTML = '<div class="empty">Sin socios registrados</div>'; return; }
-
-  // Guardar todos para filtrar sin re-consultar
-  window._sociosData = data;
-  filtrarSocios();
-}
-
-function filtrarSocios() {
-  const data = window._sociosData;
-  if (!data) return;
-
-  const nom  = (document.getElementById('f-so-nom')?.value  || '').toLowerCase().trim();
-  const esp  = (document.getElementById('f-so-esp')?.value  || '').toLowerCase().trim();
-  const est  = (document.getElementById('f-so-est')?.value  || '').toLowerCase().trim();
-  const zona = (document.getElementById('f-so-zona')?.value || '').toLowerCase().trim();
-
-  const filtered = data.filter(s => {
-    if (nom  && !s.nombre?.toLowerCase().includes(nom))          return false;
-    if (esp  && !s.especialidad?.toLowerCase().includes(esp))    return false;
-    if (zona && !s.zona?.toLowerCase().includes(zona))           return false;
-    if (est) {
-      const estado = s.admitido ? (s.estado_socio || 'activo') : 'pendiente';
-      if (estado !== est) return false;
-    }
-    return true;
-  });
-
-  const el = document.getElementById('lista-so');
-
-  if (!filtered.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-ico">◎</div>Sin resultados para ese filtro</div>';
-    return;
-  }
-
-  const pend = filtered.filter(x => (!x.admitido && x.estado_socio !== 'rechazado') || x.estado_socio === 'pendiente');
-  const rest = filtered.filter(x => x.admitido && x.estado_socio !== 'pendiente');
-
-  let html = '';
-  if (pend.length) html += `<div style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--y);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Pendientes de aprobacion</div>` + pend.map(buildSocioCard).join('');
-  if (rest.length) {
-    if (pend.length) html += `<div style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--g1);margin:12px 0 8px;text-transform:uppercase;letter-spacing:1px">Activos / Baja</div>`;
-    html += rest.map(buildSocioCard).join('');
-  }
-
-  el.innerHTML = html;
+async function loadSociosMap() {
+  const { data } = await sb.from('socios').select('id,nombre,telefono,comision');
+  if (data) { sociosMap = {}; data.forEach(s=>{ sociosMap[s.id]=s }); }
 }
 
 async function loadOp() {
@@ -584,15 +528,12 @@ async function loadOp() {
   let qOp = sb.from('solicitudes').select('*').in('estado',['pendiente','asignada']).order('created_at',{ascending:true});
   if (USER_ROLE === 'encargado' && USER_ZONA) qOp = qOp.eq('zona', USER_ZONA);
   const { data, error } = await qOp;
-if (error) {
-  if (error.message?.includes('JWT') || error.message?.includes('token') || error.code === 'PGRST301') {
-    toast('Sesión expirada. Redirigiendo...');
-    setTimeout(() => { window.location.href = 'index.html'; }, 2000);
-    return;
+  if (error) {
+    if (error.message?.includes('JWT') || error.message?.includes('token') || error.code === 'PGRST301') {
+      toast('Sesión expirada. Redirigiendo...'); setTimeout(() => { window.location.href = 'index.html'; }, 2000); return;
+    }
+    el.innerHTML = `<div class="empty"><div class="empty-ico">\u26a0</div>Error: ${esc(error.message)}</div>`; return;
   }
-  el.innerHTML = `<div class="empty"><div class="empty-ico">\u26a0</div>Error: ${esc(error.message)}</div>`;
-  return;
-}
   if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">\u2713</div>Sin ordenes activas</div>'; return }
   el.innerHTML = data.map(buildCardOp).join('');
   loadKPIs();
@@ -607,15 +548,15 @@ function buildCardOp(s) {
   const visual = (s.estado === 'asignada' && rechazoSocio) ? 'rechazada_por_socio' : (s.estado === 'asignada' && cierreReportado) ? 'cierre_reportado' : (s.estado === 'asignada' && s.sub_estado === 'en_proceso') ? 'en_proceso' : s.estado;
   const chipClass = {pendiente:'cp',asignada:'ca',en_proceso:'ce',cierre_reportado:'cc',rechazada_por_socio:'cr',completada:'cc',rechazada:'cr'}[visual] || 'cp';
   const chipText = {pendiente:'pendiente',asignada:'asignada',en_proceso:'en proceso',cierre_reportado:'cierre reportado',rechazada_por_socio:'rechazo socio',completada:'completada',rechazada:'rechazada'}[visual] || visual;
-  const cierreFlag = cierreReportado ? `<div style="background:var(--ok-bg);border:1px solid rgba(78,203,160,.25);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#1E7A5A">\u2705 Cierre reportado por el socio${s.monto_socio != null ? `<div style="margin-top:4px">Monto: ${fmtM(s.monto_socio)}</div>` : ``}${s.garantia_dias != null ? `<div>Garant\u00eda: ${s.garantia_dias} d\u00edas</div>` : ``}</div>` : '';
+  const cierreFlag = cierreReportado ? `<div style="background:var(--ok-bg);border:1px solid rgba(78,203,160,.25);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#1E7A5A">\u2705 Cierre reportado por el socio${s.monto_socio != null ? `<div style="margin-top:4px">Monto: ${fmtM(s.monto_socio)}</div>` : ''}${s.garantia_dias != null ? `<div>Garant\u00eda: ${s.garantia_dias} d\u00edas</div>` : ''}</div>` : '';
   const rechazoFlag = rechazoSocio ? `<div style="background:var(--err-bg);border:1px solid rgba(224,92,92,.22);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:var(--err)">\u274c Rechazada por el socio<div style="margin-top:6px;font-weight:600">${esc(s.motivo_rechazo_socio || s.nota_socio || 'Sin motivo')}</div></div>` : '';
   let asignarHTML = '';
   if (s.estado === 'pendiente' || s.estado === 'asignada') {
     const opts = Object.values(sociosMap).filter(sc => sc && sc.nombre).map(sc => `<option value="${sc.id}" ${String(sc.id) === String(s.socio_asignado) ? 'selected' : ''}>${esc(sc.nombre)}</option>`).join('');
-    const textoLabel = s.estado === 'pendiente' ? 'Asignar socio' : 'Reasignar socio';
-    const textoBtn   = s.estado === 'pendiente' ? 'Asignar' : 'Reasignar';
-    const accionBtn  = s.estado === 'pendiente' ? `asignar(${s.id})` : `reasignar(${s.id})`;
-    asignarHTML = `<div class="inline-form" style="margin-top:10px"><label>${textoLabel}</label><div style="display:flex;gap:8px;margin-top:4px"><select id="sel-${s.id}" style="flex:1">${opts ? `<option value="">-- Seleccionar --</option>${opts}` : `<option value="">Sin socios</option>`}</select><button class="btn btn-y btn-sm" onclick="${accionBtn}">${textoBtn}</button></div></div>`;
+    const tL = s.estado === 'pendiente' ? 'Asignar socio' : 'Reasignar socio';
+    const tB = s.estado === 'pendiente' ? 'Asignar' : 'Reasignar';
+    const aB = s.estado === 'pendiente' ? `asignar(${s.id})` : `reasignar(${s.id})`;
+    asignarHTML = `<div class="inline-form" style="margin-top:10px"><label>${tL}</label><div style="display:flex;gap:8px;margin-top:4px"><select id="sel-${s.id}" style="flex:1">${opts ? `<option value="">-- Seleccionar --</option>${opts}` : `<option value="">Sin socios</option>`}</select><button class="btn btn-y btn-sm" onclick="${aB}">${tB}</button></div></div>`;
   }
   const btnCompletar = (s.estado === 'asignada' && cierreReportado) ? `<button class="btn btn-y" onclick="openCompletar(${s.id})">Aprobar y enviar garant\u00eda</button>` : '';
   const btnLiberar = (s.estado === 'asignada' && rechazoSocio) ? `<button class="btn btn-g" onclick="liberarPorRechazo(${s.id})">Liberar / volver a pendiente</button>` : '';
@@ -631,6 +572,7 @@ async function asignar(id) {
   const { error } = await sb.from('solicitudes').update({ socio_asignado: socioId, estado: 'asignada' }).eq('id', id);
   if (error) { toast('Error: '+error.message); return }
   toast('Orden asignada');
+  logActividad('asignar', id, `Socio: ${sociosMap[socioId]?.nombre}`);
   const { data: sol } = await sb.from('solicitudes').select('*').eq('id',id).single();
   if (sol && sociosMap[socioId]) { const soc = sociosMap[socioId]; const msg = CFG.t1.replace('{socio}', soc.nombre).replace('{code}', dbc(id)).replace('{cliente}', sol.cliente||'').replace('{municipio}', sol.municipio||'').replace('{telefono}', sol.telefono||'').replace('{servicio}', sol.servicio||'').replace('{detalles}', sol.detalles||'Sin detalles'); if (soc.telefono) wa(soc.telefono, msg); }
   loadOp();
@@ -647,6 +589,7 @@ async function reasignar(id) {
   const { error } = await sb.from('solicitudes').update({ socio_asignado: nuevoSocioId, estado: 'asignada', sub_estado: null, motivo_rechazo_socio: null }).eq('id', id);
   if (error) { toast('Error: ' + error.message); return; }
   toast('Orden reasignada');
+  logActividad('reasignar', id, `Nuevo socio: ${sociosMap[nuevoSocioId]?.nombre}`);
   if (sociosMap[nuevoSocioId]) { const soc = sociosMap[nuevoSocioId]; const msg = CFG.t1.replace('{socio}', soc.nombre).replace('{code}', dbc(id)).replace('{cliente}', sol.cliente || '').replace('{municipio}', sol.municipio || '').replace('{telefono}', sol.telefono || '').replace('{servicio}', sol.servicio || '').replace('{detalles}', sol.detalles || 'Sin detalles'); if (soc.telefono) wa(soc.telefono, msg); }
   loadOp(); loadKPIs();
 }
@@ -655,7 +598,9 @@ async function liberarPorRechazo(id) {
   if (!confirm('\u00bfLiberar la orden y devolverla a pendiente?')) return;
   const { error } = await sb.from('solicitudes').update({ estado: 'pendiente', socio_asignado: null, sub_estado: null, motivo_rechazo_socio: null }).eq('id', id);
   if (error) { toast('Error: ' + error.message); return; }
-  toast('Orden liberada'); loadOp(); loadKPIs();
+  toast('Orden liberada');
+  logActividad('liberar', id, 'Liberada por rechazo de socio');
+  loadOp(); loadKPIs();
 }
 
 async function openCompletar(id) {
@@ -714,8 +659,6 @@ async function doCompletar() {
     const { error: sue } = await sb.from('socios').update({ deuda: nuevaDeuda.toFixed(2), trabajos: nuevosTrab }).eq('id', socio.id);
     if (sue) return err('Actualizando socio: ' + sue.message);
   }
-
-  // ── COMISIÓN ENCARGADO (5% sobre comisión del socio) ──
   if (sol.zona && comMonto > 0) {
     const { data: enc } = await sb.from('encargados').select('id,nombre,comision_pct').eq('zona', sol.zona).eq('activo', true).maybeSingle();
     if (enc) {
@@ -724,12 +667,13 @@ async function doCompletar() {
       await sb.from('movimientos').insert({ socio_id: null, solicitud_id: pendingCompId, tipo: 'comision_encargado', monto: montoEnc, nota: `Comisi\u00f3n encargado ${pctEnc}% \u2014 ${enc.nombre} \u2014 ${dbc(pendingCompId)}` });
     }
   }
-
   try { await sb.from('garantias').insert({ recibo: dbc(pendingCompId), telefono: sol.telefono || null, falla: null, estado: 'activa', garantia_dias: garDias, garantia_expira: finGarISO, socio_id: sol.socio_asignado || null }); } catch(_) {}
   if (document.getElementById('sec-hi')?.classList.contains('active')) loadHi();
+  const compId = pendingCompId;
   pendingCompId = null;
   closeModal('comp');
   toast('Orden completada y garant\u00eda enviada');
+  logActividad('completar', compId, `Monto: ${fmtM(monto)}`);
   resetBtn(); loadOp(); loadKPIs();
 }
 
@@ -738,7 +682,11 @@ async function doRechazar() {
   if (!mot) { const e=document.getElementById('err-rech'); e.textContent='Ingresa el motivo.'; e.classList.add('v'); return }
   const { error } = await sb.from('solicitudes').update({ estado:'rechazada', motivo_rechazo:mot }).eq('id', pendingRechId);
   if (error) { const e=document.getElementById('err-rech'); e.textContent=error.message; e.classList.add('v'); return }
-  closeModal('rech'); toast('Orden rechazada'); loadOp(); loadKPIs();
+  const rechId = pendingRechId;
+  closeModal('rech');
+  toast('Orden rechazada');
+  logActividad('rechazar', rechId, mot);
+  loadOp(); loadKPIs();
 }
 
 async function waSocioAsignado(id) {
@@ -759,29 +707,27 @@ async function loadHi() {
   const cod = document.getElementById('f-cod').value.trim();
   const d1  = document.getElementById('f-d1').value;
   const d2  = document.getElementById('f-d2').value;
+  // ✅ FIX: destructurar count correctamente
   let q = sb.from('solicitudes').select('*', { count: 'exact' }).eq('estado','completada').not('fecha_fin','is', null).order('fecha_fin',{ascending:false}).range(window._hiPage * 20, (window._hiPage * 20) + 19);
   if (USER_ROLE === 'encargado' && USER_ZONA) q = q.eq('zona', USER_ZONA);
   if (cli) q = q.ilike('cliente','%'+cli+'%');
   if (cod) { const n = parseInt(cod.replace(/^db-/i,'')); if (!isNaN(n)) q = q.eq('id', n); }
   if (d1) q = q.gte('fecha_fin', d1);
   if (d2) q = q.lte('fecha_fin', d2 + 'T23:59:59');
-  const { data, error } = await q;
+  const { data, error, count } = await q;  // ✅ count aquí
   if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return; }
   if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">\u25cb</div>Sin resultados</div>'; return; }
   el.innerHTML = data.map(s => {
     const socNom = s.socio_asignado && sociosMap[s.socio_asignado] ? sociosMap[s.socio_asignado].nombre : '\u2014';
     let garantiaHTML = '';
     if (s.garantia_dias != null) {
-      const hoy = new Date();
-      const expira = s.garantia_expira ? new Date(s.garantia_expira) : null;
-      const vencida = expira ? expira < hoy : false;
+      const hoy = new Date(); const expira = s.garantia_expira ? new Date(s.garantia_expira) : null; const vencida = expira ? expira < hoy : false;
       garantiaHTML = `<div style="margin-top:6px;font-size:12px">\u{1F6E1} Garant\u00eda: ${s.garantia_dias} d\u00edas${expira ? ` \u00b7 Vence: ${expira.toLocaleDateString('es-ES')}` : ''}${vencida ? ` <span style="color:var(--err);font-weight:700">(VENCIDA)</span>` : ''}</div>`;
     }
     return `<div class="hist-card"><div class="hist-row"><div><div class="hist-code">${esc(dbc(s.id))}</div><div class="hist-meta">${esc(s.cliente)} \u00b7 ${esc(socNom)}</div></div><div style="text-align:right"><div class="hist-monto">${fmtM(s.monto)}</div><div class="hist-meta">${fmtD(s.fecha_fin)}</div></div></div><div class="hist-meta" style="margin-top:6px">${esc(s.municipio||'')} \u00b7 ${esc(s.servicio||'')}</div>${s.valoracion ? `<div class="stars-r" style="margin-top:6px">${stars(s.valoracion)}</div>` : ''}${garantiaHTML}</div>`;
   }).join('');
-
   // Paginación
-  const totalPages = Math.ceil(count / 20);
+  const totalPages = Math.ceil((count || 0) / 20);
   if (totalPages > 1) {
     const pag = document.createElement('div');
     pag.style.cssText = 'display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap';
@@ -805,8 +751,28 @@ async function loadSocios() {
   const { data, error } = await sb.from('socios').select('*').order('estado_socio').order('nombre');
   if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return }
   if (!data?.length) { el.innerHTML = '<div class="empty">Sin socios registrados</div>'; return }
-  const pend = data.filter(x => (!x.admitido && x.estado_socio !== 'rechazado') || x.estado_socio === 'pendiente');
-  const rest = data.filter(x=>x.admitido && x.estado_socio!=='pendiente');
+  window._sociosData = data;
+  filtrarSocios();
+}
+
+function filtrarSocios() {
+  const data = window._sociosData;
+  if (!data) return;
+  const nom  = (document.getElementById('f-so-nom')?.value  || '').toLowerCase().trim();
+  const esp  = (document.getElementById('f-so-esp')?.value  || '').toLowerCase().trim();
+  const est  = (document.getElementById('f-so-est')?.value  || '').toLowerCase().trim();
+  const zona = (document.getElementById('f-so-zona')?.value || '').toLowerCase().trim();
+  const filtered = data.filter(s => {
+    if (nom  && !s.nombre?.toLowerCase().includes(nom))       return false;
+    if (esp  && !s.especialidad?.toLowerCase().includes(esp)) return false;
+    if (zona && !s.zona?.toLowerCase().includes(zona))        return false;
+    if (est) { const estado = s.admitido ? (s.estado_socio || 'activo') : 'pendiente'; if (estado !== est) return false; }
+    return true;
+  });
+  const el = document.getElementById('lista-so');
+  if (!filtered.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">◎</div>Sin resultados para ese filtro</div>'; return; }
+  const pend = filtered.filter(x => (!x.admitido && x.estado_socio !== 'rechazado') || x.estado_socio === 'pendiente');
+  const rest = filtered.filter(x => x.admitido && x.estado_socio !== 'pendiente');
   let html = '';
   if (pend.length) html += `<div style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--y);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Pendientes de aprobacion</div>` + pend.map(buildSocioCard).join('');
   if (rest.length) { if (pend.length) html += `<div style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--g1);margin:12px 0 8px;text-transform:uppercase;letter-spacing:1px">Activos / Baja</div>`; html += rest.map(buildSocioCard).join(''); }
@@ -827,6 +793,7 @@ async function aprobarSocio(id, nombre, telefono) {
   const { error } = await sb.from('socios').update({admitido:true,estado_socio:'activo'}).eq('id',id);
   if (error) { toast('Error: '+error.message); return }
   toast('Socio aprobado');
+  logActividad('aprobar_socio', null, `Socio ID: ${id} — ${nombre}`);
   if (telefono) { const msg = CFG.t2.replace('{socio}', nombre); wa(telefono, msg); }
   loadSocios(); loadSociosMap();
 }
@@ -904,16 +871,19 @@ function setKpis({ pend=0, asig=0, comp=0, caja=0 } = {}) {
 }
 setKpis({ pend:0, asig:0, comp:0, caja:0 });
 
-// ── ENCARGADOS SYSTEM ──
+// ── ENCARGADOS ──
 function applyRoleUI() {
   const isEnc = USER_ROLE === 'encargado';
   const tag = document.querySelector('.db-tag');
   if (tag && isEnc) { tag.textContent = 'ZONA: ' + (USER_ZONA || '').toUpperCase(); tag.style.cssText = 'margin-left:6px;font-weight:900;font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(77,168,218,.18);color:var(--blue);white-space:nowrap'; }
   if (isEnc) {
-    ['nav-ca','nav-sp','nav-aj','nav-enc'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+    ['nav-ca','nav-sp','nav-aj','nav-enc','nav-log'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
     const kpiParent = document.getElementById('kpiCaja')?.closest('.kpi-item'); if (kpiParent) kpiParent.style.display = 'none';
-    ['sec-ca','sec-sp','sec-aj','sec-enc'].forEach(id => { const el = document.getElementById(id); if (el) { el.style.display = 'none'; el.classList.remove('active'); } });
-  } else { const encNav = document.getElementById('nav-enc'); if (encNav) encNav.style.display = 'flex'; }
+    ['sec-ca','sec-sp','sec-aj','sec-enc','sec-log'].forEach(id => { const el = document.getElementById(id); if (el) { el.style.display = 'none'; el.classList.remove('active'); } });
+  } else {
+    const encNav = document.getElementById('nav-enc'); if (encNav) encNav.style.display = 'flex';
+    const logNav = document.getElementById('nav-log'); if (logNav) logNav.style.display = 'flex';
+  }
 }
 
 async function loadEncargados() {
@@ -942,12 +912,30 @@ async function doCrearEncargado() {
 }
 async function toggleEncargadoActivo(id, activo) { const { error } = await sb.from('encargados').update({ activo }).eq('id', id); if (error) { toast('Error: ' + error.message); return; } toast(activo ? 'Encargado activado' : 'Encargado desactivado'); loadEncargados(); }
 
-// ════════════════════════════════════════════════════════
-// PUSH NOTIFICATIONS
-// ════════════════════════════════════════════════════════
-// ⚠️  REEMPLAZA esta clave con la tuya:
-//    npm install -g web-push
-//    web-push generate-vapid-keys
+// ── ACTIVITY LOG ──
+async function logActividad(accion, solicitudId = null, detalle = null) {
+  try {
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) return;
+    await sb.from('activity_log').insert({ auth_uid: user.id, rol: USER_ROLE, accion, solicitud_id: solicitudId, detalle });
+  } catch (_) {}
+}
+
+async function loadActivityLog() {
+  const el = document.getElementById('lista-log');
+  if (!el) return;
+  el.innerHTML = '<div class="loading">Cargando...</div>';
+  const { data, error } = await sb.from('activity_log').select('*').order('created_at', { ascending: false }).limit(100);
+  if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return; }
+  if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">◎</div>Sin actividad registrada aún</div>'; return; }
+  const colores = { asignar:'ca', reasignar:'ce', completar:'cc', rechazar:'cr', liberar:'cp', aprobar_socio:'ca' };
+  el.innerHTML = data.map(l => {
+    const chip = colores[l.accion] || 'cp';
+    return `<div class="log-item"><span class="log-accion chip ${chip}">${esc(l.accion)}</span><div class="log-detail">${l.solicitud_id ? `<strong>${dbc(l.solicitud_id)}</strong> · ` : ''}${esc(l.detalle || '')} <span style="font-size:11px;color:var(--g2)">[${esc(l.rol)}]</span></div><span class="log-time">${fmt(l.created_at)}</span></div>`;
+  }).join('');
+}
+
+// ── PUSH NOTIFICATIONS ──
 const VAPID_PUBLIC = 'BBQTR3KhE7bjwkSS4VnLKKfxGmEX6NgLMHLDI6hta-6HBdVgPlERExJ0RZm9L2oOYfdSkAWlHt6QOjVh9gql76g';
 
 function urlBase64ToUint8Array(b64) {
@@ -959,56 +947,23 @@ function urlBase64ToUint8Array(b64) {
 
 async function suscribirPush() {
   try {
-    if (!('Notification' in window))          { toast('❌ Notification API no disponible'); return; }
-    if (!('serviceWorker' in navigator))      { toast('❌ ServiceWorker no disponible'); return; }
-    if (Notification.permission === 'denied') { toast('❌ Notificaciones bloqueadas'); return; }
-    if (VAPID_PUBLIC.startsWith('REEMPLAZA')) { toast('❌ VAPID no configurada'); return; }
-
-    toast('Solicitando permiso...');
+    if (!('Notification' in window))          return;
+    if (!('serviceWorker' in navigator))      return;
+    if (Notification.permission === 'denied') return;
+    if (VAPID_PUBLIC.startsWith('REEMPLAZA')) return;
     const permission = await Notification.requestPermission();
-    if (permission !== 'granted') { toast('❌ Permiso denegado: ' + permission); return; }
-
-    toast('Obteniendo SW...');
+    if (permission !== 'granted') return;
     const reg = await navigator.serviceWorker.ready;
-
-    toast('Suscribiendo...');
     let sub = await reg.pushManager.getSubscription();
     if (!sub) {
-      sub = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC)
-      });
+      sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC) });
     }
-
-    toast('Guardando en DB...');
-    const { data: { user } } = await sb.auth.getUser();
-    if (!user) { toast('❌ Sin usuario'); return; }
-
-    const { error } = await sb.from('push_subscriptions').upsert(
-      { auth_uid: user.id, subscription: JSON.stringify(sub) },
-      { onConflict: 'auth_uid' }
-    );
-
-    if (error) { toast('❌ DB error: ' + error.message); return; }
-
-    toast('✅ Push suscrito OK');
-  } catch (e) {
-    toast('❌ Error: ' + e.message);
-  }
-}
-  
-async function logActividad(accion, solicitudId = null, detalle = null) {
-  try {
     const { data: { user } } = await sb.auth.getUser();
     if (!user) return;
-    await sb.from('activity_log').insert({
-      auth_uid:     user.id,
-      rol:          USER_ROLE,
-      accion,
-      solicitud_id: solicitudId,
-      detalle
-    });
-  } catch (_) {}
+    await sb.from('push_subscriptions').upsert({ auth_uid: user.id, subscription: JSON.stringify(sub) }, { onConflict: 'auth_uid' });
+  } catch (e) {
+    console.warn('Push:', e.message);
+  }
 }
 </script>
 </body>
