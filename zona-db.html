@@ -1,917 +1,762 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-  <meta name="theme-color" content="#1A1A2E"/>
-  <title>dbarrio — servicios técnicos</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#1A1A2E"/>
+<title>Zona db — dbarrio</title>
+<meta name="description" content="Curiosidades, señales de alerta y trucos prácticos para que tu casa funcione mejor. El rincón del hogar cubano."/>
 
-  <!-- SEO -->
-  <meta name="description" content="Reparaciones del hogar en La Habana. Electricidad, plomería, refrigeración y más. Técnicos verificados en tu municipio."/>
-  <meta name="keywords" content="técnicos, reparaciones, plomería, electricidad, refrigeración, La Habana, servicios del hogar"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet"/>
 
-  <!-- Open Graph -->
-  <meta property="og:type"        content="website"/>
-  <meta property="og:url"         content="https://dbarrio-two.vercel.app/"/>
-  <meta property="og:title"       content="dbarrio — servicios técnicos"/>
-  <meta property="og:description" content="Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Solicita ahora y recibe tu código de seguimiento."/>
-  <meta property="og:image"       content="https://dbarrio-two.vercel.app/assets/icons/db-icon-512.png"/>
+<style>
+:root{
+  --ink:#1A1A2E; --ink2:#24243C; --y:#F5C116; --yd:#C9980D;
+  --y-bg:rgba(245,193,22,.13);
+  --bg:#F4F2EE; --card:#FDFCFA; --line:#E2DED8;
+  --g1:#7A7A8A; --g2:#B8B5AE;
+  --wa:#25D366; --ok:#4ECBA0; --err:#E05C5C;
+  --err-bg:rgba(224,92,92,.1); --ok-bg:rgba(78,203,160,.1);
+  --f:'DM Sans',system-ui,sans-serif;
+  --fd:'Barlow Condensed',system-ui,sans-serif;
+  --r:14px; --rs:8px;
+  --sh:0 2px 12px rgba(26,26,46,.08),0 0 0 1px rgba(26,26,46,.05);
+  --ease:cubic-bezier(.4,0,.2,1);
+  --th:56px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--ink)}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100svh}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--f);cursor:pointer}
 
-  <!-- Twitter / X -->
-  <meta name="twitter:card"        content="summary"/>
-  <meta name="twitter:title"       content="dbarrio — servicios técnicos"/>
-  <meta name="twitter:description" content="Técnicos verificados en tu municipio. Solicita ahora."/>
-  <meta name="twitter:image"       content="https://dbarrio-two.vercel.app/assets/icons/db-icon-512.png"/>
+/* ── HEADER ── */
+.site-header{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:calc(var(--th) + env(safe-area-inset-top,0));
+  padding:env(safe-area-inset-top,0) 16px 0;
+  background:var(--ink);display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.h-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.h-logo-text{font-family:var(--fd);font-size:30px;font-weight:900;color:var(--y);letter-spacing:-2px;line-height:1}
+.h-logo-badge{background:rgba(245,193,22,.16);border:1px solid rgba(245,193,22,.38);border-radius:6px;padding:2px 7px;font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--y);line-height:1.2}
+.h-title{flex:1;text-align:center;font-family:var(--fd);font-size:16px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.h-back{flex-shrink:0;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 13px;transition:background .2s,color .2s;-webkit-tap-highlight-color:transparent}
+.h-back:hover{background:rgba(255,255,255,.13);color:#fff}
 
-  <!-- PWA iOS -->
-  <meta name="mobile-web-app-capable"                content="yes"/>
-  <meta name="apple-mobile-web-app-capable"          content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title"            content="dbarrio"/>
+/* ── HERO ── */
+.hero-banner{
+  margin-top:calc(var(--th) + env(safe-area-inset-top,0));
+  background:var(--ink2);position:relative;overflow:hidden;
+  padding:32px 20px 28px;border-bottom:3px solid var(--y);
+}
+.hero-banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(245,193,22,.15) 1px,transparent 1px);background-size:22px 22px;pointer-events:none}
+.hero-banner::after{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:linear-gradient(to bottom,var(--y),rgba(245,193,22,.3))}
+.hero-inner{position:relative;z-index:1;max-width:640px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--y);margin-bottom:12px;opacity:.85}
+.hero-eyebrow::before{content:'';width:18px;height:2px;background:var(--y);border-radius:2px;opacity:.7;display:inline-block}
+.hero-title{font-family:var(--fd);font-size:clamp(28px,7vw,44px);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-.3px;margin-bottom:12px}
+.hero-title em{color:var(--y);font-style:italic}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:380px;line-height:1.6;margin-bottom:18px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:7px}
+.hero-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 11px;font-size:11px;font-weight:600;color:rgba(255,255,255,.55)}
 
-  <link rel="icon" type="image/png" sizes="32x32"  href="db-32.png?v=1">
-  <link rel="icon" type="image/png" sizes="16x16"  href="db-16.png?v=1">
-  <link rel="apple-touch-icon"     sizes="180x180" href="db-180.png?v=1">
-  <link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=1">
-  <link rel="icon" type="image/png" sizes="512x512" href="db-512.png?v=1">
-  <link rel="manifest" href="manifest.json?v=1">
+/* ── LAYOUT ── */
+.main-content{padding:20px 14px calc(40px + env(safe-area-inset-bottom,0));max-width:700px;margin:0 auto}
+.section-hdr{margin-bottom:14px}
+.section-title{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink);letter-spacing:-.2px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1.5px;background:var(--line);border-radius:2px}
+.section-sub{font-size:12px;color:var(--g1)}
+.section-gap{margin-bottom:28px}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+/* ── FILTROS DE CATEGORÍA ── */
+.cat-filters{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:20px;-webkit-overflow-scrolling:touch}
+.cat-filters::-webkit-scrollbar{display:none}
+.cat-btn{flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--g1);transition:all .18s;-webkit-tap-highlight-color:transparent}
+.cat-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.cat-btn:hover:not(.active){border-color:var(--ink);color:var(--ink)}
 
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
-      --ink:#1C1C2E;--ink2:#2E2E45;
-      --bg:#F0EDE8;--card:#FFFFFF;
-      --line:#E5E2DC;--g1:#6B6B7E;--g2:#B8B4AE;
-      --err:#D63031;--ok:#00856F;
-      --r:14px;--f:'Outfit',sans-serif;--fd:'Barlow Condensed',sans-serif;
-    }
+/* ── CAROUSEL ── */
+.carousel-wrap{margin-bottom:28px}
+.carousel-card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--line);overflow:hidden}
+.slide-topic-tag{position:absolute;top:12px;right:12px;font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:3px 9px;z-index:2}
+.carousel-slides{position:relative;min-height:220px}
+.c-slide{display:none;padding:16px 16px 14px;animation:slideIn .35s var(--ease) forwards;position:relative}
+.c-slide.active{display:block}
+@keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.slide-head{margin-bottom:12px;padding-right:90px}
+.slide-label-top{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--g1);margin-bottom:5px}
+.slide-hook{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:4px}
+.slide-headline{font-family:var(--fd);font-size:clamp(17px,4.5vw,23px);font-weight:900;color:var(--ink);line-height:1.15;letter-spacing:-.2px}
+.slide-blocks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.slide-block{border-radius:var(--rs);padding:11px 12px 10px}
+.block-a{background:var(--bg);border:1px solid var(--line)}
+.block-b{background:var(--y-bg);border:1px solid rgba(245,193,22,.3)}
+.block-warn{background:var(--err-bg);border:1px solid rgba(224,92,92,.2)}
+.block-ok{background:var(--ok-bg);border:1px solid rgba(78,203,160,.22)}
+.block-lbl{font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:5px}
+.block-a .block-lbl{color:var(--g1)} .block-b .block-lbl{color:var(--yd)}
+.block-warn .block-lbl{color:var(--err)} .block-ok .block-lbl{color:#1E7A5A}
+.block-text{font-size:12.5px;line-height:1.5;color:var(--ink)}
+.block-b .block-text,.block-ok .block-text{font-weight:600}
+.slide-foot{border-top:1px solid var(--line);padding:9px 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.slide-foot-note{font-size:11px;color:var(--g1);font-style:italic;line-height:1.4;flex:1}
+.slide-foot-icon{font-size:18px;flex-shrink:0}
+.carousel-controls{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 12px;border-top:1px solid var(--line);background:var(--card)}
+.carousel-dots{display:flex;gap:6px;flex-wrap:wrap}
+.c-dot{width:7px;height:7px;border-radius:50%;background:var(--g2);border:none;padding:0;transition:background .2s,transform .2s,width .2s;cursor:pointer;flex-shrink:0}
+.c-dot.active{background:var(--y);transform:scale(1.3);width:18px;border-radius:4px}
+.carousel-arrows{display:flex;gap:7px;align-items:center}
+.c-arrow{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .18s,border-color .18s,color .18s;-webkit-tap-highlight-color:transparent}
+.c-arrow:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+.carousel-count{font-family:var(--fd);font-size:12px;font-weight:900;color:var(--g1);letter-spacing:.5px;padding:0 4px;min-width:36px;text-align:center}
 
-    html{background:var(--ink)}
-    body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+/* ── TIPS GRID ── */
+.tips-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:28px}
+@media(min-width:560px){.tips-grid{grid-template-columns:1fr 1fr}}
+.tip-card{background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);padding:14px 14px 13px;display:flex;gap:12px;align-items:flex-start;transition:transform .18s var(--ease),box-shadow .18s var(--ease);position:relative;overflow:hidden}
+.tip-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--y);border-radius:2px 0 0 2px}
+.tip-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,26,46,.1),0 0 0 1px rgba(26,26,46,.05)}
+.tip-icon{font-size:24px;line-height:1;flex-shrink:0;margin-top:1px}
+.tip-body{flex:1;min-width:0}
+.tip-title{font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:4px;letter-spacing:-.1px}
+.tip-text{font-size:12.5px;color:var(--g1);line-height:1.5}
+.tip-text strong{color:var(--ink);font-weight:700}
+.tip-badge{display:inline-flex;align-items:center;gap:4px;margin-top:7px;font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2);background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:2px 8px}
 
-    /* ── HEADER ── */
-    .header{
-      position:sticky;top:0;z-index:40;background:var(--ink);
-      height:calc(54px + env(safe-area-inset-top,0));
-      padding:env(safe-area-inset-top,0) 16px 0;
-      display:flex;align-items:center;justify-content:space-between;
-    }
-    .nav{display:flex;gap:6px}
-    .nav a{font-size:11px;font-weight:500;color:rgba(255,255,255,.45);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:20px;transition:all .15s}
-    .nav a:hover{color:var(--y);border-color:rgba(245,193,22,.3)}
+/* ── ACORDEÓN ── */
+.faq-list{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.faq-item{background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);overflow:hidden}
+.faq-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;background:none;border:none;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.faq-btn:hover{background:var(--bg)}
+.faq-q{font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink);line-height:1.2;flex:1}
+.faq-icon{font-size:18px;color:var(--g2);flex-shrink:0;transition:transform .25s var(--ease)}
+.faq-item.open .faq-icon{transform:rotate(45deg);color:var(--y)}
+.faq-body{display:none;padding:0 16px 14px;font-size:13px;color:var(--g1);line-height:1.6;border-top:1px solid var(--line)}
+.faq-body strong{color:var(--ink);font-weight:700}
+.faq-item.open .faq-body{display:block}
 
-    /* ── HERO ── */
-    .hero{background:var(--ink);padding:28px 16px 0;position:relative;overflow:hidden}
-    .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px),repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px)}
-    .hero-wm{position:absolute;right:-10px;top:-20px;font-family:var(--fd);font-size:200px;font-weight:900;color:rgba(245,193,22,.045);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none}
-    .hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(245,193,22,.1);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:4px 12px 4px 8px;margin-bottom:14px}
-    .hero-dot{width:7px;height:7px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite}
-    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 6px rgba(245,193,22,0)}}
-    .hero-chip-txt{font-size:11px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.3px}
-    .hero-title{font-family:var(--fd);font-size:46px;font-weight:900;font-style:italic;color:#fff;line-height:.92;letter-spacing:-.5px;margin-bottom:12px;position:relative;z-index:1}
-    .hero-title em{font-style:normal;color:var(--y);display:block}
-    .hero-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;max-width:300px;margin-bottom:28px;position:relative;z-index:1}
-    .code-badge{display:inline-flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle;margin:0 2px}
-    .hero-stats{display:flex;border-top:1px solid rgba(255,255,255,.07);margin:0 -16px}
-    .stat{flex:1;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:2px;border-right:1px solid rgba(255,255,255,.07)}
-    .stat:last-child{border-right:none}
-    .stat-n{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--y);line-height:1}
-    .stat-l{font-size:10px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.3px}
-    .hero-curve{height:26px;background:var(--bg);border-radius:26px 26px 0 0;margin-top:-1px}
+/* ── CHECKLIST ── */
+.checklist-card{background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);overflow:hidden;margin-bottom:28px}
+.checklist-head{background:var(--ink);padding:14px 18px 13px;display:flex;align-items:center;gap:10px;justify-content:space-between}
+.checklist-head-title{font-family:var(--fd);font-size:19px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.1}
+.checklist-head-title span{color:var(--y)}
+.checklist-badge{background:var(--y);color:var(--ink);font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;border-radius:6px;padding:3px 8px;flex-shrink:0}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.check-item:last-child{border-bottom:none}
+.check-item:hover{background:var(--bg)}
+.check-mark{font-size:16px;flex-shrink:0;margin-top:2px}
+.check-text{font-size:13px;color:var(--ink);line-height:1.5;flex:1}
+.check-text strong{font-weight:900}
+.check-text em{color:var(--g1);font-style:normal;font-size:12px;display:block;margin-top:2px}
 
-    /* ── CONTENT ── */
-    .content{padding:4px 14px calc(40px + env(safe-area-inset-bottom,0));display:flex;flex-direction:column;gap:10px}
+/* ── TARJETAS DATO ── */
+.dato-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.dato-card{background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);padding:14px;text-align:center;position:relative;overflow:hidden}
+.dato-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--y)}
+.dato-n{font-family:var(--fd);font-size:34px;font-weight:900;color:var(--ink);line-height:1;letter-spacing:-1px}
+.dato-n em{color:var(--y);font-style:normal}
+.dato-lbl{font-size:11px;color:var(--g1);margin-top:4px;line-height:1.4}
 
-    /* ── CTA ── */
-    .btn-cta{width:100%;border:none;cursor:pointer;background:var(--y);border-radius:var(--r);display:flex;align-items:stretch;overflow:hidden;box-shadow:0 4px 20px rgba(245,193,22,.35);transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
-    .btn-cta:active{transform:scale(.97);box-shadow:0 2px 8px rgba(245,193,22,.2)}
-    .btn-cta-body{flex:1;padding:18px 20px;text-align:left}
-    .cta-title{font-family:var(--fd);font-size:25px;font-weight:900;color:var(--ink);letter-spacing:.2px;line-height:1;display:block}
-    .cta-sub{font-size:12px;font-weight:600;color:rgba(28,28,46,.55);display:block;margin-top:2px}
-    .btn-cta-ico{width:56px;background:rgba(28,28,46,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+/* ── CTA ── */
+.cta-block{background:var(--ink2);border-radius:var(--r);padding:24px 20px;text-align:center;border:1px solid rgba(255,255,255,.07);margin-bottom:24px;position:relative;overflow:hidden}
+.cta-block::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(245,193,22,.1) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
+.cta-block::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--y),rgba(245,193,22,.2))}
+.cta-inner{position:relative;z-index:1}
+.cta-eyebrow{font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
+.cta-title{font-family:var(--fd);font-size:clamp(20px,5vw,28px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.2px;margin-bottom:16px}
+.cta-title em{color:var(--y);font-style:normal}
+.btn-wa{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--wa);color:#fff;font-size:14px;font-weight:800;border:none;border-radius:var(--r);padding:13px 24px;transition:opacity .18s,transform .15s;margin-bottom:10px;-webkit-tap-highlight-color:transparent}
+.btn-wa:hover{opacity:.9}
+.btn-wa:active{transform:scale(.97)}
+.wa-icon{width:16px;height:16px;flex-shrink:0}
+.cta-note{font-size:12px;color:rgba(255,255,255,.38)}
 
-    /* ── ACARDS ── */
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .acard{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:transform .1s;box-shadow:0 1px 4px rgba(0,0,0,.05);-webkit-tap-highlight-color:transparent;text-align:left;width:100%}
-    .acard:active{transform:scale(.97)}
-    .acard.row{flex-direction:row;align-items:center;justify-content:space-between}
-    .acard.hl{background:var(--yl);border-color:rgba(245,193,22,.35)}
-    .acard.dk{background:#F4F3F8;border-color:rgba(28,28,46,.1)}
-    .acard-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .icy{background:rgba(245,193,22,.15)} .icb{background:rgba(66,135,245,.1)}
-    .ico{background:rgba(237,137,54,.1)}  .ick{background:rgba(28,28,46,.07)}
-    .acard-txt{display:flex;flex-direction:column;gap:2px;flex:1}
-    .acard-title{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
-    .acard-desc{font-size:11px;font-weight:500;color:var(--g1)}
+/* ── FOOTER ── */
+.site-footer{background:var(--ink);border-top:2px solid var(--y);padding:20px 16px calc(20px + env(safe-area-inset-bottom,0));display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-logo{font-family:var(--fd);font-size:28px;font-weight:900;color:var(--y);letter-spacing:-2px;line-height:1}
+.footer-text{font-size:11px;color:rgba(255,255,255,.28);line-height:1.4}
+.footer-tag{font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18)}
 
-    /* ── ANIMACIONES ── */
-    @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    .hero{animation:up .35s ease both}
-    .btn-cta{animation:up .3s ease .08s both}
-    .grid2{animation:up .3s ease .14s both}
-    .a1{animation:up .3s ease .2s both}
-    .a2{animation:up .3s ease .25s both}
-
-    /* ── TRACKER ── */
-    .tracker-wrap{background:var(--ink);border-radius:var(--r);padding:16px 18px}
-    .tracker-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);margin-bottom:6px}
-    .tracker-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:10px}
-    .tracker-input-row{display:flex;gap:8px}
-    .tracker-input-row input{flex:1;padding:10px 12px;border:1.5px solid rgba(255,255,255,.15);border-radius:10px;font-size:14px;font-family:var(--f);color:#fff;background:rgba(255,255,255,.07);outline:none;-webkit-appearance:none}
-    .tracker-input-row input::placeholder{color:rgba(255,255,255,.3)}
-    .tracker-input-row input:focus{border-color:var(--y);background:rgba(245,193,22,.07)}
-    .tracker-input-row button{padding:0 16px;background:var(--y);color:var(--ink);border:none;border-radius:10px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;min-height:44px}
-    .tracker-input-row button:active{opacity:.85}
-    .tracker-result{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.6;display:none}
-    .tracker-result.v{display:block}
-    .tracker-result.err{background:rgba(214,48,49,.08);border:1px solid rgba(214,48,49,.2);color:#D63031}
-    .tr-code{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--y);letter-spacing:1px;display:block;margin-bottom:4px}
-    .tr-estado{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:5px;font-size:11px;font-weight:700;margin-bottom:4px}
-    .tr-info{font-size:12px;color:rgba(255,255,255,.45);line-height:1.7}
-    .st-pendiente{background:rgba(245,193,22,.15);color:#C9980D}
-    .st-asignada{background:rgba(77,168,218,.15);color:#2778A0}
-    .st-completada{background:rgba(78,203,160,.15);color:#00856F}
-    .st-rechazada{background:rgba(214,48,49,.1);color:#D63031}
-
-    /* ── MODALES ── */
-    .ov{display:none;position:fixed;inset:0;background:rgba(15,15,28,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:200;align-items:flex-end;justify-content:center}
-    .ov.open{display:flex}
-    .sheet{background:var(--card);width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom,28px);max-height:92svh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideup .26s cubic-bezier(.22,.72,0,1) both}
-    @keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
-    .pill{width:36px;height:4px;background:var(--line);border-radius:4px;margin:10px auto}
-    .sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;margin-bottom:14px}
-    .sheet-title{font-family:var(--fd);font-size:23px;font-weight:800;color:var(--ink);letter-spacing:.1px}
-    .sheet-x{background:var(--line);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--g1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .sheet-x:hover{background:var(--g2)}
-    .mbody{padding:0 20px 20px}
-    .fg{margin-bottom:13px}
-    label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
-    input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:var(--f);color:var(--ink);background:#FAFAFA;transition:border-color .15s;-webkit-appearance:none;appearance:none}
-    .phone-row{display:grid;grid-template-columns:140px 1fr;gap:10px}
-    .phone-row select,.phone-row input{width:100%}
-    @media(max-width:520px){.phone-row{grid-template-columns:1fr}}
-    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);background:#fff;box-shadow:0 0 0 3px rgba(28,28,46,.06)}
-    textarea{resize:vertical;min-height:72px}
-    .fe{font-size:11px;color:var(--err);margin-top:4px;display:none}
-    .fe.v{display:block}
-    .cb{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;cursor:pointer}
-    .cb input[type=checkbox]{width:18px;height:18px;margin-top:1px;flex-shrink:0;-webkit-appearance:checkbox!important;appearance:checkbox!important;accent-color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:4px}
-    .cb span{font-size:12px;color:var(--g1);line-height:1.55}
-    .cb a{color:var(--ink)}
-    .sep{display:flex;align-items:center;gap:10px;margin:14px 0 12px;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px}
-    .sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--line)}
-    .stars{display:flex;gap:10px;padding:4px 0}
-    .star{font-size:34px;cursor:pointer;color:var(--line);transition:color .1s,transform .1s;user-select:none;line-height:1}
-    .star.on{color:var(--y)}
-    .star:active{transform:scale(.82)}
-    .btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:var(--f);cursor:pointer;margin-top:14px;transition:background .14s,transform .1s;-webkit-tap-highlight-color:transparent}
-    .btn:active{transform:scale(.97)}
-    .btn:disabled{opacity:.5;cursor:not-allowed}
-    .btn-y{background:var(--y);color:var(--ink)}
-    .btn-y:hover{background:var(--yd)}
-    .btn-k{background:var(--ink);color:#fff}
-    .btn-k:hover{background:var(--ink2)}
-    .ok-box{display:none;background:linear-gradient(135deg,#EDFAF3,#D4F0E4);border:1.5px solid #8DD4AA;border-radius:10px;padding:16px 18px;margin-top:14px;font-size:13px;color:var(--ok);line-height:1.7}
-    .ok-box.v{display:block}
-    .ok-code{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:24px;font-weight:900;padding:4px 14px;border-radius:8px;margin:6px 0 4px;letter-spacing:1px}
-    .ok-note{display:block;font-size:11px;color:#1A7F5A;margin-top:4px}
-    .err-box{display:none;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--err);line-height:1.5}
-    .err-box.v{display:block}
-    .hint{font-size:12px;color:var(--g1);line-height:1.55;margin-top:6px}
-    .sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
-    .btn-y .sp{border-color:rgba(28,28,46,.2);border-top-color:var(--ink)}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
-
-    /* ── BRAND ── */
-    .db-brand{display:flex;flex:1 1 auto;align-items:center;gap:10px;min-width:0;-webkit-tap-highlight-color:transparent;user-select:none;text-decoration:none}
-    .db-iconbox{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;flex:0 0 auto}
-    .db-icon{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1}
-    .db-icon .d{color:#E6E6E6} .db-icon .b{color:#F5C116}
-    .db-wordmark{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.6px;line-height:1;white-space:nowrap}
-    .db-wordmark .d{color:#E6E6E6} .db-wordmark .rest{color:#F5C116}
-    .db-tag{margin-left:6px;font-weight:900;letter-spacing:.5px;color:rgba(255,255,255,.50);font-size:12px;white-space:nowrap}
-    @media(max-width:560px){.db-wordmark{display:none}.db-tag{display:none}}
-  </style>
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.06s} .rd2{transition-delay:.12s} .rd3{transition-delay:.18s}
+.rd4{transition-delay:.24s} .rd5{transition-delay:.30s} .rd6{transition-delay:.36s}
+</style>
 </head>
 <body>
 
-<header class="header">
-  <a href="#" class="db-brand" aria-label="dbarrio">
-    <span class="db-iconbox" aria-hidden="true">
-      <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
-    </span>
-    <span class="db-wordmark"><span class="d">d</span><span class="rest">barrio</span></span>
-    <span class="db-tag">SERVICIOS</span>
+<header class="site-header">
+  <a class="h-logo" href="index.html" aria-label="Volver a inicio">
+    <span class="h-logo-text">db</span>
+    <span class="h-logo-badge">dbarrio</span>
   </a>
-  <nav class="nav">
-    <a href="privacidad.html" target="_blank">Privacidad</a>
-    <a href="terminos.html"   target="_blank">Términos</a>
-  </nav>
+  <span class="h-title">Zona db</span>
+  <a href="index.html" class="h-back">← Inicio</a>
 </header>
 
-<section class="hero">
-  <div class="hero-wm" aria-hidden="true">db</div>
-  <div class="hero-chip">
-    <span class="hero-dot"></span>
-    <span class="hero-chip-txt">Activo ahora</span>
+<div class="hero-banner">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Para el hogar cubano</div>
+    <h1 class="hero-title">Lo que nadie<br>te dice <em>antes</em><br>de gastar.</h1>
+    <p class="hero-sub">Curiosidades, señales de alerta y trucos prácticos para que tu casa funcione mejor y dure más.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">⚡ Electricidad</span>
+      <span class="hero-tag">🚿 Plomería</span>
+      <span class="hero-tag">❄️ Refrigeración</span>
+      <span class="hero-tag">🏠 Construcción</span>
+      <span class="hero-tag">💸 Ahorro</span>
+    </div>
   </div>
-  <h1 class="hero-title">Encuentra un técnico <em>cerca de ti.</em></h1>
-  <p class="hero-desc">
-    Reparaciones del hogar en La Habana sin complicaciones.
-    Electricidad, plomería, refrigeración y más en un solo lugar.
-    Solicita el servicio y coordinamos un técnico en tu municipio.
-    Guarda tu código <span class="code-badge">db-xxxx</span> para seguimiento, garantía y calificación.
-  </p>
-  <div class="hero-stats">
-    <div class="stat"><span class="stat-n">24h</span><span class="stat-l">Respuesta</span></div>
-    <div class="stat"><span class="stat-n">Técnicos</span><span class="stat-l">Verificados</span></div>
-    <div class="stat"><span class="stat-n">WhatsApp</span><span class="stat-l">Directo</span></div>
-  </div>
-</section>
-<div class="hero-curve"></div>
-
-<div class="content">
-
-  <!-- CTA principal -->
-  <button class="btn-cta" onclick="open_('sol')">
-    <div class="btn-cta-body">
-      <span class="cta-title">Solicitar servicio</span>
-      <span class="cta-sub">Un técnico se pondrá en contacto contigo</span>
-    </div>
-    <div class="btn-cta-ico">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(28,28,46,.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-    </div>
-  </button>
-
-  <!-- Grid acciones -->
-  <div class="grid2">
-    <button class="acard" onclick="open_('gar')">
-      <div class="acard-icon icb">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4287f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-      </div>
-      <div class="acard-txt">
-        <span class="acard-title">Garantía</span>
-        <span class="acard-desc">Si el trabajo falló</span>
-      </div>
-    </button>
-
-    <button class="acard" onclick="open_('cal')">
-      <div class="acard-icon icy">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      </div>
-      <div class="acard-txt">
-        <span class="acard-title">Calificar</span>
-        <span class="acard-desc">Control de calidad</span>
-      </div>
-    </button>
-
-    <button class="acard hl" onclick="open_('uni')">
-      <div class="acard-icon ico">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DD6B20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <div class="acard-txt">
-        <span class="acard-title">Únete</span>
-        <span class="acard-desc">Trabaja con nosotros</span>
-      </div>
-    </button>
-
-    <button class="acard" onclick="location.href='zona-db.html'">
-      <div class="acard-icon icy">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 17V9l6-4 6 4v8"/><path d="M10 17v-4h4v4"/></svg>
-      </div>
-      <div class="acard-txt">
-        <span class="acard-title">Zona db</span>
-        <span class="acard-desc">Tips del barrio</span>
-      </div>
-    </button>
-  </div>
-
-  <!-- Acceso privado -->
-  <button class="acard row dk a1" onclick="open_('acc')">
-    <div class="acard-icon ick">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#454562" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    </div>
-    <div class="acard-txt">
-      <span class="acard-title">Acceso privado</span>
-      <span class="acard-desc">Admin, encargados y socios verificados</span>
-    </div>
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8B4AE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-  </button>
-
-  <!-- Tracker -->
-  <div class="tracker-wrap a2">
-    <div class="tracker-label">Consultar mi orden</div>
-    <div class="tracker-sub">Ingresa tu código para ver el estado</div>
-    <div class="tracker-input-row">
-      <input id="tr-cod" type="text" placeholder="db-xxxx" maxlength="12" autocomplete="off"
-        oninput="this.value=this.value.replace(/[^0-9db\-]/gi,'').toLowerCase()"
-        onkeydown="if(event.key==='Enter')buscarOrden()"/>
-      <button onclick="buscarOrden()">Buscar</button>
-    </div>
-    <div class="tracker-result" id="tr-result"></div>
-  </div>
-
 </div>
 
-<!-- ══ MODAL SOLICITAR ══ -->
-<div class="ov" id="ov-sol" onclick="ovc(event,'sol')">
-<div class="sheet">
-  <div class="pill"></div>
-  <div class="sheet-hdr">
-    <span class="sheet-title">Solicitar técnico</span>
-    <button class="sheet-x" onclick="close_('sol')">&times;</button>
-  </div>
-  <div class="mbody">
-    <div class="hint" style="margin-bottom:12px">
-      Estamos <strong>activando la red por municipios</strong>. Si aún no hay técnico disponible en tu zona,
-      tu solicitud queda registrada y te avisamos por WhatsApp cuando podamos atender.
+<main class="main-content">
+
+  <!-- ── DATOS RÁPIDOS ── -->
+  <div class="section-gap reveal">
+    <div class="section-hdr">
+      <h2 class="section-title">Lo que más duele</h2>
+      <p class="section-sub">Datos reales del hogar cubano</p>
     </div>
-    <div class="fg">
-      <label>Nombre completo</label>
-      <input id="s-cli" type="text" placeholder="Tu nombre" autocomplete="name"/>
-      <div class="fe" id="es-cli">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>WhatsApp</label>
-      <div class="phone-row">
-        <select id="s-code">
-          <option value="+53" selected>Cuba (+53)</option>
-          <option value="+34">España (+34)</option>
-          <option value="+1">EE. UU. (+1)</option>
-          <option value="+52">México (+52)</option>
-        </select>
-        <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
+    <div class="dato-grid">
+      <div class="dato-card">
+        <div class="dato-n">7<em>×</em></div>
+        <div class="dato-lbl">más caro arreglar una gotera tarde que a tiempo</div>
       </div>
-      <div class="fe" id="es-wa">Número inválido.</div>
-    </div>
-    <div class="fg">
-      <label>Municipio</label>
-      <input id="s-mun" type="text" placeholder="Municipio en La Habana"/>
-      <div class="fe" id="es-mun">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>Zona</label>
-      <select id="s-zona">
-        <option value="">-- Seleccionar zona --</option>
-        <option value="norte">Norte</option>
-        <option value="sur">Sur</option>
-        <option value="centro">Centro</option>
-        <option value="este">Este</option>
-        <option value="oeste">Oeste</option>
-      </select>
-      <div class="fe" id="es-zona">Selecciona una zona.</div>
-    </div>
-    <div class="fg">
-      <label>Dirección (opcional)</label>
-      <input id="s-dir" type="text" placeholder="Calle, número, referencias..."/>
-    </div>
-    <div class="fg">
-      <label>Tipo de servicio</label>
-      <select id="s-srv">
-        <option value="">-- Seleccionar --</option>
-        <option>Electrodomésticos</option>
-        <option>Plomería</option>
-        <option>Electricidad</option>
-        <option>Refrigeración</option>
-        <option>Televisión / audio</option>
-        <option>Computadoras</option>
-        <option>Celulares</option>
-        <option>Cerrajería</option>
-        <option>Otro</option>
-      </select>
-      <div class="fe" id="es-srv">Selecciona un servicio.</div>
-    </div>
-    <div class="fg">
-      <label>Descripción del problema</label>
-      <textarea id="s-det" placeholder="Describe qué falla o qué necesitas... (marca, modelo y desde cuándo)"></textarea>
-    </div>
-    <p class="hint" style="margin-top:-4px;margin-bottom:10px">
-      Recibirás un <strong>código</strong> para seguimiento, garantía y calificación.
-    </p>
-    <div class="cb">
-      <input type="checkbox" id="s-cp"/>
-      <span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span>
-    </div>
-    <div class="fe" id="es-cp">Debes aceptar Términos y Privacidad.</div>
-    <div class="ok-box" id="ok-sol">
-      ✅ Solicitud registrada. Tu código es:<br/>
-      <span class="ok-code" id="cod-sol"></span>
-      <span class="ok-note">Guárdalo — lo necesitas para garantía, reclamo y calificación.</span>
-    </div>
-    <div class="err-box" id="err-sol"></div>
-    <button class="btn btn-y" id="btn-sol" onclick="envSol()">Registrar solicitud</button>
-    <p class="hint" style="margin-top:10px">Si es urgente, escribe "URGENTE" en la descripción.</p>
-  </div>
-</div></div>
-
-<!-- ══ MODAL GARANTÍA ══ -->
-<div class="ov" id="ov-gar" onclick="ovc(event,'gar')">
-<div class="sheet">
-  <div class="pill"></div>
-  <div class="sheet-hdr">
-    <span class="sheet-title">Reclamar garantía</span>
-    <button class="sheet-x" onclick="close_('gar')">&times;</button>
-  </div>
-  <div class="mbody">
-    <div class="hint" style="margin-bottom:12px">Solo aplica para trabajos realizados dentro del período de garantía.</div>
-    <div class="fg">
-      <label>Código del servicio</label>
-      <input id="g-rec" type="text" placeholder="db-xxxx"/>
-      <div class="fe" id="eg-rec">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>Teléfono de contacto</label>
-      <input id="g-tel" type="tel" placeholder="+53..."/>
-      <div class="fe" id="eg-tel">Número inválido.</div>
-    </div>
-    <div class="fg">
-      <label>Describe la falla</label>
-      <textarea id="g-fal" placeholder="Qué falla presenta el trabajo..."></textarea>
-      <div class="fe" id="eg-fal">Requerido.</div>
-    </div>
-    <div class="cb">
-      <input type="checkbox" id="g-cp"/>
-      <span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span>
-    </div>
-    <div class="fe" id="eg-cp">Debes aceptar Términos y Privacidad.</div>
-    <div class="ok-box" id="ok-gar">✅ Garantía registrada. Nos contactaremos contigo pronto.</div>
-    <div class="err-box" id="err-gar"></div>
-    <button class="btn btn-k" id="btn-gar" onclick="envGar()">Enviar reclamo</button>
-  </div>
-</div></div>
-
-<!-- ══ MODAL CALIFICAR ══ -->
-<div class="ov" id="ov-cal" onclick="ovc(event,'cal')">
-<div class="sheet">
-  <div class="pill"></div>
-  <div class="sheet-hdr">
-    <span class="sheet-title">Calificar servicio</span>
-    <button class="sheet-x" onclick="close_('cal')">&times;</button>
-  </div>
-  <div class="mbody">
-    <div class="fg">
-      <label>Código del servicio</label>
-      <input id="c-cod" type="text" placeholder="db-xxxx"/>
-      <div class="fe" id="ec-cod">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>Tu valoración</label>
-      <div class="stars" id="stars">
-        <span class="star" data-v="1" onclick="setStar(1)">★</span>
-        <span class="star" data-v="2" onclick="setStar(2)">★</span>
-        <span class="star" data-v="3" onclick="setStar(3)">★</span>
-        <span class="star" data-v="4" onclick="setStar(4)">★</span>
-        <span class="star" data-v="5" onclick="setStar(5)">★</span>
+      <div class="dato-card">
+        <div class="dato-n">40<em>%</em></div>
+        <div class="dato-lbl">del consumo eléctrico viene del equipo de frío</div>
       </div>
-      <div class="fe" id="ec-st">Selecciona al menos una estrella.</div>
-    </div>
-    <div class="ok-box" id="ok-cal">✅ Valoración registrada. Gracias por tu opinión.</div>
-    <div class="err-box" id="err-cal"></div>
-    <button class="btn btn-y" id="btn-cal" onclick="envCal()">Enviar valoración</button>
-  </div>
-</div></div>
-
-<!-- ══ MODAL ÚNETE ══ -->
-<div class="ov" id="ov-uni" onclick="ovc(event,'uni')">
-<div class="sheet">
-  <div class="pill"></div>
-  <div class="sheet-hdr">
-    <span class="sheet-title">Únete como técnico</span>
-    <button class="sheet-x" onclick="close_('uni')">&times;</button>
-  </div>
-  <div class="mbody">
-    <div class="fg">
-      <label>Nombre completo</label>
-      <input id="u-nom" type="text" placeholder="Tu nombre"/>
-      <div class="fe" id="eu-nom">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>Teléfono / WhatsApp</label>
-      <div class="phone-row">
-        <select id="u-code">
-          <option value="+53" selected>Cuba (+53)</option>
-          <option value="+34">España (+34)</option>
-          <option value="+1">EE. UU. (+1)</option>
-          <option value="+52">México (+52)</option>
-        </select>
-        <input id="u-tel" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
+      <div class="dato-card">
+        <div class="dato-n">3<em>m</em></div>
+        <div class="dato-lbl">puede viajar el agua antes de aparecer en la mancha</div>
       </div>
-      <div class="fe" id="eu-tel">Introduce un número válido.</div>
+      <div class="dato-card">
+        <div class="dato-n">80<em>%</em></div>
+        <div class="dato-lbl">de los "se quedó sin gas" son filtros sucios</div>
+      </div>
     </div>
-    <div class="fg">
-      <label>Especialidad</label>
-      <select id="u-esp">
-        <option value="">-- Seleccionar --</option>
-        <option>Electrodomésticos</option><option>Plomería</option>
-        <option>Electricidad</option><option>Refrigeración</option>
-        <option>Televisión / audio</option><option>Computadoras</option>
-        <option>Celulares</option><option>Cerrajería</option>
-        <option>Multidisciplinario</option>
-      </select>
-      <div class="fe" id="eu-esp">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>Años de experiencia</label>
-      <select id="u-exp">
-        <option value="">-- Seleccionar --</option>
-        <option value="1">Menos de 1 año</option>
-        <option value="2">1 – 3 años</option>
-        <option value="4">3 – 5 años</option>
-        <option value="6">Más de 5 años</option>
-      </select>
-      <div class="fe" id="eu-exp">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>Zona / Municipio donde trabajas</label>
-      <input id="u-zona" type="text" placeholder="Ej: Vedado, Playa, Centro Habana..."/>
-      <div class="fe" id="eu-zona">Requerido.</div>
-    </div>
-    <div class="sep">Crear cuenta de acceso</div>
-    <div class="fg">
-      <label>Correo electrónico</label>
-      <input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/>
-      <div class="fe" id="eu-email">Correo inválido.</div>
-    </div>
-    <div class="fg">
-      <label>Contraseña</label>
-      <input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/>
-      <div class="fe" id="eu-pass">Mínimo 6 caracteres.</div>
-    </div>
-    <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisamos por WhatsApp cuando puedas operar.</p>
-    <div class="ok-box" id="ok-uni">✅ Cuenta creada. Tu solicitud está en revisión. Te contactaremos pronto por WhatsApp.</div>
-    <div class="err-box" id="err-uni"></div>
-    <button class="btn btn-k" id="btn-uni" onclick="envUni()">Crear cuenta</button>
   </div>
-</div></div>
 
-<!-- ══ MODAL ACCESO ══ -->
-<div class="ov" id="ov-acc" onclick="ovc(event,'acc')">
-<div class="sheet">
-  <div class="pill"></div>
-  <div class="sheet-hdr">
-    <span class="sheet-title">Acceso privado</span>
-    <button class="sheet-x" onclick="close_('acc')">&times;</button>
-  </div>
-  <div class="mbody">
-    <div class="fg">
-      <label>Correo electrónico</label>
-      <input id="a-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/>
-      <div class="fe" id="ea-email">Correo inválido.</div>
+  <!-- ── CAROUSEL ── -->
+  <div class="section-gap reveal rd1">
+    <div class="section-hdr">
+      <h2 class="section-title">Historias rápidas</h2>
+      <p class="section-sub">Desliza o usa las flechas · Pasa sola cada 7s</p>
     </div>
-    <div class="fg">
-      <label>Contraseña</label>
-      <input id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
-      <div class="fe" id="ea-pass">Requerido.</div>
-    </div>
-    <div class="err-box" id="err-acc"></div>
-    <button class="btn btn-k" id="btn-acc" onclick="doLogin()">Entrar</button>
-    <button class="btn btn-y" id="btn-rec-pass" onclick="doRecovery()" style="margin-top:10px">Olvidé mi contraseña</button>
-    <p class="hint">Te enviaremos un enlace para crear una nueva contraseña.</p>
   </div>
-</div></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <div class="carousel-wrap reveal rd2">
+    <div class="carousel-card">
+      <div class="carousel-slides" id="carouselSlides">
+
+        <div class="c-slide active">
+          <span class="slide-topic-tag">⚡ Electricidad</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Error común</div>
+            <div class="slide-hook">Pasa en casi todas las casas</div>
+            <div class="slide-headline">El breaker que "salta"<br>no es el problema real 👀</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-a"><div class="block-lbl">El error</div><div class="block-text">Resetearlo y seguir usando los mismos equipos sin revisar nada.</div></div>
+            <div class="slide-block block-b"><div class="block-lbl">Lo que hay que saber</div><div class="block-text">Si se repite, hay sobrecarga o cable flojo/caliente. El breaker te está salvando.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">Ignorarlo puede quemar un cable, un equipo… o peor.</span><span class="slide-foot-icon">🔌</span></div>
+        </div>
+
+        <div class="c-slide">
+          <span class="slide-topic-tag">🚿 Plomería</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Señal de alarma</div>
+            <div class="slide-hook">Eso no se "deja pa' luego"</div>
+            <div class="slide-headline">La gotera "chiquitica"<br>que no es tan chiquitica</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-warn"><div class="block-lbl">La señal</div><div class="block-text">Mancha de humedad en techo/pared que crece lento, casi sin notarse.</div></div>
+            <div class="slide-block block-ok"><div class="block-lbl">Qué significa</div><div class="block-text">Lo visible es el final del recorrido. El origen suele estar más arriba o más lejos.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">Mientras más esperas, más se daña la losa y el hierro.</span><span class="slide-foot-icon">💧</span></div>
+        </div>
+
+        <div class="c-slide">
+          <span class="slide-topic-tag">❄️ Aire</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Mito vs Realidad</div>
+            <div class="slide-hook">Lo que sube la factura</div>
+            <div class="slide-headline">A más frío en el split,<br>más rápido enfría 🤔</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-a"><div class="block-lbl">Mito</div><div class="block-text">Ponerlo al mínimo enfría más rápido y "ahorra".</div></div>
+            <div class="slide-block block-b"><div class="block-lbl">Realidad</div><div class="block-text">Trabaja igual. A 24–25°C llegas mejor y gastas menos.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">24–25°C: el punto ideal en Cuba.</span><span class="slide-foot-icon">🌡️</span></div>
+        </div>
+
+        <div class="c-slide">
+          <span class="slide-topic-tag">🧊 Nevera</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Error vs Solución</div>
+            <div class="slide-hook">Detalle que se paga caro</div>
+            <div class="slide-headline">La nevera pegada a la pared<br>te sale cara</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-warn"><div class="block-lbl">Error</div><div class="block-text">Motor sin ventilación (sin espacio detrás/arriba).</div></div>
+            <div class="slide-block block-ok"><div class="block-lbl">Cómo debe ser</div><div class="block-text">10cm detrás y 15cm arriba. Si no, consume más y se funde antes.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">Si el motor "quema", está trabajando forzado.</span><span class="slide-foot-icon">🛠️</span></div>
+        </div>
+
+        <div class="c-slide">
+          <span class="slide-topic-tag">🏠 Construcción</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Señal de alarma</div>
+            <div class="slide-hook">Eso no es "pintura mala"</div>
+            <div class="slide-headline">Pintura que se pela sola<br>sin que nadie la toque</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-warn"><div class="block-lbl">La señal</div><div class="block-text">Se desprende en placas, sobre todo cerca del piso o esquinas bajas.</div></div>
+            <div class="slide-block block-b"><div class="block-lbl">Lo que hay debajo</div><div class="block-text">Humedad capilar: el agua sube por la pared. Pintar encima es un parche temporal.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">El problema es la humedad, no la pintura.</span><span class="slide-foot-icon">🌧️</span></div>
+        </div>
+
+        <div class="c-slide">
+          <span class="slide-topic-tag">⚠️ Seguridad</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Riesgo real</div>
+            <div class="slide-hook">Aquí empiezan los incendios</div>
+            <div class="slide-headline">El "ladrón" de enchufes<br>que literalmente roba</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-warn"><div class="block-lbl">Riesgo</div><div class="block-text">Nevera/AC/TV y cargadores en el mismo ladrón. Calienta desde adentro.</div></div>
+            <div class="slide-block block-ok"><div class="block-lbl">Solución</div><div class="block-text">Motores y alto consumo: toma directa. El ladrón es solo para cosas pequeñas.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">Si está tibio al tacto: no es normal.</span><span class="slide-foot-icon">🔥</span></div>
+        </div>
+
+        <div class="c-slide">
+          <span class="slide-topic-tag">🧼 Mantenimiento</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Error vs Realidad</div>
+            <div class="slide-hook">A veces la solución es gratis</div>
+            <div class="slide-headline">El split que "no enfría"<br>puede ser simple</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-a"><div class="block-lbl">Lo que piensan</div><div class="block-text">"Perdió gas, hay que llenarlo."</div></div>
+            <div class="slide-block block-b"><div class="block-lbl">Lo que suele ser</div><div class="block-text">Filtros sucios o exterior tapado. Limpieza y vuelve a rendir.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">Limpieza cada 3–4 meses. Barato y lógico.</span><span class="slide-foot-icon">🧽</span></div>
+        </div>
+
+        <div class="c-slide">
+          <span class="slide-topic-tag">💸 Ahorro</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Dato práctico</div>
+            <div class="slide-hook">Para no botar dinero</div>
+            <div class="slide-headline">Lo que más consume en casa<br>(pista: no es la luz)</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-warn"><div class="block-lbl">Consumo alto</div><div class="block-text">Calentador eléctrico sin control de tiempo: te mata la factura.</div></div>
+            <div class="slide-block block-ok"><div class="block-lbl">La jugada</div><div class="block-text">Temporizador + horario inteligente puede bajar muchísimo sin cambiar equipo.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">Mide primero. Cambia después.</span><span class="slide-foot-icon">⏱️</span></div>
+        </div>
+
+        <div class="c-slide">
+          <span class="slide-topic-tag">🚰 Agua</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Mito vs Realidad</div>
+            <div class="slide-hook">Presión ≠ calidad</div>
+            <div class="slide-headline">A más presión de agua,<br>mejor va la tubería</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-a"><div class="block-lbl">Mito</div><div class="block-text">Mientras más fuerte, mejor para todo.</div></div>
+            <div class="slide-block block-b"><div class="block-lbl">Realidad</div><div class="block-text">Sobrepresión revienta empaques y castiga llaves y tuberías.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">La presión correcta protege el sistema.</span><span class="slide-foot-icon">💦</span></div>
+        </div>
+
+        <div class="c-slide">
+          <span class="slide-topic-tag">☀️ Solar</span>
+          <div class="slide-head">
+            <div class="slide-label-top">Antes de invertir</div>
+            <div class="slide-hook">No es magia, es ingeniería</div>
+            <div class="slide-headline">Con paneles solares<br>se acaba el problema</div>
+          </div>
+          <div class="slide-blocks">
+            <div class="slide-block block-a"><div class="block-lbl">Mito</div><div class="block-text">Instalo y ya no hay apagón ni factura.</div></div>
+            <div class="slide-block block-b"><div class="block-lbl">Realidad</div><div class="block-text">Sin baterías y cálculo real, el beneficio es parcial. El diseño manda.</div></div>
+          </div>
+          <div class="slide-foot"><span class="slide-foot-note">Bien calculado: sí. A lo loco: no.</span><span class="slide-foot-icon">⚡</span></div>
+        </div>
+
+      </div>
+      <div class="carousel-controls">
+        <div class="carousel-dots" id="carouselDots"></div>
+        <div class="carousel-arrows">
+          <span class="carousel-count" id="carouselCount">1/10</span>
+          <button class="c-arrow" id="cPrev" aria-label="Anterior">←</button>
+          <button class="c-arrow" id="cNext" aria-label="Siguiente">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FILTROS + TIPS ── -->
+  <div class="section-gap reveal">
+    <div class="section-hdr">
+      <h2 class="section-title">Tips del barrio</h2>
+      <p class="section-sub">Para resolver antes de que se complique</p>
+    </div>
+    <div class="cat-filters" id="catFilters">
+      <button class="cat-btn active" data-cat="all">Todos</button>
+      <button class="cat-btn" data-cat="electricidad">⚡ Electricidad</button>
+      <button class="cat-btn" data-cat="plomeria">🚿 Plomería</button>
+      <button class="cat-btn" data-cat="frio">❄️ Frío</button>
+      <button class="cat-btn" data-cat="construccion">🏠 Construcción</button>
+      <button class="cat-btn" data-cat="ahorro">💸 Ahorro</button>
+    </div>
+    <div class="tips-grid" id="tipsGrid">
+
+      <div class="tip-card reveal rd1" data-cat="plomeria">
+        <div class="tip-icon">💧</div>
+        <div class="tip-body">
+          <div class="tip-title">Fuga lenta = daño grande</div>
+          <p class="tip-text">Un grifo que gotea gasta muchísimo al mes. Si moja pared o techo, <strong>el hierro se oxida por dentro</strong> sin que lo veas.</p>
+          <span class="tip-badge">🚿 Plomería</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd2" data-cat="electricidad">
+        <div class="tip-icon">⚡</div>
+        <div class="tip-body">
+          <div class="tip-title">Breaker ≠ interruptor</div>
+          <p class="tip-text">El breaker no es para "prender/apagar". Es una <strong>protección automática</strong>. Si salta dos veces, hay que revisar, no solo resetear.</p>
+          <span class="tip-badge">⚡ Electricidad</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd3" data-cat="frio">
+        <div class="tip-icon">🧊</div>
+        <div class="tip-body">
+          <div class="tip-title">Nevera que no descansa</div>
+          <p class="tip-text">Revisa el burlete de la puerta. Si está duro, agrietado o roto, <strong>el frío se escapa</strong> y el compresor trabaja el doble.</p>
+          <span class="tip-badge">❄️ Frío</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd4" data-cat="frio">
+        <div class="tip-icon">❄️</div>
+        <div class="tip-body">
+          <div class="tip-title">Split chorreando agua</div>
+          <p class="tip-text">Muchas veces es <strong>drenaje tapado</strong>, no falta de gas. Eso se revisa primero. Es más barato y más probable.</p>
+          <span class="tip-badge">❄️ Frío</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd5" data-cat="electricidad">
+        <div class="tip-icon">🔌</div>
+        <div class="tip-body">
+          <div class="tip-title">Enchufe caliente al tacto</div>
+          <p class="tip-text">Si está tibio o caliente, hay <strong>mal contacto o sobrecarga</strong>. Eso no se ignora. Puede ser el inicio de un cortocircuito.</p>
+          <span class="tip-badge">⚡ Electricidad</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd6" data-cat="construccion">
+        <div class="tip-icon">🏠</div>
+        <div class="tip-body">
+          <div class="tip-title">Humedad en pared baja</div>
+          <p class="tip-text">Sal blanca cerca del piso indica <strong>humedad subiendo por capilaridad</strong>. Pintar encima es un parche que dura poco.</p>
+          <span class="tip-badge">🏠 Construcción</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd1" data-cat="ahorro">
+        <div class="tip-icon">💡</div>
+        <div class="tip-body">
+          <div class="tip-title">El más caro es el calentador</div>
+          <p class="tip-text">Un calentador eléctrico encendido todo el día puede representar <strong>más del 30% de la factura</strong>. Un temporizador lo cambia todo.</p>
+          <span class="tip-badge">💸 Ahorro</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd2" data-cat="frio">
+        <div class="tip-icon">🌡️</div>
+        <div class="tip-body">
+          <div class="tip-title">24–25°C es la temperatura ideal</div>
+          <p class="tip-text">En Cuba no necesitas poner el AC al mínimo. <strong>24–25°C enfría igual</strong> y consume bastante menos. Pruébalo una semana.</p>
+          <span class="tip-badge">❄️ Frío</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd3" data-cat="electricidad">
+        <div class="tip-icon">🔥</div>
+        <div class="tip-body">
+          <div class="tip-title">El ladrón no es para todo</div>
+          <p class="tip-text">Nevera, AC o lavadora <strong>nunca en el mismo ladrón</strong>. Son equipos de alto consumo que necesitan toma directa.</p>
+          <span class="tip-badge">⚡ Electricidad</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd4" data-cat="plomeria">
+        <div class="tip-icon">🚰</div>
+        <div class="tip-body">
+          <div class="tip-title">Alta presión daña más de lo que ayuda</div>
+          <p class="tip-text">La sobrepresión <strong>revienta empaques y llaves</strong> más rápido. Si tienes bomba, regula la presión de salida.</p>
+          <span class="tip-badge">🚿 Plomería</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd5" data-cat="construccion">
+        <div class="tip-icon">🧱</div>
+        <div class="tip-body">
+          <div class="tip-title">Grieta ≠ grieta</div>
+          <p class="tip-text">Una grieta horizontal en pared exterior puede indicar <strong>movimiento estructural</strong>. No es como las verticales superficiales.</p>
+          <span class="tip-badge">🏠 Construcción</span>
+        </div>
+      </div>
+
+      <div class="tip-card reveal rd6" data-cat="ahorro">
+        <div class="tip-icon">⏱️</div>
+        <div class="tip-body">
+          <div class="tip-title">Mide antes de cambiar</div>
+          <p class="tip-text">Antes de comprar un equipo nuevo, <strong>verifica si el problema es el equipo</strong> o la instalación. A veces es un cable, no el aparato.</p>
+          <span class="tip-badge">💸 Ahorro</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PREGUNTAS FRECUENTES ── -->
+  <div class="section-gap reveal">
+    <div class="section-hdr">
+      <h2 class="section-title">Preguntas frecuentes</h2>
+      <p class="section-sub">Las dudas que más nos llegan</p>
+    </div>
+    <div class="faq-list" id="faqList">
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span class="faq-q">¿Por qué se va la luz solo en mi habitación y no en el resto?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">Probablemente tienes un breaker individual para esa habitación que saltó, o un fusible quemado. Revisa el tablero de breakers: si uno está en posición intermedia o completamente abajo, ese es. Resétalo una vez. Si vuelve a saltar, hay sobrecarga o cortocircuito en esa línea — ahí sí llama a un técnico.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span class="faq-q">¿Cuánto dura normalmente un compresor de nevera en Cuba?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">Depende mucho del uso y el mantenimiento. En condiciones normales, <strong>8 a 15 años</strong>. Lo que más acorta la vida: sobrecalentamiento por falta de ventilación, variaciones de voltaje y el compresor que no para nunca (burlete malo, mucho calor ambiental). Un estabilizador de voltaje puede marcar la diferencia.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span class="faq-q">¿Cómo sé si una gotera viene de arriba o de la pared?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">Si la mancha aparece después de la lluvia: es de arriba (losa o terraza). Si la mancha está siempre húmeda aunque no llueva: viene de una tubería rota o de humedad ascendente. En el segundo caso el origen suele estar varios metros del punto visible — el agua viaja por el hierro o por el interior de la losa.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span class="faq-q">¿El split tiene que limpiar un técnico o lo puedo hacer yo?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">Los <strong>filtros del evaporador interior</strong> los puedes limpiar tú mismo: se sacan, se lavan con agua, se secan y se vuelven a poner. Hazlo cada 4–6 semanas. El <strong>condensador exterior y el drenaje</strong> sí conviene que los limpie un técnico cada 6–12 meses. El gas y las bobinas: solo técnico certificado.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)">
+          <span class="faq-q">¿Vale la pena reparar un electrodoméstico viejo o comprar uno nuevo?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">Regla general: si la reparación cuesta <strong>más del 50% del valor de uno nuevo</strong>, piénsalo dos veces. Pero en Cuba hay que sumar la disponibilidad: si conseguir el equipo nuevo es difícil o caro, reparar bien puede ser la única opción viable. Siempre pide al técnico que te explique qué falló y por qué, para evaluar si es una falla puntual o un equipo al final de su vida útil.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CHECKLIST ── -->
+  <div class="section-gap reveal">
+    <div class="section-hdr">
+      <h2 class="section-title">Antes de gastar</h2>
+      <p class="section-sub">Cinco preguntas que te pueden ahorrar mucho</p>
+    </div>
+    <div class="checklist-card reveal rd1">
+      <div class="checklist-head">
+        <div class="checklist-head-title">Checklist <span>del que piensa antes</span></div>
+        <span class="checklist-badge">5 puntos</span>
+      </div>
+      <div>
+        <div class="check-item">
+          <span class="check-mark">✅</span>
+          <div class="check-text"><strong>¿El problema es el equipo o la instalación?</strong><em>Muchas veces el culpable es cableado, conexión o protecciones.</em></div>
+        </div>
+        <div class="check-item">
+          <span class="check-mark">✅</span>
+          <div class="check-text"><strong>¿Se puede resolver por partes?</strong><em>En Cuba casi todo va por etapas. El orden evita pagar doble.</em></div>
+        </div>
+        <div class="check-item">
+          <span class="check-mark">✅</span>
+          <div class="check-text"><strong>¿Ya revisé lo más simple?</strong><em>Filtro sucio, drenaje tapado, burlete roto, tornillo flojo…</em></div>
+        </div>
+        <div class="check-item">
+          <span class="check-mark">✅</span>
+          <div class="check-text"><strong>¿Lo que me ofrecen sirve a largo plazo?</strong><em>Un parche barato hoy puede ser gasto doble mañana.</em></div>
+        </div>
+        <div class="check-item">
+          <span class="check-mark">✅</span>
+          <div class="check-text"><strong>¿Me explicaron qué hicieron y por qué?</strong><em>Un buen técnico no huye de preguntas. Si lo hace, es una señal.</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CTA ── -->
+  <div class="cta-block reveal rd1">
+    <div class="cta-inner">
+      <p class="cta-eyebrow">¿Tienes una duda concreta?</p>
+      <h3 class="cta-title">Te orientamos<br><em>sin vueltas.</em></h3>
+      <a href="#" class="btn-wa" id="btnWA">
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.057-.002-.115-.003-.172-.003-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        Escribir al WhatsApp
+      </a>
+      <p class="cta-note">Dinos qué pasa y te decimos por dónde empezar.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="footer-logo">db</span>
+  <span class="footer-text">Zona db · Contenido orientativo del hogar</span>
+  <span class="footer-tag">dbarrio</span>
+</footer>
+
 <script>
-const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
-const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+const WA_NUM  = '34627493593';
+const WA_TEXT = 'Hola, vengo de *Zona db* y tengo una duda sobre mi casa.';
 
-// Cliente sin sesión para formularios públicos
-const sbPublic = supabase.createClient(SURL, SKEY, {
-  auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
-});
-// Cliente con sesión para login
-const sb = supabase.createClient(SURL, SKEY, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-});
+// ── WA CTA ──
+(function(){
+  const btn = document.getElementById('btnWA');
+  if (!btn) return;
+  btn.href   = 'https://wa.me/' + WA_NUM.replace(/\D/g,'') + '?text=' + encodeURIComponent(WA_TEXT);
+  btn.target = '_blank';
+  btn.rel    = 'noopener noreferrer';
+})();
 
-let sv = 0;
+// ── CARRUSEL ──
+(function(){
+  const slides  = Array.from(document.querySelectorAll('.c-slide'));
+  const dotsWrap = document.getElementById('carouselDots');
+  const prevBtn  = document.getElementById('cPrev');
+  const nextBtn  = document.getElementById('cNext');
+  const counter  = document.getElementById('carouselCount');
+  const track    = document.getElementById('carouselSlides');
+  const total    = slides.length;
+  let current = 0, timer = null, paused = false, resumeTO = null;
+  const INTERVAL = 7000, PAUSE_MS = 14000;
 
-// ── MODALES ──
-function open_(k) { document.getElementById('ov-'+k).classList.add('open'); document.body.style.overflow = 'hidden'; }
-function close_(k) {
-  document.getElementById('ov-'+k).classList.remove('open');
-  document.body.style.overflow = '';
-  if (k === 'sol') resetSolForm();
-}
-function ovc(e, k) { if (e.target === document.getElementById('ov-'+k)) close_(k); }
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.querySelectorAll('.ov.open').forEach(o => { o.classList.remove('open'); document.body.style.overflow = ''; });
-});
-
-// ── HELPERS ──
-function vt(t) { return String(t||'').trim().length >= 6; }
-function sE(id, m)  { const e=document.getElementById(id); if(e){ if(m) e.textContent=m; e.classList.add('v'); } }
-function cE(id)     { const e=document.getElementById(id); if(e) e.classList.remove('v'); }
-function sOK(id)    { const e=document.getElementById(id); if(e) e.classList.add('v'); }
-function sER(id, m) { const e=document.getElementById(id); if(e){ e.textContent=m; e.classList.add('v'); } }
-function cER(id)    { const e=document.getElementById(id); if(e) e.classList.remove('v'); }
-function dbc(id)    { return 'db-' + id; }
-
-function setL(id, on, txt='Enviando...') {
-  const b = document.getElementById(id); if (!b) return;
-  if (!b._t) b._t = b.innerHTML;
-  b.disabled = on;
-  b.innerHTML = on ? `<span class="sp"></span>${txt}` : b._t;
-}
-
-function normalizarTelefono(codeId, telId, errId) {
-  const code   = document.getElementById(codeId)?.value || '+53';
-  const numero = (document.getElementById(telId)?.value || '').replace(/\D/g, '');
-  const err    = document.getElementById(errId);
-  if (!numero || numero.length < 6 || numero.length > 15) { if (err) err.classList.add('v'); return null; }
-  if (err) err.classList.remove('v');
-  return { completo: `${code}${numero}` };
-}
-
-function resetSolForm() {
-  ['s-cli','s-wa','s-mun','s-dir','s-det'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  ['s-srv','s-zona'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  const cp=document.getElementById('s-cp'); if(cp) cp.checked=false;
-  cER('err-sol');
-  ['es-cli','es-wa','es-mun','es-zona','es-srv','es-cp'].forEach(cE);
-  const btn=document.getElementById('btn-sol');
-  if(btn){ btn.style.display=''; btn.disabled=false; if(btn._t) btn.innerHTML=btn._t; }
-  const ok=document.getElementById('ok-sol'); if(ok) ok.classList.remove('v');
-}
-
-// ── TRACKER ──
-async function buscarOrden() {
-  const input  = document.getElementById('tr-cod');
-  const result = document.getElementById('tr-result');
-  const raw    = (input?.value || '').trim().toLowerCase();
-  if (!raw) return;
-
-  const n = parseInt(raw.replace(/^db-/i, ''));
-  if (isNaN(n)) {
-    result.className = 'tracker-result err v';
-    result.innerHTML = 'Formato inválido. Usa <strong>db-xxxx</strong>';
-    return;
-  }
-
-  result.className = 'tracker-result v';
-  result.style = '';
-  result.innerHTML = '<span style="color:rgba(255,255,255,.4);font-size:12px">Buscando...</span>';
-
-  const { data, error } = await sbPublic.rpc('get_estado_solicitud', { p_id: n });
-
-  if (error || !data || data.length === 0) {
-    result.className = 'tracker-result err v';
-    result.innerHTML = error ? 'Error: ' + error.message : 'Código no encontrado. Verifica que sea correcto.';
-    return;
-  }
-
-  const sol = data[0];
-  const estadoLabel = {
-    pendiente:  '⏳ Pendiente — en espera de técnico',
-    asignada:   '🔧 En proceso — técnico asignado',
-    completada: '✅ Completada',
-    rechazada:  '❌ Rechazada',
-  }[sol.estado] || sol.estado;
-
-  const fecha    = sol.created_at ? new Date(sol.created_at).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}) : '—';
-  const fechaFin = sol.fecha_fin  ? new Date(sol.fecha_fin).toLocaleDateString('es-ES', {day:'2-digit',month:'2-digit',year:'2-digit'}) : null;
-
-  result.className = 'tracker-result v';
-  result.style.cssText = 'background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff';
-  result.innerHTML = `
-    <span class="tr-code">${dbc(sol.id)}</span>
-    <span class="tr-estado st-${sol.estado}">${estadoLabel}</span>
-    <div class="tr-info">
-      ${sol.servicio  ? `<div>🔩 ${sol.servicio}</div>`  : ''}
-      ${sol.municipio ? `<div>📍 ${sol.municipio}</div>` : ''}
-      <div>📅 Solicitado: ${fecha}</div>
-      ${fechaFin ? `<div>✅ Completado: ${fechaFin}</div>` : ''}
-    </div>`;
-}
-
-// ── SOLICITUD ──
-async function envSol() {
-  cER('err-sol');
-  ['es-cli','es-wa','es-mun','es-zona','es-srv','es-cp'].forEach(cE);
-
-  const cli     = document.getElementById('s-cli')?.value.trim() || '';
-  const telData = normalizarTelefono('s-code', 's-wa', 'es-wa');
-  const mun     = document.getElementById('s-mun')?.value.trim() || '';
-  const zona    = document.getElementById('s-zona')?.value || '';
-  const dir     = document.getElementById('s-dir')?.value.trim() || '';
-  const srv     = document.getElementById('s-srv')?.value || '';
-  const det     = document.getElementById('s-det')?.value.trim() || '';
-  const cp      = !!document.getElementById('s-cp')?.checked;
-
-  let ok = true;
-  if (!cli)     { sE('es-cli'); ok = false; }
-  if (!telData) { sE('es-wa'); ok = false; }
-  if (!mun)     { sE('es-mun'); ok = false; }
-  if (!zona)    { sE('es-zona', 'Selecciona una zona.'); ok = false; }
-  if (!srv)     { sE('es-srv'); ok = false; }
-  if (!cp)      { sE('es-cp'); ok = false; }
-  if (!ok) return;
-
-  setL('btn-sol', true);
-  try {
-    const { data, error } = await sbPublic.rpc('create_solicitud_publica', {
-      p_cliente:       cli,
-      p_telefono:      telData.completo,
-      p_municipio:     mun,
-      p_direccion:     dir,
-      p_servicio:      srv,
-      p_detalles:      det,
-      p_consent_texto: 'solicitud publica v2'
-    });
-    setL('btn-sol', false);
-    if (error) {
-      const msg = error.message?.includes('RATE_LIMIT')
-        ? '⚠️ Ya registraste 3 solicitudes hoy. Intenta mañana o contáctanos por WhatsApp.'
-        : 'Error: ' + error.message;
-      sER('err-sol', msg); return;
-    }
-    // Asignar zona
-    if (data && zona) await sbPublic.from('solicitudes').update({ zona }).eq('id', data);
-    document.getElementById('cod-sol').textContent = dbc(data);
-    sOK('ok-sol');
-    document.getElementById('btn-sol').style.display = 'none';
-    setTimeout(() => { close_('sol'); window.scrollTo({ top: 0, behavior: 'smooth' }); }, 6000);
-  } catch (e) {
-    setL('btn-sol', false);
-    sER('err-sol', 'Error: ' + (e?.message || e));
-  }
-}
-
-// ── GARANTÍA ──
-async function envGar() {
-  cER('err-gar');
-  ['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(cE);
-  const rec = document.getElementById('g-rec').value.trim();
-  const tel = document.getElementById('g-tel').value.trim();
-  const fal = document.getElementById('g-fal').value.trim();
-  const cp  = document.getElementById('g-cp').checked;
-  let ok = true;
-  if (!rec)      { sE('eg-rec'); ok = false; }
-  if (!vt(tel))  { sE('eg-tel'); ok = false; }
-  if (!fal)      { sE('eg-fal'); ok = false; }
-  if (!cp)       { sE('eg-cp'); ok = false; }
-  if (!ok) return;
-  setL('btn-gar', true);
-  try {
-    const { error } = await sbPublic.rpc('create_garantia_reclamo_publico', {
-      p_telefono: tel, p_codigo: rec, p_mensaje: fal, p_consent_texto: 'reclamo garantia v1'
-    });
-    setL('btn-gar', false);
-    if (error) { sER('err-gar', 'Error: ' + error.message); return; }
-    sOK('ok-gar');
-    document.getElementById('btn-gar').style.display = 'none';
-  } catch(e) { setL('btn-gar', false); sER('err-gar', 'Error: ' + (e?.message || e)); }
-}
-
-// ── CALIFICAR ──
-function setStar(v) {
-  sv = v;
-  document.querySelectorAll('#stars .star').forEach(s => s.classList.toggle('on', parseInt(s.dataset.v) <= v));
-  cE('ec-st');
-}
-async function envCal() {
-  cER('err-cal'); ['ec-cod','ec-st'].forEach(cE);
-  const cod = document.getElementById('c-cod').value.trim();
-  let ok = true;
-  if (!cod) { sE('ec-cod'); ok = false; }
-  if (!sv)  { sE('ec-st'); ok = false; }
-  if (!ok) return;
-  const n = parseInt(cod.replace(/^db-/i, ''));
-  if (isNaN(n)) { sE('ec-cod', 'Formato inválido. Usa db-xxxx.'); return; }
-  setL('btn-cal', true);
-  const { error } = await sb.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
-  setL('btn-cal', false);
-  if (error) { sER('err-cal', 'Error: ' + error.message); return; }
-  sOK('ok-cal');
-  document.getElementById('btn-cal').style.display = 'none';
-}
-
-// ── ÚNETE ──
-async function envUni() {
-  cER('err-uni');
-  ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(cE);
-  const nom     = document.getElementById('u-nom').value.trim();
-  const telData = normalizarTelefono('u-code', 'u-tel', 'eu-tel');
-  const esp     = document.getElementById('u-esp').value;
-  const exp     = document.getElementById('u-exp').value;
-  const zona    = document.getElementById('u-zona').value.trim();
-  const email   = document.getElementById('u-email').value.trim();
-  const pass    = document.getElementById('u-pass').value;
-  let ok = true;
-  if (!nom)                                          { sE('eu-nom'); ok = false; }
-  if (!telData)                                      { sE('eu-tel'); ok = false; }
-  if (!esp)                                          { sE('eu-esp'); ok = false; }
-  if (!exp)                                          { sE('eu-exp'); ok = false; }
-  if (!zona)                                         { sE('eu-zona'); ok = false; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))    { sE('eu-email'); ok = false; }
-  if (pass.length < 6)                               { sE('eu-pass'); ok = false; }
-  if (!ok) return;
-  setL('btn-uni', true);
-  try {
-    const { data: ad, error: ae } = await sb.auth.signUp({
-      email, password: pass,
-      options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' }
-    });
-    if (ae || !ad?.user) { setL('btn-uni', false); sER('err-uni', 'Error: ' + (ae?.message || 'Error creando usuario.')); return; }
-    const { data: si, error: se1 } = await sb.auth.signInWithPassword({ email, password: pass });
-    if (se1 || !si?.session) { setL('btn-uni', false); sER('err-uni', 'Cuenta creada. Revisa tu correo y luego inicia sesión.'); return; }
-    const { error: se } = await sb.from('socios').insert({
-      auth_uid: si.session.user.id, nombre: nom, telefono: telData.completo,
-      especialidad: esp, experiencia_anios: parseInt(exp, 10), zona, email,
-      admitido: false, estado_socio: 'pendiente', comision: 15, deuda: 0, trabajos: 0
-    });
-    await sb.auth.signOut();
-    setL('btn-uni', false);
-    if (se) { sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message); return; }
-    sOK('ok-uni');
-    document.getElementById('btn-uni').style.display = 'none';
-  } catch(e) { setL('btn-uni', false); sER('err-uni', 'Error: ' + (e?.message || e)); }
-}
-
-// ── LOGIN ──
-async function doLogin() {
-  cER('err-acc'); ['ea-email','ea-pass'].forEach(cE);
-  const email = document.getElementById('a-email').value.trim();
-  const pass  = document.getElementById('a-pass').value;
-  let ok = true;
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('ea-email'); ok = false; }
-  if (!pass) { sE('ea-pass'); ok = false; }
-  if (!ok) return;
-
-  setL('btn-acc', true, 'Verificando...');
-  const { data: auth, error: ae } = await sb.auth.signInWithPassword({ email, password: pass });
-  if (ae || !auth.session) {
-    setL('btn-acc', false);
-    sER('err-acc', 'Credenciales incorrectas. Verifica tu email y contraseña.');
-    return;
-  }
-
-  const uid = auth.session.user.id;
-
-  // 1. Admin
-  const { data: adm } = await sb.from('admins').select('id').eq('auth_uid', uid).maybeSingle();
-  if (adm) { window.location.href = 'admin.html'; return; }
-
-  // 2. Encargado activo
-  const { data: enc } = await sb.from('encargados').select('id,activo').eq('auth_uid', uid).maybeSingle();
-  if (enc) {
-    if (!enc.activo) { await sb.auth.signOut(); setL('btn-acc', false); sER('err-acc', 'Tu cuenta de encargado está desactivada. Contacta al administrador.'); return; }
-    window.location.href = 'admin.html'; return;
-  }
-
-  // 3. Socio activo
-  const { data: soc } = await sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid', uid).maybeSingle();
-  if (soc) {
-    if (!soc.admitido || soc.estado_socio !== 'activo') {
-      await sb.auth.signOut(); setL('btn-acc', false);
-      sER('err-acc', soc.admitido ? 'Tu cuenta está en estado: ' + soc.estado_socio + '. Contacta al administrador.' : 'Cuenta pendiente de aprobación. Te avisaremos por WhatsApp.');
-      return;
-    }
-    window.location.href = 'socio.html'; return;
-  }
-
-  await sb.auth.signOut();
-  setL('btn-acc', false);
-  sER('err-acc', 'Usuario no reconocido en el sistema.');
-}
-
-// ── RECOVERY ──
-async function doRecovery() {
-  cER('err-acc'); cE('ea-email');
-  const email = document.getElementById('a-email').value.trim();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('ea-email'); return; }
-  setL('btn-rec-pass', true, 'Enviando...');
-  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://dbarrio-two.vercel.app/reset.html' });
-  setL('btn-rec-pass', false);
-  if (error) { sER('err-acc', 'Error: ' + error.message); return; }
-  sER('err-acc', '✅ Listo. Revisa tu correo (y carpeta de spam). Abre el enlace en el mismo navegador.');
-  document.getElementById('err-acc').style.cssText = 'display:block;background:#EDFAF3;border-color:#8DD4AA;color:#00856F';
-}
-
-// ── CHECKBOXES ──
-document.querySelectorAll('.cb').forEach(row => {
-  row.addEventListener('click', e => {
-    if (e.target.closest('a') || e.target.tagName === 'INPUT') return;
-    const input = row.querySelector('input[type="checkbox"]');
-    if (!input) return;
-    input.checked = !input.checked;
-    input.dispatchEvent(new Event('change', { bubbles: true }));
+  // Crear dots dinámicamente
+  slides.forEach(function(_, i) {
+    const d = document.createElement('button');
+    d.className   = 'c-dot' + (i === 0 ? ' active' : '');
+    d.dataset.i   = i;
+    d.setAttribute('aria-label', 'Slide ' + (i+1));
+    d.addEventListener('click', function() { userAction(); goTo(i); });
+    dotsWrap.appendChild(d);
   });
-});
-document.getElementById('s-cp')?.addEventListener('change', () => cE('es-cp'));
-document.getElementById('g-cp')?.addEventListener('change', () => cE('eg-cp'));
-</script>
 
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
+  const dots = dotsWrap.querySelectorAll('.c-dot');
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (idx + total) % total;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    counter.textContent = (current + 1) + '/' + total;
+  }
+
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(function() { if (!paused) goTo(current + 1); }, INTERVAL);
+  }
+
+  function userAction() {
+    paused = true;
+    clearTimeout(resumeTO);
+    resumeTO = setTimeout(function() { paused = false; }, PAUSE_MS);
+  }
+
+  prevBtn.addEventListener('click', function() { userAction(); goTo(current - 1); });
+  nextBtn.addEventListener('click', function() { userAction(); goTo(current + 1); });
+
+  // Swipe táctil
+  let startX = 0;
+  track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', function(e) {
+    const dx = startX - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 40) { userAction(); goTo(dx > 0 ? current + 1 : current - 1); }
+  }, { passive: true });
+
+  startAuto();
+})();
+
+// ── FILTROS DE TIPS ──
+(function(){
+  const btns  = document.querySelectorAll('#catFilters .cat-btn');
+  const cards = document.querySelectorAll('#tipsGrid .tip-card');
+
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      cards.forEach(function(card) {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.style.display = '';
+          setTimeout(function() { card.classList.add('visible'); }, 50);
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+})();
+
+// ── ACORDEÓN FAQ ──
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  // Cerrar todos
+  document.querySelectorAll('.faq-item.open').forEach(function(el) { el.classList.remove('open'); });
+  // Abrir el clickeado si no estaba abierto
+  if (!wasOpen) item.classList.add('open');
 }
+
+// ── REVEAL SCROLL ──
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function(el) { el.classList.add('visible'); });
+    return;
+  }
+  const io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+  els.forEach(function(el) { io.observe(el); });
+})();
 </script>
 </body>
 </html>
