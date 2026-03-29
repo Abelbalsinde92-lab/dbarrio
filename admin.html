@@ -510,7 +510,15 @@ async function loadOp() {
   let qOp = sb.from('solicitudes').select('*').in('estado',['pendiente','asignada']).order('created_at',{ascending:true});
   if (USER_ROLE === 'encargado' && USER_ZONA) qOp = qOp.eq('zona', USER_ZONA);
   const { data, error } = await qOp;
-  if (error) { el.innerHTML = `<div class="empty"><div class="empty-ico">\u26a0</div>Error: ${esc(error.message)}</div>`; return }
+if (error) {
+  if (error.message?.includes('JWT') || error.message?.includes('token') || error.code === 'PGRST301') {
+    toast('Sesión expirada. Redirigiendo...');
+    setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+    return;
+  }
+  el.innerHTML = `<div class="empty"><div class="empty-ico">\u26a0</div>Error: ${esc(error.message)}</div>`;
+  return;
+}
   if (!data?.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">\u2713</div>Sin ordenes activas</div>'; return }
   el.innerHTML = data.map(buildCardOp).join('');
   loadKPIs();
