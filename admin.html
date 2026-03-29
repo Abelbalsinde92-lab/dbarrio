@@ -440,7 +440,12 @@ function setupRealtime() {
     }).subscribe();
 }
 
-sb.auth.onAuthStateChange((_event, session) => { if (!session) window.location.href = 'index.html'; });
+sb.auth.onAuthStateChange((_event, session) => {
+  if (!session) {
+    toast('Sesión expirada. Redirigiendo...');
+    setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+  }
+});
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 function dbc(id) { return 'db-' + id }
