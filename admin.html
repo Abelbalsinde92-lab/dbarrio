@@ -247,10 +247,32 @@
       <div class="filters"><input id="f-cli" type="text" placeholder="Cliente..." oninput="loadHi()"/><input id="f-cod" type="text" placeholder="db-..." oninput="loadHi()"/><input id="f-d1" type="date" onchange="loadHi()"/><input id="f-d2" type="date" onchange="loadHi()"/></div>
       <div id="lista-hi"><div class="loading">Cargando...</div></div>
     </div>
-    <div class="section" id="sec-so">
-      <div class="sec-hdr"><div><div class="sec-title">Socios</div><div class="sec-sub">Tecnicos registrados</div></div></div>
-      <div id="lista-so"><div class="loading">Cargando...</div></div>
-    </div>
+   <div class="section" id="sec-so">
+  <div class="sec-hdr"><div><div class="sec-title">Socios</div><div class="sec-sub">Tecnicos registrados</div></div></div>
+  <div class="filters">
+    <input id="f-so-nom" type="text" placeholder="Nombre..." oninput="filtrarSocios()"/>
+    <select id="f-so-esp" onchange="filtrarSocios()">
+      <option value="">Todas las especialidades</option>
+      <option>Electrodomésticos</option>
+      <option>Plomería</option>
+      <option>Electricidad</option>
+      <option>Refrigeración</option>
+      <option>Televisión / audio</option>
+      <option>Computadoras</option>
+      <option>Celulares</option>
+      <option>Cerrajería</option>
+      <option>Multidisciplinario</option>
+    </select>
+    <select id="f-so-est" onchange="filtrarSocios()">
+      <option value="">Todos los estados</option>
+      <option value="activo">Activos</option>
+      <option value="pendiente">Pendientes</option>
+      <option value="baja">Baja</option>
+    </select>
+    <input id="f-so-zona" type="text" placeholder="Zona..." oninput="filtrarSocios()"/>
+  </div>
+  <div id="lista-so"><div class="loading">Cargando...</div></div>
+</div>
     <div class="section" id="sec-ca">
       <div class="sec-hdr"><div><div class="sec-title">Caja</div><div class="sec-sub">Deudas y movimientos</div></div></div>
       <div id="lista-ca"></div>
@@ -498,9 +520,58 @@ async function loadKPIs() {
   setKpis({ pend: s.filter(x=>x.estado==='pendiente').length, asig: s.filter(x=>x.estado==='asignada').length, comp: s.filter(x=>x.estado==='completada').length, caja: Number.isFinite(ing) ? ing : 0 });
 }
 
-async function loadSociosMap() {
-  const { data } = await sb.from('socios').select('id,nombre,telefono,comision');
-  if (data) { sociosMap = {}; data.forEach(s=>{ sociosMap[s.id]=s }); }
+async function loadSocios() {
+  const el = document.getElementById('lista-so');
+  const { data: u, error: ue } = await sb.auth.getUser();
+  if (ue || !u?.user) { el.innerHTML = `<div class="empty"><div class="empty-ico">\u{1F512}</div>Sesi\u00f3n no v\u00e1lida.</div>`; return; }
+  el.innerHTML = '<div class="loading">Cargando...</div>';
+  const { data, error } = await sb.from('socios').select('*').order('estado_socio').order('nombre');
+  if (error) { el.innerHTML = `<div class="empty">Error: ${esc(error.message)}</div>`; return; }
+  if (!data?.length) { el.innerHTML = '<div class="empty">Sin socios registrados</div>'; return; }
+
+  // Guardar todos para filtrar sin re-consultar
+  window._sociosData = data;
+  filtrarSocios();
+}
+
+function filtrarSocios() {
+  const data = window._sociosData;
+  if (!data) return;
+
+  const nom  = (document.getElementById('f-so-nom')?.value  || '').toLowerCase().trim();
+  const esp  = (document.getElementById('f-so-esp')?.value  || '').toLowerCase().trim();
+  const est  = (document.getElementById('f-so-est')?.value  || '').toLowerCase().trim();
+  const zona = (document.getElementById('f-so-zona')?.value || '').toLowerCase().trim();
+
+  const filtered = data.filter(s => {
+    if (nom  && !s.nombre?.toLowerCase().includes(nom))          return false;
+    if (esp  && !s.especialidad?.toLowerCase().includes(esp))    return false;
+    if (zona && !s.zona?.toLowerCase().includes(zona))           return false;
+    if (est) {
+      const estado = s.admitido ? (s.estado_socio || 'activo') : 'pendiente';
+      if (estado !== est) return false;
+    }
+    return true;
+  });
+
+  const el = document.getElementById('lista-so');
+
+  if (!filtered.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-ico">◎</div>Sin resultados para ese filtro</div>';
+    return;
+  }
+
+  const pend = filtered.filter(x => (!x.admitido && x.estado_socio !== 'rechazado') || x.estado_socio === 'pendiente');
+  const rest = filtered.filter(x => x.admitido && x.estado_socio !== 'pendiente');
+
+  let html = '';
+  if (pend.length) html += `<div style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--y);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Pendientes de aprobacion</div>` + pend.map(buildSocioCard).join('');
+  if (rest.length) {
+    if (pend.length) html += `<div style="font-family:var(--fd);font-size:15px;font-weight:800;color:var(--g1);margin:12px 0 8px;text-transform:uppercase;letter-spacing:1px">Activos / Baja</div>`;
+    html += rest.map(buildSocioCard).join('');
+  }
+
+  el.innerHTML = html;
 }
 
 async function loadOp() {
