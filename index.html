@@ -707,7 +707,13 @@ async function envSol() {
 
     setL('btn-sol', false);
 
-    if (error) { sER('err-sol', 'Error: ' + error.message); return; }
+   if (error) {
+  const msg = error.message?.includes('RATE_LIMIT')
+    ? 'Ya registraste 3 solicitudes hoy. Intenta mañana o contáctanos por WhatsApp.'
+    : 'Error: ' + error.message;
+  sER('err-sol', msg);
+  return;
+}
 
     // ── Asignar zona a la solicitud recién creada ──
     if (data && zona) {
