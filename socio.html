@@ -761,7 +761,10 @@ if (data.estado_socio !== 'activo') { dbg('Tu estado_socio es: ' + data.estado_s
   setupRealtimeSocio();
 }
 
-function goIdx() { window.location.href = 'index.html'; }
+function goIdx(msg) {
+  if (msg) toast(msg);
+  setTimeout(() => { window.location.href = 'index.html'; }, msg ? 2000 : 0);
+}
 async function exitSocio() {
   try { if (rtSolic) sb.removeChannel(rtSolic); } catch(_) {}
   try { if (rtMovs)  sb.removeChannel(rtMovs);  } catch(_) {}
@@ -1267,6 +1270,12 @@ async function suscribirPush() {
     console.warn('Push:', e.message);
   }
 }
+
+sb.auth.onAuthStateChange((_event, session) => {
+  if (!session && document.body.dataset.ok) {
+    goIdx('Sesión expirada. Redirigiendo...');
+  }
+});
 </script>
 </body>
 </html>
