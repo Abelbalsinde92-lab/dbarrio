@@ -996,7 +996,20 @@ async function suscribirPush() {
     toast('❌ Error: ' + e.message);
   }
 }
-
+  
+async function logActividad(accion, solicitudId = null, detalle = null) {
+  try {
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) return;
+    await sb.from('activity_log').insert({
+      auth_uid:     user.id,
+      rol:          USER_ROLE,
+      accion,
+      solicitud_id: solicitudId,
+      detalle
+    });
+  } catch (_) {}
+}
 </script>
 </body>
 </html>
