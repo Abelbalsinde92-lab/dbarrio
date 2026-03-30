@@ -12,108 +12,53 @@
   --y:#F5C116;--yd:#C9980D;
   --y-bg:rgba(245,193,22,.12);
   --ink:#1A1A2E;--ink2:#24243C;--ink3:#454562;
-  --bg:#F4F2EE;
-  --card:#FFFFFF;
+  --bg:#F4F2EE;--card:#FFFFFF;
   --line:rgba(28,28,46,.12);
-  --g1:rgba(28,28,46,.55);
-  --g2:rgba(28,28,46,.25);
+  --g1:rgba(28,28,46,.55);--g2:rgba(28,28,46,.25);
   --ok:#1E7A5A;--ok-bg:rgba(78,203,160,.12);
   --err:#E05C5C;--err-bg:rgba(224,92,92,.12);
-  --wa:#25D366;
+  --wa:#25D366;--blue:#4DA8DA;--blue-bg:rgba(77,168,218,.12);
   --r:16px;--rs:12px;
   --f:'DM Sans',system-ui,sans-serif;
   --fd:'Barlow Condensed',system-ui,sans-serif;
   --th:54px;--nav:62px;
 }
-
 html{background:var(--ink)}
-body{
-  min-height:100svh;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:var(--f);
-  font-size:14px;
-  line-height:1.5;
-  -webkit-font-smoothing:antialiased;
-  overscroll-behavior:none;
-}
+body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
 
 /* TOPBAR */
-.topbar{
-  position:fixed;top:0;left:0;right:0;z-index:50;
-  height:calc(var(--th) + env(safe-area-inset-top,0));
-  padding:env(safe-area-inset-top,0) 16px 0;
-  background:var(--ink);
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.tb-nombre{
-  flex:1;min-width:0;text-align:right;
-  font-size:12px;font-weight:700;
-  color:rgba(255,255,255,.55);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.tb-exit{
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.20);
-  color:rgba(255,255,255,.92);
-  border-radius:12px;padding:7px 10px;
-  font-size:12px;font-weight:900;
-  cursor:pointer;font-family:var(--f);
-  -webkit-tap-highlight-color:transparent;
-}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:calc(var(--th) + env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+.tb-nombre{flex:1;min-width:0;text-align:right;font-size:12px;font-weight:700;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-exit{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);color:rgba(255,255,255,.92);border-radius:12px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer;font-family:var(--f);-webkit-tap-highlight-color:transparent}
 .tb-exit:active{transform:scale(.98);opacity:.92}
 
 /* BRAND */
 .db-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;-webkit-tap-highlight-color:transparent;user-select:none}
 .db-iconbox{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;flex:0 0 auto}
 .db-icon{font-family:var(--fd);font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1}
-.db-icon .d{color:#E6E6E6} .db-icon .b{color:#F5C116}
+.db-icon .d{color:#E6E6E6}.db-icon .b{color:#F5C116}
 .db-wordmark{font-family:var(--fd);font-weight:900;font-size:28px;letter-spacing:-0.6px;line-height:1;white-space:nowrap}
-.db-wordmark .d{color:#E6E6E6} .db-wordmark .rest{color:#F5C116}
+.db-wordmark .d{color:#E6E6E6}.db-wordmark .rest{color:#F5C116}
 .db-tag{margin-left:6px;font-weight:900;letter-spacing:.5px;color:rgba(255,255,255,.50);font-size:12px;white-space:nowrap}
 @media(max-width:560px){.db-wordmark{display:none}.db-tag{display:none}}
 
-/* CONTENT */
-.content{
-  padding-top:calc(var(--th) + env(safe-area-inset-top,0));
-  padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 14px);
-}
-
-/* TABS */
+/* LAYOUT */
+.content{padding-top:calc(var(--th) + env(safe-area-inset-top,0));padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 14px)}
 .tab{display:none;padding:14px 14px 0}
 .tab.active{display:block}
 
 /* BOTTOM NAV */
-.bottom-nav{
-  position:fixed;left:0;right:0;bottom:0;z-index:999;
-  display:flex;align-items:center;justify-content:space-between;
-  background:var(--ink);border-top:2px solid var(--y);
-  height:calc(var(--nav) + env(safe-area-inset-bottom,0));
-  padding-bottom:env(safe-area-inset-bottom,0);
-}
-.bnav-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  padding:8px 0 10px;border:none;background:none;
-  color:rgba(255,255,255,.45);-webkit-tap-highlight-color:transparent;
-}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:999;display:flex;align-items:center;justify-content:space-between;background:var(--ink);border-top:2px solid var(--y);height:calc(var(--nav) + env(safe-area-inset-bottom,0));padding-bottom:env(safe-area-inset-bottom,0)}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 0 10px;border:none;background:none;color:rgba(255,255,255,.45);-webkit-tap-highlight-color:transparent;cursor:pointer}
 .bnav-btn.active{color:var(--y)}
 .bnav-ic{width:22px;height:22px;display:block}
 .bnav-lbl{font-size:10px;font-weight:800;letter-spacing:.3px;line-height:1}
+.bnav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--err);color:#fff;font-size:9px;font-weight:900;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}
+.bnav-wrap{position:relative}
 
 /* CARDS */
-.card{
-  background:var(--card);border-radius:18px;
-  border:1px solid rgba(28,28,46,.10);border-left:4px solid var(--y);
-  box-shadow:0 16px 34px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.05);
-  margin-bottom:12px;overflow:hidden;
-}
-.card-hdr{
-  display:flex;align-items:center;padding:13px 14px;cursor:pointer;gap:10px;
-  -webkit-tap-highlight-color:transparent;user-select:none;
-  background:linear-gradient(180deg,rgba(245,193,22,.12),rgba(245,193,22,0));
-}
+.card{background:var(--card);border-radius:18px;border:1px solid rgba(28,28,46,.10);border-left:4px solid var(--y);box-shadow:0 16px 34px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.05);margin-bottom:12px;overflow:hidden}
+.card-hdr{display:flex;align-items:center;padding:13px 14px;cursor:pointer;gap:10px;-webkit-tap-highlight-color:transparent;user-select:none;background:linear-gradient(180deg,rgba(245,193,22,.12),rgba(245,193,22,0))}
 .card-hdr:active{background:rgba(0,0,0,.02)}
 .card-top{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
 .card-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
@@ -123,6 +68,9 @@ body{
 .card.open .card-toggle{transform:rotate(180deg)}
 .card-body{display:none;padding:0 14px 14px;border-top:1px solid rgba(28,28,46,.10)}
 .card.open .card-body{display:block}
+
+/* HORA BADGE */
+.hora-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:var(--blue-bg);color:var(--blue);border-radius:6px;font-size:10px;font-weight:900;letter-spacing:.3px;border:1px solid rgba(77,168,218,.2)}
 
 /* FIELDS */
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;padding:12px 0}
@@ -141,7 +89,7 @@ body{
 .ca{background:var(--y-bg);color:#7A5800}
 .ce{background:var(--ok-bg);color:var(--ok)}
 
-/* FORM INPUTS */
+/* INPUTS */
 .fg{margin-bottom:11px}
 .flbl{display:block;font-size:10px;font-weight:900;color:rgba(28,28,46,.55);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 textarea,input,select{width:100%;padding:10px 12px;border:1.5px solid rgba(28,28,46,.14);border-radius:12px;font-size:14px;font-family:var(--f);background:#fff;color:var(--ink);-webkit-appearance:none}
@@ -150,19 +98,12 @@ textarea:focus,input:focus,select:focus{outline:none;border-color:var(--y);box-s
 
 /* BUTTONS */
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-.btn{
-  flex:1 1 auto;min-height:44px;border-radius:14px;padding:11px 14px;
-  font-size:13px;font-weight:900;font-family:var(--f);cursor:pointer;
-  border:1px solid rgba(28,28,46,.10);background:#F2F2F4;color:rgba(28,28,46,.92);
-  box-shadow:0 10px 22px rgba(0,0,0,.10);-webkit-tap-highlight-color:transparent;
-  position:relative;transform:translateZ(0);transition:transform .12s,opacity .12s;
-}
+.btn{flex:1 1 auto;min-height:44px;border-radius:14px;padding:11px 14px;font-size:13px;font-weight:900;font-family:var(--f);cursor:pointer;border:1px solid rgba(28,28,46,.10);background:#F2F2F4;color:rgba(28,28,46,.92);box-shadow:0 10px 22px rgba(0,0,0,.10);-webkit-tap-highlight-color:transparent;position:relative;transform:translateZ(0);transition:transform .12s,opacity .12s}
 .btn:active{transform:scale(.98);opacity:.95}
 .actions .btn.full{flex:1 1 100%}
 .btn::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,0));opacity:.10;pointer-events:none}
 .btn-dark{background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.10);box-shadow:0 14px 28px rgba(28,28,46,.25)}
 .btn-yellow{background:var(--y);color:rgba(28,28,46,.95);border:1px solid rgba(0,0,0,.06);box-shadow:0 14px 28px rgba(245,193,22,.22)}
-.btn-yellow:active{opacity:.92}
 .btn-ghost{background:rgba(28,28,46,.06);border:1px solid rgba(28,28,46,.12);color:rgba(28,28,46,.88);box-shadow:none}
 .btn-wa{background:var(--wa);color:#fff;border:1px solid rgba(0,0,0,.08);box-shadow:0 16px 34px rgba(37,211,102,.22)}
 .btn-soft{background:rgba(28,28,46,.06);border:1px solid rgba(28,28,46,.14);color:rgba(28,28,46,.92);box-shadow:none}
@@ -196,7 +137,7 @@ textarea:focus,input:focus,select:focus{outline:none;border-color:var(--y);box-s
 .hist-monto{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ok)}
 .hist-stars{font-size:12px;color:var(--y)}
 
-/* ESTADOS VACÍO / CARGANDO */
+/* ESTADOS */
 .vacio{text-align:center;padding:36px 20px;font-size:14px;color:rgba(28,28,46,.55)}
 .cargando{text-align:center;padding:28px;font-size:13px;color:rgba(28,28,46,.55)}
 
@@ -204,16 +145,18 @@ textarea:focus,input:focus,select:focus{outline:none;border-color:var(--y);box-s
 .toast{position:fixed;bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 14px);left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:600;white-space:nowrap;z-index:9999;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* BADGE contador de ordenes */
-.bnav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--err);color:#fff;font-size:9px;font-weight:900;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}
-.bnav-wrap{position:relative}
-
 /* SPINNER */
 .sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(28,28,46,.2);border-top-color:rgba(28,28,46,.8);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* AVISO DEUDA */
+/* DEUDA BANNER */
 .deuda-banner{background:rgba(224,92,92,.1);border:1px solid rgba(224,92,92,.25);border-radius:14px;padding:12px 16px;margin-bottom:12px;font-size:13px;font-weight:600;color:var(--err);line-height:1.5}
+
+/* SECCIÓN HEADER */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-title{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink)}
+.sec-refresh{background:rgba(28,28,46,.08);border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--f);color:var(--ink);transition:background .15s}
+.sec-refresh:hover{background:rgba(28,28,46,.13)}
 </style>
 </head>
 <body>
@@ -231,31 +174,31 @@ textarea:focus,input:focus,select:focus{outline:none;border-color:var(--y);box-s
   <button class="tb-exit" onclick="exitSocio()">Salir</button>
 </header>
 
-<!-- Error de acceso (solo visible si hay problema) -->
-<div id="dbg" style="display:none;padding:40px 20px;text-align:center;color:var(--err);font-size:13px;font-weight:600;line-height:1.8"></div>
+<div id="dbg" style="display:none;padding:60px 20px;text-align:center;color:var(--err);font-size:13px;font-weight:600;line-height:1.9"></div>
 
 <div class="content" id="appContent" style="display:none">
+
   <!-- ÓRDENES -->
   <div class="tab active" id="tab-ordenes">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <span style="font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink)">Mis órdenes</span>
-      <button style="background:var(--line);border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f)" onclick="loadOrdenes()">↻ Actualizar</button>
+    <div class="sec-hdr">
+      <span class="sec-title">Mis órdenes</span>
+      <button class="sec-refresh" onclick="loadOrdenes()">↻ Actualizar</button>
     </div>
     <div id="listaOrd"><div class="cargando">Cargando...</div></div>
   </div>
 
   <!-- HISTORIAL -->
   <div class="tab" id="tab-historial">
-    <div style="margin-bottom:14px">
-      <span style="font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink)">Mi historial</span>
+    <div class="sec-hdr">
+      <span class="sec-title">Mi historial</span>
     </div>
     <div id="listaHist"><div class="cargando">Cargando...</div></div>
   </div>
 
   <!-- CUENTA -->
   <div class="tab" id="tab-cuenta">
-    <div style="margin-bottom:14px">
-      <span style="font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink)">Mi cuenta</span>
+    <div class="sec-hdr">
+      <span class="sec-title">Mi cuenta</span>
     </div>
     <div id="cuentaContent"><div class="cargando">Cargando...</div></div>
   </div>
@@ -281,8 +224,8 @@ textarea:focus,input:focus,select:focus{outline:none;border-color:var(--y);box-s
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SURL    = 'https://gkxtdancgkwetdniooky.supabase.co';
-const SKEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+const SURL     = 'https://gkxtdancgkwetdniooky.supabase.co';
+const SKEY     = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
 const WA_ADMIN = '34627493593';
 
 const sb = supabase.createClient(SURL, SKEY, {
@@ -317,10 +260,10 @@ async function init(session) {
   if (document.body.dataset.ok) return;
   const { data, error } = await sb.from('socios').select('*').eq('auth_uid', session.user.id).maybeSingle();
   const showErr = (m) => { const d = document.getElementById('dbg'); d.style.display='block'; d.innerHTML = m; };
-  if (error)             { showErr('Error al cargar tu perfil. Intenta de nuevo.'); return; }
-  if (!data)             { showErr('No encontramos tu cuenta de técnico. Contáctanos.'); return; }
-  if (!data.admitido)    { showErr('Tu cuenta está <strong>pendiente de aprobación</strong>.<br>Te avisaremos por WhatsApp cuando esté lista.'); return; }
-  if (data.estado_socio !== 'activo') { showErr(`Tu cuenta está en estado <strong>${data.estado_socio}</strong>.<br>Contacta al administrador.`); return; }
+  if (error)                        { showErr('No pudimos cargar tu perfil. Intenta de nuevo.'); return; }
+  if (!data)                        { showErr('No encontramos tu cuenta de técnico.<br>Contáctanos para resolverlo.'); return; }
+  if (!data.admitido)               { showErr('Tu cuenta está <strong>pendiente de aprobación</strong>.<br>Te avisaremos por WhatsApp cuando esté lista.<br><br>Si ya pasó tiempo, escríbenos directamente.'); return; }
+  if (data.estado_socio !== 'activo') { showErr(`Tu cuenta está en estado <strong>${data.estado_socio}</strong>.<br>Escríbenos al WhatsApp para resolver esto.`); return; }
 
   document.body.dataset.ok = '1';
   mySocio = data;
@@ -368,7 +311,7 @@ sb.auth.onAuthStateChange((_event, session) => {
   if (!session && document.body.dataset.ok) goIdx('Sesión expirada. Redirigiendo...');
 });
 
-// ── NAV ──
+// ── NAVEGACIÓN ──
 function goIdx(msg) {
   if (msg) toast(msg);
   setTimeout(() => { window.location.href = 'index.html'; }, msg ? 2000 : 0);
@@ -394,7 +337,8 @@ function goTab(name, btn) {
 // ── BADGE ──
 async function actualizarBadge() {
   if (!mySocio?.id) return;
-  const { data } = await sb.from('solicitudes').select('id', { count: 'exact' }).eq('socio_asignado', mySocio.id).in('estado', ['asignada']);
+  const { data } = await sb.from('solicitudes').select('id', { count: 'exact' })
+    .eq('socio_asignado', mySocio.id).in('estado', ['asignada']);
   const n = data?.length || 0;
   const badge = document.getElementById('badge-ordenes');
   if (badge) { badge.textContent = n; badge.style.display = n > 0 ? 'flex' : 'none'; }
@@ -407,15 +351,21 @@ function ocultarBadge() {
 // ── ÓRDENES ──
 async function loadOrdenes() {
   const el = document.getElementById('listaOrd');
-  if (!mySocio) { el.innerHTML = '<div class="vacio">Iniciando...</div>'; return; }
-  el.innerHTML = '<div class="cargando">Cargando...</div>';
+  if (!mySocio) { el.innerHTML = '<div class="vacio">Iniciando sesión...</div>'; return; }
+  el.innerHTML = '<div class="cargando">Cargando órdenes...</div>';
   const { data, error } = await sb.from('solicitudes').select('*')
-    .eq('socio_asignado', mySocio.id).in('estado', ['asignada'])
+    .eq('socio_asignado', mySocio.id)
+    .in('estado', ['asignada'])
     .order('fecha_ts', { ascending: false });
   if (error) { el.innerHTML = errBox(error.message); return; }
-  if (!data?.length) { el.innerHTML = '<div class="vacio">Sin órdenes activas.<br><span style="font-size:12px;opacity:.6">Cuando el admin te asigne una orden aparecerá aquí.</span></div>'; return; }
+  if (!data?.length) {
+    el.innerHTML = `<div class="vacio">
+      Sin órdenes activas por ahora.<br>
+      <span style="font-size:12px;opacity:.6">Cuando el admin te asigne una aparecerá aquí.</span>
+    </div>`;
+    return;
+  }
   el.innerHTML = data.map(cardOrden).join('');
-  // badge off si están viendo órdenes
   ocultarBadge();
 }
 
@@ -427,45 +377,50 @@ function cardOrden(s) {
 
   const chip =
     rep ? '<span class="chip ce">Cierre reportado</span>' :
-    rej ? '<span class="chip ce" style="background:var(--err-bg);color:var(--err)">Rechazo enviado</span>' :
+    rej ? '<span class="chip ce" style="background:var(--err-bg);color:var(--err)">No puedo atender</span>' :
     enP ? '<span class="chip ce">En proceso</span>' :
-          '<span class="chip ca">Asignada</span>';
+          '<span class="chip ca">Nueva orden</span>';
+
+  // Hora preferida badge
+  const horaFlag = s.hora_preferida
+    ? `<span class="hora-badge">🕐 ${esc(s.hora_preferida)}</span>`
+    : '';
 
   const avisoCierre = rep ? `
     <div style="background:var(--ok-bg);border:1px solid rgba(78,203,160,.3);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:12px;font-weight:700;color:var(--ok)">
-      ✅ Reporte enviado. Esperando aprobación del admin.
+      ✅ Reporte enviado. El admin revisará y cerrará la orden.
     </div>` : '';
 
   const avisoRechazo = rej ? `
     <div style="background:var(--err-bg);border:1px solid rgba(224,92,92,.25);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:12px;font-weight:700;color:var(--err)">
-      ❌ Marcaste "No puedo atender". Pendiente de reasignación.
+      ❌ Notificaste que no puedes atender. Pendiente de reasignación por el admin.
     </div>` : '';
 
   const cierreForm = (!rep && !rej) ? `
     <div class="fg">
-      <label class="flbl">Monto cobrado ($)</label>
+      <label class="flbl">Monto cobrado al cliente ($)</label>
       <input id="monto-cierre-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"/>
     </div>
     <div class="fg">
-      <label class="flbl">Garantía (días)</label>
-      <input id="gar-cierre-${s.id}" type="number" min="0" step="1" placeholder="0"/>
+      <label class="flbl">Garantía que ofreces (días)</label>
+      <input id="gar-cierre-${s.id}" type="number" min="0" step="1" placeholder="0 = sin garantía"/>
     </div>
     <div class="fg">
-      <label class="flbl">Detalle del trabajo</label>
-      <textarea id="nt-cierre-${s.id}" placeholder="Describe lo realizado..."></textarea>
+      <label class="flbl">¿Qué hiciste? (describe el trabajo)</label>
+      <textarea id="nt-cierre-${s.id}" placeholder="Ej: Limpié filtros, cargué gas R410A, sellé tubería..."></textarea>
     </div>
     <div class="actions">
-      <button class="btn btn-yellow full" onclick="stop(event); reportarCierre(${s.id}, this)">Enviar reporte</button>
+      <button class="btn btn-yellow full" onclick="stop(event); reportarCierre(${s.id}, this)">Enviar reporte al admin</button>
     </div>` : `
     <div class="actions">
-      <button class="btn btn-ghost full" disabled>Reporte ya enviado</button>
+      <button class="btn btn-ghost full" disabled>Reporte ya enviado — en revisión</button>
     </div>`;
 
   return `
   <div class="card" id="${cid}">
     <div class="card-hdr" onclick="toggleCard('${cid}')">
       <div class="card-top">
-        <div class="card-row">${chip}<span class="card-code">${dbc(s.id)}</span></div>
+        <div class="card-row">${chip}<span class="card-code">${dbc(s.id)}</span>${horaFlag}</div>
         <div class="card-meta">
           <span>${esc(s.cliente)}</span>
           ${s.municipio ? `<span>${esc(s.municipio)}</span>` : ''}
@@ -484,8 +439,13 @@ function cardOrden(s) {
           <span class="f-lbl">Municipio</span>
           <span class="f-val">${esc(s.municipio || '—')}</span>
         </div>
+        ${s.hora_preferida ? `
+        <div class="field full">
+          <span class="f-lbl">Horario preferido del cliente</span>
+          <span class="f-val" style="color:var(--blue);font-weight:800">🕐 ${esc(s.hora_preferida)}</span>
+        </div>` : ''}
         <div class="field">
-          <span class="f-lbl">Teléfono cliente</span>
+          <span class="f-lbl">Teléfono del cliente</span>
           <span class="f-val">
             ${s.telefono ? `<a href="tel:${esc(s.telefono)}" style="color:var(--ink);font-weight:900;font-size:15px">${esc(s.telefono)}</a>` : '—'}
           </span>
@@ -495,12 +455,12 @@ function cardOrden(s) {
           <span class="f-lbl">Dirección</span>
           <span class="f-val dir-row">
             ${esc(s.direccion)}
-            <span class="gps-mini" onclick="stop(event); openGPS(${s.id})" title="Abrir mapa">📍</span>
+            <span class="gps-mini" onclick="stop(event); openGPS(${s.id})" title="Abrir en Google Maps">📍</span>
           </span>
         </div>` : ''}
         ${s.detalles ? `
         <div class="field full">
-          <span class="f-lbl">Detalles</span>
+          <span class="f-lbl">Detalles del problema</span>
           <span class="f-val">${esc(s.detalles)}</span>
         </div>` : ''}
         ${s.nota_admin ? `
@@ -510,10 +470,10 @@ function cardOrden(s) {
         </div>` : ''}
       </div>
 
-      <!-- Botón reporte cierre -->
+      <!-- Botón cierre -->
       <div class="actions">
         <button class="btn btn-soft full" onclick="stop(event); toggleCierre(event, ${s.id})">
-          📋 Reporte de cierre
+          📋 Reportar cierre
         </button>
       </div>
 
@@ -526,18 +486,18 @@ function cardOrden(s) {
 
       <!-- No puedo atender -->
       <div class="ifrm" id="ifrm-nopuedo-${s.id}">
-        <div class="ifrm-title">¿Por qué no puedes atender?</div>
-        <div class="fg"><textarea id="nt-nopuedo-${s.id}" placeholder="Motivo..."></textarea></div>
+        <div class="ifrm-title">¿Por qué no puedes atender esta orden?</div>
+        <div class="fg"><textarea id="nt-nopuedo-${s.id}" placeholder="Explica el motivo al admin..."></textarea></div>
         <div class="actions">
-          <button class="btn btn-danger full" onclick="stop(event); confNoPuedo(${s.id})">Confirmar</button>
+          <button class="btn btn-danger full" onclick="stop(event); confNoPuedo(${s.id})">Confirmar — no puedo atender</button>
           <button class="btn btn-ghost full" onclick="stop(event); closeF('nopuedo',${s.id})">Cancelar</button>
         </div>
       </div>
 
-      <!-- Acciones -->
+      <!-- Acciones rápidas -->
       <div class="actions">
         ${(!enP && !rej && !rep) ? `
-          <button class="btn btn-yellow full" onclick="stop(event); marcarEnProceso(${s.id})">✅ Llegué / En proceso</button>
+          <button class="btn btn-yellow full" onclick="stop(event); marcarEnProceso(${s.id})">✅ Llegué — marcar en proceso</button>
         ` : ''}
         ${s.telefono ? `
           <button class="btn btn-state primary" onclick="stop(event); waCliente(${s.id}, 'encamino')">🚗 Voy en camino</button>
@@ -546,7 +506,7 @@ function cardOrden(s) {
         ` : ''}
         <button class="btn btn-wa full" onclick="stop(event); waAdmin(${s.id})">${svgWA()} Contactar admin</button>
         ${!rej ? `
-          <button class="btn btn-danger full" onclick="stop(event); openF('nopuedo',${s.id})">❌ No puedo atender</button>
+          <button class="btn btn-danger full" onclick="stop(event); openF('nopuedo',${s.id})">❌ No puedo atender esta orden</button>
         ` : `
           <button class="btn btn-ghost full" disabled>Ya notificaste al admin</button>
         `}
@@ -558,24 +518,28 @@ function cardOrden(s) {
 // ── REPORTAR CIERRE ──
 async function reportarCierre(id, btn) {
   if (sendingCierre[id]) return;
-  const setBtn = (on) => { if (!btn) return; btn.disabled = on; btn.innerHTML = on ? '<span class="sp"></span>Enviando...' : 'Enviar reporte'; };
+  const setBtn = (on) => {
+    if (!btn) return;
+    btn.disabled = on;
+    btn.innerHTML = on ? '<span class="sp"></span>Enviando...' : 'Enviar reporte al admin';
+  };
   try {
     sendingCierre[id] = true; setBtn(true);
     const monto = parseFloat(document.getElementById('monto-cierre-' + id)?.value);
     const gar   = parseInt(document.getElementById('gar-cierre-' + id)?.value || '0', 10);
     const nota  = (document.getElementById('nt-cierre-' + id)?.value || '').trim();
-    if (!Number.isFinite(monto) || monto <= 0) { toast('❌ Ingresa un monto válido'); return; }
-    if (!Number.isFinite(gar) || gar < 0)      { toast('❌ Garantía inválida'); return; }
-    if (!nota)                                  { toast('❌ Describe el trabajo realizado'); return; }
+    if (!Number.isFinite(monto) || monto <= 0) { toast('Ingresa el monto cobrado al cliente'); return; }
+    if (!Number.isFinite(gar) || gar < 0)      { toast('Días de garantía inválidos'); return; }
+    if (!nota)                                  { toast('Describe el trabajo que realizaste'); return; }
     const { error } = await sb.from('solicitudes').update({
       monto_socio: monto, garantia_dias: gar, nota_socio: nota,
       cierre_ts: new Date().toISOString(), sub_estado: 'cierre_reportado', solicita_cierre: false
     }).eq('id', id);
-    if (error) { toast('❌ Error: ' + error.message); return; }
-    toast('✅ Reporte enviado al admin');
+    if (error) { toast('Error: ' + error.message); return; }
+    toast('✅ Reporte enviado — el admin lo revisará pronto');
     await loadOrdenes();
   } catch (e) {
-    console.error(e); toast('❌ Error inesperado. Reintenta.');
+    console.error(e); toast('Error inesperado. Vuelve a intentarlo.');
   } finally {
     sendingCierre[id] = false; setBtn(false);
   }
@@ -584,20 +548,20 @@ async function reportarCierre(id, btn) {
 // ── NO PUEDO ATENDER ──
 async function confNoPuedo(id) {
   const nota = document.getElementById('nt-nopuedo-'+id).value.trim();
-  if (!nota) { toast('❌ Escribe el motivo'); return; }
+  if (!nota) { toast('Escribe el motivo para el admin'); return; }
   const { error } = await sb.from('solicitudes').update({
     sub_estado: 'rechazada_por_socio', motivo_rechazo_socio: nota,
     rechazo_socio_ts: new Date().toISOString()
   }).eq('id', id);
-  if (error) { toast('❌ Error: ' + error.message); return; }
-  toast('Aviso enviado. Queda pendiente de reasignación.');
+  if (error) { toast('Error: ' + error.message); return; }
+  toast('Aviso enviado al admin. Queda pendiente de reasignación.');
   loadOrdenes();
 }
 
 // ── EN PROCESO ──
 async function marcarEnProceso(id) {
   const { error } = await sb.from('solicitudes').update({ sub_estado: 'en_proceso' }).eq('id', id);
-  if (error) { toast('❌ Error: ' + error.message); return; }
+  if (error) { toast('Error: ' + error.message); return; }
   toast('✅ Marcada como en proceso');
   loadOrdenes();
 }
@@ -606,15 +570,16 @@ async function marcarEnProceso(id) {
 async function loadHistorial() {
   const el = document.getElementById('listaHist');
   if (!mySocio) return;
-  el.innerHTML = '<div class="cargando">Cargando...</div>';
+  el.innerHTML = '<div class="cargando">Cargando historial...</div>';
   const { data, error } = await sb.from('solicitudes')
     .select('id,cliente,municipio,fecha_fin,monto,valoracion,servicio')
     .eq('socio_asignado', mySocio.id).eq('estado','completada')
     .order('fecha_fin', { ascending: false });
   if (error) { el.innerHTML = errBox(error.message); return; }
-  if (!data?.length) { el.innerHTML = '<div class="vacio">Sin órdenes completadas todavía.</div>'; return; }
-  const total = data.reduce((a, r) => a + (parseFloat(r.monto) || 0), 0);
-  const rating = data.filter(r => r.valoracion).reduce((a, r, _, arr) => a + r.valoracion / arr.length, 0);
+  if (!data?.length) { el.innerHTML = '<div class="vacio">Aún no tienes órdenes completadas.<br><span style="font-size:12px;opacity:.6">Aparecerán aquí cuando el admin apruebe tu cierre.</span></div>'; return; }
+  const total  = data.reduce((a, r) => a + (parseFloat(r.monto) || 0), 0);
+  const conVal = data.filter(r => r.valoracion);
+  const rating = conVal.length ? (conVal.reduce((a, r) => a + r.valoracion, 0) / conVal.length) : 0;
   el.innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
       <div class="cuenta-card" style="padding:14px;margin-bottom:0;text-align:center">
@@ -646,7 +611,7 @@ async function loadHistorial() {
 async function loadCuenta() {
   const el = document.getElementById('cuentaContent');
   if (!mySocio) return;
-  el.innerHTML = '<div class="cargando">Cargando...</div>';
+  el.innerHTML = '<div class="cargando">Cargando perfil...</div>';
   const { data, error } = await sb.from('socios').select('*').eq('id', mySocio.id).maybeSingle();
   if (error) { el.innerHTML = errBox(error.message); return; }
   if (data) mySocio = data;
@@ -654,7 +619,7 @@ async function loadCuenta() {
   const deudaAmt = parseFloat(s.deuda || 0);
   const deudaColor = deudaAmt > 0 ? 'deuda-activa' : 'deuda-cero';
   el.innerHTML = `
-    ${deudaAmt > 0 ? `<div class="deuda-banner">⚠️ Tienes una deuda pendiente de <strong>$${deudaAmt.toFixed(2)}</strong>. Contacta al admin para coordinar el pago.</div>` : ''}
+    ${deudaAmt > 0 ? `<div class="deuda-banner">⚠️ Tienes una deuda pendiente de <strong>$${deudaAmt.toFixed(2)}</strong>.<br>Coordina el pago con el admin para mantener tu cuenta activa.</div>` : ''}
     <div class="cuenta-card">
       <div class="cuenta-nombre">${esc(s.nombre)}</div>
       <div class="cuenta-tag">${esc(s.especialidad||'—')} · ${esc(s.zona||'—')}</div>
@@ -666,29 +631,29 @@ async function loadCuenta() {
       </div>
     </div>
     <div class="cuenta-card">
-      <div class="cuenta-tag" style="margin-bottom:10px;font-weight:800;color:var(--ink)">Mis datos</div>
+      <div style="font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink);margin-bottom:12px">Mis datos de contacto</div>
       <div class="fg">
-        <label class="flbl">Teléfono</label>
-        <input id="p-tel" type="tel" value="${esc(s.telefono||'')}"/>
+        <label class="flbl">Teléfono / WhatsApp</label>
+        <input id="p-tel" type="tel" value="${esc(s.telefono||'')}" placeholder="+53..."/>
       </div>
       <div class="fg">
-        <label class="flbl">Zona</label>
-        <input id="p-zona" type="text" value="${esc(s.zona||'')}"/>
+        <label class="flbl">Zona donde trabajas</label>
+        <input id="p-zona" type="text" value="${esc(s.zona||'')}" placeholder="Ej: Vedado, Centro Habana..."/>
       </div>
       <div class="fg">
-        <label class="flbl">Especialidad</label>
-        <input id="p-esp" type="text" value="${esc(s.especialidad||'')}"/>
+        <label class="flbl">Especialidad principal</label>
+        <input id="p-esp" type="text" value="${esc(s.especialidad||'')}" placeholder="Electricidad, Plomería..."/>
       </div>
       <button class="btn btn-dark" style="width:100%" onclick="savePerfil()">Guardar cambios</button>
       <p style="font-size:11px;color:rgba(28,28,46,.4);margin-top:8px;line-height:1.5">
-        Mantén estos datos al día para recibir órdenes sin retrasos.
+        Mantén tu teléfono actualizado para que el admin y los clientes puedan contactarte.
       </p>
     </div>
     <div class="cuenta-card">
-      <div class="cuenta-tag" style="margin-bottom:10px;font-weight:700;color:var(--ink)">Contactar admin</div>
+      <div style="font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink);margin-bottom:10px">¿Necesitas algo?</div>
       <button class="btn btn-wa" style="width:100%" onclick="waAdminGeneral()">${svgWA()} Escribir al admin</button>
       <p style="font-size:11px;color:rgba(28,28,46,.4);margin-top:8px;line-height:1.5">
-        Para consultas, problemas de pago o cualquier asunto operativo.
+        Para dudas sobre pagos, órdenes o cualquier asunto operativo.
       </p>
     </div>`;
 }
@@ -696,11 +661,11 @@ async function loadCuenta() {
 // ── GUARDAR PERFIL ──
 async function savePerfil() {
   if (!mySocio?.id) return;
-  const telefono    = document.getElementById('p-tel')?.value?.trim() || null;
-  const zona        = document.getElementById('p-zona')?.value?.trim() || null;
+  const telefono     = document.getElementById('p-tel')?.value?.trim() || null;
+  const zona         = document.getElementById('p-zona')?.value?.trim() || null;
   const especialidad = document.getElementById('p-esp')?.value?.trim() || null;
   const { error } = await sb.from('socios').update({ telefono, zona, especialidad }).eq('id', mySocio.id);
-  if (error) { toast('❌ Error: ' + error.message); return; }
+  if (error) { toast('Error guardando datos: ' + error.message); return; }
   toast('✅ Datos actualizados');
   loadCuenta();
 }
@@ -713,12 +678,12 @@ async function waAdmin(idOrden) {
 }
 async function waCliente(idOrden, tipo) {
   const { data: s, error } = await sb.from('solicitudes').select('cliente,telefono,servicio,municipio').eq('id', idOrden).maybeSingle();
-  if (error || !s?.telefono) { toast('No hay teléfono del cliente.'); return; }
-  const cli = s.cliente || 'cliente', srv = s.servicio || 'servicio', mun = s.municipio || 'tu zona';
+  if (error || !s?.telefono) { toast('Esta orden no tiene teléfono del cliente.'); return; }
+  const cli = s.cliente || 'cliente', srv = s.servicio || 'el servicio', mun = s.municipio || 'tu zona';
   let msg = '';
-  if (tipo === 'encamino') msg = `Hola ${cli}, soy tu técnico de dbarrio.\n✅ Voy en camino por ${srv} (${mun}).\n¿Me confirmas dirección y referencia?`;
-  else if (tipo === 'coordinar') msg = `Hola ${cli}, soy tu técnico de dbarrio.\n🕒 Para coordinar: ¿te viene bien ahora o prefieres en 30–60 min?\nServicio: ${srv} (${mun}).`;
-  else msg = `Hola ${cli}, soy tu técnico de dbarrio.\n📍 Ya estoy en el lugar.\n¿Puedes salir o confirmarme la puerta / referencia?`;
+  if (tipo === 'encamino')  msg = `Hola ${cli}, soy tu técnico de dbarrio.\n✅ Voy en camino para ${srv} (${mun}).\n¿Me confirmas la dirección exacta?`;
+  else if (tipo === 'coordinar') msg = `Hola ${cli}, soy tu técnico de dbarrio.\n🕒 ¿Te viene bien ahora o prefieres en 30–60 min?\nServicio: ${srv} (${mun}).`;
+  else msg = `Hola ${cli}, soy tu técnico de dbarrio.\n📍 Ya estoy en el lugar.\n¿Puedes salir o confirmarme la referencia?`;
   openWA(s.telefono, msg);
 }
 function waAdminGeneral() { openWA(WA_ADMIN, `Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\n`); }
@@ -729,7 +694,7 @@ async function openGPS(idOrden) {
   const { data: s, error } = await sb.from('solicitudes').select('direccion,municipio').eq('id', idOrden).maybeSingle();
   if (error) { toast('Error leyendo dirección'); return; }
   const q = ((s?.direccion ? s.direccion + ', ' : '') + (s?.municipio || '')).trim();
-  if (!q) { toast('Esta orden no tiene dirección'); return; }
+  if (!q) { toast('Esta orden no tiene dirección registrada'); return; }
   window.location.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 }
 
@@ -750,7 +715,7 @@ function openF(tipo,id){
 }
 function closeF(tipo,id){document.getElementById('ifrm-'+tipo+'-'+id)?.classList.remove('open')}
 
-// ── PUSH NOTIFICATIONS ──
+// ── PUSH ──
 const VAPID_PUBLIC = 'BBQTR3KhE7bjwkSS4VnLKKfxGmEX6NgLMHLDI6hta-6HBdVgPlERExJ0RZm9L2oOYfdSkAWlHt6QOjVh9gql76g';
 function urlBase64ToUint8Array(b64){const p='='.repeat((4-b64.length%4)%4);const b=(b64+p).replace(/-/g,'+').replace(/_/g,'/');const r=window.atob(b);return Uint8Array.from([...r].map(c=>c.charCodeAt(0)))}
 async function suscribirPush() {
