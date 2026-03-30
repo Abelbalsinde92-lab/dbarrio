@@ -407,20 +407,34 @@
     </div>
     <div class="fg">
       <label>Municipio</label>
-      <input id="s-mun" type="text" placeholder="Municipio en La Habana"/>
-      <div class="fe" id="es-mun">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>Zona</label>
-      <select id="s-zona">
-        <option value="">-- Seleccionar zona --</option>
-        <option value="norte">Norte</option>
-        <option value="sur">Sur</option>
-        <option value="centro">Centro</option>
-        <option value="este">Este</option>
-        <option value="oeste">Oeste</option>
+      <select id="s-mun" onchange="autoZona()">
+        <option value="">-- Seleccionar municipio --</option>
+        <optgroup label="Occidente">
+          <option value="Playa">Playa</option>
+          <option value="La Lisa">La Lisa</option>
+          <option value="Marianao">Marianao</option>
+        </optgroup>
+        <optgroup label="Centro">
+          <option value="Plaza de la Revolución">Plaza de la Revolución</option>
+          <option value="Centro Habana">Centro Habana</option>
+          <option value="La Habana Vieja">La Habana Vieja</option>
+          <option value="Diez de Octubre">Diez de Octubre</option>
+          <option value="Cerro">Cerro</option>
+        </optgroup>
+        <optgroup label="Oriente">
+          <option value="Regla">Regla</option>
+          <option value="La Habana del Este">La Habana del Este</option>
+          <option value="Guanabacoa">Guanabacoa</option>
+          <option value="San Miguel del Padrón">San Miguel del Padrón</option>
+        </optgroup>
+        <optgroup label="Sur">
+          <option value="Boyeros">Boyeros</option>
+          <option value="Arroyo Naranjo">Arroyo Naranjo</option>
+          <option value="Cotorro">Cotorro</option>
+        </optgroup>
       </select>
-      <div class="fe" id="es-zona">Selecciona una zona.</div>
+      <div class="fe" id="es-mun">Selecciona tu municipio.</div>
+      <div id="zona-hint" style="display:none;font-size:11px;color:var(--g1);margin-top:4px;font-weight:600"></div>
     </div>
     <!-- NUEVO: Hora preferida -->
     <div class="fg">
@@ -676,11 +690,12 @@ function normalizarTelefono(codeId, telId, errId) {
 }
 
 function resetSolForm() {
-  ['s-cli','s-wa','s-mun','s-dir','s-det'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  ['s-srv','s-zona','s-hora'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['s-cli','s-wa','s-dir','s-det'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['s-mun','s-srv','s-hora'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   const cp=document.getElementById('s-cp'); if(cp) cp.checked=false;
+  const hint=document.getElementById('zona-hint'); if(hint) hint.style.display='none';
   cER('err-sol');
-  ['es-cli','es-wa','es-mun','es-zona','es-srv','es-cp'].forEach(cE);
+  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
   const btn=document.getElementById('btn-sol');
   if(btn){ btn.style.display=''; btn.disabled=false; if(btn._t) btn.innerHTML=btn._t; }
   const ok=document.getElementById('ok-sol'); if(ok) ok.classList.remove('v');
@@ -723,26 +738,58 @@ async function buscarOrden() {
     </div>`;
 }
 
-// ── SOLICITUD (con hora preferida) ──
+// ── MAPA MUNICIPIO → ZONA ──
+const MUNICIPIO_ZONA = {
+  'Playa':                  'oeste',
+  'La Lisa':                'oeste',
+  'Marianao':               'oeste',
+  'Plaza de la Revolución': 'centro',
+  'Centro Habana':          'centro',
+  'La Habana Vieja':        'centro',
+  'Diez de Octubre':        'centro',
+  'Cerro':                  'centro',
+  'Regla':                  'este',
+  'La Habana del Este':     'este',
+  'Guanabacoa':             'este',
+  'San Miguel del Padrón':  'este',
+  'Boyeros':                'sur',
+  'Arroyo Naranjo':         'sur',
+  'Cotorro':                'sur',
+};
+
+function autoZona() {
+  // Feedback visual: muestra la zona asignada junto al select (opcional)
+  const mun = document.getElementById('s-mun')?.value || '';
+  const zona = MUNICIPIO_ZONA[mun] || '';
+  const hint = document.getElementById('zona-hint');
+  if (hint) {
+    hint.textContent = zona ? `Zona asignada: ${zona}` : '';
+    hint.style.display = zona ? 'block' : 'none';
+  }
+  cE('es-mun');
+}
+
+// ── SOLICITUD ──
 async function envSol() {
   cER('err-sol');
-  ['es-cli','es-wa','es-mun','es-zona','es-srv','es-cp'].forEach(cE);
+  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
 
-  const cli      = document.getElementById('s-cli')?.value.trim() || '';
-  const telData  = normalizarTelefono('s-code', 's-wa', 'es-wa');
-  const mun      = document.getElementById('s-mun')?.value.trim() || '';
-  const zona     = document.getElementById('s-zona')?.value || '';
-  const hora     = document.getElementById('s-hora')?.value || '';
-  const dir      = document.getElementById('s-dir')?.value.trim() || '';
-  const srv      = document.getElementById('s-srv')?.value || '';
-  const det      = document.getElementById('s-det')?.value.trim() || '';
-  const cp       = !!document.getElementById('s-cp')?.checked;
+  const cli     = document.getElementById('s-cli')?.value.trim() || '';
+  const telData = normalizarTelefono('s-code', 's-wa', 'es-wa');
+  const mun     = document.getElementById('s-mun')?.value || '';
+  const hora    = document.getElementById('s-hora')?.value || '';
+  const dir     = document.getElementById('s-dir')?.value.trim() || '';
+  const srv     = document.getElementById('s-srv')?.value || '';
+  const det     = document.getElementById('s-det')?.value.trim() || '';
+  const cp      = !!document.getElementById('s-cp')?.checked;
+
+  // Zona derivada automáticamente del municipio
+  const zona = MUNICIPIO_ZONA[mun] || '';
 
   let ok = true;
   if (!cli)     { sE('es-cli'); ok = false; }
   if (!telData) { sE('es-wa'); ok = false; }
-  if (!mun)     { sE('es-mun'); ok = false; }
-  if (!zona)    { sE('es-zona', 'Selecciona una zona.'); ok = false; }
+  if (!mun)     { sE('es-mun', 'Selecciona tu municipio.'); ok = false; }
   if (!srv)     { sE('es-srv'); ok = false; }
   if (!cp)      { sE('es-cp'); ok = false; }
   if (!ok) return;
@@ -765,11 +812,14 @@ async function envSol() {
         : 'Error: ' + error.message;
       sER('err-sol', msg); return;
     }
-    // Asignar zona y hora preferida
+    // Asignar zona (auto) y hora preferida
     if (data) {
-      const updates = { zona };
+      const updates = {};
+      if (zona) updates.zona = zona;
       if (hora) updates.hora_preferida = hora;
-      await sbPublic.from('solicitudes').update(updates).eq('id', data);
+      if (Object.keys(updates).length) {
+        await sbPublic.from('solicitudes').update(updates).eq('id', data);
+      }
     }
     document.getElementById('cod-sol').textContent = dbc(data);
     sOK('ok-sol');
