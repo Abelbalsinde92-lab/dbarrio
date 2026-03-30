@@ -756,8 +756,9 @@ async function buscarOrden() {
     <span class="tr-code">${dbc(sol.id)}</span>
     <span class="tr-estado st-${sol.estado}">${estadoLabel}</span>
     <div class="tr-info">
-      ${sol.servicio  ? `<div>🔩 ${sol.servicio}</div>`  : ''}
-      ${sol.municipio ? `<div>📍 ${sol.municipio}</div>` : ''}
+      ${sol.servicio        ? `<div>🔩 ${sol.servicio}</div>`          : ''}
+      ${sol.municipio       ? `<div>📍 ${sol.municipio}</div>`         : ''}
+      ${sol.hora_preferida  ? `<div>🕐 ${sol.hora_preferida}</div>`    : ''}
       <div>📅 Solicitado: ${fecha}</div>
       ${fechaFin ? `<div>✅ Completado: ${fechaFin}</div>` : ''}
     </div>`;
@@ -822,13 +823,15 @@ async function envSol() {
   setL('btn-sol', true);
   try {
     const { data, error } = await sbPublic.rpc('create_solicitud_publica', {
-      p_cliente:       cli,
-      p_telefono:      telData.completo,
-      p_municipio:     mun,
-      p_direccion:     dir,
-      p_servicio:      srv,
-      p_detalles:      det,
-      p_consent_texto: 'solicitud publica v2'
+      p_cliente:        cli,
+      p_telefono:       telData.completo,
+      p_municipio:      mun,
+      p_direccion:      dir,
+      p_servicio:       srv,
+      p_detalles:       det,
+      p_consent_texto:  'solicitud publica v2',
+      p_zona:           zona || null,
+      p_hora_preferida: hora || null
     });
     setL('btn-sol', false);
     if (error) {
@@ -836,15 +839,6 @@ async function envSol() {
         ? '⚠️ Ya registraste 3 solicitudes hoy. Intenta mañana o contáctanos por WhatsApp.'
         : 'Error: ' + error.message;
       sER('err-sol', msg); return;
-    }
-    // Asignar zona (auto) y hora preferida
-    if (data) {
-      const updates = {};
-      if (zona) updates.zona = zona;
-      if (hora) updates.hora_preferida = hora;
-      if (Object.keys(updates).length) {
-        await sbPublic.from('solicitudes').update(updates).eq('id', data);
-      }
     }
     document.getElementById('cod-sol').textContent = dbc(data);
     sOK('ok-sol');
