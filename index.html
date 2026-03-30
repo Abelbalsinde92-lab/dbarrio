@@ -4,34 +4,34 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
   <meta name="theme-color" content="#1A1A2E"/>
-<title>dbarrio — servicios técnicos</title>
+  <title>dbarrio — servicios técnicos</title>
 
-<!-- SEO -->
-<meta name="description" content="Reparaciones del hogar en La Habana. Electricidad, plomería, refrigeración y más. Técnicos verificados en tu municipio."/>
-<meta name="keywords" content="técnicos, reparaciones, plomería, electricidad, refrigeración, La Habana, servicios del hogar"/>
+  <!-- SEO -->
+  <meta name="description" content="Reparaciones del hogar en La Habana. Electricidad, plomería, refrigeración y más. Técnicos verificados en tu municipio."/>
+  <meta name="keywords" content="técnicos, reparaciones, plomería, electricidad, refrigeración, La Habana, servicios del hogar"/>
 
-<!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
-<meta property="og:type"        content="website"/>
-<meta property="og:url"         content="https://dbarrio-two.vercel.app/"/>
-<meta property="og:title"       content="dbarrio — servicios técnicos"/>
-<meta property="og:description" content="Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Solicita ahora y recibe tu código de seguimiento."/>
-<meta property="og:image"       content="https://dbarrio-two.vercel.app/assets/icons/db-icon-512.png"/>
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website"/>
+  <meta property="og:url"         content="https://dbarrio-two.vercel.app/"/>
+  <meta property="og:title"       content="dbarrio — servicios técnicos"/>
+  <meta property="og:description" content="Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Solicita ahora y recibe tu código de seguimiento."/>
+  <meta property="og:image"       content="https://dbarrio-two.vercel.app/assets/icons/db-icon-512.png"/>
 
-<!-- Twitter / X -->
-<meta name="twitter:card"        content="summary"/>
-<meta name="twitter:title"       content="dbarrio — servicios técnicos"/>
-<meta name="twitter:description" content="Técnicos verificados en tu municipio. Solicita ahora."/>
-<meta name="twitter:image"       content="https://dbarrio-two.vercel.app/assets/icons/db-icon-512.png"/>
+  <!-- Twitter / X -->
+  <meta name="twitter:card"        content="summary"/>
+  <meta name="twitter:title"       content="dbarrio — servicios técnicos"/>
+  <meta name="twitter:description" content="Técnicos verificados en tu municipio. Solicita ahora."/>
+  <meta name="twitter:image"       content="https://dbarrio-two.vercel.app/assets/icons/db-icon-512.png"/>
 
-<!-- PWA iOS -->
-<meta name="mobile-web-app-capable"         content="yes"/>
-<meta name="apple-mobile-web-app-capable"   content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title"     content="dbarrio"/>
+  <!-- PWA iOS -->
+  <meta name="mobile-web-app-capable"                content="yes"/>
+  <meta name="apple-mobile-web-app-capable"          content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title"            content="dbarrio"/>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="db-32.png?v=1">
-  <link rel="icon" type="image/png" sizes="16x16" href="db-16.png?v=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="db-180.png?v=1">
+  <link rel="icon" type="image/png" sizes="32x32"  href="db-32.png?v=1">
+  <link rel="icon" type="image/png" sizes="16x16"  href="db-16.png?v=1">
+  <link rel="apple-touch-icon"     sizes="180x180" href="db-180.png?v=1">
   <link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=1">
   <link rel="icon" type="image/png" sizes="512x512" href="db-512.png?v=1">
   <link rel="manifest" href="manifest.json?v=1">
@@ -50,12 +50,16 @@
       --err:#D63031;--ok:#00856F;
       --r:14px;--f:'Outfit',sans-serif;--fd:'Barlow Condensed',sans-serif;
     }
-
     html{background:var(--ink)}
     body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
     /* HEADER */
-    .header{position:sticky;top:0;z-index:40;background:var(--ink);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;padding-top:env(safe-area-inset-top,0)}
+    .header{
+      position:sticky;top:0;z-index:40;background:var(--ink);
+      height:calc(54px + env(safe-area-inset-top,0));
+      padding:env(safe-area-inset-top,0) 16px 0;
+      display:flex;align-items:center;justify-content:space-between;
+    }
     .nav{display:flex;gap:6px}
     .nav a{font-size:11px;font-weight:500;color:rgba(255,255,255,.45);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:20px;transition:all .15s}
     .nav a:hover{color:var(--y);border-color:rgba(245,193,22,.3)}
@@ -80,7 +84,7 @@
     .hero-curve{height:26px;background:var(--bg);border-radius:26px 26px 0 0;margin-top:-1px}
 
     /* CONTENT */
-    .content{padding:4px 14px 40px;padding-bottom:calc(40px + env(safe-area-inset-bottom,0));display:flex;flex-direction:column;gap:10px}
+    .content{padding:4px 14px calc(40px + env(safe-area-inset-bottom,0));display:flex;flex-direction:column;gap:10px}
 
     /* CTA */
     .btn-cta{width:100%;border:none;cursor:pointer;background:var(--y);border-radius:var(--r);display:flex;align-items:stretch;overflow:hidden;box-shadow:0 4px 20px rgba(245,193,22,.35);transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
@@ -89,6 +93,8 @@
     .cta-title{font-family:var(--fd);font-size:25px;font-weight:900;color:var(--ink);letter-spacing:.2px;line-height:1;display:block}
     .cta-sub{font-size:12px;font-weight:600;color:rgba(28,28,46,.55);display:block;margin-top:2px}
     .btn-cta-ico{width:56px;background:rgba(28,28,46,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+    /* ACARDS */
     .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .acard{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:transform .1s;box-shadow:0 1px 4px rgba(0,0,0,.05);-webkit-tap-highlight-color:transparent;text-align:left;width:100%}
     .acard:active{transform:scale(.97)}
@@ -97,13 +103,26 @@
     .acard.dk{background:#F4F3F8;border-color:rgba(28,28,46,.1)}
     .acard-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .icy{background:rgba(245,193,22,.15)} .icb{background:rgba(66,135,245,.1)}
-    .icr{background:rgba(214,48,49,.08)}  .ico{background:rgba(237,137,54,.1)}
-    .ick{background:rgba(28,28,46,.07)}   .icg{background:rgba(0,133,111,.1)}
+    .ico{background:rgba(237,137,54,.1)}  .ick{background:rgba(28,28,46,.07)}
     .acard-txt{display:flex;flex-direction:column;gap:2px;flex:1}
     .acard-title{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
     .acard-desc{font-size:11px;font-weight:500;color:var(--g1)}
-    .tip{text-align:center;font-size:12px;color:var(--g1);padding:4px 10px}
-    .tip-chip{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:12px;font-weight:800;padding:2px 8px;border-radius:5px;vertical-align:middle;margin:0 2px;letter-spacing:.5px}
+
+    /* TESTIMONIOS */
+    .testi-wrap{display:flex;flex-direction:column;gap:8px}
+    .testi-hdr{font-family:var(--fd);font-size:17px;font-weight:900;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+    .testi-hdr::after{content:'';flex:1;height:1.5px;background:var(--line);border-radius:2px}
+    .testi-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);padding:14px 16px;box-shadow:0 1px 6px rgba(0,0,0,.05);position:relative;overflow:hidden}
+    .testi-card::before{content:'"';position:absolute;top:-6px;right:12px;font-family:var(--fd);font-size:72px;font-weight:900;color:rgba(245,193,22,.12);line-height:1;pointer-events:none}
+    .testi-stars{display:flex;gap:2px;margin-bottom:8px}
+    .testi-star{font-size:13px;color:var(--y)}
+    .testi-texto{font-size:13px;color:var(--g1);line-height:1.6;margin-bottom:10px;font-style:italic}
+    .testi-autor{display:flex;align-items:center;gap:8px}
+    .testi-avatar{width:32px;height:32px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:14px;font-weight:900;color:var(--y);flex-shrink:0}
+    .testi-info{display:flex;flex-direction:column;gap:1px}
+    .testi-nombre{font-size:13px;font-weight:700;color:var(--ink)}
+    .testi-meta{font-size:11px;color:var(--g2)}
+    .testi-nota{font-size:10px;color:var(--g2);margin-top:6px;font-style:italic}
 
     /* ANIMACIONES */
     @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -114,43 +133,28 @@
     .a2{animation:up .3s ease .25s both}
     .a3{animation:up .3s ease .29s both}
 
-    /* TRACKER CARD (db-xxxx interactivo) */
-    .tracker-card{
-      background:var(--ink);border-radius:var(--r);padding:16px 18px;
-      display:flex;align-items:center;gap:14px;cursor:pointer;
-      transition:transform .12s;-webkit-tap-highlight-color:transparent;
-    }
-    .tracker-card:active{transform:scale(.98)}
-    .tracker-input-row{display:flex;gap:8px;margin-top:10px}
-    .tracker-input-row input{
-      flex:1;padding:10px 12px;border:1.5px solid rgba(255,255,255,.15);
-      border-radius:10px;font-size:14px;font-family:var(--f);color:#fff;
-      background:rgba(255,255,255,.07);outline:none;
-      -webkit-appearance:none;
-    }
+    /* TRACKER */
+    .tracker-wrap{background:var(--ink);border-radius:var(--r);padding:16px 18px}
+    .tracker-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);margin-bottom:6px}
+    .tracker-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:10px}
+    .tracker-input-row{display:flex;gap:8px}
+    .tracker-input-row input{flex:1;padding:10px 12px;border:1.5px solid rgba(255,255,255,.15);border-radius:10px;font-size:14px;font-family:var(--f);color:#fff;background:rgba(255,255,255,.07);outline:none;-webkit-appearance:none}
     .tracker-input-row input::placeholder{color:rgba(255,255,255,.3)}
     .tracker-input-row input:focus{border-color:var(--y);background:rgba(245,193,22,.07)}
-    .tracker-input-row button{
-      padding:0 16px;background:var(--y);color:var(--ink);border:none;
-      border-radius:10px;font-family:var(--f);font-size:13px;font-weight:700;
-      cursor:pointer;white-space:nowrap;flex-shrink:0;
-    }
+    .tracker-input-row button{padding:0 16px;background:var(--y);color:var(--ink);border:none;border-radius:10px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;min-height:44px}
     .tracker-input-row button:active{opacity:.85}
     .tracker-result{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.6;display:none}
     .tracker-result.v{display:block}
-    .tracker-result.ok{background:rgba(78,203,160,.12);border:1px solid rgba(78,203,160,.25);color:#00856F}
     .tracker-result.err{background:rgba(214,48,49,.08);border:1px solid rgba(214,48,49,.2);color:#D63031}
     .tr-code{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--y);letter-spacing:1px;display:block;margin-bottom:4px}
     .tr-estado{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:5px;font-size:11px;font-weight:700;margin-bottom:4px}
-    .tr-info{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6}
-
-    /* STATUS CHIPS */
+    .tr-info{font-size:12px;color:rgba(255,255,255,.45);line-height:1.7}
     .st-pendiente{background:rgba(245,193,22,.15);color:#C9980D}
     .st-asignada{background:rgba(77,168,218,.15);color:#2778A0}
     .st-completada{background:rgba(78,203,160,.15);color:#00856F}
     .st-rechazada{background:rgba(214,48,49,.1);color:#D63031}
 
-    /* MODALS */
+    /* MODALES */
     .ov{display:none;position:fixed;inset:0;background:rgba(15,15,28,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:200;align-items:flex-end;justify-content:center}
     .ov.open{display:flex}
     .sheet{background:var(--card);width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom,28px);max-height:92svh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideup .26s cubic-bezier(.22,.72,0,1) both}
@@ -158,7 +162,7 @@
     .pill{width:36px;height:4px;background:var(--line);border-radius:4px;margin:10px auto}
     .sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;margin-bottom:14px}
     .sheet-title{font-family:var(--fd);font-size:23px;font-weight:800;color:var(--ink);letter-spacing:.1px}
-    .sheet-x{background:var(--line);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--g1);display:flex;align-items:center;justify-content:center}
+    .sheet-x{background:var(--line);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--g1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .sheet-x:hover{background:var(--g2)}
     .mbody{padding:0 20px 20px}
     .fg{margin-bottom:13px}
@@ -166,14 +170,13 @@
     input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:var(--f);color:var(--ink);background:#FAFAFA;transition:border-color .15s;-webkit-appearance:none;appearance:none}
     .phone-row{display:grid;grid-template-columns:140px 1fr;gap:10px}
     .phone-row select,.phone-row input{width:100%}
-    @media (max-width:520px){.phone-row{grid-template-columns:1fr}}
+    @media(max-width:520px){.phone-row{grid-template-columns:1fr}}
     input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);background:#fff;box-shadow:0 0 0 3px rgba(28,28,46,.06)}
     textarea{resize:vertical;min-height:72px}
     .fe{font-size:11px;color:var(--err);margin-top:4px;display:none}
     .fe.v{display:block}
     .cb{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;cursor:pointer}
-    .cb input[type=checkbox]{width:18px;height:18px;margin-top:1px;flex-shrink:0;accent-color:var(--ink)}
-    .cb input[type="checkbox"]{-webkit-appearance:checkbox!important;appearance:checkbox!important;accent-color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:4px}
+    .cb input[type=checkbox]{width:18px;height:18px;margin-top:1px;flex-shrink:0;-webkit-appearance:checkbox!important;appearance:checkbox!important;accent-color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:4px}
     .cb span{font-size:12px;color:var(--g1);line-height:1.55}
     .cb a{color:var(--ink)}
     .sep{display:flex;align-items:center;gap:10px;margin:14px 0 12px;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px}
@@ -193,7 +196,7 @@
     .ok-box.v{display:block}
     .ok-code{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:24px;font-weight:900;padding:4px 14px;border-radius:8px;margin:6px 0 4px;letter-spacing:1px}
     .ok-note{display:block;font-size:11px;color:#1A7F5A;margin-top:4px}
-    .err-box{display:none;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--err)}
+    .err-box{display:none;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--err);line-height:1.5}
     .err-box.v{display:block}
     .hint{font-size:12px;color:var(--g1);line-height:1.55;margin-top:6px}
     .sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
@@ -224,12 +227,12 @@
   </a>
   <nav class="nav">
     <a href="privacidad.html" target="_blank">Privacidad</a>
-    <a href="terminos.html" target="_blank">Terminos</a>
+    <a href="terminos.html" target="_blank">Términos</a>
   </nav>
 </header>
 
 <section class="hero">
-  <div class="hero-wm">db</div>
+  <div class="hero-wm" aria-hidden="true">db</div>
   <div class="hero-chip">
     <span class="hero-dot"></span>
     <span class="hero-chip-txt">Activo ahora</span>
@@ -251,6 +254,7 @@
 
 <div class="content">
 
+  <!-- CTA principal -->
   <button class="btn-cta" onclick="open_('sol')">
     <div class="btn-cta-body">
       <span class="cta-title">Solicitar servicio</span>
@@ -261,6 +265,7 @@
     </div>
   </button>
 
+  <!-- Grid acciones -->
   <div class="grid2">
     <button class="acard" onclick="open_('gar')">
       <div class="acard-icon icb">
@@ -303,18 +308,63 @@
     </button>
   </div>
 
-  <button class="acard row dk a1" onclick="open_('acc')">
+  <!-- TESTIMONIOS -->
+  <div class="testi-wrap a1">
+    <div class="testi-hdr">Lo que dicen nuestros clientes</div>
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-texto">El técnico llegó puntual y resolvió el problema del split en menos de una hora. Pensábamos que necesitaba gas pero era solo el drenaje tapado. Ahorramos bastante dinero.</div>
+      <div class="testi-autor">
+        <div class="testi-avatar">ML</div>
+        <div class="testi-info">
+          <span class="testi-nombre">María L.</span>
+          <span class="testi-meta">Refrigeración · Vedado</span>
+        </div>
+      </div>
+      <div class="testi-nota">Código db-0041 · Servicio completado con garantía</div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-texto">Rápido y honesto. Me explicó todo lo que hizo, por qué saltaba el breaker y cómo evitarlo. Primera vez que un técnico me da ese nivel de detalle. Lo voy a recomendar.</div>
+      <div class="testi-autor">
+        <div class="testi-avatar">CR</div>
+        <div class="testi-info">
+          <span class="testi-nombre">Carlos R.</span>
+          <span class="testi-meta">Electricidad · Centro Habana</span>
+        </div>
+      </div>
+      <div class="testi-nota">Código db-0078 · 5 estrellas</div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">★★★★☆</div>
+      <div class="testi-texto">El código de seguimiento que me dieron fue muy útil para saber el estado. Al final el técnico fue puntual y la gotera quedó resuelta. Volveré a usarlo.</div>
+      <div class="testi-autor">
+        <div class="testi-avatar">YM</div>
+        <div class="testi-info">
+          <span class="testi-nombre">Yoandra M.</span>
+          <span class="testi-meta">Plomería · Playa</span>
+        </div>
+      </div>
+      <div class="testi-nota">Código db-0112 · Garantía activa</div>
+    </div>
+  </div>
+
+  <!-- Acceso privado -->
+  <button class="acard row dk a2" onclick="open_('acc')">
     <div class="acard-icon ick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#454562" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-    <div class="acard-txt"><span class="acard-title">Acceso privado</span><span class="acard-desc">Admin, encargados y socios verificados</span></div>
+    <div class="acard-txt"><span class="acard-title">Acceso privado</span><span class="acard-desc">Admin, encargados y técnicos verificados</span></div>
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8B4AE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
   </button>
 
-  <!-- ── TRACKER INTERACTIVO db-xxxx ── -->
-  <div class="a2" style="background:var(--ink);border-radius:var(--r);padding:16px 18px">
-    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);margin-bottom:8px">Consultar mi orden</div>
-    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:10px">Ingresa tu código para ver el estado</div>
+  <!-- Tracker -->
+  <div class="tracker-wrap a3">
+    <div class="tracker-label">Consultar mi orden</div>
+    <div class="tracker-sub">Ingresa tu código para ver el estado</div>
     <div class="tracker-input-row">
-      <input id="tr-cod" type="text" placeholder="db-xxxx" maxlength="12"
+      <input id="tr-cod" type="text" placeholder="db-xxxx" maxlength="12" autocomplete="off"
         oninput="this.value=this.value.replace(/[^0-9db\-]/gi,'').toLowerCase()"
         onkeydown="if(event.key==='Enter')buscarOrden()"/>
       <button onclick="buscarOrden()">Buscar</button>
@@ -337,13 +387,11 @@
       Estamos <strong>activando la red por municipios</strong>. Si aún no hay técnico disponible en tu zona,
       tu solicitud queda registrada y te avisamos por WhatsApp cuando podamos atender.
     </div>
-
     <div class="fg">
       <label>Nombre completo</label>
-      <input id="s-cli" type="text" placeholder="Tu nombre"/>
+      <input id="s-cli" type="text" placeholder="Tu nombre" autocomplete="name"/>
       <div class="fe" id="es-cli">Requerido.</div>
     </div>
-
     <div class="fg">
       <label>WhatsApp</label>
       <div class="phone-row">
@@ -357,14 +405,11 @@
       </div>
       <div class="fe" id="es-wa">Número inválido.</div>
     </div>
-
     <div class="fg">
       <label>Municipio</label>
       <input id="s-mun" type="text" placeholder="Municipio en La Habana"/>
       <div class="fe" id="es-mun">Requerido.</div>
     </div>
-
-    <!-- ── NUEVO: Zona ── -->
     <div class="fg">
       <label>Zona</label>
       <select id="s-zona">
@@ -377,12 +422,22 @@
       </select>
       <div class="fe" id="es-zona">Selecciona una zona.</div>
     </div>
-
+    <!-- NUEVO: Hora preferida -->
+    <div class="fg">
+      <label>¿Cuándo te viene bien? (opcional)</label>
+      <select id="s-hora">
+        <option value="">-- Sin preferencia --</option>
+        <option value="Mañana (8:00–12:00)">Mañana (8:00–12:00)</option>
+        <option value="Mediodía (12:00–15:00)">Mediodía (12:00–15:00)</option>
+        <option value="Tarde (15:00–19:00)">Tarde (15:00–19:00)</option>
+        <option value="Cualquier horario">Cualquier horario</option>
+        <option value="Urgente — lo antes posible">Urgente — lo antes posible</option>
+      </select>
+    </div>
     <div class="fg">
       <label>Dirección (opcional)</label>
       <input id="s-dir" type="text" placeholder="Calle, número, referencias..."/>
     </div>
-
     <div class="fg">
       <label>Tipo de servicio</label>
       <select id="s-srv">
@@ -399,70 +454,64 @@
       </select>
       <div class="fe" id="es-srv">Selecciona un servicio.</div>
     </div>
-
     <div class="fg">
       <label>Descripción del problema</label>
       <textarea id="s-det" placeholder="Describe qué falla o qué necesitas... (marca, modelo y desde cuándo)"></textarea>
     </div>
-
     <p class="hint" style="margin-top:-4px;margin-bottom:10px">
-      Te daremos un <strong>código</strong> para seguimiento, garantía, reclamo y calificación.
+      Recibirás un <strong>código db-xxxx</strong> para seguimiento, garantía y calificación.
     </p>
-
     <div class="cb">
       <input type="checkbox" id="s-cp"/>
       <span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span>
     </div>
     <div class="fe" id="es-cp">Debes aceptar Términos y Privacidad.</div>
-
     <div class="ok-box" id="ok-sol">
-      Solicitud registrada. Tu código es:<br/>
+      ✅ Solicitud registrada. Tu código es:<br/>
       <span class="ok-code" id="cod-sol"></span>
       <span class="ok-note">Guárdalo — lo necesitas para garantía, reclamo y calificación.</span>
     </div>
     <div class="err-box" id="err-sol"></div>
     <button class="btn btn-y" id="btn-sol" onclick="envSol()">Registrar solicitud</button>
-    <p class="hint" style="margin-top:10px">
-      Si tu caso es urgente, escribe "URGENTE" en la descripción para priorizar cuando haya disponibilidad.
-    </p>
+    <p class="hint" style="margin-top:10px">Si es urgente, selecciónalo en el horario o escríbelo en la descripción.</p>
   </div>
 </div></div>
 
 <!-- ══ MODAL GARANTÍA ══ -->
 <div class="ov" id="ov-gar" onclick="ovc(event,'gar')">
-  <div class="sheet">
-    <div class="pill"></div>
-    <div class="sheet-hdr">
-      <span class="sheet-title">Garantía</span>
-      <button class="sheet-x" onclick="close_('gar')">&times;</button>
-    </div>
-    <div class="mbody">
-      <div class="fg">
-        <label>Código del servicio</label>
-        <input id="g-rec" type="text" placeholder="db-xxxx"/>
-        <div class="fe" id="eg-rec">Requerido.</div>
-      </div>
-      <div class="fg">
-        <label>Teléfono de contacto</label>
-        <input id="g-tel" type="tel" placeholder="+53..."/>
-        <div class="fe" id="eg-tel">Inválido.</div>
-      </div>
-      <div class="fg">
-        <label>Describe la falla</label>
-        <textarea id="g-fal" placeholder="Qué falla presenta el trabajo..."></textarea>
-        <div class="fe" id="eg-fal">Requerido.</div>
-      </div>
-      <div class="cb">
-        <input type="checkbox" id="g-cp"/>
-        <span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span>
-      </div>
-      <div class="fe" id="eg-cp">Debes aceptar Términos y Privacidad.</div>
-      <div class="ok-box" id="ok-gar">Garantía registrada. Nos contactaremos contigo pronto.</div>
-      <div class="err-box" id="err-gar"></div>
-      <button class="btn btn-k" id="btn-gar" onclick="envGar()">Enviar garantía</button>
-    </div>
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr">
+    <span class="sheet-title">Reclamar garantía</span>
+    <button class="sheet-x" onclick="close_('gar')">&times;</button>
   </div>
-</div>
+  <div class="mbody">
+    <div class="hint" style="margin-bottom:12px">Solo aplica para trabajos realizados dentro del período de garantía activa.</div>
+    <div class="fg">
+      <label>Código del servicio</label>
+      <input id="g-rec" type="text" placeholder="db-xxxx"/>
+      <div class="fe" id="eg-rec">Requerido.</div>
+    </div>
+    <div class="fg">
+      <label>Teléfono de contacto</label>
+      <input id="g-tel" type="tel" placeholder="+53..."/>
+      <div class="fe" id="eg-tel">Número inválido.</div>
+    </div>
+    <div class="fg">
+      <label>Describe la falla</label>
+      <textarea id="g-fal" placeholder="Qué falla presenta el trabajo..."></textarea>
+      <div class="fe" id="eg-fal">Requerido.</div>
+    </div>
+    <div class="cb">
+      <input type="checkbox" id="g-cp"/>
+      <span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span>
+    </div>
+    <div class="fe" id="eg-cp">Debes aceptar Términos y Privacidad.</div>
+    <div class="ok-box" id="ok-gar">✅ Garantía registrada. Nos contactaremos contigo pronto.</div>
+    <div class="err-box" id="err-gar"></div>
+    <button class="btn btn-k" id="btn-gar" onclick="envGar()">Enviar reclamo</button>
+  </div>
+</div></div>
 
 <!-- ══ MODAL CALIFICAR ══ -->
 <div class="ov" id="ov-cal" onclick="ovc(event,'cal')">
@@ -471,7 +520,7 @@
   <div class="sheet-hdr"><span class="sheet-title">Calificar servicio</span><button class="sheet-x" onclick="close_('cal')">&times;</button></div>
   <div class="mbody">
     <div class="fg"><label>Código del servicio</label><input id="c-cod" type="text" placeholder="db-xxxx"/><div class="fe" id="ec-cod">Requerido.</div></div>
-    <div class="fg"><label>Valoración</label>
+    <div class="fg"><label>Tu valoración</label>
       <div class="stars" id="stars">
         <span class="star" data-v="1" onclick="setStar(1)">★</span>
         <span class="star" data-v="2" onclick="setStar(2)">★</span>
@@ -481,7 +530,7 @@
       </div>
       <div class="fe" id="ec-st">Selecciona al menos una estrella.</div>
     </div>
-    <div class="ok-box" id="ok-cal">Valoración registrada. Gracias por tu opinión.</div>
+    <div class="ok-box" id="ok-cal">✅ Valoración registrada. Gracias por tu opinión.</div>
     <div class="err-box" id="err-cal"></div>
     <button class="btn btn-y" id="btn-cal" onclick="envCal()">Enviar valoración</button>
   </div>
@@ -489,77 +538,76 @@
 
 <!-- ══ MODAL ÚNETE ══ -->
 <div class="ov" id="ov-uni" onclick="ovc(event,'uni')">
-  <div class="sheet">
-    <div class="pill"></div>
-    <div class="sheet-hdr">
-      <span class="sheet-title">Únete como técnico</span>
-      <button class="sheet-x" onclick="close_('uni')">&times;</button>
-    </div>
-    <div class="mbody">
-      <div class="fg">
-        <label>Nombre completo</label>
-        <input id="u-nom" type="text" placeholder="Tu nombre"/>
-        <div class="fe" id="eu-nom">Requerido.</div>
-      </div>
-      <div class="fg">
-        <label>Teléfono / WhatsApp</label>
-        <div class="phone-row">
-          <select id="u-code">
-            <option value="+53" selected>Cuba (+53)</option>
-            <option value="+34">España (+34)</option>
-            <option value="+1">EE. UU. (+1)</option>
-            <option value="+52">México (+52)</option>
-          </select>
-          <input id="u-tel" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
-        </div>
-        <div class="fe" id="eu-tel">Introduce un número válido.</div>
-      </div>
-      <div class="fg">
-        <label>Especialidad</label>
-        <select id="u-esp">
-          <option value="">-- Seleccionar --</option>
-          <option>Electrodomésticos</option><option>Plomería</option>
-          <option>Electricidad</option><option>Refrigeración</option>
-          <option>Televisión / audio</option><option>Computadoras</option>
-          <option>Celulares</option><option>Cerrajería</option>
-          <option>Multidisciplinario</option>
-        </select>
-        <div class="fe" id="eu-esp">Requerido.</div>
-      </div>
-      <div class="fg">
-        <label>Años de experiencia</label>
-        <select id="u-exp">
-          <option value="">-- Seleccionar --</option>
-          <option value="1">Menos de 1 año</option>
-          <option value="2">1 – 3 años</option>
-          <option value="4">3 – 5 años</option>
-          <option value="6">Más de 5 años</option>
-        </select>
-        <div class="fe" id="eu-exp">Requerido.</div>
-      </div>
-      <div class="fg">
-        <label>Zona / Municipio</label>
-        <input id="u-zona" type="text" placeholder="Dónde trabajas"/>
-        <div class="fe" id="eu-zona">Requerido.</div>
-      </div>
-      <div class="sep">Crear cuenta</div>
-      <div class="fg">
-        <label>Correo electrónico</label>
-        <input id="u-email" type="email" placeholder="correo@ejemplo.com"/>
-        <div class="fe" id="eu-email">Correo inválido.</div>
-      </div>
-      <div class="fg">
-        <label>Contraseña</label>
-        <input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/>
-        <div class="fe" id="eu-pass">Mínimo 6 caracteres.</div>
-      </div>
-      <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisamos por WhatsApp cuando puedas operar.</p>
-      <div class="ok-box" id="ok-uni">Cuenta creada. Tu solicitud está en revisión. Te contactaremos pronto.</div>
-      <div class="err-box" id="err-uni"></div>
-      <button class="btn btn-k" id="btn-uni" onclick="envUni()">Crear cuenta</button>
-    </div>
+<div class="sheet">
+  <div class="pill"></div>
+  <div class="sheet-hdr">
+    <span class="sheet-title">Únete como técnico</span>
+    <button class="sheet-x" onclick="close_('uni')">&times;</button>
   </div>
-</div>
+  <div class="mbody">
+    <div class="fg">
+      <label>Nombre completo</label>
+      <input id="u-nom" type="text" placeholder="Tu nombre"/>
+      <div class="fe" id="eu-nom">Requerido.</div>
+    </div>
+    <div class="fg">
+      <label>Teléfono / WhatsApp</label>
+      <div class="phone-row">
+        <select id="u-code">
+          <option value="+53" selected>Cuba (+53)</option>
+          <option value="+34">España (+34)</option>
+          <option value="+1">EE. UU. (+1)</option>
+          <option value="+52">México (+52)</option>
+        </select>
+        <input id="u-tel" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
+      </div>
+      <div class="fe" id="eu-tel">Introduce un número válido.</div>
+    </div>
+    <div class="fg">
+      <label>Especialidad</label>
+      <select id="u-esp">
+        <option value="">-- Seleccionar --</option>
+        <option>Electrodomésticos</option><option>Plomería</option>
+        <option>Electricidad</option><option>Refrigeración</option>
+        <option>Televisión / audio</option><option>Computadoras</option>
+        <option>Celulares</option><option>Cerrajería</option>
+        <option>Multidisciplinario</option>
+      </select>
+      <div class="fe" id="eu-esp">Requerido.</div>
+    </div>
+    <div class="fg">
+      <label>Años de experiencia</label>
+      <select id="u-exp">
+        <option value="">-- Seleccionar --</option>
+        <option value="1">Menos de 1 año</option>
+        <option value="2">1 – 3 años</option>
+        <option value="4">3 – 5 años</option>
+        <option value="6">Más de 5 años</option>
+      </select>
+      <div class="fe" id="eu-exp">Requerido.</div>
+    </div>
+    <div class="fg">
+      <label>Zona / Municipio donde trabajas</label>
+      <input id="u-zona" type="text" placeholder="Ej: Vedado, Playa, Centro Habana..."/>
+      <div class="fe" id="eu-zona">Requerido.</div>
+    </div>
+    <div class="sep">Crear cuenta de acceso</div>
+    <div class="fg">
+      <label>Correo electrónico</label>
+      <input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/>
+      <div class="fe" id="eu-email">Correo inválido.</div>
+    </div>
+    <div class="fg">
+      <label>Contraseña</label>
+      <input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/>
+      <div class="fe" id="eu-pass">Mínimo 6 caracteres.</div>
+    </div>
+    <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisamos por WhatsApp cuando puedas operar.</p>
+    <div class="ok-box" id="ok-uni">✅ Cuenta creada. Tu solicitud está en revisión. Te contactaremos por WhatsApp.</div>
+    <div class="err-box" id="err-uni"></div>
+    <button class="btn btn-k" id="btn-uni" onclick="envUni()">Crear cuenta</button>
+  </div>
+</div></div>
 
 <!-- ══ MODAL ACCESO ══ -->
 <div class="ov" id="ov-acc" onclick="ovc(event,'acc')">
@@ -567,8 +615,8 @@
   <div class="pill"></div>
   <div class="sheet-hdr"><span class="sheet-title">Acceso privado</span><button class="sheet-x" onclick="close_('acc')">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com"/><div class="fe" id="ea-email">Inválido.</div></div>
-    <div class="fg"><label>Contraseña</label><input id="a-pass" type="password" placeholder="••••••••"/><div class="fe" id="ea-pass">Requerido.</div></div>
+    <div class="fg"><label>Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="ea-email">Inválido.</div></div>
+    <div class="fg"><label>Contraseña</label><input id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password"/><div class="fe" id="ea-pass">Requerido.</div></div>
     <div class="err-box" id="err-acc"></div>
     <button class="btn btn-k" id="btn-acc" onclick="doLogin()">Entrar</button>
     <button class="btn btn-y" id="btn-rec-pass" onclick="doRecovery()" style="margin-top:10px">Olvidé mi contraseña</button>
@@ -584,14 +632,13 @@ const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 const sbPublic = supabase.createClient(SURL, SKEY, {
   auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
 });
-const sbAuth = supabase.createClient(SURL, SKEY, {
+const sb = supabase.createClient(SURL, SKEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
 });
-const sb = sbAuth;
 
 let sv = 0;
 
-// ── UI helpers ──
+// ── MODALES ──
 function open_(k) { document.getElementById('ov-'+k).classList.add('open'); document.body.style.overflow = 'hidden'; }
 function close_(k) {
   document.getElementById('ov-'+k).classList.remove('open');
@@ -603,30 +650,20 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.querySelectorAll('.ov.open').forEach(o => { o.classList.remove('open'); document.body.style.overflow = ''; });
 });
 
+// ── HELPERS ──
 function vt(t) { return String(t||'').trim().length >= 6; }
-function sE(id, m) { const e = document.getElementById(id); if (e) { if (m) e.textContent = m; e.classList.add('v'); } }
-function cE(id) { const e = document.getElementById(id); if (e) e.classList.remove('v'); }
-function sOK(id) { const e = document.getElementById(id); if (e) e.classList.add('v'); }
-function sER(id, m) { const e = document.getElementById(id); if (e) { e.textContent = m; e.classList.add('v'); } }
-function cER(id) { const e = document.getElementById(id); if (e) e.classList.remove('v'); }
-function setL(id, on) {
+function sE(id, m)  { const e=document.getElementById(id); if(e){ if(m) e.textContent=m; e.classList.add('v'); } }
+function cE(id)     { const e=document.getElementById(id); if(e) e.classList.remove('v'); }
+function sOK(id)    { const e=document.getElementById(id); if(e) e.classList.add('v'); }
+function sER(id, m) { const e=document.getElementById(id); if(e){ e.textContent=m; e.classList.add('v'); } }
+function cER(id)    { const e=document.getElementById(id); if(e) e.classList.remove('v'); }
+function dbc(id)    { return 'db-' + id; }
+
+function setL(id, on, txt='Enviando...') {
   const b = document.getElementById(id); if (!b) return;
   if (!b._t) b._t = b.innerHTML;
   b.disabled = on;
-  b.innerHTML = on ? '<span class="sp"></span>Enviando...' : b._t;
-}
-function dbc(id) { return 'db-' + id; }
-
-function resetSolForm() {
-  ['s-cli','s-wa','s-mun','s-dir','s-det'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  ['s-srv','s-zona'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  const cp = document.getElementById('s-cp'); if(cp) cp.checked = false;
-  cER('err-sol');
-  ['es-cli','es-wa','es-mun','es-zona','es-srv','es-cp'].forEach(cE);
-  const btn = document.getElementById('btn-sol');
-  if (btn) { btn.style.display = ''; btn.disabled = false; }
-  const ok = document.getElementById('ok-sol');
-  if (ok) ok.classList.remove('v');
+  b.innerHTML = on ? `<span class="sp"></span>${txt}` : b._t;
 }
 
 function normalizarTelefono(codeId, telId, errId) {
@@ -635,52 +672,46 @@ function normalizarTelefono(codeId, telId, errId) {
   const err    = document.getElementById(errId);
   if (!numero || numero.length < 6 || numero.length > 15) { if (err) err.classList.add('v'); return null; }
   if (err) err.classList.remove('v');
-  return { completo: `${code}${numero}`, whatsapp: `${code}${numero}`.replace(/\D/g,'') };
+  return { completo: `${code}${numero}` };
 }
 
-// ── BUSCAR ORDEN (tracker) ──
+function resetSolForm() {
+  ['s-cli','s-wa','s-mun','s-dir','s-det'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['s-srv','s-zona','s-hora'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  const cp=document.getElementById('s-cp'); if(cp) cp.checked=false;
+  cER('err-sol');
+  ['es-cli','es-wa','es-mun','es-zona','es-srv','es-cp'].forEach(cE);
+  const btn=document.getElementById('btn-sol');
+  if(btn){ btn.style.display=''; btn.disabled=false; if(btn._t) btn.innerHTML=btn._t; }
+  const ok=document.getElementById('ok-sol'); if(ok) ok.classList.remove('v');
+}
+
+// ── TRACKER ──
 async function buscarOrden() {
   const input  = document.getElementById('tr-cod');
   const result = document.getElementById('tr-result');
   const raw    = (input?.value || '').trim().toLowerCase();
   if (!raw) return;
-
   const n = parseInt(raw.replace(/^db-/i, ''));
-  if (isNaN(n)) {
-    result.className = 'tracker-result err v';
-    result.innerHTML = 'Formato inválido. Usa <strong>db-xxxx</strong>';
-    return;
-  }
-
-  result.className = 'tracker-result v';
-  result.innerHTML = '<span style="color:rgba(255,255,255,.4);font-size:12px">Buscando...</span>';
-
+  if (isNaN(n)) { result.className='tracker-result err v'; result.innerHTML='Formato inválido. Usa <strong>db-xxxx</strong>'; return; }
+  result.className='tracker-result v'; result.style=''; result.innerHTML='<span style="color:rgba(255,255,255,.4);font-size:12px">Buscando...</span>';
   const { data, error } = await sbPublic.rpc('get_estado_solicitud', { p_id: n });
-
   if (error || !data || data.length === 0) {
-    result.className = 'tracker-result err v';
-    result.innerHTML = error
-      ? 'Error: ' + error.message
-      : 'Código no encontrado. Verifica que sea correcto.';
+    result.className='tracker-result err v';
+    result.innerHTML = error ? 'Error: ' + error.message : 'Código no encontrado. Verifica que sea correcto.';
     return;
   }
-
   const sol = data[0];
-
   const estadoLabel = {
-    pendiente:  '⏳ Pendiente',
-    asignada:   '🔧 En proceso',
+    pendiente:  '⏳ Pendiente — en espera de técnico',
+    asignada:   '🔧 En proceso — técnico asignado',
     completada: '✅ Completada',
     rechazada:  '❌ Rechazada',
   }[sol.estado] || sol.estado;
-
-  const fecha    = sol.created_at ? new Date(sol.created_at).toLocaleDateString('es-ES', { day:'2-digit', month:'2-digit', year:'2-digit' }) : '—';
-  const fechaFin = sol.fecha_fin  ? new Date(sol.fecha_fin).toLocaleDateString('es-ES',  { day:'2-digit', month:'2-digit', year:'2-digit' }) : null;
-
-  result.className = 'tracker-result ok v';
-  result.style.background = 'rgba(255,255,255,.05)';
-  result.style.border = '1px solid rgba(255,255,255,.1)';
-  result.style.color = '#fff';
+  const fecha    = sol.created_at ? new Date(sol.created_at).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}) : '—';
+  const fechaFin = sol.fecha_fin  ? new Date(sol.fecha_fin).toLocaleDateString('es-ES', {day:'2-digit',month:'2-digit',year:'2-digit'}) : null;
+  result.className='tracker-result v';
+  result.style.cssText='background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff';
   result.innerHTML = `
     <span class="tr-code">${dbc(sol.id)}</span>
     <span class="tr-estado st-${sol.estado}">${estadoLabel}</span>
@@ -692,31 +723,31 @@ async function buscarOrden() {
     </div>`;
 }
 
-// ── SOLICITUD ──
+// ── SOLICITUD (con hora preferida) ──
 async function envSol() {
   cER('err-sol');
   ['es-cli','es-wa','es-mun','es-zona','es-srv','es-cp'].forEach(cE);
 
-  const cli    = document.getElementById('s-cli')?.value.trim() || '';
-  const telData = normalizarTelefono('s-code', 's-wa', 'es-wa');
-  const mun    = document.getElementById('s-mun')?.value.trim() || '';
-  const zona   = document.getElementById('s-zona')?.value || '';
-  const dir    = document.getElementById('s-dir')?.value.trim() || '';
-  const srv    = document.getElementById('s-srv')?.value || '';
-  const det    = document.getElementById('s-det')?.value.trim() || '';
-  const cp     = !!document.getElementById('s-cp')?.checked;
+  const cli      = document.getElementById('s-cli')?.value.trim() || '';
+  const telData  = normalizarTelefono('s-code', 's-wa', 'es-wa');
+  const mun      = document.getElementById('s-mun')?.value.trim() || '';
+  const zona     = document.getElementById('s-zona')?.value || '';
+  const hora     = document.getElementById('s-hora')?.value || '';
+  const dir      = document.getElementById('s-dir')?.value.trim() || '';
+  const srv      = document.getElementById('s-srv')?.value || '';
+  const det      = document.getElementById('s-det')?.value.trim() || '';
+  const cp       = !!document.getElementById('s-cp')?.checked;
 
   let ok = true;
-  if (!cli)    { sE('es-cli'); ok = false; }
-  if (!telData){ sE('es-wa'); ok = false; }
-  if (!mun)    { sE('es-mun'); ok = false; }
-  if (!zona)   { sE('es-zona', 'Selecciona una zona.'); ok = false; }
-  if (!srv)    { sE('es-srv'); ok = false; }
-  if (!cp)     { sE('es-cp'); ok = false; }
+  if (!cli)     { sE('es-cli'); ok = false; }
+  if (!telData) { sE('es-wa'); ok = false; }
+  if (!mun)     { sE('es-mun'); ok = false; }
+  if (!zona)    { sE('es-zona', 'Selecciona una zona.'); ok = false; }
+  if (!srv)     { sE('es-srv'); ok = false; }
+  if (!cp)      { sE('es-cp'); ok = false; }
   if (!ok) return;
 
   setL('btn-sol', true);
-
   try {
     const { data, error } = await sbPublic.rpc('create_solicitud_publica', {
       p_cliente:       cli,
@@ -727,54 +758,42 @@ async function envSol() {
       p_detalles:      det,
       p_consent_texto: 'solicitud publica v2'
     });
-
     setL('btn-sol', false);
-
-   if (error) {
-  const msg = error.message?.includes('RATE_LIMIT')
-    ? 'Ya registraste 3 solicitudes hoy. Intenta mañana o contáctanos por WhatsApp.'
-    : 'Error: ' + error.message;
-  sER('err-sol', msg);
-  return;
-}
-
-    // ── Asignar zona a la solicitud recién creada ──
-    if (data && zona) {
-      await sbPublic.from('solicitudes').update({ zona }).eq('id', data);
+    if (error) {
+      const msg = error.message?.includes('RATE_LIMIT')
+        ? '⚠️ Ya registraste 3 solicitudes hoy. Intenta mañana o contáctanos por WhatsApp.'
+        : 'Error: ' + error.message;
+      sER('err-sol', msg); return;
     }
-
+    // Asignar zona y hora preferida
+    if (data) {
+      const updates = { zona };
+      if (hora) updates.hora_preferida = hora;
+      await sbPublic.from('solicitudes').update(updates).eq('id', data);
+    }
     document.getElementById('cod-sol').textContent = dbc(data);
     sOK('ok-sol');
     document.getElementById('btn-sol').style.display = 'none';
-
-    setTimeout(() => {
-      close_('sol');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 6000);
-
+    setTimeout(() => { close_('sol'); window.scrollTo({ top: 0, behavior: 'smooth' }); }, 6000);
   } catch (e) {
     setL('btn-sol', false);
     sER('err-sol', 'Error: ' + (e?.message || e));
   }
 }
 
-// ── GARANTIA ──
+// ── GARANTÍA ──
 async function envGar() {
-  cER('err-gar');
-  ['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(cE);
-
+  cER('err-gar'); ['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(cE);
   const rec = document.getElementById('g-rec').value.trim();
   const tel = document.getElementById('g-tel').value.trim();
   const fal = document.getElementById('g-fal').value.trim();
   const cp  = document.getElementById('g-cp').checked;
-
   let ok = true;
-  if (!rec) { sE('eg-rec'); ok = false; }
+  if (!rec)     { sE('eg-rec'); ok = false; }
   if (!vt(tel)) { sE('eg-tel'); ok = false; }
-  if (!fal) { sE('eg-fal'); ok = false; }
-  if (!cp)  { sE('eg-cp'); ok = false; }
+  if (!fal)     { sE('eg-fal'); ok = false; }
+  if (!cp)      { sE('eg-cp'); ok = false; }
   if (!ok) return;
-
   setL('btn-gar', true);
   try {
     const { error } = await sbPublic.rpc('create_garantia_reclamo_publico', {
@@ -784,10 +803,7 @@ async function envGar() {
     if (error) { sER('err-gar', 'Error: ' + error.message); return; }
     sOK('ok-gar');
     document.getElementById('btn-gar').style.display = 'none';
-  } catch (e) {
-    setL('btn-gar', false);
-    sER('err-gar', 'Error: ' + (e?.message || e));
-  }
+  } catch(e) { setL('btn-gar', false); sER('err-gar', 'Error: ' + (e?.message || e)); }
 }
 
 // ── CALIFICAR ──
@@ -797,18 +813,14 @@ function setStar(v) {
   cE('ec-st');
 }
 async function envCal() {
-  cER('err-cal');
-  ['ec-cod','ec-st'].forEach(cE);
-
+  cER('err-cal'); ['ec-cod','ec-st'].forEach(cE);
   const cod = document.getElementById('c-cod').value.trim();
   let ok = true;
   if (!cod) { sE('ec-cod'); ok = false; }
   if (!sv)  { sE('ec-st'); ok = false; }
   if (!ok) return;
-
   const n = parseInt(cod.replace(/^db-/i, ''));
-  if (isNaN(n)) { sE('ec-cod', 'Formato invalido. Usa db-xxxx.'); return; }
-
+  if (isNaN(n)) { sE('ec-cod', 'Formato inválido. Usa db-xxxx.'); return; }
   setL('btn-cal', true);
   const { error } = await sb.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
   setL('btn-cal', false);
@@ -821,110 +833,71 @@ async function envCal() {
 async function envUni() {
   cER('err-uni');
   ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(cE);
-
-  const nom   = document.getElementById('u-nom').value.trim();
+  const nom     = document.getElementById('u-nom').value.trim();
   const telData = normalizarTelefono('u-code', 'u-tel', 'eu-tel');
-  const esp   = document.getElementById('u-esp').value;
-  const exp   = document.getElementById('u-exp').value;
-  const zona  = document.getElementById('u-zona').value.trim();
-  const email = document.getElementById('u-email').value.trim();
-  const pass  = document.getElementById('u-pass').value;
-
+  const esp     = document.getElementById('u-esp').value;
+  const exp     = document.getElementById('u-exp').value;
+  const zona    = document.getElementById('u-zona').value.trim();
+  const email   = document.getElementById('u-email').value.trim();
+  const pass    = document.getElementById('u-pass').value;
   let ok = true;
-  if (!nom)    { sE('eu-nom'); ok = false; }
-  if (!telData){ sE('eu-tel'); ok = false; }
-  if (!esp)    { sE('eu-esp'); ok = false; }
-  if (!exp)    { sE('eu-exp'); ok = false; }
-  if (!zona)   { sE('eu-zona'); ok = false; }
+  if (!nom)                                       { sE('eu-nom'); ok = false; }
+  if (!telData)                                   { sE('eu-tel'); ok = false; }
+  if (!esp)                                       { sE('eu-esp'); ok = false; }
+  if (!exp)                                       { sE('eu-exp'); ok = false; }
+  if (!zona)                                      { sE('eu-zona'); ok = false; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('eu-email'); ok = false; }
-  if (pass.length < 6) { sE('eu-pass'); ok = false; }
+  if (pass.length < 6)                            { sE('eu-pass'); ok = false; }
   if (!ok) return;
-
   setL('btn-uni', true);
   try {
-    const { data: ad, error: ae } = await sb.auth.signUp({
-      email, password: pass,
-      options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' }
-    });
+    const { data: ad, error: ae } = await sb.auth.signUp({ email, password: pass, options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' } });
     if (ae || !ad?.user) { setL('btn-uni', false); sER('err-uni', 'Error: ' + (ae?.message || 'Error creando usuario.')); return; }
-
     const { data: si, error: se1 } = await sb.auth.signInWithPassword({ email, password: pass });
     if (se1 || !si?.session) { setL('btn-uni', false); sER('err-uni', 'Cuenta creada. Revisa tu correo y luego inicia sesión.'); return; }
-
     const { error: se } = await sb.from('socios').insert({
       auth_uid: si.session.user.id, nombre: nom, telefono: telData.completo,
       especialidad: esp, experiencia_anios: parseInt(exp, 10), zona, email,
       admitido: false, estado_socio: 'pendiente', comision: 15, deuda: 0, trabajos: 0
     });
-
     await sb.auth.signOut();
     setL('btn-uni', false);
     if (se) { sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message); return; }
     sOK('ok-uni');
     document.getElementById('btn-uni').style.display = 'none';
-  } catch (e) {
-    setL('btn-uni', false);
-    sER('err-uni', 'Error: ' + (e?.message || e));
-  }
+  } catch(e) { setL('btn-uni', false); sER('err-uni', 'Error: ' + (e?.message || e)); }
 }
 
-// ── LOGIN — admin + encargado + socio ──
+// ── LOGIN ──
 async function doLogin() {
-  cER('err-acc');
-  ['ea-email','ea-pass'].forEach(cE);
-
+  cER('err-acc'); ['ea-email','ea-pass'].forEach(cE);
   const email = document.getElementById('a-email').value.trim();
   const pass  = document.getElementById('a-pass').value;
-
   let ok = true;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('ea-email'); ok = false; }
   if (!pass) { sE('ea-pass'); ok = false; }
   if (!ok) return;
-
-  setL('btn-acc', true);
-
+  setL('btn-acc', true, 'Verificando...');
   const { data: auth, error: ae } = await sb.auth.signInWithPassword({ email, password: pass });
-  if (ae || !auth.session) {
-    setL('btn-acc', false);
-    sER('err-acc', 'Credenciales incorrectas.');
-    return;
-  }
-
+  if (ae || !auth.session) { setL('btn-acc', false); sER('err-acc', 'Credenciales incorrectas. Verifica tu email y contraseña.'); return; }
   const uid = auth.session.user.id;
-
-  // 1. ¿Es admin?
   const { data: adm } = await sb.from('admins').select('id').eq('auth_uid', uid).maybeSingle();
   if (adm) { window.location.href = 'admin.html'; return; }
-
-  // 2. ¿Es encargado activo?
   const { data: enc } = await sb.from('encargados').select('id,activo').eq('auth_uid', uid).maybeSingle();
   if (enc) {
-    if (!enc.activo) {
-      await sb.auth.signOut();
-      setL('btn-acc', false);
-      sER('err-acc', 'Tu cuenta de encargado está desactivada. Contacta al administrador.');
-      return;
-    }
-    window.location.href = 'admin.html';
-    return;
+    if (!enc.activo) { await sb.auth.signOut(); setL('btn-acc', false); sER('err-acc', 'Tu cuenta de encargado está desactivada. Contacta al administrador.'); return; }
+    window.location.href = 'admin.html'; return;
   }
-
-  // 3. ¿Es socio activo?
   const { data: soc } = await sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid', uid).maybeSingle();
   if (soc) {
     if (!soc.admitido || soc.estado_socio !== 'activo') {
-      await sb.auth.signOut();
-      setL('btn-acc', false);
-      sER('err-acc', 'Cuenta pendiente de aprobación.');
+      await sb.auth.signOut(); setL('btn-acc', false);
+      sER('err-acc', soc.admitido ? 'Tu cuenta está en estado: ' + soc.estado_socio + '. Contacta al administrador.' : 'Cuenta pendiente de aprobación. Te avisaremos por WhatsApp.');
       return;
     }
-    window.location.href = 'socio.html';
-    return;
+    window.location.href = 'socio.html'; return;
   }
-
-  await sb.auth.signOut();
-  setL('btn-acc', false);
-  sER('err-acc', 'Usuario no reconocido.');
+  await sb.auth.signOut(); setL('btn-acc', false); sER('err-acc', 'Usuario no reconocido en el sistema.');
 }
 
 // ── RECOVERY ──
@@ -932,14 +905,15 @@ async function doRecovery() {
   cER('err-acc'); cE('ea-email');
   const email = document.getElementById('a-email').value.trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('ea-email'); return; }
-  const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: 'https://dbarrio-two.vercel.app/reset.html'
-  });
+  setL('btn-rec-pass', true, 'Enviando...');
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://dbarrio-two.vercel.app/reset.html' });
+  setL('btn-rec-pass', false);
   if (error) { sER('err-acc', 'Error: ' + error.message); return; }
-  sER('err-acc', 'Listo. Revisa tu correo (y spam). Abre el enlace en Safari.');
+  const el = document.getElementById('err-acc');
+  if (el) { el.textContent = '✅ Listo. Revisa tu correo (y carpeta de spam). Abre el enlace en el mismo navegador.'; el.style.cssText='display:block;background:#EDFAF3;border-color:#8DD4AA;color:#00856F'; }
 }
 
-// ── Checkbox rows clickables ──
+// ── CHECKBOXES ──
 document.querySelectorAll('.cb').forEach(row => {
   row.addEventListener('click', e => {
     if (e.target.closest('a') || e.target.tagName === 'INPUT') return;
