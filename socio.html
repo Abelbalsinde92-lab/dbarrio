@@ -637,8 +637,33 @@ async function loadCuenta() {
         <input id="p-tel" type="tel" value="${esc(s.telefono||'')}" placeholder="+53..."/>
       </div>
       <div class="fg">
-        <label class="flbl">Zona donde trabajas</label>
-        <input id="p-zona" type="text" value="${esc(s.zona||'')}" placeholder="Ej: Vedado, Centro Habana..."/>
+        <label class="flbl">Municipio donde trabajas</label>
+        <select id="p-zona">
+          <option value="">-- Seleccionar --</option>
+          <optgroup label="Occidente">
+            <option value="Playa">Playa</option>
+            <option value="La Lisa">La Lisa</option>
+            <option value="Marianao">Marianao</option>
+          </optgroup>
+          <optgroup label="Centro">
+            <option value="Plaza de la Revolución">Plaza de la Revolución</option>
+            <option value="Centro Habana">Centro Habana</option>
+            <option value="La Habana Vieja">La Habana Vieja</option>
+            <option value="Diez de Octubre">Diez de Octubre</option>
+            <option value="Cerro">Cerro</option>
+          </optgroup>
+          <optgroup label="Oriente">
+            <option value="Regla">Regla</option>
+            <option value="La Habana del Este">La Habana del Este</option>
+            <option value="Guanabacoa">Guanabacoa</option>
+            <option value="San Miguel del Padrón">San Miguel del Padrón</option>
+          </optgroup>
+          <optgroup label="Sur">
+            <option value="Boyeros">Boyeros</option>
+            <option value="Arroyo Naranjo">Arroyo Naranjo</option>
+            <option value="Cotorro">Cotorro</option>
+          </optgroup>
+        </select>
       </div>
       <div class="fg">
         <label class="flbl">Especialidad principal</label>
