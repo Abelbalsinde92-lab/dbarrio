@@ -4,259 +4,242 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="theme-color" content="#1A1A2E"/>
-<title>dbarrio — Términos de uso</title>
-
+<title>Términos de uso — dbarrio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
 :root{
   --y:#F5C116;--yd:#C9980D;
   --ink:#1A1A2E;--ink2:#24243C;
-  --bg:#F4F2EE;--card:#FFFFFF;
+  --bg:#F0EDE8;--card:#FFFFFF;
   --line:rgba(28,28,46,.10);
-  --g1:rgba(28,28,46,.65);
-  --g2:rgba(28,28,46,.35);
-  --ok:#1E7A5A;--okbg:rgba(78,203,160,.12);
-  --err:#E05C5C;--errbg:rgba(224,92,92,.12);
-  --r:16px;
+  --g1:rgba(28,28,46,.60);--g2:rgba(28,28,46,.35);
+  --ok:#1E7A5A;--ok-bg:rgba(78,203,160,.1);
+  --err:#E05C5C;--err-bg:rgba(224,92,92,.1);
   --f:'DM Sans',system-ui,sans-serif;
   --fd:'Barlow Condensed',system-ui,sans-serif;
-  --th:54px;
+  --th:54px;--r:16px;
 }
-
 html{background:var(--ink)}
-body{
-  min-height:100svh;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:var(--f);
-  font-size:15px;
-  line-height:1.75;
-  -webkit-font-smoothing:antialiased;
-}
+body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
 
 /* TOPBAR */
-.topbar{
-  position:sticky; top:0; z-index:50;
-  height:calc(var(--th) + env(safe-area-inset-top,0));
-  padding:env(safe-area-inset-top,0) 14px 0;
-  background:var(--ink);
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-
+.topbar{position:sticky;top:0;z-index:50;height:calc(var(--th) + env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 14px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.08)}
 .db-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;-webkit-tap-highlight-color:transparent}
-.db-iconbox{
-  width:40px;height:40px;border-radius:14px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.14);
-  display:grid;place-items:center;flex:0 0 auto;
-}
-.db-icon{
-  font-family:var(--fd);
-  font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1;
-}
-.db-icon .d{color:#E6E6E6}
-.db-icon .b{color:var(--y)}
-
-.db-wordmark{
-  font-family:var(--fd);
-  font-weight:900;font-size:28px;letter-spacing:-.6px;line-height:1;
-  white-space:nowrap;
-}
-.db-wordmark .d{color:#E6E6E6}
-.db-wordmark .rest{color:var(--y)}
-.db-tag{
-  margin-left:6px;
-  font-weight:900;
-  letter-spacing:.6px;
-  color:rgba(255,255,255,.50);
-  font-size:12px;
-  white-space:nowrap;
-}
-
-.topbar-actions{display:flex;align-items:center;gap:10px}
-.tlink{
-  font-size:12px;font-weight:800;
-  color:rgba(255,255,255,.65);
-  text-decoration:none;
-  padding:8px 10px;border-radius:12px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-}
+.db-iconbox{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;flex:0 0 auto}
+.db-icon{font-family:var(--fd);font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1}
+.db-icon .d{color:#E6E6E6}.db-icon .b{color:var(--y)}
+.db-wordmark{font-family:var(--fd);font-weight:900;font-size:28px;letter-spacing:-.6px;line-height:1;white-space:nowrap}
+.db-wordmark .d{color:#E6E6E6}.db-wordmark .rest{color:var(--y)}
+.db-tag{margin-left:6px;font-weight:900;letter-spacing:.6px;color:rgba(255,255,255,.45);font-size:12px;white-space:nowrap}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.tlink{font-size:12px;font-weight:700;color:rgba(255,255,255,.55);text-decoration:none;padding:7px 11px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);-webkit-tap-highlight-color:transparent;transition:color .15s,border-color .15s}
 .tlink:hover{color:var(--y);border-color:rgba(245,193,22,.25)}
+@media(max-width:560px){.db-wordmark{display:none}.db-tag{display:none}}
+
+/* DOC HERO */
+.doc-hero{background:var(--ink2);padding:32px 16px 28px;position:relative;overflow:hidden;border-bottom:3px solid var(--y)}
+.doc-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(245,193,22,.12) 1px,transparent 1px);background-size:24px 24px;pointer-events:none}
+.doc-hero-inner{position:relative;z-index:1;max-width:680px}
+.doc-eyebrow{font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
+.doc-title{font-family:var(--fd);font-size:clamp(32px,8vw,52px);font-weight:900;color:#fff;line-height:.95;letter-spacing:-.5px;margin-bottom:12px}
+.doc-title em{color:var(--y);font-style:normal}
+.doc-meta{font-size:12px;color:rgba(255,255,255,.35);font-weight:600;letter-spacing:.5px}
+.hero-curve{height:24px;background:var(--bg);border-radius:24px 24px 0 0}
 
 /* CONTENT */
-.wrap{max-width:760px;margin:0 auto;padding:26px 14px 56px}
-.doc-h{
-  font-family:var(--fd);
-  font-size:34px;
-  font-weight:900;
-  letter-spacing:-.6px;
-  margin:8px 0 6px;
-}
-.doc-d{
-  font-size:12px;
-  color:var(--g2);
-  text-transform:uppercase;
-  letter-spacing:.8px;
-  margin-bottom:14px;
-}
+.wrap{max-width:700px;margin:0 auto;padding:20px 14px calc(56px + env(safe-area-inset-bottom,0))}
 
-.hl{
-  background:rgba(245,193,22,.12);
-  border:1px solid rgba(245,193,22,.30);
-  border-radius:14px;
-  padding:14px 16px;
-  color:rgba(28,28,46,.88);
-  font-size:14px;
-  line-height:1.6;
-  margin-bottom:14px;
-}
-.hl strong{color:rgba(28,28,46,.95)}
+/* SUMMARY BOX */
+.summary-box{background:var(--ink);border-radius:var(--r);padding:18px 20px;margin-bottom:14px;border:1px solid rgba(255,255,255,.07);position:relative;overflow:hidden}
+.summary-box::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--y)}
+.summary-label{font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
+.summary-text{font-size:14px;color:rgba(255,255,255,.65);line-height:1.65;font-weight:500}
+.summary-text strong{color:#fff;font-weight:700}
 
-.blk{
-  background:var(--card);
-  border-radius:18px;
-  border:1px solid var(--line);
-  border-left:4px solid var(--y);
-  box-shadow: 0 16px 34px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.03);
-  padding:18px 18px;
-  margin-bottom:12px;
-}
-.blk h2{
-  font-family:var(--fd);
-  font-size:16px;
-  font-weight:900;
-  letter-spacing:.4px;
-  margin-bottom:10px;
-}
-.blk p{font-size:14px;color:var(--g1);margin-bottom:10px}
-.blk p:last-child{margin-bottom:0}
-.blk strong{color:rgba(28,28,46,.95)}
+/* ROLE CARDS */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:420px){.role-grid{grid-template-columns:1fr}}
+.role-card{border-radius:var(--r);padding:14px 16px;border:1px solid var(--line)}
+.role-card.client{background:rgba(245,193,22,.08);border-color:rgba(245,193,22,.25)}
+.role-card.tech{background:rgba(78,203,160,.08);border-color:rgba(78,203,160,.22)}
+.role-card-title{font-family:var(--fd);font-size:14px;font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.role-card.client .role-card-title{color:#7A5800}
+.role-card.tech .role-card-title{color:#1E7A5A}
+.role-item{font-size:12px;color:var(--g1);line-height:1.5;margin-bottom:5px;display:flex;align-items:flex-start;gap:7px}
+.role-item::before{content:'·';color:var(--y);font-weight:900;flex-shrink:0}
 
-.list{margin:10px 0 0 18px;color:var(--g1);font-size:14px}
-.list li{margin:6px 0}
+/* SECTIONS */
+.doc-section{background:var(--card);border-radius:var(--r);border:1px solid var(--line);overflow:hidden;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.doc-section-hdr{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(28,28,46,.02)}
+.doc-section-num{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--y);line-height:1;flex-shrink:0;min-width:28px}
+.doc-section-title{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink);letter-spacing:.2px}
+.doc-section-body{padding:14px 18px;font-size:14px;color:var(--g1);line-height:1.75}
+.doc-section-body p{margin-bottom:10px}
+.doc-section-body p:last-child{margin-bottom:0}
+.doc-section-body strong{color:rgba(28,28,46,.9);font-weight:700}
+.doc-list{margin:8px 0 10px;display:flex;flex-direction:column;gap:6px}
+.doc-list-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--g1);line-height:1.55}
+.doc-list-item::before{content:'—';color:var(--y);font-weight:900;flex-shrink:0;margin-top:1px}
 
-.ft{
-  margin-top:24px;
-  text-align:center;
-  color:rgba(28,28,46,.45);
-  font-size:12px;
-}
-.ft a{
-  color:rgba(28,28,46,.70);
-  text-decoration:none;
-  border-bottom:1px solid rgba(28,28,46,.25);
-}
-.ft a:hover{color:var(--ink)}
+/* INLINE CALLOUT */
+.callout{border-radius:10px;padding:12px 14px;margin:10px 0;font-size:13px;font-weight:600;line-height:1.6}
+.callout.ok{background:var(--ok-bg);border:1px solid rgba(78,203,160,.22);color:var(--ok)}
+.callout.warn{background:rgba(245,193,22,.1);border:1px solid rgba(245,193,22,.25);color:#7A5800}
+
+/* FOOTER */
+.doc-footer{margin-top:28px;text-align:center;padding:20px;background:var(--ink);border-radius:var(--r);border:1px solid rgba(255,255,255,.07)}
+.doc-footer-logo{font-family:var(--fd);font-size:32px;font-weight:900;color:var(--y);letter-spacing:-2px;line-height:1;margin-bottom:8px}
+.doc-footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.doc-footer-links a{font-size:12px;color:rgba(255,255,255,.4);font-weight:600;text-decoration:none;transition:color .15s}
+.doc-footer-links a:hover{color:var(--y)}
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <a class="db-brand" href="index.html" aria-label="Ir a inicio">
+  <a class="db-brand" href="index.html" aria-label="Inicio dbarrio">
     <span class="db-iconbox" aria-hidden="true">
       <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
     </span>
     <span class="db-wordmark"><span class="d">d</span><span class="rest">barrio</span></span>
     <span class="db-tag">TÉRMINOS</span>
   </a>
-
   <div class="topbar-actions">
     <a class="tlink" href="privacidad.html">Privacidad</a>
-    <a class="tlink" href="index.html">Inicio</a>
+    <a class="tlink" href="index.html">← Inicio</a>
   </div>
 </header>
 
-<main class="wrap">
-  <div class="doc-h">Términos de uso</div>
-  <div class="doc-d">Vigente desde enero de 2025</div>
+<div class="doc-hero">
+  <div class="doc-hero-inner">
+    <div class="doc-eyebrow">Documento legal</div>
+    <h1 class="doc-title">Términos<br><em>de uso</em></h1>
+    <div class="doc-meta">Vigente desde enero de 2025 · dbarrio</div>
+  </div>
+</div>
+<div class="hero-curve"></div>
 
-  <div class="hl">
-    <strong>En simple:</strong> dbarrio te ayuda a <strong>conectar</strong> con un técnico, registrar tu solicitud y darte un
-    <strong>código (db-xxxx)</strong> para seguimiento, reclamo, garantía y calificación.
-    El trabajo lo realiza un técnico independiente, pero dbarrio <strong>sí</strong> gestiona el proceso de soporte cuando reportas una incidencia.
+<div class="wrap">
+
+  <div class="summary-box">
+    <div class="summary-label">En simple</div>
+    <div class="summary-text">
+      dbarrio te ayuda a <strong>conectar con un técnico</strong>, registrar tu solicitud y darte un código <strong>db-xxxx</strong> para seguimiento, reclamo, garantía y calificación. El trabajo lo realiza un técnico independiente, pero dbarrio <strong>sí gestiona el proceso de soporte</strong> cuando reportas una incidencia.
+    </div>
   </div>
 
-  <section class="blk">
-    <h2>1) Qué es dbarrio</h2>
-    <p><strong>dbarrio</strong> es una plataforma que conecta clientes con técnicos independientes para servicios en el hogar. Operamos principalmente en Cuba y también gestionamos solicitudes desde el exterior para servicios en territorio cubano.</p>
-    <p>dbarrio no presta directamente servicios técnicos. Nuestro rol es organizar el flujo: registro, asignación, comunicación, seguimiento, reclamos y valoración.</p>
-  </section>
+  <!-- Roles -->
+  <div class="role-grid">
+    <div class="role-card client">
+      <div class="role-card-title">👤 Cliente</div>
+      <div class="role-item">Datos verídicos sobre el problema y la ubicación.</div>
+      <div class="role-item">Facilitar acceso al lugar del servicio.</div>
+      <div class="role-item">Pagar al técnico según lo acordado.</div>
+      <div class="role-item">No usar la plataforma para fraude o amenazas.</div>
+    </div>
+    <div class="role-card tech">
+      <div class="role-card-title">🔧 Técnico</div>
+      <div class="role-item">Diagnóstico y ejecución profesional.</div>
+      <div class="role-item">Explicar alcance y costo antes de ejecutar.</div>
+      <div class="role-item">Respetar los datos del cliente.</div>
+      <div class="role-item">Reportar el cierre a través del panel.</div>
+    </div>
+  </div>
 
-  <section class="blk">
-    <h2>2) Cómo funciona el servicio</h2>
-    <p>Cuando solicitas un servicio, se crea un registro y se genera un código <strong>db-xxxx</strong>. Ese código sirve para:</p>
-    <ul class="list">
-      <li>Seguimiento del estado.</li>
-      <li>Garantía / reclamo (si aplica).</li>
-      <li>Valoración del técnico.</li>
-    </ul>
-  </section>
+  <div class="doc-section">
+    <div class="doc-section-hdr">
+      <span class="doc-section-num">01</span>
+      <span class="doc-section-title">Qué es dbarrio</span>
+    </div>
+    <div class="doc-section-body">
+      <p><strong>dbarrio</strong> es una plataforma que conecta clientes con técnicos independientes para servicios en el hogar. Operamos principalmente en Cuba y también gestionamos solicitudes desde el exterior para servicios en territorio cubano.</p>
+      <p>dbarrio no presta directamente servicios técnicos. Nuestro rol es organizar el flujo: registro, asignación, comunicación, seguimiento, reclamos y valoración.</p>
+    </div>
+  </div>
 
-  <section class="blk">
-    <h2>3) Responsabilidades del técnico</h2>
-    <p>Los técnicos registrados son profesionales independientes. Son responsables del diagnóstico, ejecución, herramientas, seguridad, materiales (si aplica) y del cumplimiento del trabajo acordado con el cliente.</p>
-    <p>El técnico debe explicar el alcance, costo estimado y condiciones antes de ejecutar reparaciones que cambien el precio de forma relevante.</p>
-  </section>
+  <div class="doc-section">
+    <div class="doc-section-hdr">
+      <span class="doc-section-num">02</span>
+      <span class="doc-section-title">Cómo funciona el servicio</span>
+    </div>
+    <div class="doc-section-body">
+      <p>Cuando solicitas un servicio, se crea un registro y se genera un código <strong>db-xxxx</strong>. Ese código sirve para:</p>
+      <div class="doc-list">
+        <div class="doc-list-item">Seguimiento del estado en tiempo real.</div>
+        <div class="doc-list-item">Garantía y reclamo si el trabajo presentó fallos.</div>
+        <div class="doc-list-item">Valoración del técnico al completarse.</div>
+      </div>
+      <div class="callout warn">Guarda siempre tu código db-xxxx. Sin él no podemos gestionar garantías ni reclamos posteriores.</div>
+    </div>
+  </div>
 
-  <section class="blk">
-    <h2>4) Responsabilidades del cliente (importante)</h2>
-    <p>Para que el servicio funcione bien, el cliente se compromete a:</p>
-    <ul class="list">
-      <li>Dar información verídica sobre el problema y la ubicación.</li>
-      <li>Facilitar acceso razonable al lugar del servicio y condiciones seguras.</li>
-      <li><strong>Efectuar el pago</strong> al técnico según lo acordado (monto, tiempo y forma), una vez realizado el trabajo o según la modalidad pactada.</li>
-      <li>Respetar tiempos de visita: si cancelas, avisa con antelación cuando sea posible.</li>
-      <li>No usar la plataforma para fraude, amenazas, acoso o fines ilegales.</li>
-    </ul>
-  </section>
+  <div class="doc-section">
+    <div class="doc-section-hdr">
+      <span class="doc-section-num">03</span>
+      <span class="doc-section-title">Precios y pagos</span>
+    </div>
+    <div class="doc-section-body">
+      <p>Los precios se acuerdan directamente entre cliente y técnico. dbarrio puede mostrar rangos orientativos, pero no fija precios ni cobra al cliente (salvo que se indique expresamente en una versión futura del servicio).</p>
+      <p>dbarrio puede aplicar una comisión operativa al técnico por servicios completados.</p>
+    </div>
+  </div>
 
-  <section class="blk">
-    <h2>5) Precios y pagos</h2>
-    <p>Los precios se acuerdan directamente entre cliente y técnico. dbarrio puede mostrar rangos orientativos, pero no fija precios ni cobra al cliente (salvo que se indique expresamente en una versión futura del servicio).</p>
-    <p>dbarrio puede aplicar una comisión operativa al técnico por servicios completados.</p>
-  </section>
+  <div class="doc-section">
+    <div class="doc-section-hdr">
+      <span class="doc-section-num">04</span>
+      <span class="doc-section-title">Garantía, reclamos y soporte</span>
+    </div>
+    <div class="doc-section-body">
+      <p>Si el servicio fue gestionado por dbarrio y tienes tu código <strong>db-xxxx</strong>, puedes reportar una incidencia desde la plataforma.</p>
+      <div class="callout ok">✅ dbarrio registra el reclamo, organiza el seguimiento y facilita la comunicación con el técnico.</div>
+      <p>dbarrio no promete un resultado técnico específico ni tiempos exactos, porque no ejecuta el trabajo directamente. Cuando haya reportes consistentes o conductas inadecuadas, dbarrio puede aplicar medidas internas (advertencia, suspensión o baja del técnico).</p>
+    </div>
+  </div>
 
-  <section class="blk">
-    <h2>6) Garantía, reclamos y soporte dbarrio</h2>
-    <p>Si el servicio fue gestionado por dbarrio y tienes tu código <strong>db-xxxx</strong>, puedes reportar una incidencia desde la plataforma.</p>
-    <p><strong>Qué hace dbarrio:</strong> registra el reclamo, organiza el seguimiento y facilita la comunicación/gestión con el técnico y el historial del caso.</p>
-    <p><strong>Qué no promete dbarrio:</strong> un resultado técnico específico (porque no ejecuta el trabajo), ni tiempos exactos en todos los casos.</p>
-    <p>Cuando existan reportes consistentes o conductas inadecuadas, dbarrio puede aplicar medidas internas (advertencia, suspensión o baja del técnico).</p>
-  </section>
+  <div class="doc-section">
+    <div class="doc-section-hdr">
+      <span class="doc-section-num">05</span>
+      <span class="doc-section-title">Seguridad y conducta</span>
+    </div>
+    <div class="doc-section-body">
+      <p>dbarrio busca una experiencia segura y respetuosa. Conductas como fraude, extorsión, amenazas o acoso pueden causar suspensión inmediata.</p>
+      <p>Recomendación: no compartas claves, contraseñas ni información sensible por chat. Usa el código para identificar y dar seguimiento.</p>
+    </div>
+  </div>
 
-  <section class="blk">
-    <h2>7) Seguridad y conducta</h2>
-    <p>dbarrio busca una experiencia segura y respetuosa. Conductas como fraude, extorsión, amenazas o acoso pueden causar suspensión inmediata.</p>
-    <p>Recomendación: no compartas claves, contraseñas o información sensible por chat. Usa el código para identificar y dar seguimiento.</p>
-  </section>
+  <div class="doc-section">
+    <div class="doc-section-hdr">
+      <span class="doc-section-num">06</span>
+      <span class="doc-section-title">WhatsApp como canal</span>
+    </div>
+    <div class="doc-section-body">
+      <p>La coordinación se realiza principalmente por <strong>WhatsApp</strong>. Al solicitar un servicio o registrarte, aceptas ser contactado por esta vía en relación con tu solicitud.</p>
+      <p>No realizamos envíos masivos ni publicidad no solicitada.</p>
+    </div>
+  </div>
 
-  <section class="blk">
-    <h2>8) WhatsApp como canal</h2>
-    <p>La coordinación se realiza principalmente por <strong>WhatsApp</strong>. Al solicitar un servicio o registrarte, aceptas ser contactado por este canal en relación con tu solicitud.</p>
-    <p>No realizamos envíos masivos ni publicidad no solicitada.</p>
-  </section>
+  <div class="doc-section">
+    <div class="doc-section-hdr">
+      <span class="doc-section-num">07</span>
+      <span class="doc-section-title">Cambios y vigencia</span>
+    </div>
+    <div class="doc-section-body">
+      <p>dbarrio puede modificar estos términos. Los cambios se publicarán en esta página. El uso continuado implica aceptación de los términos vigentes.</p>
+      <p>Ante cualquier disputa, las partes procurarán solución amistosa como primera instancia, actuando de buena fe.</p>
+    </div>
+  </div>
 
-  <section class="blk">
-    <h2>9) Cambios y vigencia</h2>
-    <p>dbarrio puede modificar estos términos. Los cambios se publicarán en esta página. El uso continuado implica aceptación de los términos vigentes.</p>
-    <p>Ante cualquier disputa, las partes procurarán solución amistosa como primera instancia, actuando de buena fe.</p>
-  </section>
-
-  <footer class="ft">
-    <p>dbarrio — intermediación de servicios técnicos</p>
-    <p style="margin-top:8px">
-      <a href="privacidad.html">Política de privacidad</a> &nbsp;&middot;&nbsp;
+  <footer class="doc-footer">
+    <div class="doc-footer-logo">db</div>
+    <div class="doc-footer-links">
+      <a href="privacidad.html">Política de privacidad</a>
+      <a href="zona-db.html">Zona db</a>
       <a href="index.html">Volver al inicio</a>
-    </p>
+    </div>
   </footer>
-</main>
 
+</div>
 </body>
 </html>
