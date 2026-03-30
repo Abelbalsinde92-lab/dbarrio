@@ -416,14 +416,20 @@ function cardOrden(s) {
       <button class="btn btn-ghost full" disabled>Reporte ya enviado — en revisión</button>
     </div>`;
 
+  // Municipio en grande — lo más importante para el técnico
+  const munBig = s.municipio
+    ? `<div style="font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink);line-height:1;margin-bottom:5px;letter-spacing:-.2px">📍 ${esc(s.municipio)}</div>`
+    : '';
+
   return `
   <div class="card" id="${cid}">
     <div class="card-hdr" onclick="toggleCard('${cid}')">
       <div class="card-top">
+        ${munBig}
         <div class="card-row">${chip}<span class="card-code">${dbc(s.id)}</span>${horaFlag}</div>
         <div class="card-meta">
           <span>${esc(s.cliente)}</span>
-          ${s.municipio ? `<span>${esc(s.municipio)}</span>` : ''}
+          <span>${esc(s.servicio || '—')}</span>
           <span>${fmt(s.fecha_ts)}</span>
         </div>
       </div>
@@ -681,6 +687,11 @@ async function loadCuenta() {
         Para dudas sobre pagos, órdenes o cualquier asunto operativo.
       </p>
     </div>`;
+
+  // ── FIX #2: pre-seleccionar el municipio guardado ──
+  // El select se acaba de renderizar en el DOM — ahora sí podemos leer el elemento
+  const pZona = document.getElementById('p-zona');
+  if (pZona && s.zona) pZona.value = s.zona;
 }
 
 // ── GUARDAR PERFIL ──
