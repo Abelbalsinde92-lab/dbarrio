@@ -601,9 +601,34 @@
       <div class="fe" id="eu-exp">Requerido.</div>
     </div>
     <div class="fg">
-      <label>Zona / Municipio donde trabajas</label>
-      <input id="u-zona" type="text" placeholder="Ej: Vedado, Playa, Centro Habana..."/>
-      <div class="fe" id="eu-zona">Requerido.</div>
+      <label>Municipio donde trabajas</label>
+      <select id="u-zona">
+        <option value="">-- Seleccionar municipio --</option>
+        <optgroup label="Occidente">
+          <option value="Playa">Playa</option>
+          <option value="La Lisa">La Lisa</option>
+          <option value="Marianao">Marianao</option>
+        </optgroup>
+        <optgroup label="Centro">
+          <option value="Plaza de la Revolución">Plaza de la Revolución</option>
+          <option value="Centro Habana">Centro Habana</option>
+          <option value="La Habana Vieja">La Habana Vieja</option>
+          <option value="Diez de Octubre">Diez de Octubre</option>
+          <option value="Cerro">Cerro</option>
+        </optgroup>
+        <optgroup label="Oriente">
+          <option value="Regla">Regla</option>
+          <option value="La Habana del Este">La Habana del Este</option>
+          <option value="Guanabacoa">Guanabacoa</option>
+          <option value="San Miguel del Padrón">San Miguel del Padrón</option>
+        </optgroup>
+        <optgroup label="Sur">
+          <option value="Boyeros">Boyeros</option>
+          <option value="Arroyo Naranjo">Arroyo Naranjo</option>
+          <option value="Cotorro">Cotorro</option>
+        </optgroup>
+      </select>
+      <div class="fe" id="eu-zona">Selecciona tu municipio.</div>
     </div>
     <div class="sep">Crear cuenta de acceso</div>
     <div class="fg">
@@ -883,39 +908,78 @@ async function envCal() {
 async function envUni() {
   cER('err-uni');
   ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(cE);
-  const nom     = document.getElementById('u-nom').value.trim();
-  const telData = normalizarTelefono('u-code', 'u-tel', 'eu-tel');
-  const esp     = document.getElementById('u-esp').value;
-  const exp     = document.getElementById('u-exp').value;
-  const zona    = document.getElementById('u-zona').value.trim();
-  const email   = document.getElementById('u-email').value.trim();
-  const pass    = document.getElementById('u-pass').value;
+
+  const nom      = document.getElementById('u-nom').value.trim();
+  const telData  = normalizarTelefono('u-code', 'u-tel', 'eu-tel');
+  const esp      = document.getElementById('u-esp').value;
+  const exp      = document.getElementById('u-exp').value;
+  const municipio = document.getElementById('u-zona').value; // municipio seleccionado
+  const email    = document.getElementById('u-email').value.trim();
+  const pass     = document.getElementById('u-pass').value;
+
+  // Zona derivada automáticamente del municipio
+  const zona = MUNICIPIO_ZONA[municipio] || '';
+
   let ok = true;
   if (!nom)                                       { sE('eu-nom'); ok = false; }
   if (!telData)                                   { sE('eu-tel'); ok = false; }
   if (!esp)                                       { sE('eu-esp'); ok = false; }
   if (!exp)                                       { sE('eu-exp'); ok = false; }
-  if (!zona)                                      { sE('eu-zona'); ok = false; }
+  if (!municipio)                                 { sE('eu-zona', 'Selecciona tu municipio.'); ok = false; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('eu-email'); ok = false; }
   if (pass.length < 6)                            { sE('eu-pass'); ok = false; }
   if (!ok) return;
+
   setL('btn-uni', true);
   try {
-    const { data: ad, error: ae } = await sb.auth.signUp({ email, password: pass, options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' } });
+    const { data: ad, error: ae } = await sb.auth.signUp({
+      email, password: pass,
+      options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' }
+    });
     if (ae || !ad?.user) { setL('btn-uni', false); sER('err-uni', 'Error: ' + (ae?.message || 'Error creando usuario.')); return; }
+
     const { data: si, error: se1 } = await sb.auth.signInWithPassword({ email, password: pass });
     if (se1 || !si?.session) { setL('btn-uni', false); sER('err-uni', 'Cuenta creada. Revisa tu correo y luego inicia sesión.'); return; }
+
     const { error: se } = await sb.from('socios').insert({
-      auth_uid: si.session.user.id, nombre: nom, telefono: telData.completo,
-      especialidad: esp, experiencia_anios: parseInt(exp, 10), zona, email,
-      admitido: false, estado_socio: 'pendiente', comision: 15, deuda: 0, trabajos: 0
+      auth_uid: si.session.user.id,
+      nombre: nom,
+      telefono: telData.completo,
+      especialidad: esp,
+      experiencia_anios: parseInt(exp, 10),
+      zona: zona,           // zona derivada (oeste/centro/este/sur)
+      municipio: municipio, // municipio exacto — si la tabla tiene esta columna
+      email,
+      admitido: false,
+      estado_socio: 'pendiente',
+      comision: 15,
+      deuda: 0,
+      trabajos: 0
     });
+
     await sb.auth.signOut();
     setL('btn-uni', false);
-    if (se) { sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message); return; }
+    if (se) {
+      // Si la tabla no tiene columna municipio, reintenta sin ella
+      if (se.message?.includes('municipio')) {
+        const { error: se2 } = await sb.from('socios').insert({
+          auth_uid: ad.user.id, nombre: nom, telefono: telData.completo,
+          especialidad: esp, experiencia_anios: parseInt(exp, 10),
+          zona: zona, email, admitido: false, estado_socio: 'pendiente',
+          comision: 15, deuda: 0, trabajos: 0
+        });
+        if (se2) { sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se2.message); return; }
+      } else {
+        sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message); return;
+      }
+    }
+
     sOK('ok-uni');
     document.getElementById('btn-uni').style.display = 'none';
-  } catch(e) { setL('btn-uni', false); sER('err-uni', 'Error: ' + (e?.message || e)); }
+  } catch(e) {
+    setL('btn-uni', false);
+    sER('err-uni', 'Error: ' + (e?.message || e));
+  }
 }
 
 // ── LOGIN ──
