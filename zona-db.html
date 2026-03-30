@@ -8,19 +8,21 @@
 <meta name="description" content="Curiosidades, señales de alerta y trucos prácticos para que tu casa funcione mejor. El rincón del hogar cubano."/>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;0,900;1,700;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet"/>
 
 <style>
 :root{
-  --ink:#1A1A2E; --ink2:#24243C; --y:#F5C116; --yd:#C9980D;
-  --y-bg:rgba(245,193,22,.13);
-  --bg:#F4F2EE; --card:#FDFCFA; --line:#E2DED8;
-  --g1:#7A7A8A; --g2:#B8B5AE;
-  --wa:#25D366; --ok:#4ECBA0; --err:#E05C5C;
-  --err-bg:rgba(224,92,92,.1); --ok-bg:rgba(78,203,160,.1);
+  --ink:#1A1A2E;--ink2:#24243C;--ink3:#2E2E48;
+  --y:#F5C116;--yd:#C9980D;--y-bg:rgba(245,193,22,.13);
+  --bg:#F0EDE8;--card:#FDFCFA;--line:#E2DED8;
+  --g1:#7A7A8A;--g2:#B8B5AE;
+  --ok:#4ECBA0;--ok-bg:rgba(78,203,160,.1);
+  --err:#E05C5C;--err-bg:rgba(224,92,92,.1);
+  --warn:#F59E0B;--warn-bg:rgba(245,158,11,.1);
+  --wa:#25D366;
   --f:'DM Sans',system-ui,sans-serif;
   --fd:'Barlow Condensed',system-ui,sans-serif;
-  --r:14px; --rs:8px;
+  --r:14px;--rs:8px;
   --sh:0 2px 12px rgba(26,26,46,.08),0 0 0 1px rgba(26,26,46,.05);
   --ease:cubic-bezier(.4,0,.2,1);
   --th:56px;
@@ -39,57 +41,106 @@ button{font-family:var(--f);cursor:pointer}
   background:var(--ink);display:flex;align-items:center;gap:12px;
   border-bottom:1px solid rgba(255,255,255,.07);
 }
-.h-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.h-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .h-logo-text{font-family:var(--fd);font-size:30px;font-weight:900;color:var(--y);letter-spacing:-2px;line-height:1}
 .h-logo-badge{background:rgba(245,193,22,.16);border:1px solid rgba(245,193,22,.38);border-radius:6px;padding:2px 7px;font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--y);line-height:1.2}
-.h-title{flex:1;text-align:center;font-family:var(--fd);font-size:16px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:rgba(255,255,255,.45)}
-.h-back{flex-shrink:0;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 13px;transition:background .2s,color .2s;-webkit-tap-highlight-color:transparent}
+.h-title{flex:1;text-align:center;font-family:var(--fd);font-size:16px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.h-back{flex-shrink:0;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 13px;transition:background .2s;-webkit-tap-highlight-color:transparent}
 .h-back:hover{background:rgba(255,255,255,.13);color:#fff}
 
-/* ── HERO ── */
-.hero-banner{
+/* ── HERO EDITORIAL ── */
+.hero{
   margin-top:calc(var(--th) + env(safe-area-inset-top,0));
-  background:var(--ink2);position:relative;overflow:hidden;
-  padding:32px 20px 28px;border-bottom:3px solid var(--y);
+  background:var(--ink);
+  position:relative;overflow:hidden;
+  padding:0;
 }
-.hero-banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(245,193,22,.15) 1px,transparent 1px);background-size:22px 22px;pointer-events:none}
-.hero-banner::after{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:linear-gradient(to bottom,var(--y),rgba(245,193,22,.3))}
-.hero-inner{position:relative;z-index:1;max-width:640px}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--y);margin-bottom:12px;opacity:.85}
-.hero-eyebrow::before{content:'';width:18px;height:2px;background:var(--y);border-radius:2px;opacity:.7;display:inline-block}
-.hero-title{font-family:var(--fd);font-size:clamp(28px,7vw,44px);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-.3px;margin-bottom:12px}
-.hero-title em{color:var(--y);font-style:italic}
-.hero-sub{font-size:13px;color:rgba(255,255,255,.5);max-width:380px;line-height:1.6;margin-bottom:18px}
-.hero-tags{display:flex;flex-wrap:wrap;gap:7px}
-.hero-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 11px;font-size:11px;font-weight:600;color:rgba(255,255,255,.55)}
+.hero-inner{position:relative;z-index:2;padding:32px 20px 0}
+.hero-grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(245,193,22,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245,193,22,.06) 1px, transparent 1px);
+  background-size:32px 32px;
+  pointer-events:none;
+}
+.hero-overline{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+}
+.hero-overline-line{width:32px;height:2px;background:var(--y);border-radius:2px}
+.hero-overline-txt{font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:var(--y);opacity:.8}
+.hero-title{
+  font-family:var(--fd);font-style:italic;
+  font-size:clamp(44px,11vw,72px);font-weight:900;
+  color:#fff;line-height:.92;letter-spacing:-1px;
+  margin-bottom:16px;
+}
+.hero-title em{color:var(--y);font-style:italic;display:block}
+.hero-title small{font-size:.45em;color:rgba(255,255,255,.35);letter-spacing:2px;font-style:normal;display:block;margin-top:4px;font-weight:700}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.45);line-height:1.65;max-width:340px;margin-bottom:24px}
+/* Stat strip */
+.hero-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid rgba(255,255,255,.08);
+  margin:0 -20px;
+}
+.hs-item{
+  padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:3px;
+  border-right:1px solid rgba(255,255,255,.07);
+}
+.hs-item:last-child{border-right:none}
+.hs-n{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--y);line-height:1}
+.hs-l{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3)}
+/* Curve bottom */
+.hero-curve{height:28px;background:var(--bg);border-radius:28px 28px 0 0;position:relative;z-index:3;margin-top:-1px}
 
 /* ── LAYOUT ── */
-.main-content{padding:20px 14px calc(40px + env(safe-area-inset-bottom,0));max-width:700px;margin:0 auto}
-.section-hdr{margin-bottom:14px}
-.section-title{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink);letter-spacing:-.2px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.section-title::after{content:'';flex:1;height:1.5px;background:var(--line);border-radius:2px}
-.section-sub{font-size:12px;color:var(--g1)}
-.section-gap{margin-bottom:28px}
+.main{padding:16px 14px calc(40px + env(safe-area-inset-bottom,0));max-width:700px;margin:0 auto}
 
-/* ── FILTROS DE CATEGORÍA ── */
-.cat-filters{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:20px;-webkit-overflow-scrolling:touch}
-.cat-filters::-webkit-scrollbar{display:none}
-.cat-btn{flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--g1);transition:all .18s;-webkit-tap-highlight-color:transparent}
-.cat-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
-.cat-btn:hover:not(.active){border-color:var(--ink);color:var(--ink)}
+/* ── SEC HEADER ── */
+.sec{margin-bottom:28px}
+.sec-hdr{margin-bottom:14px}
+.sec-title{
+  font-family:var(--fd);font-size:11px;font-weight:900;
+  letter-spacing:3px;text-transform:uppercase;color:var(--g1);
+  display:flex;align-items:center;gap:10px;margin-bottom:4px;
+}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--line)}
+.sec-big{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--ink);letter-spacing:-.3px;line-height:1.1}
+.sec-sub{font-size:12px;color:var(--g1);margin-top:3px}
+
+/* ── DATO GRID ── */
+.dato-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+.dato-card{
+  background:var(--ink2);border-radius:var(--r);overflow:hidden;
+  padding:16px 14px 14px;position:relative;
+}
+.dato-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--y);
+}
+.dato-n{
+  font-family:var(--fd);font-size:38px;font-weight:900;color:var(--y);
+  line-height:1;letter-spacing:-1.5px;
+}
+.dato-n em{color:rgba(245,193,22,.5);font-style:normal;font-size:.65em}
+.dato-lbl{font-size:11px;color:rgba(255,255,255,.45);margin-top:6px;line-height:1.45;font-weight:500}
 
 /* ── CAROUSEL ── */
-.carousel-wrap{margin-bottom:28px}
+.carousel-wrap{margin-bottom:4px}
 .carousel-card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--line);overflow:hidden}
-.slide-topic-tag{position:absolute;top:12px;right:12px;font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:3px 9px;z-index:2}
-.carousel-slides{position:relative;min-height:220px}
-.c-slide{display:none;padding:16px 16px 14px;animation:slideIn .35s var(--ease) forwards;position:relative}
+.slide-topic-tag{
+  position:absolute;top:12px;right:12px;
+  font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;
+  color:var(--g2);background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:3px 9px;z-index:2;
+}
+.carousel-slides{position:relative;min-height:210px}
+.c-slide{display:none;padding:16px 16px 14px;animation:slideIn .32s var(--ease) forwards;position:relative}
 .c-slide.active{display:block}
 @keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .slide-head{margin-bottom:12px;padding-right:90px}
 .slide-label-top{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--g1);margin-bottom:5px}
 .slide-hook{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:4px}
-.slide-headline{font-family:var(--fd);font-size:clamp(17px,4.5vw,23px);font-weight:900;color:var(--ink);line-height:1.15;letter-spacing:-.2px}
+.slide-headline{font-family:var(--fd);font-size:clamp(17px,4.5vw,23px);font-weight:900;color:var(--ink);line-height:1.12;letter-spacing:-.2px}
 .slide-blocks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .slide-block{border-radius:var(--rs);padding:11px 12px 10px}
 .block-a{background:var(--bg);border:1px solid var(--line)}
@@ -97,8 +148,8 @@ button{font-family:var(--f);cursor:pointer}
 .block-warn{background:var(--err-bg);border:1px solid rgba(224,92,92,.2)}
 .block-ok{background:var(--ok-bg);border:1px solid rgba(78,203,160,.22)}
 .block-lbl{font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:5px}
-.block-a .block-lbl{color:var(--g1)} .block-b .block-lbl{color:var(--yd)}
-.block-warn .block-lbl{color:var(--err)} .block-ok .block-lbl{color:#1E7A5A}
+.block-a .block-lbl{color:var(--g1)}.block-b .block-lbl{color:var(--yd)}
+.block-warn .block-lbl{color:var(--err)}.block-ok .block-lbl{color:#1E7A5A}
 .block-text{font-size:12.5px;line-height:1.5;color:var(--ink)}
 .block-b .block-text,.block-ok .block-text{font-weight:600}
 .slide-foot{border-top:1px solid var(--line);padding:9px 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -109,42 +160,70 @@ button{font-family:var(--f);cursor:pointer}
 .c-dot{width:7px;height:7px;border-radius:50%;background:var(--g2);border:none;padding:0;transition:background .2s,transform .2s,width .2s;cursor:pointer;flex-shrink:0}
 .c-dot.active{background:var(--y);transform:scale(1.3);width:18px;border-radius:4px}
 .carousel-arrows{display:flex;gap:7px;align-items:center}
-.c-arrow{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .18s,border-color .18s,color .18s;-webkit-tap-highlight-color:transparent}
+.c-arrow{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .18s;-webkit-tap-highlight-color:transparent}
 .c-arrow:hover{background:var(--ink);border-color:var(--ink);color:#fff}
-.carousel-count{font-family:var(--fd);font-size:12px;font-weight:900;color:var(--g1);letter-spacing:.5px;padding:0 4px;min-width:36px;text-align:center}
+.carousel-count{font-family:var(--fd);font-size:12px;font-weight:900;color:var(--g1);padding:0 4px;min-width:36px;text-align:center}
+
+/* ── FILTROS ── */
+.cat-filters{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:20px;-webkit-overflow-scrolling:touch}
+.cat-filters::-webkit-scrollbar{display:none}
+.cat-btn{flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid var(--line);background:var(--card);color:var(--g1);transition:all .18s;-webkit-tap-highlight-color:transparent}
+.cat-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.cat-btn:hover:not(.active){border-color:var(--ink);color:var(--ink)}
 
 /* ── TIPS GRID ── */
-.tips-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:28px}
+.tips-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:4px}
 @media(min-width:560px){.tips-grid{grid-template-columns:1fr 1fr}}
-.tip-card{background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);padding:14px 14px 13px;display:flex;gap:12px;align-items:flex-start;transition:transform .18s var(--ease),box-shadow .18s var(--ease);position:relative;overflow:hidden}
-.tip-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--y);border-radius:2px 0 0 2px}
+.tip-card{
+  background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);
+  padding:14px 14px 13px;display:flex;gap:12px;align-items:flex-start;
+  transition:transform .18s var(--ease),box-shadow .18s;position:relative;overflow:hidden;
+}
+.tip-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:2px 0 0 2px}
+.tip-card.nivel-bajo::before{background:var(--ok)}
+.tip-card.nivel-medio::before{background:var(--warn)}
+.tip-card.nivel-alto::before{background:var(--err)}
 .tip-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,26,46,.1),0 0 0 1px rgba(26,26,46,.05)}
 .tip-icon{font-size:24px;line-height:1;flex-shrink:0;margin-top:1px}
 .tip-body{flex:1;min-width:0}
 .tip-title{font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink);line-height:1.2;margin-bottom:4px;letter-spacing:-.1px}
 .tip-text{font-size:12.5px;color:var(--g1);line-height:1.5}
 .tip-text strong{color:var(--ink);font-weight:700}
-.tip-badge{display:inline-flex;align-items:center;gap:4px;margin-top:7px;font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2);background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:2px 8px}
+.tip-meta{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
+.tip-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2);background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:2px 8px}
+.nivel-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;border-radius:20px;padding:2px 8px}
+.nivel-badge.alto{background:var(--err-bg);color:var(--err);border:1px solid rgba(224,92,92,.2)}
+.nivel-badge.medio{background:var(--warn-bg);color:#92400E;border:1px solid rgba(245,158,11,.2)}
+.nivel-badge.bajo{background:var(--ok-bg);color:#1E7A5A;border:1px solid rgba(78,203,160,.22)}
 
-/* ── ACORDEÓN ── */
-.faq-list{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+/* ── FAQ ── */
+.faq-list{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
 .faq-item{background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);overflow:hidden}
 .faq-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;background:none;border:none;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
 .faq-btn:hover{background:var(--bg)}
 .faq-q{font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink);line-height:1.2;flex:1}
 .faq-icon{font-size:18px;color:var(--g2);flex-shrink:0;transition:transform .25s var(--ease)}
 .faq-item.open .faq-icon{transform:rotate(45deg);color:var(--y)}
-.faq-body{display:none;padding:0 16px 14px;font-size:13px;color:var(--g1);line-height:1.6;border-top:1px solid var(--line)}
+.faq-body{display:none;padding:0 16px 14px;font-size:13px;color:var(--g1);line-height:1.65;border-top:1px solid var(--line)}
 .faq-body strong{color:var(--ink);font-weight:700}
 .faq-item.open .faq-body{display:block}
 
 /* ── CHECKLIST ── */
-.checklist-card{background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);overflow:hidden;margin-bottom:28px}
-.checklist-head{background:var(--ink);padding:14px 18px 13px;display:flex;align-items:center;gap:10px;justify-content:space-between}
-.checklist-head-title{font-family:var(--fd);font-size:19px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.1}
+.checklist-card{background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);overflow:hidden;margin-bottom:4px}
+.checklist-head{
+  background:var(--ink);padding:14px 18px 13px;
+  display:flex;align-items:center;gap:10px;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.checklist-head::before{
+  content:'✓';position:absolute;right:-8px;top:-14px;
+  font-family:var(--fd);font-size:72px;font-weight:900;color:rgba(245,193,22,.07);
+  line-height:1;pointer-events:none;
+}
+.checklist-head-title{font-family:var(--fd);font-size:19px;font-weight:900;color:#fff;letter-spacing:-.2px;line-height:1.1;position:relative;z-index:1}
 .checklist-head-title span{color:var(--y)}
-.checklist-badge{background:var(--y);color:var(--ink);font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;border-radius:6px;padding:3px 8px;flex-shrink:0}
-.check-item{display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.checklist-badge{background:var(--y);color:var(--ink);font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;border-radius:6px;padding:3px 8px;flex-shrink:0;position:relative;z-index:1}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line);transition:background .15s;-webkit-tap-highlight-color:transparent}
 .check-item:last-child{border-bottom:none}
 .check-item:hover{background:var(--bg)}
 .check-mark{font-size:16px;flex-shrink:0;margin-top:2px}
@@ -152,45 +231,72 @@ button{font-family:var(--f);cursor:pointer}
 .check-text strong{font-weight:900}
 .check-text em{color:var(--g1);font-style:normal;font-size:12px;display:block;margin-top:2px}
 
-/* ── TARJETAS DATO ── */
-.dato-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
-.dato-card{background:var(--card);border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh);padding:14px;text-align:center;position:relative;overflow:hidden}
-.dato-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--y)}
-.dato-n{font-family:var(--fd);font-size:34px;font-weight:900;color:var(--ink);line-height:1;letter-spacing:-1px}
-.dato-n em{color:var(--y);font-style:normal}
-.dato-lbl{font-size:11px;color:var(--g1);margin-top:4px;line-height:1.4}
+/* ── EDITORIAL DIVIDER ── */
+.editorial-break{
+  display:flex;align-items:center;gap:0;margin:32px 0;
+  overflow:hidden;border-radius:4px;
+}
+.eb-block{height:8px;flex:1}
+.eb-block.c1{background:var(--y)}
+.eb-block.c2{background:var(--ink)}
+.eb-block.c3{background:var(--y);opacity:.4}
+.eb-block.c4{background:var(--bg);flex:3}
 
 /* ── CTA ── */
-.cta-block{background:var(--ink2);border-radius:var(--r);padding:24px 20px;text-align:center;border:1px solid rgba(255,255,255,.07);margin-bottom:24px;position:relative;overflow:hidden}
-.cta-block::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(245,193,22,.1) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
+.cta-block{
+  background:var(--ink);border-radius:var(--r);
+  padding:28px 20px;text-align:center;
+  border:1px solid rgba(255,255,255,.07);
+  margin-bottom:24px;position:relative;overflow:hidden;
+}
+.cta-block::before{
+  content:'db';
+  position:absolute;right:-12px;bottom:-30px;
+  font-family:var(--fd);font-size:120px;font-weight:900;
+  color:rgba(245,193,22,.05);letter-spacing:-5px;line-height:1;
+  pointer-events:none;user-select:none;
+}
 .cta-block::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--y),rgba(245,193,22,.2))}
 .cta-inner{position:relative;z-index:1}
 .cta-eyebrow{font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
-.cta-title{font-family:var(--fd);font-size:clamp(20px,5vw,28px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.2px;margin-bottom:16px}
+.cta-title{font-family:var(--fd);font-size:clamp(26px,6vw,36px);font-style:italic;font-weight:900;color:#fff;line-height:1.05;letter-spacing:-.3px;margin-bottom:6px}
 .cta-title em{color:var(--y);font-style:normal}
-.btn-wa{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--wa);color:#fff;font-size:14px;font-weight:800;border:none;border-radius:var(--r);padding:13px 24px;transition:opacity .18s,transform .15s;margin-bottom:10px;-webkit-tap-highlight-color:transparent}
+.cta-sub{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:20px}
+.btn-wa{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--wa);color:#fff;font-size:14px;font-weight:800;
+  border:none;border-radius:var(--r);padding:13px 24px;
+  transition:opacity .18s,transform .15s;margin-bottom:10px;
+  -webkit-tap-highlight-color:transparent;
+}
 .btn-wa:hover{opacity:.9}
 .btn-wa:active{transform:scale(.97)}
 .wa-icon{width:16px;height:16px;flex-shrink:0}
-.cta-note{font-size:12px;color:rgba(255,255,255,.38)}
+.cta-note{font-size:12px;color:rgba(255,255,255,.3)}
 
 /* ── FOOTER ── */
-.site-footer{background:var(--ink);border-top:2px solid var(--y);padding:20px 16px calc(20px + env(safe-area-inset-bottom,0));display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.site-footer{
+  background:var(--ink);border-top:3px solid var(--y);
+  padding:20px 16px calc(20px + env(safe-area-inset-bottom,0));
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
 .footer-logo{font-family:var(--fd);font-size:28px;font-weight:900;color:var(--y);letter-spacing:-2px;line-height:1}
 .footer-text{font-size:11px;color:rgba(255,255,255,.28);line-height:1.4}
-.footer-tag{font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18)}
+.footer-links{display:flex;gap:12px}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.28);font-weight:600;transition:color .15s}
+.footer-links a:hover{color:var(--y)}
 
 /* ── REVEAL ── */
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
 .reveal.visible{opacity:1;transform:translateY(0)}
-.rd1{transition-delay:.06s} .rd2{transition-delay:.12s} .rd3{transition-delay:.18s}
-.rd4{transition-delay:.24s} .rd5{transition-delay:.30s} .rd6{transition-delay:.36s}
+.rd1{transition-delay:.06s}.rd2{transition-delay:.12s}.rd3{transition-delay:.18s}
+.rd4{transition-delay:.24s}.rd5{transition-delay:.30s}.rd6{transition-delay:.36s}
 </style>
 </head>
 <body>
 
 <header class="site-header">
-  <a class="h-logo" href="index.html" aria-label="Volver a inicio">
+  <a class="h-logo" href="index.html" aria-label="Inicio">
     <span class="h-logo-text">db</span>
     <span class="h-logo-badge">dbarrio</span>
   </a>
@@ -198,28 +304,44 @@ button{font-family:var(--f);cursor:pointer}
   <a href="index.html" class="h-back">← Inicio</a>
 </header>
 
-<div class="hero-banner">
+<div class="hero" role="banner">
+  <div class="hero-grid-bg" aria-hidden="true"></div>
   <div class="hero-inner">
-    <div class="hero-eyebrow">Para el hogar cubano</div>
-    <h1 class="hero-title">Lo que nadie<br>te dice <em>antes</em><br>de gastar.</h1>
-    <p class="hero-sub">Curiosidades, señales de alerta y trucos prácticos para que tu casa funcione mejor y dure más.</p>
-    <div class="hero-tags">
-      <span class="hero-tag">⚡ Electricidad</span>
-      <span class="hero-tag">🚿 Plomería</span>
-      <span class="hero-tag">❄️ Refrigeración</span>
-      <span class="hero-tag">🏠 Construcción</span>
-      <span class="hero-tag">💸 Ahorro</span>
+    <div class="hero-overline">
+      <span class="hero-overline-line"></span>
+      <span class="hero-overline-txt">Para el hogar cubano</span>
+    </div>
+    <h1 class="hero-title">
+      Lo que nadie<br>te dice
+      <em>antes de gastar.</em>
+      <small>Zona db · Contenido técnico del barrio</small>
+    </h1>
+    <p class="hero-sub">Señales de alarma, mitos que cuestan dinero y trucos que sí funcionan. Sin relleno.</p>
+  </div>
+  <div class="hero-strip">
+    <div class="hs-item">
+      <span class="hs-n">10</span>
+      <span class="hs-l">Historias</span>
+    </div>
+    <div class="hs-item">
+      <span class="hs-n">12</span>
+      <span class="hs-l">Tips</span>
+    </div>
+    <div class="hs-item">
+      <span class="hs-n">5</span>
+      <span class="hs-l">Preguntas</span>
     </div>
   </div>
 </div>
+<div class="hero-curve"></div>
 
-<main class="main-content">
+<main class="main">
 
-  <!-- ── DATOS RÁPIDOS ── -->
-  <div class="section-gap reveal">
-    <div class="section-hdr">
-      <h2 class="section-title">Lo que más duele</h2>
-      <p class="section-sub">Datos reales del hogar cubano</p>
+  <!-- DATOS RÁPIDOS -->
+  <section class="sec reveal">
+    <div class="sec-hdr">
+      <div class="sec-title">Datos que duelen</div>
+      <div class="sec-big">Lo que cuesta no actuar a tiempo</div>
     </div>
     <div class="dato-grid">
       <div class="dato-card">
@@ -236,180 +358,195 @@ button{font-family:var(--f);cursor:pointer}
       </div>
       <div class="dato-card">
         <div class="dato-n">80<em>%</em></div>
-        <div class="dato-lbl">de los "se quedó sin gas" son filtros sucios</div>
+        <div class="dato-lbl">de los "se quedó sin gas" son filtros sucios nada más</div>
       </div>
     </div>
+  </section>
+
+  <div class="editorial-break reveal" aria-hidden="true">
+    <div class="eb-block c1"></div>
+    <div class="eb-block c2"></div>
+    <div class="eb-block c3"></div>
+    <div class="eb-block c4"></div>
   </div>
 
-  <!-- ── CAROUSEL ── -->
-  <div class="section-gap reveal rd1">
-    <div class="section-hdr">
-      <h2 class="section-title">Historias rápidas</h2>
-      <p class="section-sub">Desliza o usa las flechas · Pasa sola cada 7s</p>
+  <!-- CAROUSEL -->
+  <section class="sec reveal rd1">
+    <div class="sec-hdr">
+      <div class="sec-title">Historias rápidas</div>
+      <div class="sec-big">Mitos, errores y lo que hay que saber</div>
+      <div class="sec-sub">Desliza · Cambia sola cada 7s</div>
     </div>
-  </div>
+    <div class="carousel-wrap">
+      <div class="carousel-card">
+        <div class="carousel-slides" id="carouselSlides">
 
-  <div class="carousel-wrap reveal rd2">
-    <div class="carousel-card">
-      <div class="carousel-slides" id="carouselSlides">
+          <div class="c-slide active">
+            <span class="slide-topic-tag">⚡ Electricidad</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Error común</div>
+              <div class="slide-hook">Pasa en casi todas las casas</div>
+              <div class="slide-headline">El breaker que "salta"<br>no es el problema real 👀</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-a"><div class="block-lbl">El error</div><div class="block-text">Resetearlo y seguir usando los mismos equipos sin revisar nada.</div></div>
+              <div class="slide-block block-b"><div class="block-lbl">Lo que hay que saber</div><div class="block-text">Si se repite, hay sobrecarga o cable flojo. El breaker te está salvando.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">Ignorarlo puede quemar un cable, un equipo… o peor.</span><span class="slide-foot-icon">🔌</span></div>
+          </div>
 
-        <div class="c-slide active">
-          <span class="slide-topic-tag">⚡ Electricidad</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Error común</div>
-            <div class="slide-hook">Pasa en casi todas las casas</div>
-            <div class="slide-headline">El breaker que "salta"<br>no es el problema real 👀</div>
+          <div class="c-slide">
+            <span class="slide-topic-tag">🚿 Plomería</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Señal de alarma</div>
+              <div class="slide-hook">Eso no se "deja pa' luego"</div>
+              <div class="slide-headline">La gotera "chiquitica"<br>que no es tan chiquitica</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-warn"><div class="block-lbl">La señal</div><div class="block-text">Mancha de humedad en techo o pared que crece lento, casi sin notarse.</div></div>
+              <div class="slide-block block-ok"><div class="block-lbl">Qué significa</div><div class="block-text">Lo visible es el final del recorrido. El origen suele estar más arriba o más lejos.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">Mientras más esperas, más se daña la losa y el hierro.</span><span class="slide-foot-icon">💧</span></div>
           </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-a"><div class="block-lbl">El error</div><div class="block-text">Resetearlo y seguir usando los mismos equipos sin revisar nada.</div></div>
-            <div class="slide-block block-b"><div class="block-lbl">Lo que hay que saber</div><div class="block-text">Si se repite, hay sobrecarga o cable flojo/caliente. El breaker te está salvando.</div></div>
+
+          <div class="c-slide">
+            <span class="slide-topic-tag">❄️ Aire</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Mito vs Realidad</div>
+              <div class="slide-hook">Lo que sube la factura</div>
+              <div class="slide-headline">A más frío en el split,<br>más rápido enfría 🤔</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-a"><div class="block-lbl">Mito</div><div class="block-text">Ponerlo al mínimo enfría más rápido y "ahorra".</div></div>
+              <div class="slide-block block-b"><div class="block-lbl">Realidad</div><div class="block-text">Trabaja igual. A 24–25°C llegas mejor y gastas menos corriente.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">24–25°C: el punto ideal en Cuba.</span><span class="slide-foot-icon">🌡️</span></div>
           </div>
-          <div class="slide-foot"><span class="slide-foot-note">Ignorarlo puede quemar un cable, un equipo… o peor.</span><span class="slide-foot-icon">🔌</span></div>
+
+          <div class="c-slide">
+            <span class="slide-topic-tag">🧊 Nevera</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Error vs Solución</div>
+              <div class="slide-hook">Detalle que se paga caro</div>
+              <div class="slide-headline">La nevera pegada a la pared<br>te sale cara</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-warn"><div class="block-lbl">Error</div><div class="block-text">Motor sin ventilación — sin espacio detrás ni arriba.</div></div>
+              <div class="slide-block block-ok"><div class="block-lbl">Cómo debe ser</div><div class="block-text">10cm detrás y 15cm arriba. Si no, consume más y se funde antes.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">Si el motor está caliente al tacto, está trabajando forzado.</span><span class="slide-foot-icon">🛠️</span></div>
+          </div>
+
+          <div class="c-slide">
+            <span class="slide-topic-tag">🏠 Construcción</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Señal de alarma</div>
+              <div class="slide-hook">Eso no es "pintura mala"</div>
+              <div class="slide-headline">Pintura que se pela sola<br>sin que nadie la toque</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-warn"><div class="block-lbl">La señal</div><div class="block-text">Se desprende en placas, sobre todo cerca del piso o esquinas bajas.</div></div>
+              <div class="slide-block block-b"><div class="block-lbl">Lo que hay debajo</div><div class="block-text">Humedad capilar: el agua sube por la pared. Pintar encima es un parche.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">El problema es la humedad, no la pintura.</span><span class="slide-foot-icon">🌧️</span></div>
+          </div>
+
+          <div class="c-slide">
+            <span class="slide-topic-tag">⚠️ Seguridad</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Riesgo real</div>
+              <div class="slide-hook">Aquí empiezan los incendios</div>
+              <div class="slide-headline">El "ladrón" de enchufes<br>que literalmente roba</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-warn"><div class="block-lbl">Riesgo</div><div class="block-text">Nevera, AC, TV y cargadores en el mismo ladrón. Calienta por dentro.</div></div>
+              <div class="slide-block block-ok"><div class="block-lbl">Solución</div><div class="block-text">Motores y alto consumo: toma directa. El ladrón es solo para cosas pequeñas.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">Si está tibio al tacto: no es normal.</span><span class="slide-foot-icon">🔥</span></div>
+          </div>
+
+          <div class="c-slide">
+            <span class="slide-topic-tag">🧼 Mantenimiento</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Error vs Realidad</div>
+              <div class="slide-hook">A veces la solución es gratis</div>
+              <div class="slide-headline">El split que "no enfría"<br>puede ser simple</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-a"><div class="block-lbl">Lo que piensan</div><div class="block-text">"Perdió gas, hay que llenarlo."</div></div>
+              <div class="slide-block block-b"><div class="block-lbl">Lo que suele ser</div><div class="block-text">Filtros sucios o exterior tapado. Limpieza y vuelve a rendir.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">Limpieza cada 3–4 meses. Barato y lógico.</span><span class="slide-foot-icon">🧽</span></div>
+          </div>
+
+          <div class="c-slide">
+            <span class="slide-topic-tag">💸 Ahorro</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Dato práctico</div>
+              <div class="slide-hook">Para no botar dinero</div>
+              <div class="slide-headline">Lo que más consume en casa<br>(pista: no es la luz)</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-warn"><div class="block-lbl">Consumo alto</div><div class="block-text">Calentador eléctrico sin control de tiempo: te mata la factura.</div></div>
+              <div class="slide-block block-ok"><div class="block-lbl">La jugada</div><div class="block-text">Temporizador + horario inteligente puede bajar muchísimo sin cambiar equipo.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">Mide primero. Cambia después.</span><span class="slide-foot-icon">⏱️</span></div>
+          </div>
+
+          <div class="c-slide">
+            <span class="slide-topic-tag">🚰 Agua</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Mito vs Realidad</div>
+              <div class="slide-hook">Presión ≠ calidad</div>
+              <div class="slide-headline">A más presión de agua,<br>mejor va la tubería</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-a"><div class="block-lbl">Mito</div><div class="block-text">Mientras más fuerte, mejor para todo.</div></div>
+              <div class="slide-block block-b"><div class="block-lbl">Realidad</div><div class="block-text">Sobrepresión revienta empaques y castiga llaves y tuberías.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">La presión correcta protege el sistema.</span><span class="slide-foot-icon">💦</span></div>
+          </div>
+
+          <div class="c-slide">
+            <span class="slide-topic-tag">☀️ Solar</span>
+            <div class="slide-head">
+              <div class="slide-label-top">Antes de invertir</div>
+              <div class="slide-hook">No es magia, es ingeniería</div>
+              <div class="slide-headline">Con paneles solares<br>se acaba el problema</div>
+            </div>
+            <div class="slide-blocks">
+              <div class="slide-block block-a"><div class="block-lbl">Mito</div><div class="block-text">Instalo y ya no hay apagón ni factura.</div></div>
+              <div class="slide-block block-b"><div class="block-lbl">Realidad</div><div class="block-text">Sin baterías y cálculo real, el beneficio es parcial. El diseño manda.</div></div>
+            </div>
+            <div class="slide-foot"><span class="slide-foot-note">Bien calculado: sí. A lo loco: no.</span><span class="slide-foot-icon">⚡</span></div>
+          </div>
+
         </div>
-
-        <div class="c-slide">
-          <span class="slide-topic-tag">🚿 Plomería</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Señal de alarma</div>
-            <div class="slide-hook">Eso no se "deja pa' luego"</div>
-            <div class="slide-headline">La gotera "chiquitica"<br>que no es tan chiquitica</div>
+        <div class="carousel-controls">
+          <div class="carousel-dots" id="carouselDots"></div>
+          <div class="carousel-arrows">
+            <span class="carousel-count" id="carouselCount">1/10</span>
+            <button class="c-arrow" id="cPrev" aria-label="Anterior">←</button>
+            <button class="c-arrow" id="cNext" aria-label="Siguiente">→</button>
           </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-warn"><div class="block-lbl">La señal</div><div class="block-text">Mancha de humedad en techo/pared que crece lento, casi sin notarse.</div></div>
-            <div class="slide-block block-ok"><div class="block-lbl">Qué significa</div><div class="block-text">Lo visible es el final del recorrido. El origen suele estar más arriba o más lejos.</div></div>
-          </div>
-          <div class="slide-foot"><span class="slide-foot-note">Mientras más esperas, más se daña la losa y el hierro.</span><span class="slide-foot-icon">💧</span></div>
-        </div>
-
-        <div class="c-slide">
-          <span class="slide-topic-tag">❄️ Aire</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Mito vs Realidad</div>
-            <div class="slide-hook">Lo que sube la factura</div>
-            <div class="slide-headline">A más frío en el split,<br>más rápido enfría 🤔</div>
-          </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-a"><div class="block-lbl">Mito</div><div class="block-text">Ponerlo al mínimo enfría más rápido y "ahorra".</div></div>
-            <div class="slide-block block-b"><div class="block-lbl">Realidad</div><div class="block-text">Trabaja igual. A 24–25°C llegas mejor y gastas menos.</div></div>
-          </div>
-          <div class="slide-foot"><span class="slide-foot-note">24–25°C: el punto ideal en Cuba.</span><span class="slide-foot-icon">🌡️</span></div>
-        </div>
-
-        <div class="c-slide">
-          <span class="slide-topic-tag">🧊 Nevera</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Error vs Solución</div>
-            <div class="slide-hook">Detalle que se paga caro</div>
-            <div class="slide-headline">La nevera pegada a la pared<br>te sale cara</div>
-          </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-warn"><div class="block-lbl">Error</div><div class="block-text">Motor sin ventilación (sin espacio detrás/arriba).</div></div>
-            <div class="slide-block block-ok"><div class="block-lbl">Cómo debe ser</div><div class="block-text">10cm detrás y 15cm arriba. Si no, consume más y se funde antes.</div></div>
-          </div>
-          <div class="slide-foot"><span class="slide-foot-note">Si el motor "quema", está trabajando forzado.</span><span class="slide-foot-icon">🛠️</span></div>
-        </div>
-
-        <div class="c-slide">
-          <span class="slide-topic-tag">🏠 Construcción</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Señal de alarma</div>
-            <div class="slide-hook">Eso no es "pintura mala"</div>
-            <div class="slide-headline">Pintura que se pela sola<br>sin que nadie la toque</div>
-          </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-warn"><div class="block-lbl">La señal</div><div class="block-text">Se desprende en placas, sobre todo cerca del piso o esquinas bajas.</div></div>
-            <div class="slide-block block-b"><div class="block-lbl">Lo que hay debajo</div><div class="block-text">Humedad capilar: el agua sube por la pared. Pintar encima es un parche temporal.</div></div>
-          </div>
-          <div class="slide-foot"><span class="slide-foot-note">El problema es la humedad, no la pintura.</span><span class="slide-foot-icon">🌧️</span></div>
-        </div>
-
-        <div class="c-slide">
-          <span class="slide-topic-tag">⚠️ Seguridad</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Riesgo real</div>
-            <div class="slide-hook">Aquí empiezan los incendios</div>
-            <div class="slide-headline">El "ladrón" de enchufes<br>que literalmente roba</div>
-          </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-warn"><div class="block-lbl">Riesgo</div><div class="block-text">Nevera/AC/TV y cargadores en el mismo ladrón. Calienta desde adentro.</div></div>
-            <div class="slide-block block-ok"><div class="block-lbl">Solución</div><div class="block-text">Motores y alto consumo: toma directa. El ladrón es solo para cosas pequeñas.</div></div>
-          </div>
-          <div class="slide-foot"><span class="slide-foot-note">Si está tibio al tacto: no es normal.</span><span class="slide-foot-icon">🔥</span></div>
-        </div>
-
-        <div class="c-slide">
-          <span class="slide-topic-tag">🧼 Mantenimiento</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Error vs Realidad</div>
-            <div class="slide-hook">A veces la solución es gratis</div>
-            <div class="slide-headline">El split que "no enfría"<br>puede ser simple</div>
-          </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-a"><div class="block-lbl">Lo que piensan</div><div class="block-text">"Perdió gas, hay que llenarlo."</div></div>
-            <div class="slide-block block-b"><div class="block-lbl">Lo que suele ser</div><div class="block-text">Filtros sucios o exterior tapado. Limpieza y vuelve a rendir.</div></div>
-          </div>
-          <div class="slide-foot"><span class="slide-foot-note">Limpieza cada 3–4 meses. Barato y lógico.</span><span class="slide-foot-icon">🧽</span></div>
-        </div>
-
-        <div class="c-slide">
-          <span class="slide-topic-tag">💸 Ahorro</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Dato práctico</div>
-            <div class="slide-hook">Para no botar dinero</div>
-            <div class="slide-headline">Lo que más consume en casa<br>(pista: no es la luz)</div>
-          </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-warn"><div class="block-lbl">Consumo alto</div><div class="block-text">Calentador eléctrico sin control de tiempo: te mata la factura.</div></div>
-            <div class="slide-block block-ok"><div class="block-lbl">La jugada</div><div class="block-text">Temporizador + horario inteligente puede bajar muchísimo sin cambiar equipo.</div></div>
-          </div>
-          <div class="slide-foot"><span class="slide-foot-note">Mide primero. Cambia después.</span><span class="slide-foot-icon">⏱️</span></div>
-        </div>
-
-        <div class="c-slide">
-          <span class="slide-topic-tag">🚰 Agua</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Mito vs Realidad</div>
-            <div class="slide-hook">Presión ≠ calidad</div>
-            <div class="slide-headline">A más presión de agua,<br>mejor va la tubería</div>
-          </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-a"><div class="block-lbl">Mito</div><div class="block-text">Mientras más fuerte, mejor para todo.</div></div>
-            <div class="slide-block block-b"><div class="block-lbl">Realidad</div><div class="block-text">Sobrepresión revienta empaques y castiga llaves y tuberías.</div></div>
-          </div>
-          <div class="slide-foot"><span class="slide-foot-note">La presión correcta protege el sistema.</span><span class="slide-foot-icon">💦</span></div>
-        </div>
-
-        <div class="c-slide">
-          <span class="slide-topic-tag">☀️ Solar</span>
-          <div class="slide-head">
-            <div class="slide-label-top">Antes de invertir</div>
-            <div class="slide-hook">No es magia, es ingeniería</div>
-            <div class="slide-headline">Con paneles solares<br>se acaba el problema</div>
-          </div>
-          <div class="slide-blocks">
-            <div class="slide-block block-a"><div class="block-lbl">Mito</div><div class="block-text">Instalo y ya no hay apagón ni factura.</div></div>
-            <div class="slide-block block-b"><div class="block-lbl">Realidad</div><div class="block-text">Sin baterías y cálculo real, el beneficio es parcial. El diseño manda.</div></div>
-          </div>
-          <div class="slide-foot"><span class="slide-foot-note">Bien calculado: sí. A lo loco: no.</span><span class="slide-foot-icon">⚡</span></div>
-        </div>
-
-      </div>
-      <div class="carousel-controls">
-        <div class="carousel-dots" id="carouselDots"></div>
-        <div class="carousel-arrows">
-          <span class="carousel-count" id="carouselCount">1/10</span>
-          <button class="c-arrow" id="cPrev" aria-label="Anterior">←</button>
-          <button class="c-arrow" id="cNext" aria-label="Siguiente">→</button>
         </div>
       </div>
     </div>
+  </section>
+
+  <div class="editorial-break reveal" aria-hidden="true">
+    <div class="eb-block c4"></div>
+    <div class="eb-block c3"></div>
+    <div class="eb-block c2"></div>
+    <div class="eb-block c1"></div>
   </div>
 
-  <!-- ── FILTROS + TIPS ── -->
-  <div class="section-gap reveal">
-    <div class="section-hdr">
-      <h2 class="section-title">Tips del barrio</h2>
-      <p class="section-sub">Para resolver antes de que se complique</p>
+  <!-- TIPS -->
+  <section class="sec reveal">
+    <div class="sec-hdr">
+      <div class="sec-title">Tips del barrio</div>
+      <div class="sec-big">Para resolver antes de que se complique</div>
+      <div class="sec-sub">El semáforo indica el nivel de urgencia si lo ignoras</div>
     </div>
     <div class="cat-filters" id="catFilters">
       <button class="cat-btn active" data-cat="all">Todos</button>
@@ -421,139 +558,139 @@ button{font-family:var(--f);cursor:pointer}
     </div>
     <div class="tips-grid" id="tipsGrid">
 
-      <div class="tip-card reveal rd1" data-cat="plomeria">
+      <div class="tip-card nivel-alto reveal rd1" data-cat="plomeria">
         <div class="tip-icon">💧</div>
         <div class="tip-body">
           <div class="tip-title">Fuga lenta = daño grande</div>
           <p class="tip-text">Un grifo que gotea gasta muchísimo al mes. Si moja pared o techo, <strong>el hierro se oxida por dentro</strong> sin que lo veas.</p>
-          <span class="tip-badge">🚿 Plomería</span>
+          <div class="tip-meta"><span class="tip-badge">🚿 Plomería</span><span class="nivel-badge alto">🔴 Urgente</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd2" data-cat="electricidad">
+      <div class="tip-card nivel-alto reveal rd2" data-cat="electricidad">
         <div class="tip-icon">⚡</div>
         <div class="tip-body">
           <div class="tip-title">Breaker ≠ interruptor</div>
           <p class="tip-text">El breaker no es para "prender/apagar". Es una <strong>protección automática</strong>. Si salta dos veces, hay que revisar, no solo resetear.</p>
-          <span class="tip-badge">⚡ Electricidad</span>
+          <div class="tip-meta"><span class="tip-badge">⚡ Electricidad</span><span class="nivel-badge alto">🔴 Urgente</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd3" data-cat="frio">
+      <div class="tip-card nivel-medio reveal rd3" data-cat="frio">
         <div class="tip-icon">🧊</div>
         <div class="tip-body">
           <div class="tip-title">Nevera que no descansa</div>
-          <p class="tip-text">Revisa el burlete de la puerta. Si está duro, agrietado o roto, <strong>el frío se escapa</strong> y el compresor trabaja el doble.</p>
-          <span class="tip-badge">❄️ Frío</span>
+          <p class="tip-text">Revisa el burlete. Si está duro, agrietado o roto, <strong>el frío se escapa</strong> y el compresor trabaja el doble.</p>
+          <div class="tip-meta"><span class="tip-badge">❄️ Frío</span><span class="nivel-badge medio">🟡 Pronto</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd4" data-cat="frio">
+      <div class="tip-card nivel-medio reveal rd4" data-cat="frio">
         <div class="tip-icon">❄️</div>
         <div class="tip-body">
           <div class="tip-title">Split chorreando agua</div>
-          <p class="tip-text">Muchas veces es <strong>drenaje tapado</strong>, no falta de gas. Eso se revisa primero. Es más barato y más probable.</p>
-          <span class="tip-badge">❄️ Frío</span>
+          <p class="tip-text">Muchas veces es <strong>drenaje tapado</strong>, no falta de gas. Eso se revisa primero — es más barato y más probable.</p>
+          <div class="tip-meta"><span class="tip-badge">❄️ Frío</span><span class="nivel-badge medio">🟡 Pronto</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd5" data-cat="electricidad">
+      <div class="tip-card nivel-alto reveal rd5" data-cat="electricidad">
         <div class="tip-icon">🔌</div>
         <div class="tip-body">
           <div class="tip-title">Enchufe caliente al tacto</div>
-          <p class="tip-text">Si está tibio o caliente, hay <strong>mal contacto o sobrecarga</strong>. Eso no se ignora. Puede ser el inicio de un cortocircuito.</p>
-          <span class="tip-badge">⚡ Electricidad</span>
+          <p class="tip-text">Si está tibio o caliente, hay <strong>mal contacto o sobrecarga</strong>. No se ignora. Puede ser el inicio de un cortocircuito.</p>
+          <div class="tip-meta"><span class="tip-badge">⚡ Electricidad</span><span class="nivel-badge alto">🔴 Urgente</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd6" data-cat="construccion">
+      <div class="tip-card nivel-medio reveal rd6" data-cat="construccion">
         <div class="tip-icon">🏠</div>
         <div class="tip-body">
           <div class="tip-title">Humedad en pared baja</div>
           <p class="tip-text">Sal blanca cerca del piso indica <strong>humedad subiendo por capilaridad</strong>. Pintar encima es un parche que dura poco.</p>
-          <span class="tip-badge">🏠 Construcción</span>
+          <div class="tip-meta"><span class="tip-badge">🏠 Construcción</span><span class="nivel-badge medio">🟡 Pronto</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd1" data-cat="ahorro">
+      <div class="tip-card nivel-bajo reveal rd1" data-cat="ahorro">
         <div class="tip-icon">💡</div>
         <div class="tip-body">
           <div class="tip-title">El más caro es el calentador</div>
           <p class="tip-text">Un calentador eléctrico encendido todo el día puede representar <strong>más del 30% de la factura</strong>. Un temporizador lo cambia todo.</p>
-          <span class="tip-badge">💸 Ahorro</span>
+          <div class="tip-meta"><span class="tip-badge">💸 Ahorro</span><span class="nivel-badge bajo">🟢 Mejora</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd2" data-cat="frio">
+      <div class="tip-card nivel-bajo reveal rd2" data-cat="frio">
         <div class="tip-icon">🌡️</div>
         <div class="tip-body">
           <div class="tip-title">24–25°C es la temperatura ideal</div>
-          <p class="tip-text">En Cuba no necesitas poner el AC al mínimo. <strong>24–25°C enfría igual</strong> y consume bastante menos. Pruébalo una semana.</p>
-          <span class="tip-badge">❄️ Frío</span>
+          <p class="tip-text">En Cuba no necesitas poner el AC al mínimo. <strong>24–25°C enfría igual</strong> y consume menos. Pruébalo una semana.</p>
+          <div class="tip-meta"><span class="tip-badge">❄️ Frío</span><span class="nivel-badge bajo">🟢 Mejora</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd3" data-cat="electricidad">
+      <div class="tip-card nivel-alto reveal rd3" data-cat="electricidad">
         <div class="tip-icon">🔥</div>
         <div class="tip-body">
           <div class="tip-title">El ladrón no es para todo</div>
           <p class="tip-text">Nevera, AC o lavadora <strong>nunca en el mismo ladrón</strong>. Son equipos de alto consumo que necesitan toma directa.</p>
-          <span class="tip-badge">⚡ Electricidad</span>
+          <div class="tip-meta"><span class="tip-badge">⚡ Electricidad</span><span class="nivel-badge alto">🔴 Urgente</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd4" data-cat="plomeria">
+      <div class="tip-card nivel-medio reveal rd4" data-cat="plomeria">
         <div class="tip-icon">🚰</div>
         <div class="tip-body">
           <div class="tip-title">Alta presión daña más de lo que ayuda</div>
           <p class="tip-text">La sobrepresión <strong>revienta empaques y llaves</strong> más rápido. Si tienes bomba, regula la presión de salida.</p>
-          <span class="tip-badge">🚿 Plomería</span>
+          <div class="tip-meta"><span class="tip-badge">🚿 Plomería</span><span class="nivel-badge medio">🟡 Pronto</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd5" data-cat="construccion">
+      <div class="tip-card nivel-alto reveal rd5" data-cat="construccion">
         <div class="tip-icon">🧱</div>
         <div class="tip-body">
-          <div class="tip-title">Grieta ≠ grieta</div>
+          <div class="tip-title">Grieta horizontal: ojo</div>
           <p class="tip-text">Una grieta horizontal en pared exterior puede indicar <strong>movimiento estructural</strong>. No es como las verticales superficiales.</p>
-          <span class="tip-badge">🏠 Construcción</span>
+          <div class="tip-meta"><span class="tip-badge">🏠 Construcción</span><span class="nivel-badge alto">🔴 Urgente</span></div>
         </div>
       </div>
 
-      <div class="tip-card reveal rd6" data-cat="ahorro">
+      <div class="tip-card nivel-bajo reveal rd6" data-cat="ahorro">
         <div class="tip-icon">⏱️</div>
         <div class="tip-body">
           <div class="tip-title">Mide antes de cambiar</div>
           <p class="tip-text">Antes de comprar un equipo nuevo, <strong>verifica si el problema es el equipo</strong> o la instalación. A veces es un cable, no el aparato.</p>
-          <span class="tip-badge">💸 Ahorro</span>
+          <div class="tip-meta"><span class="tip-badge">💸 Ahorro</span><span class="nivel-badge bajo">🟢 Mejora</span></div>
         </div>
       </div>
 
     </div>
-  </div>
+  </section>
 
-  <!-- ── PREGUNTAS FRECUENTES ── -->
-  <div class="section-gap reveal">
-    <div class="section-hdr">
-      <h2 class="section-title">Preguntas frecuentes</h2>
-      <p class="section-sub">Las dudas que más nos llegan</p>
+  <!-- FAQ -->
+  <section class="sec reveal">
+    <div class="sec-hdr">
+      <div class="sec-title">Preguntas frecuentes</div>
+      <div class="sec-big">Las dudas que más nos llegan</div>
     </div>
-    <div class="faq-list" id="faqList">
+    <div class="faq-list">
 
       <div class="faq-item">
         <button class="faq-btn" onclick="toggleFaq(this)">
-          <span class="faq-q">¿Por qué se va la luz solo en mi habitación y no en el resto?</span>
+          <span class="faq-q">¿Por qué se va la luz solo en mi habitación?</span>
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-body">Probablemente tienes un breaker individual para esa habitación que saltó, o un fusible quemado. Revisa el tablero de breakers: si uno está en posición intermedia o completamente abajo, ese es. Resétalo una vez. Si vuelve a saltar, hay sobrecarga o cortocircuito en esa línea — ahí sí llama a un técnico.</div>
+        <div class="faq-body">Probablemente tienes un breaker individual para esa habitación que saltó. Revisa el tablero: si uno está en posición intermedia o abajo, ese es. Resétalo una vez. Si vuelve a saltar, hay sobrecarga o cortocircuito en esa línea — ahí sí llama a un técnico.</div>
       </div>
 
       <div class="faq-item">
         <button class="faq-btn" onclick="toggleFaq(this)">
-          <span class="faq-q">¿Cuánto dura normalmente un compresor de nevera en Cuba?</span>
+          <span class="faq-q">¿Cuánto dura un compresor de nevera en Cuba?</span>
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-body">Depende mucho del uso y el mantenimiento. En condiciones normales, <strong>8 a 15 años</strong>. Lo que más acorta la vida: sobrecalentamiento por falta de ventilación, variaciones de voltaje y el compresor que no para nunca (burlete malo, mucho calor ambiental). Un estabilizador de voltaje puede marcar la diferencia.</div>
+        <div class="faq-body">En condiciones normales, <strong>8 a 15 años</strong>. Lo que más acorta la vida: sobrecalentamiento por falta de ventilación, variaciones de voltaje y el compresor que no para (burlete malo, mucho calor ambiental). Un estabilizador de voltaje puede marcar la diferencia.</div>
       </div>
 
       <div class="faq-item">
@@ -561,35 +698,35 @@ button{font-family:var(--f);cursor:pointer}
           <span class="faq-q">¿Cómo sé si una gotera viene de arriba o de la pared?</span>
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-body">Si la mancha aparece después de la lluvia: es de arriba (losa o terraza). Si la mancha está siempre húmeda aunque no llueva: viene de una tubería rota o de humedad ascendente. En el segundo caso el origen suele estar varios metros del punto visible — el agua viaja por el hierro o por el interior de la losa.</div>
+        <div class="faq-body">Si la mancha aparece después de la lluvia: es de arriba (losa o terraza). Si está siempre húmeda aunque no llueva: viene de una tubería rota o humedad ascendente. En el segundo caso el origen puede estar varios metros del punto visible — el agua viaja por el hierro o el interior de la losa.</div>
       </div>
 
       <div class="faq-item">
         <button class="faq-btn" onclick="toggleFaq(this)">
-          <span class="faq-q">¿El split tiene que limpiar un técnico o lo puedo hacer yo?</span>
+          <span class="faq-q">¿El split lo limpio yo o tiene que ser un técnico?</span>
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-body">Los <strong>filtros del evaporador interior</strong> los puedes limpiar tú mismo: se sacan, se lavan con agua, se secan y se vuelven a poner. Hazlo cada 4–6 semanas. El <strong>condensador exterior y el drenaje</strong> sí conviene que los limpie un técnico cada 6–12 meses. El gas y las bobinas: solo técnico certificado.</div>
+        <div class="faq-body">Los <strong>filtros del evaporador interior</strong> los puedes limpiar tú mismo: se sacan, se lavan con agua, se secan y se vuelven a poner. Hazlo cada 4–6 semanas. El <strong>condensador exterior y el drenaje</strong> sí conviene que los limpie un técnico cada 6–12 meses. Gas y bobinas: solo técnico certificado.</div>
       </div>
 
       <div class="faq-item">
         <button class="faq-btn" onclick="toggleFaq(this)">
-          <span class="faq-q">¿Vale la pena reparar un electrodoméstico viejo o comprar uno nuevo?</span>
+          <span class="faq-q">¿Vale la pena reparar o comprar uno nuevo?</span>
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-body">Regla general: si la reparación cuesta <strong>más del 50% del valor de uno nuevo</strong>, piénsalo dos veces. Pero en Cuba hay que sumar la disponibilidad: si conseguir el equipo nuevo es difícil o caro, reparar bien puede ser la única opción viable. Siempre pide al técnico que te explique qué falló y por qué, para evaluar si es una falla puntual o un equipo al final de su vida útil.</div>
+        <div class="faq-body">Regla general: si la reparación cuesta <strong>más del 50% del valor de uno nuevo</strong>, piénsalo dos veces. En Cuba hay que sumar la disponibilidad: si conseguir el equipo es difícil o caro, reparar bien puede ser la única opción viable. Pide al técnico que te explique qué falló y por qué.</div>
       </div>
 
     </div>
-  </div>
+  </section>
 
-  <!-- ── CHECKLIST ── -->
-  <div class="section-gap reveal">
-    <div class="section-hdr">
-      <h2 class="section-title">Antes de gastar</h2>
-      <p class="section-sub">Cinco preguntas que te pueden ahorrar mucho</p>
+  <!-- CHECKLIST -->
+  <section class="sec reveal">
+    <div class="sec-hdr">
+      <div class="sec-title">Antes de gastar</div>
+      <div class="sec-big">Cinco preguntas que te pueden ahorrar mucho</div>
     </div>
-    <div class="checklist-card reveal rd1">
+    <div class="checklist-card">
       <div class="checklist-head">
         <div class="checklist-head-title">Checklist <span>del que piensa antes</span></div>
         <span class="checklist-badge">5 puntos</span>
@@ -617,18 +754,18 @@ button{font-family:var(--f);cursor:pointer}
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- ── CTA ── -->
+  <!-- CTA -->
   <div class="cta-block reveal rd1">
     <div class="cta-inner">
       <p class="cta-eyebrow">¿Tienes una duda concreta?</p>
       <h3 class="cta-title">Te orientamos<br><em>sin vueltas.</em></h3>
+      <p class="cta-sub">Dinos qué pasa y te decimos por dónde empezar.</p>
       <a href="#" class="btn-wa" id="btnWA">
-        <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.057-.002-.115-.003-.172-.003-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.057-.002-.115-.003-.172-.003-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
         Escribir al WhatsApp
       </a>
-      <p class="cta-note">Dinos qué pasa y te decimos por dónde empezar.</p>
     </div>
   </div>
 
@@ -637,125 +774,102 @@ button{font-family:var(--f);cursor:pointer}
 <footer class="site-footer">
   <span class="footer-logo">db</span>
   <span class="footer-text">Zona db · Contenido orientativo del hogar</span>
-  <span class="footer-tag">dbarrio</span>
+  <div class="footer-links">
+    <a href="privacidad.html">Privacidad</a>
+    <a href="terminos.html">Términos</a>
+  </div>
 </footer>
 
 <script>
 const WA_NUM  = '34627493593';
 const WA_TEXT = 'Hola, vengo de *Zona db* y tengo una duda sobre mi casa.';
 
-// ── WA CTA ──
 (function(){
-  const btn = document.getElementById('btnWA');
-  if (!btn) return;
-  btn.href   = 'https://wa.me/' + WA_NUM.replace(/\D/g,'') + '?text=' + encodeURIComponent(WA_TEXT);
-  btn.target = '_blank';
-  btn.rel    = 'noopener noreferrer';
+  const btn=document.getElementById('btnWA');
+  if(!btn) return;
+  btn.href='https://wa.me/'+WA_NUM.replace(/\D/g,'')+
+    '?text='+encodeURIComponent(WA_TEXT);
+  btn.target='_blank';btn.rel='noopener noreferrer';
 })();
 
-// ── CARRUSEL ──
+// CARRUSEL
 (function(){
   const slides  = Array.from(document.querySelectorAll('.c-slide'));
-  const dotsWrap = document.getElementById('carouselDots');
-  const prevBtn  = document.getElementById('cPrev');
-  const nextBtn  = document.getElementById('cNext');
-  const counter  = document.getElementById('carouselCount');
-  const track    = document.getElementById('carouselSlides');
-  const total    = slides.length;
-  let current = 0, timer = null, paused = false, resumeTO = null;
-  const INTERVAL = 7000, PAUSE_MS = 14000;
+  const dotsW   = document.getElementById('carouselDots');
+  const prevBtn = document.getElementById('cPrev');
+  const nextBtn = document.getElementById('cNext');
+  const counter = document.getElementById('carouselCount');
+  const track   = document.getElementById('carouselSlides');
+  const total   = slides.length;
+  let cur=0, timer=null, paused=false, resumeTO=null;
+  const IV=7000, PM=14000;
 
-  // Crear dots dinámicamente
-  slides.forEach(function(_, i) {
-    const d = document.createElement('button');
-    d.className   = 'c-dot' + (i === 0 ? ' active' : '');
-    d.dataset.i   = i;
-    d.setAttribute('aria-label', 'Slide ' + (i+1));
-    d.addEventListener('click', function() { userAction(); goTo(i); });
-    dotsWrap.appendChild(d);
+  slides.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.className='c-dot'+(i===0?' active':'');
+    d.dataset.i=i;
+    d.setAttribute('aria-label','Slide '+(i+1));
+    d.addEventListener('click',()=>{ userAct(); goTo(i); });
+    dotsW.appendChild(d);
   });
+  const dots=dotsW.querySelectorAll('.c-dot');
 
-  const dots = dotsWrap.querySelectorAll('.c-dot');
-
-  function goTo(idx) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = (idx + total) % total;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-    counter.textContent = (current + 1) + '/' + total;
+  function goTo(idx){
+    slides[cur].classList.remove('active');dots[cur].classList.remove('active');
+    cur=(idx+total)%total;
+    slides[cur].classList.add('active');dots[cur].classList.add('active');
+    counter.textContent=(cur+1)+'/'+total;
   }
+  function startAuto(){ clearInterval(timer); timer=setInterval(()=>{ if(!paused) goTo(cur+1); },IV); }
+  function userAct(){ paused=true; clearTimeout(resumeTO); resumeTO=setTimeout(()=>paused=false,PM); }
 
-  function startAuto() {
-    clearInterval(timer);
-    timer = setInterval(function() { if (!paused) goTo(current + 1); }, INTERVAL);
-  }
+  prevBtn.addEventListener('click',()=>{ userAct(); goTo(cur-1); });
+  nextBtn.addEventListener('click',()=>{ userAct(); goTo(cur+1); });
 
-  function userAction() {
-    paused = true;
-    clearTimeout(resumeTO);
-    resumeTO = setTimeout(function() { paused = false; }, PAUSE_MS);
-  }
-
-  prevBtn.addEventListener('click', function() { userAction(); goTo(current - 1); });
-  nextBtn.addEventListener('click', function() { userAction(); goTo(current + 1); });
-
-  // Swipe táctil
-  let startX = 0;
-  track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend', function(e) {
-    const dx = startX - e.changedTouches[0].clientX;
-    if (Math.abs(dx) > 40) { userAction(); goTo(dx > 0 ? current + 1 : current - 1); }
-  }, { passive: true });
-
+  let sX=0;
+  track.addEventListener('touchstart',e=>{sX=e.touches[0].clientX},{passive:true});
+  track.addEventListener('touchend',e=>{
+    const dx=sX-e.changedTouches[0].clientX;
+    if(Math.abs(dx)>40){ userAct(); goTo(dx>0?cur+1:cur-1); }
+  },{passive:true});
   startAuto();
 })();
 
-// ── FILTROS DE TIPS ──
+// FILTROS
 (function(){
   const btns  = document.querySelectorAll('#catFilters .cat-btn');
   const cards = document.querySelectorAll('#tipsGrid .tip-card');
-
-  btns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      btns.forEach(function(b) { b.classList.remove('active'); });
+  btns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      btns.forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      const cat = btn.dataset.cat;
-      cards.forEach(function(card) {
-        if (cat === 'all' || card.dataset.cat === cat) {
-          card.style.display = '';
-          setTimeout(function() { card.classList.add('visible'); }, 50);
-        } else {
-          card.style.display = 'none';
-        }
+      const cat=btn.dataset.cat;
+      cards.forEach(card=>{
+        if(cat==='all'||card.dataset.cat===cat){
+          card.style.display='';
+          setTimeout(()=>card.classList.add('visible'),30);
+        } else { card.style.display='none'; }
       });
     });
   });
 })();
 
-// ── ACORDEÓN FAQ ──
-function toggleFaq(btn) {
-  const item = btn.closest('.faq-item');
-  const wasOpen = item.classList.contains('open');
-  // Cerrar todos
-  document.querySelectorAll('.faq-item.open').forEach(function(el) { el.classList.remove('open'); });
-  // Abrir el clickeado si no estaba abierto
-  if (!wasOpen) item.classList.add('open');
+// FAQ
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const was=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));
+  if(!was) item.classList.add('open');
 }
 
-// ── REVEAL SCROLL ──
+// REVEAL
 (function(){
-  const els = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(function(el) { el.classList.add('visible'); });
-    return;
-  }
-  const io = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
-  els.forEach(function(el) { io.observe(el); });
+  const els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){ els.forEach(el=>el.classList.add('visible')); return; }
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  },{threshold:.06,rootMargin:'0px 0px -20px 0px'});
+  els.forEach(el=>io.observe(el));
 })();
 </script>
 </body>
