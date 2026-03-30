@@ -298,7 +298,13 @@
           <option value="pendiente">Pendientes</option>
           <option value="baja">Baja</option>
         </select>
-        <input id="f-so-zona" type="text" placeholder="Zona..." oninput="filtrarSocios()"/>
+        <select id="f-so-zona" onchange="filtrarSocios()">
+          <option value="">Todas las zonas</option>
+          <option value="oeste">Oeste (Playa, La Lisa, Marianao)</option>
+          <option value="centro">Centro (Plaza, C.Habana, Vedado, Cerro, 10 de Oct.)</option>
+          <option value="este">Este (Regla, H.del Este, Guanabacoa, S.M.Padrón)</option>
+          <option value="sur">Sur (Boyeros, Arroyo Naranjo, Cotorro)</option>
+        </select>
       </div>
       <div id="lista-so"><div class="loading">Cargando...</div></div>
     </div>
@@ -379,7 +385,15 @@
   <div class="mbody">
     <div class="fg"><label>Nombre</label><input id="enc-nombre" type="text" placeholder="Nombre completo"/></div>
     <div class="fg"><label>Teléfono</label><input id="enc-tel" type="tel" placeholder="Número WhatsApp"/></div>
-    <div class="fg"><label>Zona</label><input id="enc-zona" type="text" placeholder="Ej: norte, centro, sur"/></div>
+    <div class="fg"><label>Zona que cubre</label>
+      <select id="enc-zona">
+        <option value="">-- Seleccionar zona --</option>
+        <option value="oeste">Oeste — Playa, La Lisa, Marianao</option>
+        <option value="centro">Centro — Plaza, C.Habana, La Habana Vieja, Diez de Octubre, Cerro</option>
+        <option value="este">Este — Regla, La Habana del Este, Guanabacoa, San Miguel del Padrón</option>
+        <option value="sur">Sur — Boyeros, Arroyo Naranjo, Cotorro</option>
+      </select>
+    </div>
     <div style="background:var(--blue-bg);border:1px solid rgba(77,168,218,.25);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--blue);font-weight:500;line-height:1.6">ℹ️ El encargado debe registrarse con su cuenta en la plataforma. Asegúrate de crear el usuario en Supabase Auth con el mismo email.</div>
     <div class="err-box" id="err-enc"></div>
     <button class="btn btn-y btn-full" id="btn-enc" onclick="doCrearEncargado()">Crear encargado</button>
@@ -390,6 +404,22 @@
 <script>
 const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+
+// Mapa municipios → zonas (La Habana)
+const MUNICIPIO_ZONA = {
+  'Playa':'oeste','La Lisa':'oeste','Marianao':'oeste',
+  'Plaza de la Revolución':'centro','Centro Habana':'centro',
+  'La Habana Vieja':'centro','Diez de Octubre':'centro','Cerro':'centro',
+  'Regla':'este','La Habana del Este':'este',
+  'Guanabacoa':'este','San Miguel del Padrón':'este',
+  'Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur',
+};
+const ZONA_LABEL = {
+  oeste:  'Oeste',
+  centro: 'Centro',
+  este:   'Este',
+  sur:    'Sur',
+};
 const sb = supabase.createClient(SURL, SKEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: window.localStorage }
 });
@@ -587,8 +617,10 @@ function buildCardOp(s) {
   const cierreFlag = cierreReportado ? `<div style="background:var(--ok-bg);border:1px solid rgba(78,203,160,.25);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:#1E7A5A">✅ Cierre reportado por el técnico${s.monto_socio != null ? `<div style="margin-top:4px">Monto: ${fmtM(s.monto_socio)}</div>` : ''}${s.garantia_dias != null ? `<div>Garantía: ${s.garantia_dias} días</div>` : ''}</div>` : '';
   const rechazoFlag = rechazoSocio ? `<div style="background:var(--err-bg);border:1px solid rgba(224,92,92,.22);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:12px;font-weight:700;color:var(--err)">❌ Rechazada por el técnico<div style="margin-top:6px;font-weight:600">${esc(s.motivo_rechazo_socio || s.nota_socio || 'Sin motivo')}</div></div>` : '';
   // Hora preferida badge
-  const horaFlag = s.hora_preferida ? `<span class="hora-badge">🕐 ${esc(s.hora_preferida)}</span>` : '';
-  let asignarHTML = '';
+  // Zona badge legible
+  const zonaLabel = s.zona ? (ZONA_LABEL[s.zona] || s.zona) : null;
+  const horaFlag  = s.hora_preferida ? `<span class="hora-badge">🕐 ${esc(s.hora_preferida)}</span>` : '';
+  const zonaFlag  = zonaLabel ? `<span style="font-family:var(--fd);font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;background:rgba(77,168,218,.12);color:#2778A0;border-radius:4px;border:1px solid rgba(77,168,218,.2)">${esc(zonaLabel)}</span>` : '';
   if (s.estado === 'pendiente' || s.estado === 'asignada') {
     const opts = Object.values(sociosMap).filter(sc => sc && sc.nombre).map(sc => `<option value="${sc.id}" ${String(sc.id) === String(s.socio_asignado) ? 'selected' : ''}>${esc(sc.nombre)}</option>`).join('');
     const tL = s.estado === 'pendiente' ? 'Asignar técnico' : 'Reasignar técnico';
@@ -600,7 +632,7 @@ function buildCardOp(s) {
   const btnLiberar = (s.estado === 'asignada' && rechazoSocio) ? `<button class="btn btn-g" onclick="liberarPorRechazo(${s.id})">Liberar / volver a pendiente</button>` : '';
   const btnRechazar = `<button class="btn btn-r" onclick="openRechazar(${s.id})">Rechazar</button>`;
   const btnWASocio = socioTel ? `<button class="btn btn-wa" onclick="waSocioAsignado(${s.id})">WA técnico</button>` : '';
-  return `<div class="card" id="card-${s.id}"><div class="card-hdr" onclick="toggleCard(this)"><div class="card-hdr-left"><div class="card-meta"><span class="card-code">${esc(dbc(s.id))}</span><span class="chip ${chipClass}">${esc(chipText)}</span>${horaFlag}</div><span class="card-name">${esc(s.cliente)}</span><span class="card-detail">${esc(s.municipio || '')} · ${esc(s.servicio || '')}</span></div><svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="card-body"><div class="info-grid"><div class="info-item"><span class="info-label">Fecha</span><span class="info-val">${fmt(s.fecha_ts)}</span></div><div class="info-item"><span class="info-label">Servicio</span><span class="info-val">${esc(s.servicio || '—')}</span></div><div class="info-item info-full"><span class="info-label">Teléfono</span><a href="tel:${esc(telLimpio)}" class="call-link">${esc(s.telefono || '—')}</a></div>${s.hora_preferida ? `<div class="info-item info-full"><span class="info-label">Hora preferida</span><span class="info-val" style="font-weight:700;color:var(--blue)">🕐 ${esc(s.hora_preferida)}</span></div>` : ''}${socioNom ? `<div class="info-item"><span class="info-label">Técnico</span><span class="info-val">${esc(socioNom)}</span></div>` : ''}</div>${cierreFlag}${rechazoFlag}${asignarHTML}<div class="actions-row" style="margin-top:10px;flex-wrap:wrap">${btnCompletar}${btnLiberar}${btnWASocio}${btnRechazar}</div></div></div>`;
+  return `<div class="card" id="card-${s.id}"><div class="card-hdr" onclick="toggleCard(this)"><div class="card-hdr-left"><div class="card-meta"><span class="card-code">${esc(dbc(s.id))}</span><span class="chip ${chipClass}">${esc(chipText)}</span>${zonaFlag}${horaFlag}</div><span class="card-name">${esc(s.cliente)}</span><span class="card-detail">${esc(s.municipio || '')} · ${esc(s.servicio || '')}</span></div><svg class="card-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="card-body"><div class="info-grid"><div class="info-item"><span class="info-label">Municipio</span><span class="info-val">${esc(s.municipio || '—')}</span></div><div class="info-item"><span class="info-label">Servicio</span><span class="info-val">${esc(s.servicio || '—')}</span></div><div class="info-item"><span class="info-label">Fecha</span><span class="info-val">${fmt(s.fecha_ts)}</span></div><div class="info-item"><span class="info-label">Zona</span><span class="info-val">${zonaLabel ? esc(zonaLabel) : '—'}</span></div><div class="info-item info-full"><span class="info-label">Teléfono</span><a href="tel:${esc(telLimpio)}" class="call-link">${esc(s.telefono || '—')}</a></div>${s.hora_preferida ? `<div class="info-item info-full"><span class="info-label">Hora preferida</span><span class="info-val" style="font-weight:700;color:var(--blue)">🕐 ${esc(s.hora_preferida)}</span></div>` : ''}${socioNom ? `<div class="info-item"><span class="info-label">Técnico</span><span class="info-val">${esc(socioNom)}</span></div>` : ''}</div>${cierreFlag}${rechazoFlag}${asignarHTML}<div class="actions-row" style="margin-top:10px;flex-wrap:wrap">${btnCompletar}${btnLiberar}${btnWASocio}${btnRechazar}</div></div></div>`;
 }
 
 // ── WA al cliente al asignar técnico ──
@@ -1087,7 +1119,10 @@ function buildEncargadoCard(e) {
 }
 function openCrearEncargado() { ['enc-nombre','enc-tel','enc-zona'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; }); const err = document.getElementById('err-enc'); if (err) { err.textContent = ''; err.classList.remove('v'); } const btn = document.getElementById('btn-enc'); if (btn) { btn.disabled = false; btn.textContent = 'Crear encargado'; } openModal('enc'); }
 async function doCrearEncargado() {
-  const nombre = document.getElementById('enc-nombre')?.value.trim(); const tel = document.getElementById('enc-tel')?.value.trim(); const zona = document.getElementById('enc-zona')?.value.trim().toLowerCase();
+  const nombre = document.getElementById('enc-nombre')?.value.trim();
+  const tel    = document.getElementById('enc-tel')?.value.trim();
+  // El select devuelve el value (oeste/centro/este/sur), no el texto
+  const zona   = document.getElementById('enc-zona')?.value.trim().toLowerCase();
   const err = document.getElementById('err-enc'); const btn = document.getElementById('btn-enc');
   const showErr = (msg) => { if(err){err.textContent=msg;err.classList.add('v');} if(btn){btn.disabled=false;btn.textContent='Crear encargado';} };
   if (!nombre) return showErr('El nombre es obligatorio.');
