@@ -411,7 +411,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
       Solicitar servicio
     </button>
-    <button class="btn btn-outline" onclick="scrollTo('.section-como')">¿Cómo funciona?</button>
+    <button class="btn btn-outline" onclick="abrirComoFunciona()">¿Cómo funciona?</button>
   </div>
 
   <!-- Tracker inline -->
@@ -759,6 +759,11 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="fg"><label>Correo electrónico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="eu-email">Correo inválido.</div></div>
     <div class="fg"><label>Contraseña</label><input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/><div class="fe" id="eu-pass">Mínimo 6 caracteres.</div></div>
     <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisaremos por WhatsApp cuando puedas operar.</p>
+    <div class="cb" id="cb-uni">
+      <input type="checkbox" id="u-cp"/>
+      <span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span>
+    </div>
+    <div class="fe" id="eu-cp">Debes aceptar Términos y Privacidad.</div>
     <div class="ok-box" id="ok-uni">✅ Cuenta creada. Tu solicitud está en revisión — te contactaremos por WhatsApp.</div>
     <div class="err-box" id="err-uni"></div>
     <button class="btn btn-k btn-full" id="btn-uni" onclick="envUni()">Crear cuenta</button>
@@ -812,6 +817,10 @@ function sOK(id){const e=document.getElementById(id);if(e)e.classList.add('v')}
 function setL(id,on,txt){const e=document.getElementById(id);if(!e)return;if(on){e._t=e._t||e.innerHTML;e.disabled=true;e.innerHTML=`<span class="sp"></span>${txt||'Enviando...'}`;}else{e.disabled=false;if(e._t)e.innerHTML=e._t;}}
 function vt(num){const n=String(num||'').replace(/[\s\-\(\)]/g,'');return n.length>=7&&/^\+?\d+$/.test(n)}
 function toggleAcord(id){document.getElementById(id)?.classList.toggle('open')}
+function abrirComoFunciona(){
+  const el=document.getElementById('ac-como');
+  if(el){el.classList.add('open');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),80);}
+}
 function scrollTo(sel){const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
 
 function normalizarTelefono(codeId,numId,errId){
@@ -1009,7 +1018,7 @@ async function envCal(){
 
 // ── ÚNETE ──
 async function envUni(){
-  cER('err-uni');['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(id=>cE(id));
+  cER('err-uni');['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass','eu-cp'].forEach(id=>cE(id));
   const nom=document.getElementById('u-nom').value.trim();
   const telData=normalizarTelefono('u-code','u-tel','eu-tel');
   const esp=document.getElementById('u-esp').value;
@@ -1017,6 +1026,7 @@ async function envUni(){
   const municipio=document.getElementById('u-zona').value;
   const email=document.getElementById('u-email').value.trim();
   const pass=document.getElementById('u-pass').value;
+  const cp=!!document.getElementById('u-cp')?.checked;
   const zona=MUNICIPIO_ZONA[municipio]||'';
   let ok=true;
   if(!nom){sE('eu-nom');ok=false;}
@@ -1026,6 +1036,7 @@ async function envUni(){
   if(!municipio){sE('eu-zona','Selecciona tu municipio.');ok=false;}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('eu-email');ok=false;}
   if(pass.length<6){sE('eu-pass');ok=false;}
+  if(!cp){sE('eu-cp','Debes aceptar Términos y Privacidad.');ok=false;}
   if(!ok) return;
   setL('btn-uni',true,'Creando cuenta...');
   try{
@@ -1101,6 +1112,7 @@ document.querySelectorAll('.cb').forEach(row=>{
 });
 document.getElementById('s-cp')?.addEventListener('change',()=>cE('es-cp'));
 document.getElementById('g-cp')?.addEventListener('change',()=>cE('eg-cp'));
+document.getElementById('u-cp')?.addEventListener('change',()=>cE('eu-cp'));
 </script>
 
 <script>
