@@ -202,29 +202,48 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .zona-muni{font-size:12px;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
 .zona-muni::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(245,193,22,.4);flex-shrink:0}
 
-/* ── TESTIMONIOS ── */
-.testimonios{display:flex;flex-direction:column;gap:12px;margin-top:28px}
-.test-card{
-  background:var(--card);border:1.5px solid var(--line);
-  border-radius:var(--r);padding:18px;
-  box-shadow:var(--sh-sm);position:relative;
+/* ── ACORDEÓN ── */
+.acordeon{display:flex;flex-direction:column;gap:8px}
+.acord-item{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm)}
+.acord-hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:background .15s}
+.acord-hdr:hover{background:rgba(15,15,26,.02)}
+.acord-title{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink)}
+.acord-chev{flex-shrink:0;color:var(--g3);transition:transform .22s var(--ease)}
+.acord-item.open .acord-chev{transform:rotate(180deg);color:var(--y)}
+.acord-body{display:none;padding:0 16px 16px}
+.acord-item.open .acord-body{display:block}
+
+/* Steps mini */
+.steps-mini{display:flex;flex-direction:column;gap:12px}
+.step-mini{display:flex;gap:12px;align-items:flex-start;font-size:13px;color:var(--g1);line-height:1.55}
+.step-num-mini{width:26px;height:26px;border-radius:50%;background:var(--y);color:#000;font-family:var(--fd);font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* Municipios en acordeón */
+.mun-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.zona-group{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px}
+.zona-name{font-family:var(--fd);font-size:13px;font-weight:900;color:var(--yd);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.zona-munis{display:flex;flex-direction:column;gap:3px}
+.zona-muni{font-size:12px;color:var(--g1);display:flex;align-items:center;gap:5px}
+.zona-muni::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--g3);flex-shrink:0}
+
+/* ── CARRUSEL HORIZONTAL ── */
+.testimonios-scroll{
+  display:flex;gap:12px;overflow-x:auto;
+  padding-right:20px;padding-bottom:4px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
 }
-.test-card::before{content:'"';position:absolute;top:10px;right:16px;font-family:var(--fd);font-size:60px;font-weight:900;color:var(--y);opacity:.15;line-height:1}
-.test-stars{display:flex;gap:3px;margin-bottom:10px}
-.test-star{font-size:14px;color:var(--y)}
-.test-text{font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:12px;font-style:italic}
+.testimonios-scroll::-webkit-scrollbar{display:none}
+.testimonios-scroll .test-card{
+  flex:0 0 280px;background:var(--card);
+  border:1.5px solid var(--line);border-radius:var(--r);
+  padding:16px;box-shadow:var(--sh-sm);
+}
+.test-stars{font-size:13px;margin-bottom:8px}
+.test-text{font-size:13px;color:var(--ink);line-height:1.55;margin-bottom:12px;font-style:italic}
 .test-author{display:flex;align-items:center;gap:10px}
-.test-avatar{width:36px;height:36px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:16px;font-weight:900;color:var(--y);flex-shrink:0}
+.test-avatar{width:32px;height:32px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:15px;font-weight:900;color:var(--y);flex-shrink:0}
 .test-name{font-size:13px;font-weight:700;color:var(--ink)}
 .test-location{font-size:11px;color:var(--g2)}
-.test-service{display:inline-flex;align-items:center;gap:4px;margin-top:4px;padding:2px 8px;background:var(--y-bg);border:1px solid var(--y-border);border-radius:20px;font-size:10px;font-weight:700;color:var(--yd)}
-
-/* ── PARA TÉCNICOS ── */
-.tecnico-benefits{display:flex;flex-direction:column;gap:14px;margin-top:24px}
-.benefit{display:flex;align-items:flex-start;gap:14px}
-.benefit-ico{width:44px;height:44px;border-radius:12px;background:rgba(245,193,22,.12);border:1px solid var(--y-border);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.benefit-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
-.benefit-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.55}
 
 /* ── BOTONES ── */
 .btn{
@@ -359,6 +378,8 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <span class="brand-name"><span class="d">d</span><span class="rest">barrio</span></span>
   </div>
   <nav class="nav">
+    <button class="nav-btn" onclick="open_('gar')">Garantía</button>
+    <button class="nav-btn" onclick="open_('cal')">Calificar</button>
     <button class="nav-btn" onclick="open_('acc')">Entrar</button>
     <button class="nav-btn cta" onclick="open_('sol')">Solicitar</button>
   </nav>
@@ -414,8 +435,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 <section class="section section-dark">
   <div class="sec-label">🔧 Lo que resolvemos</div>
   <h2 class="sec-title light">Selecciona<br><em style="font-style:normal;color:var(--y)">tu problema</em></h2>
-  <p class="sec-sub light">Técnicos especializados en cada área. Toca el servicio que necesitas y solicita directamente.</p>
-
   <div class="services-grid">
     <div class="srv-card" onclick="abrirConServicio('Electrodomésticos')"><span class="srv-icon">🧺</span><span class="srv-label">Electro-domésticos</span></div>
     <div class="srv-card" onclick="abrirConServicio('Plomería')"><span class="srv-icon">🚿</span><span class="srv-label">Plomería</span></div>
@@ -429,166 +448,88 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   </div>
 </section>
 
-<!-- ══ CÓMO FUNCIONA ══ -->
-<section class="section section-light section-como">
-  <div class="sec-label">✅ El proceso</div>
-  <h2 class="sec-title dark">Así de<br><em style="font-style:normal;color:var(--ink)">sencillo</em></h2>
+<!-- ══ INFO ACORDEÓN ══ -->
+<section class="section section-light" style="padding:28px 20px">
+  <div class="acordeon">
 
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div>
-        <div class="step-title">Dinos qué necesitas</div>
-        <div class="step-desc">Llena el formulario con tu municipio, tipo de servicio y tu número de WhatsApp. Solo toma un minuto.</div>
+    <div class="acord-item open" id="ac-como">
+      <div class="acord-hdr" onclick="toggleAcord('ac-como')">
+        <span class="acord-title">✅ ¿Cómo funciona?</span>
+        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="acord-body">
+        <div class="steps-mini">
+          <div class="step-mini"><span class="step-num-mini">1</span><div><strong>Cuéntanos qué necesitas</strong> — municipio, servicio y tu WhatsApp.</div></div>
+          <div class="step-mini"><span class="step-num-mini">2</span><div><strong>Recibe tu código <span class="code-b" style="font-size:12px">db-xxxx</span></strong> — para seguimiento y garantía.</div></div>
+          <div class="step-mini"><span class="step-num-mini">3</span><div><strong>Un técnico de tu zona</strong> te contacta por WhatsApp para coordinar.</div></div>
+          <div class="step-mini"><span class="step-num-mini">4</span><div><strong>Servicio con garantía</strong> — si algo falla, lo resolvemos sin costo.</div></div>
+        </div>
       </div>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div>
-        <div class="step-title">Recibe tu código <span class="code-b" style="font-size:13px">db-xxxx</span></div>
-        <div class="step-desc">Al registrar tu solicitud obtienes un código único para hacer seguimiento, reclamar garantía o calificar el servicio.</div>
+
+    <div class="acord-item" id="ac-cob">
+      <div class="acord-hdr" onclick="toggleAcord('ac-cob')">
+        <span class="acord-title">📍 Municipios con cobertura</span>
+        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="acord-body">
+        <div class="mun-grid">
+          <div class="zona-group"><div class="zona-name">Occidente</div><div class="zona-munis"><span class="zona-muni">Playa</span><span class="zona-muni">La Lisa</span><span class="zona-muni">Marianao</span></div></div>
+          <div class="zona-group"><div class="zona-name">Centro</div><div class="zona-munis"><span class="zona-muni">Plaza de la Rev.</span><span class="zona-muni">Centro Habana</span><span class="zona-muni">La Habana Vieja</span><span class="zona-muni">Diez de Octubre</span><span class="zona-muni">Cerro</span></div></div>
+          <div class="zona-group"><div class="zona-name">Oriente</div><div class="zona-munis"><span class="zona-muni">Regla</span><span class="zona-muni">H. del Este</span><span class="zona-muni">Guanabacoa</span><span class="zona-muni">S.M. del Padrón</span></div></div>
+          <div class="zona-group"><div class="zona-name">Sur</div><div class="zona-munis"><span class="zona-muni">Boyeros</span><span class="zona-muni">Arroyo Naranjo</span><span class="zona-muni">Cotorro</span></div></div>
+        </div>
       </div>
     </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div>
-        <div class="step-title">Te asignamos un técnico</div>
-        <div class="step-desc">Un técnico verificado de tu zona se pone en contacto contigo por WhatsApp para coordinar la visita.</div>
+
+    <div class="acord-item" id="ac-tec">
+      <div class="acord-hdr" onclick="toggleAcord('ac-tec')">
+        <span class="acord-title">👷 ¿Eres técnico? Trabaja con nosotros</span>
+        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="acord-body">
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+          <div style="font-size:13px;color:var(--g1);line-height:1.55">📱 Órdenes directo a tu teléfono por WhatsApp — sin llamadas ni papeleo.</div>
+          <div style="font-size:13px;color:var(--g1);line-height:1.55">💰 El cliente te paga a ti. Solo cobramos una pequeña comisión por la gestión.</div>
+          <div style="font-size:13px;color:var(--g1);line-height:1.55">🛡 Tu perfil muestra historial real y calificaciones — más confianza, más trabajo.</div>
+        </div>
+        <button class="btn btn-k btn-full" onclick="open_('uni')">Registrarme como técnico</button>
       </div>
     </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div>
-        <div class="step-title">Servicio con garantía</div>
-        <div class="step-desc">El trabajo incluye garantía. Si algo falla dentro del período, lo resolvemos sin costo adicional.</div>
-      </div>
-    </div>
+
   </div>
 </section>
 
-<!-- ══ COBERTURA ══ -->
-<section class="section section-dark">
-  <div class="sec-label">📍 Cobertura</div>
-  <h2 class="sec-title light">Toda<br><em style="font-style:normal;color:var(--y)">La Habana</em></h2>
-  <p class="sec-sub light">Cubrimos los 15 municipios de La Habana, organizados en 4 zonas de atención.</p>
-
-  <div class="mun-grid">
-    <div class="zona-group">
-      <div class="zona-name">Occidente</div>
-      <div class="zona-munis">
-        <span class="zona-muni">Playa</span>
-        <span class="zona-muni">La Lisa</span>
-        <span class="zona-muni">Marianao</span>
-      </div>
-    </div>
-    <div class="zona-group" style="grid-column:span 1">
-      <div class="zona-name">Centro</div>
-      <div class="zona-munis">
-        <span class="zona-muni">Plaza de la Rev.</span>
-        <span class="zona-muni">Centro Habana</span>
-        <span class="zona-muni">La Habana Vieja</span>
-        <span class="zona-muni">Diez de Octubre</span>
-        <span class="zona-muni">Cerro</span>
-      </div>
-    </div>
-    <div class="zona-group">
-      <div class="zona-name">Oriente</div>
-      <div class="zona-munis">
-        <span class="zona-muni">Regla</span>
-        <span class="zona-muni">H. del Este</span>
-        <span class="zona-muni">Guanabacoa</span>
-        <span class="zona-muni">S.M. del Padrón</span>
-      </div>
-    </div>
-    <div class="zona-group">
-      <div class="zona-name">Sur</div>
-      <div class="zona-munis">
-        <span class="zona-muni">Boyeros</span>
-        <span class="zona-muni">Arroyo Naranjo</span>
-        <span class="zona-muni">Cotorro</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ TESTIMONIOS ══ -->
-<section class="section section-light">
-  <div class="sec-label">⭐ Clientes</div>
-  <h2 class="sec-title dark">Lo que<br><em style="font-style:normal;color:var(--ink)">dicen</em></h2>
-
-  <div class="testimonios">
+<!-- ══ TESTIMONIOS (carrusel horizontal) ══ -->
+<section class="section section-mid" style="padding:28px 0 28px 20px">
+  <div class="sec-label" style="padding-right:20px">⭐ Lo que dicen</div>
+  <div class="testimonios-scroll">
     <div class="test-card">
       <div class="test-stars">⭐⭐⭐⭐⭐</div>
-      <p class="test-text">El técnico llegó el mismo día, resolvió el problema con el compresor y todo quedó funcionando perfecto. Muy profesional y rápido.</p>
+      <p class="test-text">El técnico llegó el mismo día y resolvió el compresor. Muy profesional y rápido.</p>
       <div class="test-author">
         <div class="test-avatar">M</div>
-        <div>
-          <div class="test-name">María L.</div>
-          <div class="test-location">Playa · La Habana</div>
-          <div class="test-service">Refrigeración</div>
-        </div>
+        <div><div class="test-name">María L.</div><div class="test-location">Playa · Refrigeración</div></div>
       </div>
     </div>
     <div class="test-card">
       <div class="test-stars">⭐⭐⭐⭐⭐</div>
-      <p class="test-text">Llevaba semanas sin agua por un problema en la tubería. En menos de 2 horas desde que solicité ya tenía el técnico aquí. Increíble.</p>
+      <p class="test-text">Llevaba semanas sin agua. En menos de 2 horas ya tenía el técnico aquí. Increíble.</p>
       <div class="test-author">
         <div class="test-avatar">R</div>
-        <div>
-          <div class="test-name">Reinaldo P.</div>
-          <div class="test-location">Diez de Octubre · La Habana</div>
-          <div class="test-service">Plomería</div>
-        </div>
+        <div><div class="test-name">Reinaldo P.</div><div class="test-location">Diez de Octubre · Plomería</div></div>
       </div>
     </div>
     <div class="test-card">
       <div class="test-stars">⭐⭐⭐⭐⭐</div>
-      <p class="test-text">Reparó la lavadora que tres técnicos habían dicho que no tenía solución. Además dejó garantía de 30 días. Lo recomiendo sin dudas.</p>
+      <p class="test-text">Reparó la lavadora que tres técnicos habían dicho que no tenía solución. Con garantía de 30 días.</p>
       <div class="test-author">
         <div class="test-avatar">Y</div>
-        <div>
-          <div class="test-name">Yolanda M.</div>
-          <div class="test-location">Centro Habana · La Habana</div>
-          <div class="test-service">Electrodomésticos</div>
-        </div>
+        <div><div class="test-name">Yolanda M.</div><div class="test-location">Centro Habana · Electrodomésticos</div></div>
       </div>
     </div>
+    <div style="width:4px;flex-shrink:0"></div>
   </div>
-</section>
-
-<!-- ══ PARA TÉCNICOS ══ -->
-<section class="section section-dark">
-  <div class="sec-label">👷 ¿Eres técnico?</div>
-  <h2 class="sec-title light">Trabaja con<br><em style="font-style:normal;color:var(--y)">nosotros</em></h2>
-  <p class="sec-sub light" style="margin-bottom:24px">Sin inversión. Sin papeleo. Tú pones la habilidad, nosotros ponemos el trabajo.</p>
-
-  <div class="tecnico-benefits">
-    <div class="benefit">
-      <div class="benefit-ico">📱</div>
-      <div><div class="benefit-title">Órdenes directo a tu teléfono</div><div class="benefit-desc">Recibes notificaciones por WhatsApp cuando hay trabajo en tu zona. Sin llamadas, sin intermediarios innecesarios.</div></div>
-    </div>
-    <div class="benefit">
-      <div class="benefit-ico">💰</div>
-      <div><div class="benefit-title">Tú cobras, nosotros cobramos poco</div><div class="benefit-desc">El cliente te paga a ti directamente. Nosotros tomamos solo una pequeña comisión por la gestión.</div></div>
-    </div>
-    <div class="benefit">
-      <div class="benefit-ico">🛡</div>
-      <div><div class="benefit-title">Técnico verificado y con respaldo</div><div class="benefit-desc">Tu perfil muestra tus trabajos y calificaciones. Los clientes confían más en técnicos con historial real.</div></div>
-    </div>
-  </div>
-
-  <button class="btn btn-y btn-full" style="margin-top:24px" onclick="open_('uni')">
-    Registrarme como técnico
-  </button>
-</section>
-
-<!-- ══ CTA FINAL ══ -->
-<section class="section section-mid" style="text-align:center;padding:48px 20px">
-  <h2 class="sec-title dark" style="margin-bottom:12px">¿Tienes algo<br>que reparar?</h2>
-  <p style="font-size:14px;color:var(--g1);margin-bottom:24px;line-height:1.6">No dejes que una falla pequeña se convierta en un problema grande.</p>
-  <button class="btn btn-k btn-full" style="max-width:320px;margin:0 auto" onclick="open_('sol')">
-    Solicitar ahora — es gratis
-  </button>
 </section>
 
 <!-- FOOTER -->
@@ -598,6 +539,8 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <a class="footer-link" href="zona-db.html">Zona dbarrio</a>
     <a class="footer-link" href="privacidad.html">Privacidad</a>
     <a class="footer-link" href="terminos.html">Términos</a>
+    <a class="footer-link" href="javascript:void(0)" onclick="open_('gar')">Reclamar garantía</a>
+    <a class="footer-link" href="javascript:void(0)" onclick="open_('cal')">Calificar servicio</a>
     <a class="footer-link" href="javascript:void(0)" onclick="open_('acc')">Acceso técnicos</a>
   </div>
   <div class="footer-copy">© 2025 dbarrio · La Habana · dbarrio-two.vercel.app</div>
@@ -863,6 +806,7 @@ function sER(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg
 function sOK(id){const e=document.getElementById(id);if(e)e.classList.add('v')}
 function setL(id,on,txt){const e=document.getElementById(id);if(!e)return;if(on){e._t=e._t||e.innerHTML;e.disabled=true;e.innerHTML=`<span class="sp"></span>${txt||'Enviando...'}`;}else{e.disabled=false;if(e._t)e.innerHTML=e._t;}}
 function vt(num){const n=String(num||'').replace(/[\s\-\(\)]/g,'');return n.length>=7&&/^\+?\d+$/.test(n)}
+function toggleAcord(id){document.getElementById(id)?.classList.toggle('open')}
 function scrollTo(sel){const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
 
 function normalizarTelefono(codeId,numId,errId){
