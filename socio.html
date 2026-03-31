@@ -3,772 +3,617 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover"/>
-<meta name="theme-color" content="#1A1A2E"/>
-<title>dbarrio &mdash; técnico</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet"/>
+<meta name="theme-color" content="#0F0F1A"/>
+<title>dbarrio — técnico</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --y:#F5C116;--yd:#C9980D;
-  --y-bg:rgba(245,193,22,.12);
-  --ink:#1A1A2E;--ink2:#24243C;--ink3:#454562;
-  --bg:#F4F2EE;--card:#FFFFFF;
-  --line:rgba(28,28,46,.12);
-  --g1:rgba(28,28,46,.55);--g2:rgba(28,28,46,.25);
-  --ok:#1E7A5A;--ok-bg:rgba(78,203,160,.12);
-  --err:#E05C5C;--err-bg:rgba(224,92,92,.12);
-  --wa:#25D366;--blue:#4DA8DA;--blue-bg:rgba(77,168,218,.12);
-  --r:16px;--rs:12px;
+  --y:#F5C116;--yd:#C9980D;--y-bg:rgba(245,193,22,.10);--y-border:rgba(245,193,22,.22);
+  --ink:#0F0F1A;--ink2:#1A1A2E;--ink3:#24243C;
+  --bg:#F2EFE9;--card:#FFFFFF;--card2:#F7F5F1;
+  --line:#E8E4DD;
+  --g1:#5A5A6E;--g2:#9A96A0;--g3:#C4C1BC;
+  --ok:#16A34A;--ok-bg:rgba(22,163,74,.10);--ok-border:rgba(22,163,74,.20);
+  --err:#DC2626;--err-bg:rgba(220,38,38,.09);--err-border:rgba(220,38,38,.18);
+  --warn:#D97706;--warn-bg:rgba(217,119,6,.09);--warn-border:rgba(217,119,6,.20);
+  --blue:#2563EB;--blue-bg:rgba(37,99,235,.09);--blue-border:rgba(37,99,235,.18);
   --f:'DM Sans',system-ui,sans-serif;
   --fd:'Barlow Condensed',system-ui,sans-serif;
-  --th:54px;--nav:62px;
+  --r:14px;--th:58px;--nav:64px;
+  --sh-sm:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --sh:0 4px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04);
+  --ease:cubic-bezier(.4,0,.2,1);
 }
+*{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--ink)}
 body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
 
 /* TOPBAR */
-.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:calc(var(--th) + env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.08)}
-.tb-nombre{flex:1;min-width:0;text-align:right;font-size:12px;font-weight:700;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tb-exit{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);color:rgba(255,255,255,.92);border-radius:12px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer;font-family:var(--f);-webkit-tap-highlight-color:transparent}
-.tb-exit:active{transform:scale(.98);opacity:.92}
-
-/* BRAND */
-.db-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;-webkit-tap-highlight-color:transparent;user-select:none}
-.db-iconbox{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;flex:0 0 auto}
-.db-icon{font-family:var(--fd);font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1}
-.db-icon .d{color:#E6E6E6}.db-icon .b{color:#F5C116}
-.db-wordmark{font-family:var(--fd);font-weight:900;font-size:28px;letter-spacing:-0.6px;line-height:1;white-space:nowrap}
-.db-wordmark .d{color:#E6E6E6}.db-wordmark .rest{color:#F5C116}
-.db-tag{margin-left:6px;font-weight:900;letter-spacing:.5px;color:rgba(255,255,255,.50);font-size:12px;white-space:nowrap}
-@media(max-width:560px){.db-wordmark{display:none}.db-tag{display:none}}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:calc(var(--th)+env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.brand-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,193,22,.15);border:1px solid var(--y-border);display:grid;place-items:center;flex-shrink:0}
+.brand-letters{font-family:var(--fd);font-size:19px;font-weight:900;letter-spacing:-1px;line-height:1}
+.brand-letters .d{color:#E0E0F0}.brand-letters .b{color:var(--y)}
+.brand-name{font-family:var(--fd);font-size:24px;font-weight:900;letter-spacing:-.5px;line-height:1}
+.brand-name .d{color:#E0E0F0}.brand-name .rest{color:var(--y)}
+.brand-role{margin-left:2px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35)}
+@media(max-width:420px){.brand-name{display:none}.brand-role{display:none}}
+.tb-right{display:flex;align-items:center;gap:10px;margin-left:auto;min-width:0}
+.tb-nombre{font-size:12px;font-weight:600;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.tb-exit{height:34px;padding:0 12px;border-radius:9px;flex-shrink:0;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);font-weight:700;font-size:12px;cursor:pointer;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.tb-exit:hover{background:rgba(255,255,255,.12);color:#fff}
+.tb-exit:active{transform:scale(.97)}
 
 /* LAYOUT */
-.content{padding-top:calc(var(--th) + env(safe-area-inset-top,0));padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 14px)}
-.tab{display:none;padding:14px 14px 0}
+.content{padding-top:calc(var(--th)+env(safe-area-inset-top,0));padding-bottom:calc(var(--nav)+env(safe-area-inset-bottom,0)+16px)}
+.tab{display:none;padding:16px 14px 0}
 .tab.active{display:block}
 
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:999;display:flex;align-items:center;justify-content:space-between;background:var(--ink);border-top:2px solid var(--y);height:calc(var(--nav) + env(safe-area-inset-bottom,0));padding-bottom:env(safe-area-inset-bottom,0)}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 0 10px;border:none;background:none;color:rgba(255,255,255,.45);-webkit-tap-highlight-color:transparent;cursor:pointer}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:999;display:flex;align-items:stretch;background:var(--ink);border-top:1px solid rgba(255,255,255,.07);height:calc(var(--nav)+env(safe-area-inset-bottom,0));padding-bottom:env(safe-area-inset-bottom,0)}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:10px 0 12px;border:none;background:none;color:rgba(255,255,255,.35);cursor:pointer;transition:color .15s;-webkit-tap-highlight-color:transparent;position:relative}
 .bnav-btn.active{color:var(--y)}
-.bnav-ic{width:22px;height:22px;display:block}
-.bnav-lbl{font-size:10px;font-weight:800;letter-spacing:.3px;line-height:1}
-.bnav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--err);color:#fff;font-size:9px;font-weight:900;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}
-.bnav-wrap{position:relative}
+.bnav-btn.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--y);border-radius:0 0 3px 3px}
+.bnav-ic{width:22px;height:22px;display:block;stroke:currentColor}
+.bnav-lbl{font-size:10px;font-weight:700;letter-spacing:.3px;line-height:1;text-transform:uppercase}
+.bnav-badge{position:absolute;top:8px;right:calc(50% - 20px);background:var(--err);color:#fff;font-size:9px;font-weight:900;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--ink)}
 
-/* CARDS */
-.card{background:var(--card);border-radius:18px;border:1px solid rgba(28,28,46,.10);border-left:4px solid var(--y);box-shadow:0 16px 34px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.05);margin-bottom:12px;overflow:hidden}
-.card-hdr{display:flex;align-items:center;padding:13px 14px;cursor:pointer;gap:10px;-webkit-tap-highlight-color:transparent;user-select:none;background:linear-gradient(180deg,rgba(245,193,22,.12),rgba(245,193,22,0))}
-.card-hdr:active{background:rgba(0,0,0,.02)}
-.card-top{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
-.card-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.card-code{font-family:var(--fd);font-size:15px;font-weight:900;color:rgba(28,28,46,.95);letter-spacing:.3px}
-.card-meta{font-size:11px;color:rgba(28,28,46,.55);display:flex;gap:8px;flex-wrap:wrap}
-.card-toggle{font-size:17px;color:rgba(28,28,46,.30);flex-shrink:0;transition:transform .2s}
-.card.open .card-toggle{transform:rotate(180deg)}
-.card-body{display:none;padding:0 14px 14px;border-top:1px solid rgba(28,28,46,.10)}
-.card.open .card-body{display:block}
+/* SECTION HEADER */
+.sec-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:12px}
+.sec-title{font-family:var(--fd);font-size:26px;font-weight:900;color:var(--ink);letter-spacing:-.3px;line-height:1}
+.sec-sub{font-size:12px;color:var(--g1);margin-top:3px}
+.btn-refresh{height:34px;padding:0 12px;border-radius:8px;background:var(--card2);border:1.5px solid var(--line);color:var(--g1);font-size:12px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer;transition:background .15s}
+.btn-refresh:hover{background:var(--line);color:var(--ink)}
 
-/* HORA BADGE */
-.hora-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:var(--blue-bg);color:var(--blue);border-radius:6px;font-size:10px;font-weight:900;letter-spacing:.3px;border:1px solid rgba(77,168,218,.2)}
-
-/* FIELDS */
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;padding:12px 0}
-.field{display:flex;flex-direction:column;gap:2px}
-.field.full{grid-column:1/-1}
-.f-lbl{font-size:10px;font-weight:900;color:rgba(28,28,46,.55);text-transform:uppercase;letter-spacing:.45px}
-.f-val{font-size:13px;font-weight:650;color:rgba(28,28,46,.92);line-height:1.4}
-
-/* INLINE FORMS */
-.ifrm{display:none;background:rgba(28,28,46,.03);border-radius:14px;padding:14px;margin-top:10px;border:1px solid rgba(28,28,46,.10)}
-.ifrm.open{display:block}
-.ifrm-title{font-size:11px;font-weight:900;color:rgba(28,28,46,.70);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+/* ORDEN CARDS */
+.orden-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);box-shadow:var(--sh-sm);margin-bottom:12px;overflow:hidden;transition:box-shadow .2s}
+.orden-card:hover{box-shadow:var(--sh)}
+.orden-card.st-nueva{border-left:4px solid var(--warn)}
+.orden-card.st-proceso{border-left:4px solid var(--blue)}
+.orden-card.st-cierre{border-left:4px solid var(--ok)}
+.orden-card.st-rechazo{border-left:4px solid var(--err)}
+.orden-hdr{padding:15px 16px 13px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.orden-hdr:hover{background:rgba(15,15,26,.02)}
+.orden-card.open .orden-hdr{border-bottom:1.5px solid var(--line)}
+.orden-top{flex:1;min-width:0}
+.orden-mun{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--ink);line-height:1;letter-spacing:-.2px;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.orden-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:4px}
+.orden-code{font-family:var(--fd);font-size:14px;font-weight:900;color:var(--g1);letter-spacing:.5px}
+.orden-detail{font-size:11px;color:var(--g2)}
+.orden-chevron{flex-shrink:0;color:var(--g3);margin-top:4px;transition:transform .22s var(--ease)}
+.orden-card.open .orden-chevron{transform:rotate(180deg);color:var(--y)}
+.orden-body{display:none;padding:14px 16px;flex-direction:column;gap:12px}
+.orden-card.open .orden-body{display:flex}
 
 /* CHIPS */
-.chip{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.25px;white-space:nowrap;text-transform:uppercase}
-.ca{background:var(--y-bg);color:#7A5800}
-.ce{background:var(--ok-bg);color:var(--ok)}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap;border:1px solid transparent}
+.chip::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.ch-nueva{background:var(--warn-bg);color:var(--warn);border-color:var(--warn-border)}
+.ch-proceso{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)}
+.ch-cierre{background:var(--ok-bg);color:var(--ok);border-color:var(--ok-border)}
+.ch-rechazo{background:var(--err-bg);color:var(--err);border-color:var(--err-border)}
+.hora-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);border-radius:20px;font-size:10px;font-weight:700}
 
-/* INPUTS */
-.fg{margin-bottom:11px}
-.flbl{display:block;font-size:10px;font-weight:900;color:rgba(28,28,46,.55);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-textarea,input,select{width:100%;padding:10px 12px;border:1.5px solid rgba(28,28,46,.14);border-radius:12px;font-size:14px;font-family:var(--f);background:#fff;color:var(--ink);-webkit-appearance:none}
-textarea{resize:vertical;min-height:60px}
-textarea:focus,input:focus,select:focus{outline:none;border-color:var(--y);box-shadow:0 0 0 3px rgba(245,193,22,.18)}
+/* INFO GRID */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.info-full{grid-column:1/-1}
+.info-item{display:flex;flex-direction:column;gap:3px}
+.info-lbl{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2)}
+.info-val{font-size:13px;font-weight:500;color:var(--ink);line-height:1.4}
+.info-val.hl{color:var(--blue);font-weight:700}
+.tel-link{font-size:18px;font-weight:900;color:var(--ink);text-decoration:none;transition:color .15s}
+.tel-link:hover{color:var(--y)}
+
+/* FLAGS */
+.flag{border-radius:10px;padding:11px 14px;font-size:12px;font-weight:700;line-height:1.55}
+.flag-ok{background:var(--ok-bg);border:1.5px solid var(--ok-border);color:#15803D}
+.flag-err{background:var(--err-bg);border:1.5px solid var(--err-border);color:var(--err)}
+
+/* WA QUICK */
+.wa-section-lbl{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2);margin-bottom:8px}
+.wa-quick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wa-btn{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:11px 12px;border-radius:10px;background:rgba(22,163,74,.08);border:1.5px solid rgba(22,163,74,.18);cursor:pointer;font-family:var(--f);transition:background .15s;-webkit-tap-highlight-color:transparent;text-align:left}
+.wa-btn:hover{background:rgba(22,163,74,.14)}
+.wa-btn:active{transform:scale(.97)}
+.wa-btn-icon{font-size:18px;line-height:1}
+.wa-btn-label{font-size:12px;font-weight:700;color:#15803D;line-height:1.2}
+.wa-btn-sub{font-size:10px;color:rgba(22,163,74,.6);font-weight:500}
+
+/* FORMS */
+.cierre-form{background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.nopuedo-form{background:var(--err-bg);border:1.5px solid var(--err-border);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.form-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g1);display:block;margin-bottom:4px}
+.nopuedo-form .form-lbl{color:var(--err)}
+.form-input{width:100%;padding:10px 12px;background:var(--card);border:1.5px solid var(--line);border-radius:9px;font-family:var(--f);font-size:14px;color:var(--ink);outline:none;-webkit-appearance:none;transition:border-color .15s,box-shadow .15s}
+.form-input:focus{border-color:var(--y);box-shadow:0 0 0 3px var(--y-bg)}
+.form-textarea{width:100%;padding:10px 12px;background:var(--card);border:1.5px solid var(--line);border-radius:9px;font-family:var(--f);font-size:14px;color:var(--ink);outline:none;resize:vertical;min-height:72px;transition:border-color .15s}
+.form-textarea:focus{border-color:var(--y);box-shadow:0 0 0 3px var(--y-bg)}
+.nopuedo-form .form-textarea{border-color:var(--err-border)}
 
 /* BUTTONS */
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-.btn{flex:1 1 auto;min-height:44px;border-radius:14px;padding:11px 14px;font-size:13px;font-weight:900;font-family:var(--f);cursor:pointer;border:1px solid rgba(28,28,46,.10);background:#F2F2F4;color:rgba(28,28,46,.92);box-shadow:0 10px 22px rgba(0,0,0,.10);-webkit-tap-highlight-color:transparent;position:relative;transform:translateZ(0);transition:transform .12s,opacity .12s}
-.btn:active{transform:scale(.98);opacity:.95}
-.actions .btn.full{flex:1 1 100%}
-.btn::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,0));opacity:.10;pointer-events:none}
-.btn-dark{background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.10);box-shadow:0 14px 28px rgba(28,28,46,.25)}
-.btn-yellow{background:var(--y);color:rgba(28,28,46,.95);border:1px solid rgba(0,0,0,.06);box-shadow:0 14px 28px rgba(245,193,22,.22)}
-.btn-ghost{background:rgba(28,28,46,.06);border:1px solid rgba(28,28,46,.12);color:rgba(28,28,46,.88);box-shadow:none}
-.btn-wa{background:var(--wa);color:#fff;border:1px solid rgba(0,0,0,.08);box-shadow:0 16px 34px rgba(37,211,102,.22)}
-.btn-soft{background:rgba(28,28,46,.06);border:1px solid rgba(28,28,46,.14);color:rgba(28,28,46,.92);box-shadow:none}
-.btn-state{background:#F2F2F4;border:1px solid rgba(28,28,46,.16);color:rgba(28,28,46,.92);font-weight:950}
-.btn-state.primary{background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.10);box-shadow:0 14px 28px rgba(28,28,46,.25)}
-.btn-danger{background:rgba(224,92,92,.12);border:1px solid rgba(224,92,92,.30);color:rgba(224,92,92,.95);box-shadow:none}
-.btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
-
-/* GPS */
-.dir-row{display:flex;align-items:center;gap:6px}
-.gps-mini{cursor:pointer;font-size:16px;line-height:1;opacity:.75;transition:transform .1s,opacity .1s}
-.gps-mini:active{transform:scale(.9);opacity:1}
-
-/* CUENTA */
-.cuenta-card{background:var(--card);border-radius:18px;border:1px solid rgba(28,28,46,.10);box-shadow:0 16px 34px rgba(0,0,0,.10),0 0 0 1px rgba(0,0,0,.04);padding:20px;margin-bottom:12px}
-.cuenta-nombre{font-family:var(--fd);font-size:26px;font-weight:900;color:rgba(28,28,46,.95);margin-bottom:4px}
-.cuenta-tag{font-size:12px;color:rgba(28,28,46,.55)}
-.cuenta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-.cg-item{display:flex;flex-direction:column;gap:3px}
-.cg-lbl{font-size:10px;font-weight:900;color:rgba(28,28,46,.55);text-transform:uppercase;letter-spacing:.4px}
-.cg-val{font-size:18px;font-weight:900;color:rgba(28,28,46,.95);font-family:var(--fd)}
-.cg-val.deuda-activa{color:var(--err)}
-.cg-val.deuda-cero{color:var(--ok)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 16px;border-radius:10px;font-family:var(--f);font-size:13px;font-weight:700;border:1.5px solid transparent;cursor:pointer;transition:transform .12s,background .15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-full{width:100%;justify-content:center}
+.btn-y{background:var(--y);color:#000;border-color:var(--y)}
+.btn-y:hover{background:var(--yd)}
+.btn-k{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-g{background:var(--card2);color:var(--ink);border-color:var(--line)}
+.btn-g:hover{background:var(--line)}
+.btn-wa{background:rgba(22,163,74,.10);color:#15803D;border-color:rgba(22,163,74,.22)}
+.btn-wa:hover{background:rgba(22,163,74,.16)}
+.btn-r{background:var(--err-bg);color:var(--err);border-color:var(--err-border)}
+.btn-ghost{background:var(--card2);color:var(--g2);border-color:var(--line)}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px}
+.btn-row .btn{flex:1}
 
 /* HISTORIAL */
-.hist-card{background:var(--card);border-radius:18px;border:1px solid rgba(28,28,46,.10);border-left:4px solid rgba(28,28,46,.18);box-shadow:0 14px 30px rgba(0,0,0,.10),0 0 0 1px rgba(0,0,0,.04);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.hist-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.hist-kpi{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px;text-align:center;box-shadow:var(--sh-sm);position:relative;overflow:hidden}
+.hist-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.hist-kpi.kg::before{background:var(--ok)}
+.hist-kpi.ky::before{background:var(--y)}
+.hist-kpi-n{font-family:var(--fd);font-size:28px;font-weight:900;line-height:1}
+.hist-kpi-n.g{color:var(--ok)}
+.hist-kpi-n.y{color:var(--yd)}
+.hist-kpi-l{font-size:11px;color:var(--g1);margin-top:5px;font-weight:600}
+.hist-card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:13px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;box-shadow:var(--sh-sm)}
 .hist-info{flex:1;min-width:0}
-.hist-code{font-family:var(--fd);font-size:14px;font-weight:900;color:rgba(28,28,46,.95)}
-.hist-meta{font-size:11px;color:rgba(28,28,46,.55);margin-top:2px}
+.hist-code{font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink)}
+.hist-name{font-size:13px;font-weight:600;color:var(--ink);margin-top:2px}
+.hist-meta{font-size:11px;color:var(--g2);margin-top:3px}
 .hist-right{text-align:right;flex-shrink:0}
-.hist-monto{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ok)}
-.hist-stars{font-size:12px;color:var(--y)}
+.hist-monto{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ok)}
+.hist-date{font-size:11px;color:var(--g2);margin-top:2px}
+.stars{display:flex;gap:2px;justify-content:flex-end;margin-top:4px}
+.star{font-size:12px;color:var(--g3)}
+.star.on{color:var(--y)}
 
-/* ESTADOS */
-.vacio{text-align:center;padding:36px 20px;font-size:14px;color:rgba(28,28,46,.55)}
-.cargando{text-align:center;padding:28px;font-size:13px;color:rgba(28,28,46,.55)}
+/* CUENTA */
+.cuenta-hero{background:var(--ink);border-radius:var(--r);padding:20px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:var(--sh)}
+.cuenta-hero::before{content:'db';position:absolute;right:-12px;bottom:-20px;font-family:var(--fd);font-size:100px;font-weight:900;color:rgba(245,193,22,.06);line-height:1;pointer-events:none}
+.cuenta-nombre{font-family:var(--fd);font-size:28px;font-weight:900;color:#fff;line-height:1;letter-spacing:-.3px;margin-bottom:4px;position:relative;z-index:1}
+.cuenta-tag{font-size:12px;color:rgba(255,255,255,.4);position:relative;z-index:1}
+.cuenta-stats{display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-top:16px;border:1px solid rgba(255,255,255,.08);position:relative;z-index:1}
+.cst{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 6px;background:rgba(255,255,255,.04)}
+.cst-n{font-family:var(--fd);font-size:20px;font-weight:900;color:#fff;line-height:1}
+.cst-n.deuda{color:#FCA5A5}
+.cst-n.zero{color:#6EE7B7}
+.cst-n.y{color:var(--y)}
+.cst-l{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.deuda-banner{background:var(--err-bg);border:1.5px solid var(--err-border);border-radius:var(--r);padding:13px 16px;margin-bottom:14px;font-size:13px;font-weight:600;color:var(--err);line-height:1.55}
+
+/* PANELS */
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm);margin-bottom:10px}
+.panel-hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:1.5px solid transparent;transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent}
+.panel.open .panel-hdr{border-color:var(--line)}
+.panel-hdr:hover{background:rgba(15,15,26,.02)}
+.panel-title{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink)}
+.panel-sub{font-size:11px;color:var(--g2);margin-top:2px}
+.panel-chev{flex-shrink:0;color:var(--g3);transition:transform .22s var(--ease)}
+.panel.open .panel-chev{transform:rotate(180deg);color:var(--y)}
+.panel-body{display:none;padding:16px;flex-direction:column;gap:12px}
+.panel.open .panel-body{display:flex}
+
+/* FG */
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g1)}
+.fg input,.fg select{padding:11px 13px;background:var(--card2);border:1.5px solid var(--line);border-radius:9px;font-family:var(--f);font-size:14px;color:var(--ink);outline:none;-webkit-appearance:none;width:100%;transition:border-color .15s,box-shadow .15s}
+.fg input:focus,.fg select:focus{border-color:var(--y);box-shadow:0 0 0 3px var(--y-bg);background:var(--card)}
+
+/* STATES */
+.vacio{text-align:center;padding:48px 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.vacio-ico{font-size:44px}
+.vacio-txt{font-size:13px;color:var(--g2);line-height:1.6}
+.vacio-sub{font-size:12px;color:var(--g3)}
+.cargando{text-align:center;padding:48px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--g2);font-size:13px}
+.cargando::before{content:'';width:24px;height:24px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--y);animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sp{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px;opacity:.6}
+.btn-y .sp{border-color:#000;border-top-color:transparent}
 
 /* TOAST */
-.toast{position:fixed;bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 14px);left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:600;white-space:nowrap;z-index:9999;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none}
+.toast{position:fixed;bottom:calc(var(--nav)+env(safe-area-inset-bottom,0)+16px);left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;white-space:nowrap;z-index:9999;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.25)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* SPINNER */
-.sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(28,28,46,.2);border-top-color:rgba(28,28,46,.8);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* DEUDA BANNER */
-.deuda-banner{background:rgba(224,92,92,.1);border:1px solid rgba(224,92,92,.25);border-radius:14px;padding:12px 16px;margin-bottom:12px;font-size:13px;font-weight:600;color:var(--err);line-height:1.5}
-
-/* SECCIÓN HEADER */
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.sec-title{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink)}
-.sec-refresh{background:rgba(28,28,46,.08);border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--f);color:var(--ink);transition:background .15s}
-.sec-refresh:hover{background:rgba(28,28,46,.13)}
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
 
 <header class="topbar">
-  <div class="db-brand" aria-label="dbarrio">
-    <span class="db-iconbox" aria-hidden="true">
-      <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
-    </span>
-    <span class="db-wordmark"><span class="d">d</span><span class="rest">barrio</span></span>
-    <span class="db-tag">TÉCNICO</span>
+  <div class="brand">
+    <div class="brand-icon" aria-hidden="true"><span class="brand-letters"><span class="d">d</span><span class="b">b</span></span></div>
+    <span class="brand-name"><span class="d">d</span><span class="rest">barrio</span></span>
+    <span class="brand-role">TÉCNICO</span>
   </div>
-  <span class="tb-nombre" id="tbNombre">—</span>
-  <button class="tb-exit" onclick="exitSocio()">Salir</button>
+  <div class="tb-right">
+    <span class="tb-nombre" id="tbNombre">—</span>
+    <button class="tb-exit" onclick="exitSocio()">Salir</button>
+  </div>
 </header>
 
-<div id="dbg" style="display:none;padding:60px 20px;text-align:center;color:var(--err);font-size:13px;font-weight:600;line-height:1.9"></div>
+<div id="dbg" style="display:none;padding-top:calc(var(--th)+40px);padding:calc(var(--th)+40px) 20px 20px;text-align:center"></div>
 
 <div class="content" id="appContent" style="display:none">
 
-  <!-- ÓRDENES -->
   <div class="tab active" id="tab-ordenes">
     <div class="sec-hdr">
-      <span class="sec-title">Mis órdenes</span>
-      <button class="sec-refresh" onclick="loadOrdenes()">↻ Actualizar</button>
+      <div><div class="sec-title">Mis órdenes</div><div class="sec-sub">Activas ahora mismo</div></div>
+      <button class="btn-refresh" onclick="loadOrdenes()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Actualizar
+      </button>
     </div>
     <div id="listaOrd"><div class="cargando">Cargando...</div></div>
   </div>
 
-  <!-- HISTORIAL -->
   <div class="tab" id="tab-historial">
-    <div class="sec-hdr">
-      <span class="sec-title">Mi historial</span>
-    </div>
+    <div class="sec-hdr"><div><div class="sec-title">Mi historial</div><div class="sec-sub">Servicios completados</div></div></div>
     <div id="listaHist"><div class="cargando">Cargando...</div></div>
   </div>
 
-  <!-- CUENTA -->
   <div class="tab" id="tab-cuenta">
-    <div class="sec-hdr">
-      <span class="sec-title">Mi cuenta</span>
-    </div>
+    <div class="sec-hdr"><div><div class="sec-title">Mi cuenta</div></div></div>
     <div id="cuentaContent"><div class="cargando">Cargando...</div></div>
   </div>
+
 </div>
 
 <nav class="bottom-nav" id="bottomNav" style="display:none">
   <button class="bnav-btn active" id="bnav-ordenes" onclick="goTab('ordenes',this)">
-    <div class="bnav-wrap">
-      <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <div style="position:relative">
+      <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
       <span class="bnav-badge" id="badge-ordenes" style="display:none">0</span>
     </div>
     <span class="bnav-lbl">Órdenes</span>
   </button>
   <button class="bnav-btn" id="bnav-historial" onclick="goTab('historial',this)">
-    <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
     <span class="bnav-lbl">Historial</span>
   </button>
   <button class="bnav-btn" id="bnav-cuenta" onclick="goTab('cuenta',this)">
-    <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
     <span class="bnav-lbl">Mi cuenta</span>
   </button>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SURL     = 'https://gkxtdancgkwetdniooky.supabase.co';
-const SKEY     = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
-const WA_ADMIN = '34627493593';
+const SURL='https://gkxtdancgkwetdniooky.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+const WA_ADMIN='34627493593';
+const MUNICIPIO_ZONA={'Playa':'oeste','La Lisa':'oeste','Marianao':'oeste','Plaza de la Revolución':'centro','Centro Habana':'centro','La Habana Vieja':'centro','Diez de Octubre':'centro','Cerro':'centro','Regla':'este','La Habana del Este':'este','Guanabacoa':'este','San Miguel del Padrón':'este','Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur'};
+const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const sendingCierre={};
+let mySocio=null,rtSolic=null,rtMovs=null,rtSocio=null;
 
-const sb = supabase.createClient(SURL, SKEY, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-});
+function toast(msg,dur=2600){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function dbc(id){return'db-'+id}
+function fmt(ts){if(!ts)return'—';const d=new Date(ts);return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'2-digit'})}
+function svgWA(){return`<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.057-.002-.115-.003-.172-.003-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`}
 
-const sendingCierre = {};
-let mySocio = null;
-let rtSolic = null, rtMovs = null, rtSocio = null;
-
-// ── TOAST ──
-function toast(msg, dur=2500) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), dur);
-}
-
-// ── INIT ──
-document.addEventListener('DOMContentLoaded', async () => {
-  const hash = window.location.hash || '';
-  if (hash.startsWith('#')) {
-    const p = new URLSearchParams(hash.slice(1));
-    const at = p.get('access_token'), rt = p.get('refresh_token');
-    if (at && rt) { await sb.auth.setSession({ access_token: at, refresh_token: rt }); history.replaceState(null, '', window.location.pathname); }
-  }
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) { await init(session); return; }
+document.addEventListener('DOMContentLoaded',async()=>{
+  const hash=window.location.hash||'';
+  if(hash.startsWith('#')){const p=new URLSearchParams(hash.slice(1));const at=p.get('access_token'),rt=p.get('refresh_token');if(at&&rt){await sb.auth.setSession({access_token:at,refresh_token:rt});history.replaceState(null,'',window.location.pathname);}}
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){await init(session);return;}
   goIdx();
 });
 
-async function init(session) {
-  if (document.body.dataset.ok) return;
-  const { data, error } = await sb.from('socios').select('*').eq('auth_uid', session.user.id).maybeSingle();
-  const showErr = (m) => { const d = document.getElementById('dbg'); d.style.display='block'; d.innerHTML = m; };
-  if (error)                        { showErr('No pudimos cargar tu perfil. Intenta de nuevo.'); return; }
-  if (!data)                        { showErr('No encontramos tu cuenta de técnico.<br>Contáctanos para resolverlo.'); return; }
-  if (!data.admitido)               { showErr('Tu cuenta está <strong>pendiente de aprobación</strong>.<br>Te avisaremos por WhatsApp cuando esté lista.<br><br>Si ya pasó tiempo, escríbenos directamente.'); return; }
-  if (data.estado_socio !== 'activo') { showErr(`Tu cuenta está en estado <strong>${data.estado_socio}</strong>.<br>Escríbenos al WhatsApp para resolver esto.`); return; }
-
-  document.body.dataset.ok = '1';
-  mySocio = data;
-  document.getElementById('tbNombre').textContent = data.nombre;
-  document.getElementById('appContent').style.display = '';
-  document.getElementById('bottomNav').style.display = '';
-
+async function init(session){
+  if(document.body.dataset.ok) return;
+  const {data,error}=await sb.from('socios').select('*').eq('auth_uid',session.user.id).maybeSingle();
+  const showErr=(m,sub='')=>{
+    const d=document.getElementById('dbg');d.style.display='block';
+    d.innerHTML=`<div style="max-width:300px;margin:0 auto;padding-top:40px"><div style="font-size:36px;margin-bottom:14px">⚠️</div><div style="font-size:15px;font-weight:700;color:var(--err);margin-bottom:8px">${m}</div>${sub?`<div style="font-size:13px;color:var(--g1);line-height:1.6">${sub}</div>`:''}<a href="index.html" style="display:inline-block;margin-top:20px;padding:10px 20px;background:var(--y);color:#000;border-radius:10px;font-weight:700;font-size:13px">Volver al inicio</a></div>`;
+  };
+  if(error)                        {showErr('Error al cargar tu perfil.','Intenta de nuevo.');return}
+  if(!data)                        {showErr('Cuenta no encontrada.','Contacta al administrador.');return}
+  if(!data.admitido)               {showErr('Cuenta pendiente de aprobación.','Te avisaremos por WhatsApp cuando esté lista.');return}
+  if(data.estado_socio!=='activo') {showErr(`Tu cuenta está en estado: ${data.estado_socio}.`,'Contacta al administrador.');return}
+  document.body.dataset.ok='1';
+  mySocio=data;
+  document.getElementById('tbNombre').textContent=data.nombre;
+  document.getElementById('appContent').style.display='';
+  document.getElementById('bottomNav').style.display='';
   suscribirPush();
-  setupRealtimeSocio();
+  setupRealtime();
   loadOrdenes();
 }
 
-// ── REALTIME ──
-function setupRealtimeSocio() {
-  try { if (rtSolic) sb.removeChannel(rtSolic); } catch(_) {}
-  try { if (rtMovs)  sb.removeChannel(rtMovs);  } catch(_) {}
-  try { if (rtSocio) sb.removeChannel(rtSocio); } catch(_) {}
-  if (!mySocio?.id) return;
-
-  rtSolic = sb.channel('rt-solic-' + mySocio.id)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'solicitudes', filter: `socio_asignado=eq.${mySocio.id}` }, () => {
-      const tabOrd = document.getElementById('tab-ordenes')?.classList.contains('active');
-      const tabHis = document.getElementById('tab-historial')?.classList.contains('active');
-      if (tabOrd) loadOrdenes(); else actualizarBadge();
-      if (tabHis) loadHistorial();
-    }).subscribe();
-
-  rtMovs = sb.channel('rt-movs-' + mySocio.id)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'movimientos', filter: `socio_id=eq.${mySocio.id}` }, () => {
-      const tabCue = document.getElementById('tab-cuenta')?.classList.contains('active');
-      if (tabCue) loadCuenta();
-    }).subscribe();
-
-  rtSocio = sb.channel('rt-socio-' + mySocio.id)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'socios', filter: `id=eq.${mySocio.id}` }, async () => {
-      const { data } = await sb.from('socios').select('*').eq('id', mySocio.id).maybeSingle();
-      if (data) { mySocio = data; document.getElementById('tbNombre').textContent = data.nombre || '—'; }
-      const tabCue = document.getElementById('tab-cuenta')?.classList.contains('active');
-      if (tabCue) loadCuenta();
-    }).subscribe();
+function setupRealtime(){
+  try{if(rtSolic)sb.removeChannel(rtSolic);if(rtMovs)sb.removeChannel(rtMovs);if(rtSocio)sb.removeChannel(rtSocio);}catch(_){}
+  if(!mySocio?.id) return;
+  rtSolic=sb.channel('rt-s-'+mySocio.id).on('postgres_changes',{event:'*',schema:'public',table:'solicitudes',filter:`socio_asignado=eq.${mySocio.id}`},()=>{
+    if(document.getElementById('tab-ordenes')?.classList.contains('active')) loadOrdenes(); else actualizarBadge();
+    if(document.getElementById('tab-historial')?.classList.contains('active')) loadHistorial();
+  }).subscribe();
+  rtMovs=sb.channel('rt-m-'+mySocio.id).on('postgres_changes',{event:'*',schema:'public',table:'movimientos',filter:`socio_id=eq.${mySocio.id}`},()=>{
+    if(document.getElementById('tab-cuenta')?.classList.contains('active')) loadCuenta();
+  }).subscribe();
+  rtSocio=sb.channel('rt-sc-'+mySocio.id).on('postgres_changes',{event:'*',schema:'public',table:'socios',filter:`id=eq.${mySocio.id}`},async()=>{
+    const {data}=await sb.from('socios').select('*').eq('id',mySocio.id).maybeSingle();
+    if(data){mySocio=data;document.getElementById('tbNombre').textContent=data.nombre||'—';}
+    if(document.getElementById('tab-cuenta')?.classList.contains('active')) loadCuenta();
+  }).subscribe();
 }
 
-// ── SESIÓN EXPIRADA ──
-sb.auth.onAuthStateChange((_event, session) => {
-  if (!session && document.body.dataset.ok) goIdx('Sesión expirada. Redirigiendo...');
-});
+sb.auth.onAuthStateChange((_,session)=>{if(!session&&document.body.dataset.ok) goIdx('Sesión expirada. Redirigiendo...');});
 
-// ── NAVEGACIÓN ──
-function goIdx(msg) {
-  if (msg) toast(msg);
-  setTimeout(() => { window.location.href = 'index.html'; }, msg ? 2000 : 0);
-}
-async function exitSocio() {
-  try { if (rtSolic) sb.removeChannel(rtSolic); } catch(_) {}
-  try { if (rtMovs)  sb.removeChannel(rtMovs);  } catch(_) {}
-  try { if (rtSocio) sb.removeChannel(rtSocio); } catch(_) {}
-  await sb.auth.signOut();
-  goIdx();
+function goIdx(msg){if(msg)toast(msg);setTimeout(()=>window.location.href='index.html',msg?2000:0);}
+async function exitSocio(){
+  try{if(rtSolic)sb.removeChannel(rtSolic);if(rtMovs)sb.removeChannel(rtMovs);if(rtSocio)sb.removeChannel(rtSocio);}catch(_){}
+  await sb.auth.signOut();goIdx();
 }
 
-const TABS = { ordenes: loadOrdenes, historial: loadHistorial, cuenta: loadCuenta };
-function goTab(name, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+const TABS={ordenes:loadOrdenes,historial:loadHistorial,cuenta:loadCuenta};
+function goTab(name,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
-  if (name === 'ordenes') ocultarBadge();
-  if (TABS[name]) TABS[name]();
+  if(name==='ordenes') ocultarBadge();
+  if(TABS[name]) TABS[name]();
 }
 
-// ── BADGE ──
-async function actualizarBadge() {
-  if (!mySocio?.id) return;
-  const { data } = await sb.from('solicitudes').select('id', { count: 'exact' })
-    .eq('socio_asignado', mySocio.id).in('estado', ['asignada']);
-  const n = data?.length || 0;
-  const badge = document.getElementById('badge-ordenes');
-  if (badge) { badge.textContent = n; badge.style.display = n > 0 ? 'flex' : 'none'; }
+async function actualizarBadge(){
+  if(!mySocio?.id) return;
+  const {data}=await sb.from('solicitudes').select('id',{count:'exact'}).eq('socio_asignado',mySocio.id).in('estado',['asignada']);
+  const n=data?.length||0;
+  const b=document.getElementById('badge-ordenes');
+  if(b){b.textContent=n;b.style.display=n>0?'flex':'none';}
 }
-function ocultarBadge() {
-  const badge = document.getElementById('badge-ordenes');
-  if (badge) badge.style.display = 'none';
-}
+function ocultarBadge(){const b=document.getElementById('badge-ordenes');if(b)b.style.display='none';}
 
-// ── ÓRDENES ──
-async function loadOrdenes() {
-  const el = document.getElementById('listaOrd');
-  if (!mySocio) { el.innerHTML = '<div class="vacio">Iniciando sesión...</div>'; return; }
-  el.innerHTML = '<div class="cargando">Cargando órdenes...</div>';
-  const { data, error } = await sb.from('solicitudes').select('*')
-    .eq('socio_asignado', mySocio.id)
-    .in('estado', ['asignada'])
-    .order('fecha_ts', { ascending: false });
-  if (error) { el.innerHTML = errBox(error.message); return; }
-  if (!data?.length) {
-    el.innerHTML = `<div class="vacio">
-      Sin órdenes activas por ahora.<br>
-      <span style="font-size:12px;opacity:.6">Cuando el admin te asigne una aparecerá aquí.</span>
-    </div>`;
-    return;
-  }
-  el.innerHTML = data.map(cardOrden).join('');
+async function loadOrdenes(){
+  const el=document.getElementById('listaOrd');
+  if(!mySocio){el.innerHTML='<div class="cargando">Iniciando...</div>';return;}
+  el.innerHTML='<div class="cargando">Cargando órdenes...</div>';
+  const {data,error}=await sb.from('solicitudes').select('*').eq('socio_asignado',mySocio.id).in('estado',['asignada']).order('fecha_ts',{ascending:false});
+  if(error){el.innerHTML=`<div class="vacio"><div class="vacio-ico">⚠️</div><div class="vacio-txt">${esc(error.message)}</div></div>`;return;}
+  if(!data?.length){el.innerHTML=`<div class="vacio"><div class="vacio-ico">📋</div><div class="vacio-txt">Sin órdenes activas por ahora.</div><div class="vacio-sub">Cuando el admin te asigne una aparecerá aquí.</div></div>`;return;}
+  el.innerHTML=data.map(cardOrden).join('');
   ocultarBadge();
 }
 
-function cardOrden(s) {
-  const cid = 'or' + s.id;
-  const enP = s.sub_estado === 'en_proceso';
-  const rep = s.sub_estado === 'cierre_reportado';
-  const rej = s.sub_estado === 'rechazada_por_socio';
-
-  const chip =
-    rep ? '<span class="chip ce">Cierre reportado</span>' :
-    rej ? '<span class="chip ce" style="background:var(--err-bg);color:var(--err)">No puedo atender</span>' :
-    enP ? '<span class="chip ce">En proceso</span>' :
-          '<span class="chip ca">Nueva orden</span>';
-
-  // Hora preferida badge
-  const horaFlag = s.hora_preferida
-    ? `<span class="hora-badge">🕐 ${esc(s.hora_preferida)}</span>`
-    : '';
-
-  const avisoCierre = rep ? `
-    <div style="background:var(--ok-bg);border:1px solid rgba(78,203,160,.3);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:12px;font-weight:700;color:var(--ok)">
-      ✅ Reporte enviado. El admin revisará y cerrará la orden.
-    </div>` : '';
-
-  const avisoRechazo = rej ? `
-    <div style="background:var(--err-bg);border:1px solid rgba(224,92,92,.25);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:12px;font-weight:700;color:var(--err)">
-      ❌ Notificaste que no puedes atender. Pendiente de reasignación por el admin.
-    </div>` : '';
-
-  const cierreForm = (!rep && !rej) ? `
-    <div class="fg">
-      <label class="flbl">Monto cobrado al cliente ($)</label>
-      <input id="monto-cierre-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"/>
+function cardOrden(s){
+  const cid='or'+s.id;
+  const rep=s.sub_estado==='cierre_reportado'||s.monto_socio!=null;
+  const rej=s.sub_estado==='rechazada_por_socio';
+  const enP=s.sub_estado==='en_proceso';
+  const estado=rep?'cierre':rej?'rechazo':enP?'proceso':'nueva';
+  const chips={nueva:`<span class="chip ch-nueva">Nueva orden</span>`,proceso:`<span class="chip ch-proceso">En proceso</span>`,cierre:`<span class="chip ch-cierre">Cierre reportado</span>`,rechazo:`<span class="chip ch-rechazo">No puedo atender</span>`};
+  const hora=s.hora_preferida?`<span class="hora-badge">🕐 ${esc(s.hora_preferida)}</span>`:'';
+  const flagC=rep?`<div class="flag flag-ok">✅ Reporte enviado. El admin lo revisará y cerrará la orden.</div>`:'';
+  const flagR=rej?`<div class="flag flag-err">❌ Notificaste que no puedes atender. Pendiente de reasignación.</div>`:'';
+  const formC=(!rep&&!rej)?`<div class="cierre-form" id="fc-${s.id}" style="display:none">
+    <div><label class="form-lbl">Monto cobrado al cliente ($)</label><input class="form-input" id="monto-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+    <div><label class="form-lbl">Garantía que ofreces (días)</label><input class="form-input" id="gar-${s.id}" type="number" min="0" step="1" placeholder="0 = sin garantía"/></div>
+    <div><label class="form-lbl">¿Qué hiciste? Describe el trabajo</label><textarea class="form-textarea" id="nota-${s.id}" placeholder="Ej: Limpié filtros, sellé tubería..."></textarea></div>
+    <button class="btn btn-y btn-full" onclick="reportarCierre(${s.id},this)">Enviar reporte al admin</button>
+  </div>`:'';
+  const formN=!rej?`<div class="nopuedo-form" id="fn-${s.id}" style="display:none">
+    <label class="form-lbl" style="color:var(--err)">¿Por qué no puedes atender esta orden?</label>
+    <textarea class="form-textarea" id="motivo-${s.id}" style="border-color:var(--err-border)" placeholder="Explica el motivo al admin..."></textarea>
+    <div class="btn-row">
+      <button class="btn btn-r btn-full" onclick="confNoPuedo(${s.id})">Confirmar — no puedo atender</button>
+      <button class="btn btn-ghost" onclick="toggleNoPuedo(${s.id})">Cancelar</button>
     </div>
-    <div class="fg">
-      <label class="flbl">Garantía que ofreces (días)</label>
-      <input id="gar-cierre-${s.id}" type="number" min="0" step="1" placeholder="0 = sin garantía"/>
+  </div>`:'';
+  const btnProc=(!enP&&!rej&&!rep)?`<button class="btn btn-y btn-full" onclick="marcarEnProceso(${s.id})">✅ Llegué — marcar en proceso</button>`:'';
+  const btnCierre=(!rep&&!rej)?`<button class="btn btn-k btn-full" onclick="toggleCierre(${s.id})">📋 Reportar cierre</button>`:'';
+  const btnNP=!rej?`<button class="btn btn-r" style="flex:1" onclick="toggleNoPuedo(${s.id})">❌ No puedo atender</button>`:`<button class="btn btn-ghost" disabled style="flex:1">Ya notificaste al admin</button>`;
+  const waRapidos=s.telefono?`<div>
+    <div class="wa-section-lbl">Mensajes rápidos al cliente</div>
+    <div class="wa-quick">
+      <button class="wa-btn" onclick="waCliente(${s.id},'encamino')"><span class="wa-btn-icon">🚗</span><span class="wa-btn-label">Voy en camino</span><span class="wa-btn-sub">Confirmar dirección</span></button>
+      <button class="wa-btn" onclick="waCliente(${s.id},'coordinar')"><span class="wa-btn-icon">🕒</span><span class="wa-btn-label">Coordinar hora</span><span class="wa-btn-sub">¿Cuándo te viene bien?</span></button>
+      <button class="wa-btn" onclick="waCliente(${s.id},'aqui')"><span class="wa-btn-icon">📍</span><span class="wa-btn-label">Ya estoy aquí</span><span class="wa-btn-sub">Salir o confirmar</span></button>
+      <button class="wa-btn" onclick="waCliente(${s.id},'presupuesto')"><span class="wa-btn-icon">💬</span><span class="wa-btn-label">Presupuesto</span><span class="wa-btn-sub">Enviar estimado</span></button>
     </div>
-    <div class="fg">
-      <label class="flbl">¿Qué hiciste? (describe el trabajo)</label>
-      <textarea id="nt-cierre-${s.id}" placeholder="Ej: Limpié filtros, cargué gas R410A, sellé tubería..."></textarea>
+  </div>`:'';
+
+  return `<div class="orden-card st-${estado}" id="${cid}">
+    <div class="orden-hdr" onclick="toggleCard('${cid}')">
+      <div class="orden-top">
+        <div class="orden-mun"><span style="font-size:20px">📍</span>${s.municipio?esc(s.municipio):'Sin municipio'}</div>
+        <div class="orden-meta">${chips[estado]}<span class="orden-code">${dbc(s.id)}</span>${hora}</div>
+        <div class="orden-detail">${esc(s.cliente)} · ${esc(s.servicio||'—')} · ${fmt(s.fecha_ts)}</div>
+      </div>
+      <svg class="orden-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
-    <div class="actions">
-      <button class="btn btn-yellow full" onclick="stop(event); reportarCierre(${s.id}, this)">Enviar reporte al admin</button>
-    </div>` : `
-    <div class="actions">
-      <button class="btn btn-ghost full" disabled>Reporte ya enviado — en revisión</button>
-    </div>`;
-
-  // Municipio en grande — lo más importante para el técnico
-  const munBig = s.municipio
-    ? `<div style="font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink);line-height:1;margin-bottom:5px;letter-spacing:-.2px">📍 ${esc(s.municipio)}</div>`
-    : '';
-
-  return `
-  <div class="card" id="${cid}">
-    <div class="card-hdr" onclick="toggleCard('${cid}')">
-      <div class="card-top">
-        ${munBig}
-        <div class="card-row">${chip}<span class="card-code">${dbc(s.id)}</span>${horaFlag}</div>
-        <div class="card-meta">
-          <span>${esc(s.cliente)}</span>
-          <span>${esc(s.servicio || '—')}</span>
-          <span>${fmt(s.fecha_ts)}</span>
-        </div>
+    <div class="orden-body">
+      <div class="info-grid">
+        <div class="info-item"><span class="info-lbl">Servicio</span><span class="info-val">${esc(s.servicio||'—')}</span></div>
+        ${s.hora_preferida?`<div class="info-item"><span class="info-lbl">Horario preferido</span><span class="info-val hl">🕐 ${esc(s.hora_preferida)}</span></div>`:'<div></div>'}
+        <div class="info-item info-full"><span class="info-lbl">Teléfono del cliente</span>${s.telefono?`<a href="tel:${esc(s.telefono)}" class="tel-link">${esc(s.telefono)}</a>`:'<span class="info-val">—</span>'}</div>
+        ${s.direccion?`<div class="info-item info-full"><span class="info-lbl">Dirección</span><span class="info-val">${esc(s.direccion)} <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((s.direccion||'')+' '+(s.municipio||''))}" target="_blank" rel="noopener noreferrer" style="font-size:16px">📍</a></span></div>`:''}
+        ${s.detalles?`<div class="info-item info-full"><span class="info-lbl">Detalles</span><span class="info-val">${esc(s.detalles)}</span></div>`:''}
+        ${s.nota_admin?`<div class="info-item info-full"><span class="info-lbl">Nota del admin</span><span class="info-val" style="background:var(--y-bg);border-radius:7px;padding:6px 10px">${esc(s.nota_admin)}</span></div>`:''}
       </div>
-      <span class="card-toggle">▾</span>
-    </div>
-    <div class="card-body">
-      <div class="fields">
-        <div class="field">
-          <span class="f-lbl">Servicio</span>
-          <span class="f-val">${esc(s.servicio || '—')}</span>
-        </div>
-        <div class="field">
-          <span class="f-lbl">Municipio</span>
-          <span class="f-val">${esc(s.municipio || '—')}</span>
-        </div>
-        ${s.hora_preferida ? `
-        <div class="field full">
-          <span class="f-lbl">Horario preferido del cliente</span>
-          <span class="f-val" style="color:var(--blue);font-weight:800">🕐 ${esc(s.hora_preferida)}</span>
-        </div>` : ''}
-        <div class="field">
-          <span class="f-lbl">Teléfono del cliente</span>
-          <span class="f-val">
-            ${s.telefono ? `<a href="tel:${esc(s.telefono)}" style="color:var(--ink);font-weight:900;font-size:15px">${esc(s.telefono)}</a>` : '—'}
-          </span>
-        </div>
-        ${s.direccion ? `
-        <div class="field full">
-          <span class="f-lbl">Dirección</span>
-          <span class="f-val dir-row">
-            ${esc(s.direccion)}
-            <span class="gps-mini" onclick="stop(event); openGPS(${s.id})" title="Abrir en Google Maps">📍</span>
-          </span>
-        </div>` : ''}
-        ${s.detalles ? `
-        <div class="field full">
-          <span class="f-lbl">Detalles del problema</span>
-          <span class="f-val">${esc(s.detalles)}</span>
-        </div>` : ''}
-        ${s.nota_admin ? `
-        <div class="field full">
-          <span class="f-lbl">Nota del admin</span>
-          <span class="f-val" style="background:var(--y-bg);border-radius:8px;padding:6px 10px">${esc(s.nota_admin)}</span>
-        </div>` : ''}
+      ${flagC}${flagR}
+      ${waRapidos}
+      ${btnProc}${btnCierre}${formC}
+      <div class="btn-row">
+        <button class="btn btn-wa" style="flex:1" onclick="waAdmin(${s.id})">${svgWA()} Admin</button>
+        ${btnNP}
       </div>
-
-      <!-- Botón cierre -->
-      <div class="actions">
-        <button class="btn btn-soft full" onclick="stop(event); toggleCierre(event, ${s.id})">
-          📋 Reportar cierre
-        </button>
-      </div>
-
-      <div class="ifrm" id="ifrm-cierre-${s.id}">
-        <div class="ifrm-title">Reporte de cierre</div>
-        ${avisoCierre}
-        ${avisoRechazo}
-        ${cierreForm}
-      </div>
-
-      <!-- No puedo atender -->
-      <div class="ifrm" id="ifrm-nopuedo-${s.id}">
-        <div class="ifrm-title">¿Por qué no puedes atender esta orden?</div>
-        <div class="fg"><textarea id="nt-nopuedo-${s.id}" placeholder="Explica el motivo al admin..."></textarea></div>
-        <div class="actions">
-          <button class="btn btn-danger full" onclick="stop(event); confNoPuedo(${s.id})">Confirmar — no puedo atender</button>
-          <button class="btn btn-ghost full" onclick="stop(event); closeF('nopuedo',${s.id})">Cancelar</button>
-        </div>
-      </div>
-
-      <!-- Acciones rápidas -->
-      <div class="actions">
-        ${(!enP && !rej && !rep) ? `
-          <button class="btn btn-yellow full" onclick="stop(event); marcarEnProceso(${s.id})">✅ Llegué — marcar en proceso</button>
-        ` : ''}
-        ${s.telefono ? `
-          <button class="btn btn-state primary" onclick="stop(event); waCliente(${s.id}, 'encamino')">🚗 Voy en camino</button>
-          <button class="btn btn-state" onclick="stop(event); waCliente(${s.id}, 'coordinar')">🕒 Coordinar hora</button>
-          <button class="btn btn-state" onclick="stop(event); waCliente(${s.id}, 'aqui')">📍 Estoy aquí</button>
-        ` : ''}
-        <button class="btn btn-wa full" onclick="stop(event); waAdmin(${s.id})">${svgWA()} Contactar admin</button>
-        ${!rej ? `
-          <button class="btn btn-danger full" onclick="stop(event); openF('nopuedo',${s.id})">❌ No puedo atender esta orden</button>
-        ` : `
-          <button class="btn btn-ghost full" disabled>Ya notificaste al admin</button>
-        `}
-      </div>
+      ${formN}
     </div>
   </div>`;
 }
 
-// ── REPORTAR CIERRE ──
-async function reportarCierre(id, btn) {
-  if (sendingCierre[id]) return;
-  const setBtn = (on) => {
-    if (!btn) return;
-    btn.disabled = on;
-    btn.innerHTML = on ? '<span class="sp"></span>Enviando...' : 'Enviar reporte al admin';
-  };
-  try {
-    sendingCierre[id] = true; setBtn(true);
-    const monto = parseFloat(document.getElementById('monto-cierre-' + id)?.value);
-    const gar   = parseInt(document.getElementById('gar-cierre-' + id)?.value || '0', 10);
-    const nota  = (document.getElementById('nt-cierre-' + id)?.value || '').trim();
-    if (!Number.isFinite(monto) || monto <= 0) { toast('Ingresa el monto cobrado al cliente'); return; }
-    if (!Number.isFinite(gar) || gar < 0)      { toast('Días de garantía inválidos'); return; }
-    if (!nota)                                  { toast('Describe el trabajo que realizaste'); return; }
-    const { error } = await sb.from('solicitudes').update({
-      monto_socio: monto, garantia_dias: gar, nota_socio: nota,
-      cierre_ts: new Date().toISOString(), sub_estado: 'cierre_reportado', solicita_cierre: false
-    }).eq('id', id);
-    if (error) { toast('Error: ' + error.message); return; }
+function toggleCard(id){document.getElementById(id)?.classList.toggle('open')}
+function toggleCierre(id){const fc=document.getElementById('fc-'+id);const fn=document.getElementById('fn-'+id);if(fn)fn.style.display='none';if(fc)fc.style.display=fc.style.display==='none'?'flex':'none';const c=document.getElementById('or'+id);if(c&&!c.classList.contains('open'))c.classList.add('open');}
+function toggleNoPuedo(id){const fn=document.getElementById('fn-'+id);const fc=document.getElementById('fc-'+id);if(fc)fc.style.display='none';if(fn)fn.style.display=fn.style.display==='none'?'flex':'none';const c=document.getElementById('or'+id);if(c&&!c.classList.contains('open'))c.classList.add('open');}
+
+async function reportarCierre(id,btn){
+  if(sendingCierre[id]) return;
+  const setBtn=on=>{if(!btn)return;btn.disabled=on;btn.innerHTML=on?'<span class="sp"></span>Enviando...':'Enviar reporte al admin';};
+  try{
+    sendingCierre[id]=true;setBtn(true);
+    const monto=parseFloat(document.getElementById('monto-'+id)?.value);
+    const gar=parseInt(document.getElementById('gar-'+id)?.value||'0',10);
+    const nota=(document.getElementById('nota-'+id)?.value||'').trim();
+    if(!Number.isFinite(monto)||monto<=0){toast('Ingresa el monto cobrado al cliente');return;}
+    if(!Number.isFinite(gar)||gar<0){toast('Días de garantía inválidos');return;}
+    if(!nota){toast('Describe el trabajo que realizaste');return;}
+    const {error}=await sb.from('solicitudes').update({monto_socio:monto,garantia_dias:gar,nota_socio:nota,cierre_ts:new Date().toISOString(),sub_estado:'cierre_reportado',solicita_cierre:false}).eq('id',id);
+    if(error){toast('Error: '+error.message);return;}
     toast('✅ Reporte enviado — el admin lo revisará pronto');
     await loadOrdenes();
-  } catch (e) {
-    console.error(e); toast('Error inesperado. Vuelve a intentarlo.');
-  } finally {
-    sendingCierre[id] = false; setBtn(false);
-  }
+  }catch(e){toast('Error inesperado. Inténtalo de nuevo.');}
+  finally{sendingCierre[id]=false;setBtn(false);}
 }
 
-// ── NO PUEDO ATENDER ──
-async function confNoPuedo(id) {
-  const nota = document.getElementById('nt-nopuedo-'+id).value.trim();
-  if (!nota) { toast('Escribe el motivo para el admin'); return; }
-  const { error } = await sb.from('solicitudes').update({
-    sub_estado: 'rechazada_por_socio', motivo_rechazo_socio: nota,
-    rechazo_socio_ts: new Date().toISOString()
-  }).eq('id', id);
-  if (error) { toast('Error: ' + error.message); return; }
-  toast('Aviso enviado al admin. Queda pendiente de reasignación.');
+async function confNoPuedo(id){
+  const nota=(document.getElementById('motivo-'+id)?.value||'').trim();
+  if(!nota){toast('Escribe el motivo para el admin');return;}
+  const {error}=await sb.from('solicitudes').update({sub_estado:'rechazada_por_socio',motivo_rechazo_socio:nota,rechazo_socio_ts:new Date().toISOString()}).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast('Aviso enviado. Queda pendiente de reasignación.');
   loadOrdenes();
 }
 
-// ── EN PROCESO ──
-async function marcarEnProceso(id) {
-  const { error } = await sb.from('solicitudes').update({ sub_estado: 'en_proceso' }).eq('id', id);
-  if (error) { toast('Error: ' + error.message); return; }
+async function marcarEnProceso(id){
+  const {error}=await sb.from('solicitudes').update({sub_estado:'en_proceso'}).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
   toast('✅ Marcada como en proceso');
   loadOrdenes();
 }
 
-// ── HISTORIAL ──
-async function loadHistorial() {
-  const el = document.getElementById('listaHist');
-  if (!mySocio) return;
-  el.innerHTML = '<div class="cargando">Cargando historial...</div>';
-  const { data, error } = await sb.from('solicitudes')
-    .select('id,cliente,municipio,fecha_fin,monto,valoracion,servicio')
-    .eq('socio_asignado', mySocio.id).eq('estado','completada')
-    .order('fecha_fin', { ascending: false });
-  if (error) { el.innerHTML = errBox(error.message); return; }
-  if (!data?.length) { el.innerHTML = '<div class="vacio">Aún no tienes órdenes completadas.<br><span style="font-size:12px;opacity:.6">Aparecerán aquí cuando el admin apruebe tu cierre.</span></div>'; return; }
-  const total  = data.reduce((a, r) => a + (parseFloat(r.monto) || 0), 0);
-  const conVal = data.filter(r => r.valoracion);
-  const rating = conVal.length ? (conVal.reduce((a, r) => a + r.valoracion, 0) / conVal.length) : 0;
-  el.innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-      <div class="cuenta-card" style="padding:14px;margin-bottom:0;text-align:center">
-        <div style="font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ok)">$${total.toFixed(2)}</div>
-        <div style="font-size:11px;color:rgba(28,28,46,.5);margin-top:2px">Total facturado</div>
-      </div>
-      <div class="cuenta-card" style="padding:14px;margin-bottom:0;text-align:center">
-        <div style="font-family:var(--fd);font-size:22px;font-weight:900;color:var(--y)">${rating ? rating.toFixed(1) + ' ★' : '—'}</div>
-        <div style="font-size:11px;color:rgba(28,28,46,.5);margin-top:2px">Rating promedio</div>
-      </div>
-    </div>
-  ` + data.map(r => {
-    const stars = '★'.repeat(r.valoracion||0)+'☆'.repeat(5-(r.valoracion||0));
+async function waAdmin(idOrden){
+  const {data:s}=await sb.from('solicitudes').select('cliente,servicio,municipio').eq('id',idOrden).maybeSingle();
+  openWA(WA_ADMIN,`Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\nConsulta sobre la orden *${dbc(idOrden)}*\n👤 Cliente: ${s?.cliente||'—'}\n🔧 Servicio: ${s?.servicio||'—'}\n📍 Municipio: ${s?.municipio||'—'}\n\n`);
+}
+async function waCliente(idOrden,tipo){
+  const {data:s}=await sb.from('solicitudes').select('cliente,telefono,servicio,municipio').eq('id',idOrden).maybeSingle();
+  if(!s?.telefono){toast('Esta orden no tiene teléfono del cliente.');return;}
+  const cli=s.cliente||'cliente',srv=s.servicio||'el servicio',mun=s.municipio||'tu zona';
+  const msgs={
+    encamino:`Hola ${cli}, soy tu técnico de dbarrio.\n✅ Voy en camino para ${srv} (${mun}).\n¿Me confirmas la dirección exacta?`,
+    coordinar:`Hola ${cli}, soy tu técnico de dbarrio.\n🕒 Para coordinar la visita de ${srv} en ${mun}: ¿te viene bien ahora o en 30–60 min?`,
+    aqui:`Hola ${cli}, soy tu técnico de dbarrio.\n📍 Ya estoy en el lugar para ${srv}.\n¿Puedes salir o confirmarme la referencia?`,
+    presupuesto:`Hola ${cli}, soy tu técnico de dbarrio.\n💬 Para el servicio de ${srv} en ${mun}, ¿me puedes dar más detalles del problema? Así te doy un estimado antes de ir.`,
+  };
+  openWA(s.telefono,msgs[tipo]||msgs.encamino);
+}
+function waAdminGeneral(){openWA(WA_ADMIN,`Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\n`);}
+function openWA(num,txt){window.location.href='https://wa.me/'+String(num).replace(/\D/g,'')+'?text='+encodeURIComponent(txt);}
+
+async function loadHistorial(){
+  const el=document.getElementById('listaHist');
+  if(!mySocio) return;
+  el.innerHTML='<div class="cargando">Cargando historial...</div>';
+  const {data,error}=await sb.from('solicitudes').select('id,cliente,municipio,fecha_fin,monto,valoracion,servicio').eq('socio_asignado',mySocio.id).eq('estado','completada').order('fecha_fin',{ascending:false});
+  if(error){el.innerHTML=`<div class="vacio"><div class="vacio-ico">⚠️</div><div class="vacio-txt">${esc(error.message)}</div></div>`;return;}
+  if(!data?.length){el.innerHTML=`<div class="vacio"><div class="vacio-ico">📭</div><div class="vacio-txt">Aún no tienes órdenes completadas.</div><div class="vacio-sub">Aparecerán aquí cuando el admin apruebe tu cierre.</div></div>`;return;}
+  const total=data.reduce((a,r)=>a+(parseFloat(r.monto)||0),0);
+  const conVal=data.filter(r=>r.valoracion);
+  const rating=conVal.length?(conVal.reduce((a,r)=>a+r.valoracion,0)/conVal.length):0;
+  el.innerHTML=`<div class="hist-summary">
+    <div class="hist-kpi kg"><div class="hist-kpi-n g">$${total.toFixed(2)}</div><div class="hist-kpi-l">Total facturado</div></div>
+    <div class="hist-kpi ky"><div class="hist-kpi-n y">${rating?rating.toFixed(1)+' ★':'—'}</div><div class="hist-kpi-l">Rating promedio</div></div>
+  </div>`+data.map(r=>{
+    const sv='★'.repeat(r.valoracion||0)+'☆'.repeat(5-(r.valoracion||0));
     return `<div class="hist-card">
       <div class="hist-info">
         <div class="hist-code">${dbc(r.id)}</div>
-        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-top:2px">${esc(r.cliente)}</div>
-        <div class="hist-meta">${r.servicio?esc(r.servicio)+' · ':''}${r.municipio?esc(r.municipio)+' · ':''}${fmt(r.fecha_fin)}</div>
+        <div class="hist-name">${esc(r.cliente)}</div>
+        <div class="hist-meta">${r.servicio?esc(r.servicio)+' · ':''}${r.municipio?esc(r.municipio):''}</div>
+        ${r.valoracion?`<div class="stars">${sv.split('').map(c=>`<span class="star${c==='★'?' on':''}">${c}</span>`).join('')}</div>`:''}
       </div>
       <div class="hist-right">
         <div class="hist-monto">$${(r.monto||0).toFixed(2)}</div>
-        <div class="hist-stars">${stars}</div>
+        <div class="hist-date">${r.fecha_fin?new Date(r.fecha_fin).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}):'—'}</div>
       </div>
     </div>`;
   }).join('');
 }
 
-// ── CUENTA ──
-async function loadCuenta() {
-  const el = document.getElementById('cuentaContent');
-  if (!mySocio) return;
-  el.innerHTML = '<div class="cargando">Cargando perfil...</div>';
-  const { data, error } = await sb.from('socios').select('*').eq('id', mySocio.id).maybeSingle();
-  if (error) { el.innerHTML = errBox(error.message); return; }
-  if (data) mySocio = data;
-  const s = mySocio;
-  const deudaAmt = parseFloat(s.deuda || 0);
-  const deudaColor = deudaAmt > 0 ? 'deuda-activa' : 'deuda-cero';
-  el.innerHTML = `
-    ${deudaAmt > 0 ? `<div class="deuda-banner">⚠️ Tienes una deuda pendiente de <strong>$${deudaAmt.toFixed(2)}</strong>.<br>Coordina el pago con el admin para mantener tu cuenta activa.</div>` : ''}
-    <div class="cuenta-card">
+async function loadCuenta(){
+  const el=document.getElementById('cuentaContent');
+  if(!mySocio) return;
+  el.innerHTML='<div class="cargando">Cargando perfil...</div>';
+  const {data,error}=await sb.from('socios').select('*').eq('id',mySocio.id).maybeSingle();
+  if(error){el.innerHTML=`<div class="vacio"><div class="vacio-ico">⚠️</div><div class="vacio-txt">${esc(error.message)}</div></div>`;return;}
+  if(data) mySocio=data;
+  const s=mySocio;
+  const deuda=parseFloat(s.deuda||0);
+  const munSelect=m=>`<optgroup label="Occidente"><option value="Playa">Playa</option><option value="La Lisa">La Lisa</option><option value="Marianao">Marianao</option></optgroup><optgroup label="Centro"><option value="Plaza de la Revolución">Plaza de la Revolución</option><option value="Centro Habana">Centro Habana</option><option value="La Habana Vieja">La Habana Vieja</option><option value="Diez de Octubre">Diez de Octubre</option><option value="Cerro">Cerro</option></optgroup><optgroup label="Oriente"><option value="Regla">Regla</option><option value="La Habana del Este">La Habana del Este</option><option value="Guanabacoa">Guanabacoa</option><option value="San Miguel del Padrón">San Miguel del Padrón</option></optgroup><optgroup label="Sur"><option value="Boyeros">Boyeros</option><option value="Arroyo Naranjo">Arroyo Naranjo</option><option value="Cotorro">Cotorro</option></optgroup>`;
+
+  el.innerHTML=`
+    ${deuda>0?`<div class="deuda-banner">⚠️ Tienes una deuda pendiente de <strong>$${deuda.toFixed(2)}</strong>.<br>Coordina el pago con el admin para mantener tu cuenta activa.</div>`:''}
+    <div class="cuenta-hero">
       <div class="cuenta-nombre">${esc(s.nombre)}</div>
-      <div class="cuenta-tag">${esc(s.especialidad||'—')} · ${esc(s.zona||'—')}</div>
-      <div class="cuenta-grid">
-        <div class="cg-item"><span class="cg-lbl">Deuda</span><span class="cg-val ${deudaColor}">$${deudaAmt.toFixed(2)}</span></div>
-        <div class="cg-item"><span class="cg-lbl">Trabajos</span><span class="cg-val">${s.trabajos||0}</span></div>
-        <div class="cg-item"><span class="cg-lbl">Rating</span><span class="cg-val">${s.rating_avg?Number(s.rating_avg).toFixed(1)+' ★':'—'}</span></div>
-        <div class="cg-item"><span class="cg-lbl">Comisión</span><span class="cg-val">${s.comision||15}%</span></div>
+      <div class="cuenta-tag">${esc(s.especialidad||'—')}</div>
+      <div class="cuenta-stats">
+        <div class="cst"><span class="cst-n ${deuda>0?'deuda':'zero'}">$${deuda.toFixed(0)}</span><span class="cst-l">Deuda</span></div>
+        <div class="cst"><span class="cst-n">${s.trabajos||0}</span><span class="cst-l">Trabajos</span></div>
+        <div class="cst"><span class="cst-n y">${s.rating_avg?Number(s.rating_avg).toFixed(1):'—'}</span><span class="cst-l">Rating</span></div>
+        <div class="cst"><span class="cst-n">${s.comision||15}%</span><span class="cst-l">Comisión</span></div>
       </div>
     </div>
-    <div class="cuenta-card">
-      <div style="font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink);margin-bottom:12px">Mis datos de contacto</div>
-      <div class="fg">
-        <label class="flbl">Teléfono / WhatsApp</label>
-        <input id="p-tel" type="tel" value="${esc(s.telefono||'')}" placeholder="+53..."/>
+    <div class="panel open" id="panel-datos">
+      <div class="panel-hdr" onclick="togglePanel('panel-datos')">
+        <div><div class="panel-title">Mis datos</div><div class="panel-sub">Mantén tu info actualizada</div></div>
+        <svg class="panel-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
-      <div class="fg">
-        <label class="flbl">Municipio donde trabajas</label>
-        <select id="p-zona">
-          <option value="">-- Seleccionar --</option>
-          <optgroup label="Occidente">
-            <option value="Playa">Playa</option>
-            <option value="La Lisa">La Lisa</option>
-            <option value="Marianao">Marianao</option>
-          </optgroup>
-          <optgroup label="Centro">
-            <option value="Plaza de la Revolución">Plaza de la Revolución</option>
-            <option value="Centro Habana">Centro Habana</option>
-            <option value="La Habana Vieja">La Habana Vieja</option>
-            <option value="Diez de Octubre">Diez de Octubre</option>
-            <option value="Cerro">Cerro</option>
-          </optgroup>
-          <optgroup label="Oriente">
-            <option value="Regla">Regla</option>
-            <option value="La Habana del Este">La Habana del Este</option>
-            <option value="Guanabacoa">Guanabacoa</option>
-            <option value="San Miguel del Padrón">San Miguel del Padrón</option>
-          </optgroup>
-          <optgroup label="Sur">
-            <option value="Boyeros">Boyeros</option>
-            <option value="Arroyo Naranjo">Arroyo Naranjo</option>
-            <option value="Cotorro">Cotorro</option>
-          </optgroup>
-        </select>
+      <div class="panel-body">
+        <div class="fg"><label>Teléfono / WhatsApp</label><input id="p-tel" type="tel" value="${esc(s.telefono||'')}" placeholder="+53..."/></div>
+        <div class="fg"><label>Municipio donde trabajas</label><select id="p-zona"><option value="">-- Seleccionar --</option>${munSelect()}</select></div>
+        <div class="fg"><label>Especialidad principal</label><input id="p-esp" type="text" value="${esc(s.especialidad||'')}" placeholder="Electricidad, Plomería..."/></div>
+        <button class="btn btn-k btn-full" onclick="savePerfil()">Guardar cambios</button>
       </div>
-      <div class="fg">
-        <label class="flbl">Especialidad principal</label>
-        <input id="p-esp" type="text" value="${esc(s.especialidad||'')}" placeholder="Electricidad, Plomería..."/>
-      </div>
-      <button class="btn btn-dark" style="width:100%" onclick="savePerfil()">Guardar cambios</button>
-      <p style="font-size:11px;color:rgba(28,28,46,.4);margin-top:8px;line-height:1.5">
-        Mantén tu teléfono actualizado para que el admin y los clientes puedan contactarte.
-      </p>
     </div>
-    <div class="cuenta-card">
-      <div style="font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink);margin-bottom:10px">¿Necesitas algo?</div>
-      <button class="btn btn-wa" style="width:100%" onclick="waAdminGeneral()">${svgWA()} Escribir al admin</button>
-      <p style="font-size:11px;color:rgba(28,28,46,.4);margin-top:8px;line-height:1.5">
-        Para dudas sobre pagos, órdenes o cualquier asunto operativo.
-      </p>
+    <div class="panel" id="panel-admin">
+      <div class="panel-hdr" onclick="togglePanel('panel-admin')">
+        <div><div class="panel-title">¿Necesitas algo?</div><div class="panel-sub">Contacta al administrador</div></div>
+        <svg class="panel-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="panel-body">
+        <button class="btn btn-wa btn-full" onclick="waAdminGeneral()">${svgWA()} Escribir al admin</button>
+        <p style="font-size:11px;color:var(--g2);line-height:1.55">Para dudas sobre pagos, órdenes o cualquier asunto operativo.</p>
+      </div>
     </div>`;
 
-  // ── FIX #2: pre-seleccionar el municipio guardado ──
-  // El select se acaba de renderizar en el DOM — ahora sí podemos leer el elemento
-  const pZona = document.getElementById('p-zona');
-  if (pZona && s.zona) pZona.value = s.zona;
+  // Pre-seleccionar municipio guardado — DESPUÉS del innerHTML
+  const pz=document.getElementById('p-zona');
+  if(pz&&s.zona) pz.value=s.zona;
 }
 
-// ── GUARDAR PERFIL ──
-async function savePerfil() {
-  if (!mySocio?.id) return;
-  const telefono     = document.getElementById('p-tel')?.value?.trim() || null;
-  const zona         = document.getElementById('p-zona')?.value?.trim() || null;
-  const especialidad = document.getElementById('p-esp')?.value?.trim() || null;
-  const { error } = await sb.from('socios').update({ telefono, zona, especialidad }).eq('id', mySocio.id);
-  if (error) { toast('Error guardando datos: ' + error.message); return; }
+function togglePanel(id){document.getElementById(id)?.classList.toggle('open')}
+
+async function savePerfil(){
+  if(!mySocio?.id) return;
+  const telefono=document.getElementById('p-tel')?.value?.trim()||null;
+  const municipio=document.getElementById('p-zona')?.value||null;
+  const especialidad=document.getElementById('p-esp')?.value?.trim()||null;
+  const zona=MUNICIPIO_ZONA[municipio]||null;
+  // Guarda municipio en campo zona para compatibilidad con el sistema
+  const {error}=await sb.from('socios').update({telefono,zona:municipio||zona,especialidad}).eq('id',mySocio.id);
+  if(error){toast('Error: '+error.message);return;}
   toast('✅ Datos actualizados');
   loadCuenta();
 }
 
-// ── WA ──
-async function waAdmin(idOrden) {
-  const { data: s } = await sb.from('solicitudes').select('cliente,servicio,municipio').eq('id',idOrden).maybeSingle();
-  const txt = `Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\nConsulta sobre la orden *${dbc(idOrden)}*\n👤 Cliente: ${s?.cliente||'—'}\n🔧 Servicio: ${s?.servicio||'—'}\n📍 Municipio: ${s?.municipio||'—'}\n\n`;
-  openWA(WA_ADMIN, txt);
-}
-async function waCliente(idOrden, tipo) {
-  const { data: s, error } = await sb.from('solicitudes').select('cliente,telefono,servicio,municipio').eq('id', idOrden).maybeSingle();
-  if (error || !s?.telefono) { toast('Esta orden no tiene teléfono del cliente.'); return; }
-  const cli = s.cliente || 'cliente', srv = s.servicio || 'el servicio', mun = s.municipio || 'tu zona';
-  let msg = '';
-  if (tipo === 'encamino')  msg = `Hola ${cli}, soy tu técnico de dbarrio.\n✅ Voy en camino para ${srv} (${mun}).\n¿Me confirmas la dirección exacta?`;
-  else if (tipo === 'coordinar') msg = `Hola ${cli}, soy tu técnico de dbarrio.\n🕒 ¿Te viene bien ahora o prefieres en 30–60 min?\nServicio: ${srv} (${mun}).`;
-  else msg = `Hola ${cli}, soy tu técnico de dbarrio.\n📍 Ya estoy en el lugar.\n¿Puedes salir o confirmarme la referencia?`;
-  openWA(s.telefono, msg);
-}
-function waAdminGeneral() { openWA(WA_ADMIN, `Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\n`); }
-function openWA(num, txt) { window.location.href = 'https://wa.me/' + String(num).replace(/\D/g,'') + '?text=' + encodeURIComponent(txt); }
-
-// ── GPS ──
-async function openGPS(idOrden) {
-  const { data: s, error } = await sb.from('solicitudes').select('direccion,municipio').eq('id', idOrden).maybeSingle();
-  if (error) { toast('Error leyendo dirección'); return; }
-  const q = ((s?.direccion ? s.direccion + ', ' : '') + (s?.municipio || '')).trim();
-  if (!q) { toast('Esta orden no tiene dirección registrada'); return; }
-  window.location.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
-}
-
-// ── UTILS ──
-function stop(e){ if(e){ e.preventDefault(); e.stopPropagation(); } }
-function toggleCierre(e, id){ stop(e); document.getElementById('ifrm-cierre-'+id)?.classList.toggle('open'); }
-function svgWA(){return`<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.057-.002-.115-.003-.172-.003-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`}
-function dbc(id){return'db-'+id}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function errBox(m){return`<div class="vacio" style="color:var(--err)">Error: ${esc(m)}</div>`}
-function fmt(ts){if(!ts)return'—';const d=new Date(ts);return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'2-digit'})}
-function toggleCard(id){document.getElementById(id)?.classList.toggle('open')}
-function openF(tipo,id){
-  ['cierre','nopuedo'].forEach(t=>{document.getElementById('ifrm-'+t+'-'+id)?.classList.remove('open')});
-  document.getElementById('ifrm-'+tipo+'-'+id)?.classList.add('open');
-  const card=document.getElementById('or'+id);
-  if(card&&!card.classList.contains('open'))card.classList.add('open');
-}
-function closeF(tipo,id){document.getElementById('ifrm-'+tipo+'-'+id)?.classList.remove('open')}
-
-// ── PUSH ──
-const VAPID_PUBLIC = 'BBQTR3KhE7bjwkSS4VnLKKfxGmEX6NgLMHLDI6hta-6HBdVgPlERExJ0RZm9L2oOYfdSkAWlHt6QOjVh9gql76g';
-function urlBase64ToUint8Array(b64){const p='='.repeat((4-b64.length%4)%4);const b=(b64+p).replace(/-/g,'+').replace(/_/g,'/');const r=window.atob(b);return Uint8Array.from([...r].map(c=>c.charCodeAt(0)))}
-async function suscribirPush() {
-  try {
-    if (!('Notification' in window))          return;
-    if (!('serviceWorker' in navigator))      return;
-    if (Notification.permission === 'denied') return;
-    if (VAPID_PUBLIC.startsWith('REEMPLAZA')) return;
-    const permission = await Notification.requestPermission();
-    if (permission !== 'granted') return;
-    const reg = await navigator.serviceWorker.ready;
-    let sub = await reg.pushManager.getSubscription();
-    if (!sub) { sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC) }); }
-    const { data: { user } } = await sb.auth.getUser();
-    if (!user) return;
-    await sb.from('push_subscriptions').upsert({ auth_uid: user.id, subscription: JSON.stringify(sub) }, { onConflict: 'auth_uid' });
-  } catch (e) { console.warn('Push:', e.message); }
+const VAPID_PUBLIC='BBQTR3KhE7bjwkSS4VnLKKfxGmEX6NgLMHLDI6hta-6HBdVgPlERExJ0RZm9L2oOYfdSkAWlHt6QOjVh9gql76g';
+function urlB64(b64){const p='='.repeat((4-b64.length%4)%4);const b=(b64+p).replace(/-/g,'+').replace(/_/g,'/');const r=window.atob(b);return Uint8Array.from([...r].map(c=>c.charCodeAt(0)));}
+async function suscribirPush(){
+  try{
+    if(!('Notification' in window)||!('serviceWorker' in navigator)) return;
+    if(Notification.permission==='denied') return;
+    const perm=await Notification.requestPermission();
+    if(perm!=='granted') return;
+    const reg=await navigator.serviceWorker.ready;
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlB64(VAPID_PUBLIC)});
+    const {data:{user}}=await sb.auth.getUser();
+    if(!user) return;
+    await sb.from('push_subscriptions').upsert({auth_uid:user.id,subscription:JSON.stringify(sub)},{onConflict:'auth_uid'});
+  }catch(e){console.warn('Push:',e.message);}
 }
 </script>
 </body>
