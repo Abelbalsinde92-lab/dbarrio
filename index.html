@@ -1,1042 +1,1161 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-  <meta name="theme-color" content="#1A1A2E"/>
-  <title>dbarrio — servicios técnicos</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#0F0F1A"/>
+<title>dbarrio — técnicos a domicilio en La Habana</title>
 
-  <!-- SEO -->
-  <meta name="description" content="Reparaciones del hogar en La Habana. Electricidad, plomería, refrigeración y más. Técnicos verificados en tu municipio."/>
-  <meta name="keywords" content="técnicos, reparaciones, plomería, electricidad, refrigeración, La Habana, servicios del hogar"/>
+<!-- SEO -->
+<meta name="description" content="¿Se te rompió algo en casa? Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Servicio rápido en La Habana."/>
+<meta name="keywords" content="técnicos La Habana, reparaciones a domicilio, plomería, electricidad, refrigeración, electrodomésticos, dbarrio"/>
 
-  <!-- Open Graph -->
-  <meta property="og:type"        content="website"/>
-  <meta property="og:url"         content="https://dbarrio-two.vercel.app/"/>
-  <meta property="og:title"       content="dbarrio — servicios técnicos"/>
-  <meta property="og:description" content="Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Solicita ahora y recibe tu código de seguimiento."/>
-  <meta property="og:image"       content="https://dbarrio-two.vercel.app/assets/icons/db-icon-512.png"/>
+<!-- OG -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://dbarrio-two.vercel.app/"/>
+<meta property="og:title" content="dbarrio — técnicos a domicilio en La Habana"/>
+<meta property="og:description" content="Técnicos verificados en tu municipio. Solicita ahora y recibe tu código de seguimiento."/>
+<meta property="og:image" content="https://dbarrio-two.vercel.app/db-512.png"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="dbarrio — técnicos en La Habana"/>
+<meta name="twitter:description" content="Técnicos verificados en tu municipio. Solicita ahora."/>
 
-  <!-- Twitter / X -->
-  <meta name="twitter:card"        content="summary"/>
-  <meta name="twitter:title"       content="dbarrio — servicios técnicos"/>
-  <meta name="twitter:description" content="Técnicos verificados en tu municipio. Solicita ahora."/>
-  <meta name="twitter:image"       content="https://dbarrio-two.vercel.app/assets/icons/db-icon-512.png"/>
+<!-- PWA -->
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="dbarrio"/>
+<link rel="icon" type="image/png" sizes="32x32" href="db-32.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="db-16.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="db-180.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=2">
+<link rel="manifest" href="manifest.json?v=2">
 
-  <!-- PWA iOS -->
-  <meta name="mobile-web-app-capable"                content="yes"/>
-  <meta name="apple-mobile-web-app-capable"          content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title"            content="dbarrio"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet"/>
 
-  <link rel="icon" type="image/png" sizes="32x32"  href="db-32.png?v=1">
-  <link rel="icon" type="image/png" sizes="16x16"  href="db-16.png?v=1">
-  <link rel="apple-touch-icon"     sizes="180x180" href="db-180.png?v=1">
-  <link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=1">
-  <link rel="icon" type="image/png" sizes="512x512" href="db-512.png?v=1">
-  <link rel="manifest" href="manifest.json?v=1">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --y:#F5C116;--yd:#C9980D;--y-bg:rgba(245,193,22,.10);--y-border:rgba(245,193,22,.22);
+  --ink:#0F0F1A;--ink2:#1A1A2E;--ink3:#24243C;
+  --bg:#F2EFE9;--card:#FFFFFF;--card2:#F7F5F1;
+  --line:#E8E4DD;
+  --g1:#5A5A6E;--g2:#9A96A0;--g3:#C4C1BC;
+  --ok:#16A34A;--ok-bg:rgba(22,163,74,.10);--ok-border:rgba(22,163,74,.20);
+  --err:#DC2626;--err-bg:rgba(220,38,38,.09);--err-border:rgba(220,38,38,.18);
+  --blue:#2563EB;--blue-bg:rgba(37,99,235,.09);
+  --f:'DM Sans',system-ui,sans-serif;
+  --fd:'Barlow Condensed',system-ui,sans-serif;
+  --r:14px;
+  --sh-sm:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --sh:0 4px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04);
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+html{background:var(--ink);scroll-behavior:smooth}
+body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+/* ── HEADER ── */
+.header{
+  position:sticky;top:0;z-index:100;
+  background:var(--ink);
+  height:calc(58px + env(safe-area-inset-top,0));
+  padding:env(safe-area-inset-top,0) 16px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,193,22,.15);border:1px solid var(--y-border);display:grid;place-items:center;flex-shrink:0}
+.brand-letters{font-family:var(--fd);font-size:19px;font-weight:900;letter-spacing:-1px;line-height:1}
+.brand-letters .d{color:#E0E0F0}.brand-letters .b{color:var(--y)}
+.brand-name{font-family:var(--fd);font-size:24px;font-weight:900;letter-spacing:-.5px;line-height:1}
+.brand-name .d{color:#E0E0F0}.brand-name .rest{color:var(--y)}
+@media(max-width:360px){.brand-name{display:none}}
+.nav{display:flex;align-items:center;gap:6px;margin-left:auto}
+.nav-btn{height:34px;padding:0 13px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.65);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:var(--f)}
+.nav-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-btn.cta{background:var(--y);color:#000;border-color:var(--y);font-weight:700}
+.nav-btn.cta:hover{background:var(--yd)}
 
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --y:#F5C116;--yd:#C9980D;--yl:#FFF8DC;
-      --ink:#1C1C2E;--ink2:#2E2E45;
-      --bg:#F0EDE8;--card:#FFFFFF;
-      --line:#E5E2DC;--g1:#6B6B7E;--g2:#B8B4AE;
-      --err:#D63031;--ok:#00856F;
-      --r:14px;--f:'Outfit',sans-serif;--fd:'Barlow Condensed',sans-serif;
-    }
-    html{background:var(--ink)}
-    body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+/* ── HERO ── */
+.hero{
+  background:var(--ink);padding:32px 20px 0;
+  position:relative;overflow:hidden;
+}
+.hero-grid{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px);pointer-events:none}
+.hero-wm{position:absolute;right:-20px;top:-10px;font-family:var(--fd);font-size:220px;font-weight:900;color:rgba(245,193,22,.04);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none}
 
-    /* HEADER */
-    .header{
-      position:sticky;top:0;z-index:40;background:var(--ink);
-      height:calc(54px + env(safe-area-inset-top,0));
-      padding:env(safe-area-inset-top,0) 16px 0;
-      display:flex;align-items:center;justify-content:space-between;
-    }
-    .nav{display:flex;gap:6px}
-    .nav a{font-size:11px;font-weight:500;color:rgba(255,255,255,.45);text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:20px;transition:all .15s}
-    .nav a:hover{color:var(--y);border-color:rgba(245,193,22,.3)}
+.hero-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(245,193,22,.10);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:5px 13px 5px 9px;margin-bottom:16px}
+.hero-dot{width:8px;height:8px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 7px rgba(245,193,22,0)}}
+.hero-chip-txt{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase}
 
-    /* HERO */
-    .hero{background:var(--ink);padding:28px 16px 0;position:relative;overflow:hidden}
-    .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px),repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(245,193,22,.035) 31px,rgba(245,193,22,.035) 32px)}
-    .hero-wm{position:absolute;right:-10px;top:-20px;font-family:var(--fd);font-size:200px;font-weight:900;color:rgba(245,193,22,.045);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none}
-    .hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(245,193,22,.1);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:4px 12px 4px 8px;margin-bottom:14px}
-    .hero-dot{width:7px;height:7px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite}
-    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 6px rgba(245,193,22,0)}}
-    .hero-chip-txt{font-size:11px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.3px}
-    .hero-title{font-family:var(--fd);font-size:46px;font-weight:900;font-style:italic;color:#fff;line-height:.92;letter-spacing:-.5px;margin-bottom:12px;position:relative;z-index:1}
-    .hero-title em{font-style:normal;color:var(--y);display:block}
-    .hero-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;max-width:300px;margin-bottom:28px;position:relative;z-index:1}
-    .code-badge{display:inline-flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle;margin:0 2px}
-    .hero-stats{display:flex;border-top:1px solid rgba(255,255,255,.07);margin:0 -16px}
-    .stat{flex:1;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:2px;border-right:1px solid rgba(255,255,255,.07)}
-    .stat:last-child{border-right:none}
-    .stat-n{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--y);line-height:1}
-    .stat-l{font-size:10px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.3px}
-    .hero-curve{height:26px;background:var(--bg);border-radius:26px 26px 0 0;margin-top:-1px}
+.hero-title{
+  font-family:var(--fd);font-style:italic;
+  font-size:clamp(52px,12vw,80px);font-weight:900;
+  color:#fff;line-height:.88;letter-spacing:-.5px;
+  margin-bottom:16px;position:relative;z-index:1;
+}
+.hero-title em{font-style:normal;color:var(--y);display:block}
 
-    /* CONTENT */
-    .content{padding:4px 14px calc(40px + env(safe-area-inset-bottom,0));display:flex;flex-direction:column;gap:10px}
+.hero-desc{font-size:14px;color:rgba(255,255,255,.5);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1}
+.code-b{display:inline-flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle}
 
-    /* CTA */
-    .btn-cta{width:100%;border:none;cursor:pointer;background:var(--y);border-radius:var(--r);display:flex;align-items:stretch;overflow:hidden;box-shadow:0 4px 20px rgba(245,193,22,.35);transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
-    .btn-cta:active{transform:scale(.97);box-shadow:0 2px 8px rgba(245,193,22,.2)}
-    .btn-cta-body{flex:1;padding:18px 20px;text-align:left}
-    .cta-title{font-family:var(--fd);font-size:25px;font-weight:900;color:var(--ink);letter-spacing:.2px;line-height:1;display:block}
-    .cta-sub{font-size:12px;font-weight:600;color:rgba(28,28,46,.55);display:block;margin-top:2px}
-    .btn-cta-ico{width:56px;background:rgba(28,28,46,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;position:relative;z-index:1}
 
-    /* ACARDS */
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .acard{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:transform .1s;box-shadow:0 1px 4px rgba(0,0,0,.05);-webkit-tap-highlight-color:transparent;text-align:left;width:100%}
-    .acard:active{transform:scale(.97)}
-    .acard.row{flex-direction:row;align-items:center;justify-content:space-between}
-    .acard.hl{background:var(--yl);border-color:rgba(245,193,22,.35)}
-    .acard.dk{background:#F4F3F8;border-color:rgba(28,28,46,.1)}
-    .acard-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .icy{background:rgba(245,193,22,.15)} .icb{background:rgba(66,135,245,.1)}
-    .ico{background:rgba(237,137,54,.1)}  .ick{background:rgba(28,28,46,.07)}
-    .acard-txt{display:flex;flex-direction:column;gap:2px;flex:1}
-    .acard-title{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink);line-height:1}
-    .acard-desc{font-size:11px;font-weight:500;color:var(--g1)}
+/* Tracker inline en hero */
+.hero-tracker{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:12px 14px;
+  display:flex;gap:8px;align-items:stretch;
+  margin-bottom:0;position:relative;z-index:1;
+}
+.hero-tracker input{
+  flex:1;background:transparent;border:none;outline:none;
+  font-family:var(--fd);font-size:18px;font-weight:700;color:#fff;
+  letter-spacing:.5px;min-width:0;
+}
+.hero-tracker input::placeholder{color:rgba(255,255,255,.25);font-weight:600;font-size:14px;font-family:var(--f)}
+.hero-tracker-btn{
+  padding:8px 14px;border-radius:8px;
+  background:var(--y);border:none;color:#000;
+  font-size:12px;font-weight:700;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.hero-tracker-btn:active{transform:scale(.97)}
 
-    /* TESTIMONIOS */
-    .testi-wrap{display:flex;flex-direction:column;gap:8px}
-    .testi-hdr{font-family:var(--fd);font-size:17px;font-weight:900;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:8px}
-    .testi-hdr::after{content:'';flex:1;height:1.5px;background:var(--line);border-radius:2px}
-    .testi-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);padding:14px 16px;box-shadow:0 1px 6px rgba(0,0,0,.05);position:relative;overflow:hidden}
-    .testi-card::before{content:'"';position:absolute;top:-6px;right:12px;font-family:var(--fd);font-size:72px;font-weight:900;color:rgba(245,193,22,.12);line-height:1;pointer-events:none}
-    .testi-stars{display:flex;gap:2px;margin-bottom:8px}
-    .testi-star{font-size:13px;color:var(--y)}
-    .testi-texto{font-size:13px;color:var(--g1);line-height:1.6;margin-bottom:10px;font-style:italic}
-    .testi-autor{display:flex;align-items:center;gap:8px}
-    .testi-avatar{width:32px;height:32px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:14px;font-weight:900;color:var(--y);flex-shrink:0}
-    .testi-info{display:flex;flex-direction:column;gap:1px}
-    .testi-nombre{font-size:13px;font-weight:700;color:var(--ink)}
-    .testi-meta{font-size:11px;color:var(--g2)}
-    .testi-nota{font-size:10px;color:var(--g2);margin-top:6px;font-style:italic}
+/* Stats bar */
+.hero-stats{display:flex;border-top:1px solid rgba(255,255,255,.07);margin:16px -20px 0}
+.hstat{flex:1;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:3px;border-right:1px solid rgba(255,255,255,.07)}
+.hstat:last-child{border-right:none}
+.hstat-n{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--y);line-height:1}
+.hstat-l{font-size:10px;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px}
 
-    /* ANIMACIONES */
-    @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    .hero{animation:up .35s ease both}
-    .btn-cta{animation:up .3s ease .08s both}
-    .grid2{animation:up .3s ease .14s both}
-    .a1{animation:up .3s ease .2s both}
-    .a2{animation:up .3s ease .25s both}
-    .a3{animation:up .3s ease .29s both}
+/* ── TRACKER RESULT ── */
+.tracker-result{
+  display:none;margin:12px 0 0;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;padding:14px 16px;
+}
+.tracker-result.v{display:block}
+.tr-code{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--y);display:block;margin-bottom:6px;letter-spacing:.5px}
+.tr-progress{display:flex;align-items:center;gap:0;margin:10px 0 12px;overflow:hidden;border-radius:20px;background:rgba(255,255,255,.06)}
+.tr-step{flex:1;padding:6px 4px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:rgba(255,255,255,.3);transition:all .3s;white-space:nowrap;overflow:hidden}
+.tr-step.done{background:rgba(22,163,74,.25);color:#6EE7B7}
+.tr-step.active{background:var(--y-bg);color:var(--y)}
+.tr-info{font-size:12px;color:rgba(255,255,255,.55);display:flex;flex-direction:column;gap:4px;line-height:1.5}
+.tr-info strong{color:rgba(255,255,255,.85)}
 
-    /* TRACKER */
-    .tracker-wrap{background:var(--ink);border-radius:var(--r);padding:16px 18px}
-    .tracker-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.3);margin-bottom:6px}
-    .tracker-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:10px}
-    .tracker-input-row{display:flex;gap:8px}
-    .tracker-input-row input{flex:1;padding:10px 12px;border:1.5px solid rgba(255,255,255,.15);border-radius:10px;font-size:14px;font-family:var(--f);color:#fff;background:rgba(255,255,255,.07);outline:none;-webkit-appearance:none}
-    .tracker-input-row input::placeholder{color:rgba(255,255,255,.3)}
-    .tracker-input-row input:focus{border-color:var(--y);background:rgba(245,193,22,.07)}
-    .tracker-input-row button{padding:0 16px;background:var(--y);color:var(--ink);border:none;border-radius:10px;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;min-height:44px}
-    .tracker-input-row button:active{opacity:.85}
-    .tracker-result{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.6;display:none}
-    .tracker-result.v{display:block}
-    .tracker-result.err{background:rgba(214,48,49,.08);border:1px solid rgba(214,48,49,.2);color:#D63031}
-    .tr-code{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--y);letter-spacing:1px;display:block;margin-bottom:4px}
-    .tr-estado{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:5px;font-size:11px;font-weight:700;margin-bottom:4px}
-    .tr-info{font-size:12px;color:rgba(255,255,255,.45);line-height:1.7}
-    .st-pendiente{background:rgba(245,193,22,.15);color:#C9980D}
-    .st-asignada{background:rgba(77,168,218,.15);color:#2778A0}
-    .st-completada{background:rgba(78,203,160,.15);color:#00856F}
-    .st-rechazada{background:rgba(214,48,49,.1);color:#D63031}
+/* ── SECCIONES ── */
+.section{padding:40px 20px}
+.section-dark{background:var(--ink)}
+.section-light{background:var(--bg)}
+.section-mid{background:var(--card2)}
 
-    /* MODALES */
-    .ov{display:none;position:fixed;inset:0;background:rgba(15,15,28,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:200;align-items:flex-end;justify-content:center}
-    .ov.open{display:flex}
-    .sheet{background:var(--card);width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:0 0 env(safe-area-inset-bottom,28px);max-height:92svh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideup .26s cubic-bezier(.22,.72,0,1) both}
-    @keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
-    .pill{width:36px;height:4px;background:var(--line);border-radius:4px;margin:10px auto}
-    .sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 0;margin-bottom:14px}
-    .sheet-title{font-family:var(--fd);font-size:23px;font-weight:800;color:var(--ink);letter-spacing:.1px}
-    .sheet-x{background:var(--line);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--g1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .sheet-x:hover{background:var(--g2)}
-    .mbody{padding:0 20px 20px}
-    .fg{margin-bottom:13px}
-    label{display:block;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
-    input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:var(--f);color:var(--ink);background:#FAFAFA;transition:border-color .15s;-webkit-appearance:none;appearance:none}
-    .phone-row{display:grid;grid-template-columns:140px 1fr;gap:10px}
-    .phone-row select,.phone-row input{width:100%}
-    @media(max-width:520px){.phone-row{grid-template-columns:1fr}}
-    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);background:#fff;box-shadow:0 0 0 3px rgba(28,28,46,.06)}
-    textarea{resize:vertical;min-height:72px}
-    .fe{font-size:11px;color:var(--err);margin-top:4px;display:none}
-    .fe.v{display:block}
-    .cb{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;cursor:pointer}
-    .cb input[type=checkbox]{width:18px;height:18px;margin-top:1px;flex-shrink:0;-webkit-appearance:checkbox!important;appearance:checkbox!important;accent-color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:4px}
-    .cb span{font-size:12px;color:var(--g1);line-height:1.55}
-    .cb a{color:var(--ink)}
-    .sep{display:flex;align-items:center;gap:10px;margin:14px 0 12px;font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.6px}
-    .sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--line)}
-    .stars{display:flex;gap:10px;padding:4px 0}
-    .star{font-size:34px;cursor:pointer;color:var(--line);transition:color .1s,transform .1s;user-select:none;line-height:1}
-    .star.on{color:var(--y)}
-    .star:active{transform:scale(.82)}
-    .btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:var(--f);cursor:pointer;margin-top:14px;transition:background .14s,transform .1s;-webkit-tap-highlight-color:transparent}
-    .btn:active{transform:scale(.97)}
-    .btn:disabled{opacity:.5;cursor:not-allowed}
-    .btn-y{background:var(--y);color:var(--ink)}
-    .btn-y:hover{background:var(--yd)}
-    .btn-k{background:var(--ink);color:#fff}
-    .btn-k:hover{background:var(--ink2)}
-    .ok-box{display:none;background:linear-gradient(135deg,#EDFAF3,#D4F0E4);border:1.5px solid #8DD4AA;border-radius:10px;padding:16px 18px;margin-top:14px;font-size:13px;color:var(--ok);line-height:1.7}
-    .ok-box.v{display:block}
-    .ok-code{display:inline-flex;align-items:center;background:var(--ink);color:var(--y);font-family:var(--fd);font-size:24px;font-weight:900;padding:4px 14px;border-radius:8px;margin:6px 0 4px;letter-spacing:1px}
-    .ok-note{display:block;font-size:11px;color:#1A7F5A;margin-top:4px}
-    .err-box{display:none;background:#FFF5F5;border:1.5px solid #FCA5A5;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--err);line-height:1.5}
-    .err-box.v{display:block}
-    .hint{font-size:12px;color:var(--g1);line-height:1.55;margin-top:6px}
-    .sp{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
-    .btn-y .sp{border-color:rgba(28,28,46,.2);border-top-color:var(--ink)}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @media(min-width:480px){.ov{align-items:center}.sheet{border-radius:22px}}
+.sec-label{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--y);margin-bottom:10px}
+.sec-title{font-family:var(--fd);font-size:clamp(34px,7vw,48px);font-weight:900;line-height:.92;letter-spacing:-.5px;margin-bottom:12px}
+.sec-title.light{color:#fff}
+.sec-title.dark{color:var(--ink)}
+.sec-sub{font-size:14px;line-height:1.65;color:var(--g1);max-width:400px}
+.sec-sub.light{color:rgba(255,255,255,.5)}
 
-    /* BRAND */
-    .db-brand{display:flex;flex:1 1 auto;align-items:center;gap:10px;min-width:0;-webkit-tap-highlight-color:transparent;user-select:none;text-decoration:none}
-    .db-iconbox{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;flex:0 0 auto}
-    .db-icon{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1}
-    .db-icon .d{color:#E6E6E6} .db-icon .b{color:#F5C116}
-    .db-wordmark{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.6px;line-height:1;white-space:nowrap}
-    .db-wordmark .d{color:#E6E6E6} .db-wordmark .rest{color:#F5C116}
-    .db-tag{margin-left:6px;font-weight:900;letter-spacing:.5px;color:rgba(255,255,255,.50);font-size:12px;white-space:nowrap}
-    @media(max-width:560px){.db-wordmark{display:none}.db-tag{display:none}}
-  </style>
+/* ── SERVICIOS GRID ── */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
+@media(min-width:480px){.services-grid{grid-template-columns:repeat(4,1fr)}}
+.srv-card{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:16px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;
+  text-align:center;
+}
+.srv-card:hover{background:rgba(245,193,22,.10);border-color:rgba(245,193,22,.25);transform:translateY(-2px)}
+.srv-card:active{transform:scale(.97)}
+.srv-icon{font-size:28px;line-height:1}
+.srv-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);line-height:1.2}
+
+/* ── CÓMO FUNCIONA ── */
+.steps{display:flex;flex-direction:column;gap:0;margin-top:28px}
+.step{
+  display:flex;gap:16px;align-items:flex-start;
+  padding:16px 0;border-bottom:1px solid var(--line);
+}
+.step:last-child{border-bottom:none}
+.step-num{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--y);color:#000;
+  font-family:var(--fd);font-size:18px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;line-height:1;
+}
+.step-title{font-family:var(--fd);font-size:18px;font-weight:900;color:var(--ink);margin-bottom:3px}
+.step-desc{font-size:13px;color:var(--g1);line-height:1.55}
+
+/* ── MUNICIPIOS ── */
+.mun-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:24px}
+@media(min-width:480px){.mun-grid{grid-template-columns:repeat(3,1fr)}}
+.zona-group{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px}
+.zona-name{font-family:var(--fd);font-size:14px;font-weight:900;color:var(--y);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+.zona-munis{display:flex;flex-direction:column;gap:4px}
+.zona-muni{font-size:12px;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:5px}
+.zona-muni::before{content:'';width:5px;height:5px;border-radius:50%;background:rgba(245,193,22,.4);flex-shrink:0}
+
+/* ── TESTIMONIOS ── */
+.testimonios{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.test-card{
+  background:var(--card);border:1.5px solid var(--line);
+  border-radius:var(--r);padding:18px;
+  box-shadow:var(--sh-sm);position:relative;
+}
+.test-card::before{content:'"';position:absolute;top:10px;right:16px;font-family:var(--fd);font-size:60px;font-weight:900;color:var(--y);opacity:.15;line-height:1}
+.test-stars{display:flex;gap:3px;margin-bottom:10px}
+.test-star{font-size:14px;color:var(--y)}
+.test-text{font-size:14px;color:var(--ink);line-height:1.6;margin-bottom:12px;font-style:italic}
+.test-author{display:flex;align-items:center;gap:10px}
+.test-avatar{width:36px;height:36px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:16px;font-weight:900;color:var(--y);flex-shrink:0}
+.test-name{font-size:13px;font-weight:700;color:var(--ink)}
+.test-location{font-size:11px;color:var(--g2)}
+.test-service{display:inline-flex;align-items:center;gap:4px;margin-top:4px;padding:2px 8px;background:var(--y-bg);border:1px solid var(--y-border);border-radius:20px;font-size:10px;font-weight:700;color:var(--yd)}
+
+/* ── PARA TÉCNICOS ── */
+.tecnico-benefits{display:flex;flex-direction:column;gap:14px;margin-top:24px}
+.benefit{display:flex;align-items:flex-start;gap:14px}
+.benefit-ico{width:44px;height:44px;border-radius:12px;background:rgba(245,193,22,.12);border:1px solid var(--y-border);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.benefit-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.benefit-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.55}
+
+/* ── BOTONES ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:13px 22px;border-radius:11px;
+  font-family:var(--f);font-size:14px;font-weight:700;
+  border:1.5px solid transparent;cursor:pointer;
+  transition:transform .12s,background .15s;
+  white-space:nowrap;-webkit-tap-highlight-color:transparent;
+}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-y{background:var(--y);color:#000;border-color:var(--y)}
+.btn-y:hover{background:var(--yd)}
+.btn-k{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-outline{background:transparent;color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.2)}
+.btn-outline:hover{background:rgba(255,255,255,.07);color:#fff}
+.btn-g{background:var(--card2);color:var(--ink);border-color:var(--line)}
+.btn-sm{padding:9px 16px;font-size:13px;border-radius:9px}
+.btn-full{width:100%;justify-content:center}
+
+/* ── MODALES ── */
+.ov{display:none;position:fixed;inset:0;background:rgba(15,15,26,.75);backdrop-filter:blur(6px);z-index:200;align-items:flex-end;justify-content:center}
+.ov.open{display:flex}
+.sheet{background:var(--card);border-radius:22px 22px 0 0;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px);box-shadow:0 -8px 48px rgba(0,0,0,.2);animation:sheetUp .25s cubic-bezier(.22,.72,0,1) both}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.pill{width:36px;height:4px;border-radius:3px;background:var(--line);margin:12px auto 0}
+.sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 12px;border-bottom:1.5px solid var(--line)}
+.sheet-title{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-.2px}
+.sheet-x{width:30px;height:30px;border-radius:50%;background:var(--card2);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--g1);cursor:pointer;transition:background .15s}
+.sheet-x:hover{background:var(--line)}
+.mbody{padding:16px 20px 24px;display:flex;flex-direction:column;gap:14px}
+
+/* FORMULARIO MULTI-STEP */
+.form-step{display:none;flex-direction:column;gap:14px}
+.form-step.active{display:flex}
+.step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .2s}
+.step-dot.active{background:var(--y);width:20px;border-radius:4px}
+.step-dot.done{background:var(--ok)}
+
+/* Servicio selector visual */
+.srv-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.srv-opt{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:12px 6px;border-radius:10px;
+  border:1.5px solid var(--line);background:var(--card2);
+  cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;
+  font-family:var(--f);text-align:center;
+}
+.srv-opt:hover{border-color:var(--y);background:var(--y-bg)}
+.srv-opt.selected{border-color:var(--y);background:var(--y-bg);box-shadow:0 0 0 3px var(--y-bg)}
+.srv-opt-ico{font-size:24px;line-height:1}
+.srv-opt-lbl{font-size:11px;font-weight:700;color:var(--ink);line-height:1.2}
+
+/* Hora selector visual */
+.hora-opts{display:flex;flex-direction:column;gap:6px}
+.hora-opt{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;border-radius:10px;
+  border:1.5px solid var(--line);background:var(--card2);
+  cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;
+  font-family:var(--f);
+}
+.hora-opt:hover{border-color:var(--y);background:var(--y-bg)}
+.hora-opt.selected{border-color:var(--y);background:var(--y-bg);box-shadow:0 0 0 3px var(--y-bg)}
+.hora-opt-ico{font-size:18px;flex-shrink:0}
+.hora-opt-txt{font-size:13px;font-weight:600;color:var(--ink)}
+.hora-opt-sub{font-size:11px;color:var(--g2)}
+
+/* Form fields */
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g1)}
+.fg input,.fg select,.fg textarea{
+  padding:12px 14px;background:var(--card2);
+  border:1.5px solid var(--line);border-radius:10px;
+  font-family:var(--f);font-size:14px;color:var(--ink);
+  outline:none;-webkit-appearance:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--y);box-shadow:0 0 0 3px var(--y-bg);background:var(--card)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--g3)}
+.fg textarea{resize:vertical;min-height:72px}
+.phone-row{display:flex;gap:8px}
+.phone-row select{width:130px;flex-shrink:0}
+.phone-row input{flex:1}
+.fe{display:none;font-size:11px;color:var(--err);font-weight:600;padding:3px 0}
+.fe.v{display:block}
+.cb{display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:4px 0}
+.cb input{width:18px;height:18px;border-radius:5px;accent-color:var(--y);flex-shrink:0;margin-top:1px}
+.cb span{font-size:13px;color:var(--g1);line-height:1.5}
+.cb a{color:var(--ink);font-weight:600}
+
+/* OK / Error boxes */
+.ok-box{display:none;padding:14px 16px;background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:11px;font-size:13px;color:var(--ok);font-weight:600;line-height:1.55;text-align:center}
+.ok-box.v{display:block}
+.ok-code{display:block;font-family:var(--fd);font-size:32px;font-weight:900;color:var(--ok);letter-spacing:1px;margin:8px 0 4px}
+.ok-note{font-size:11px;color:var(--g1);font-weight:400}
+.err-box{display:none;padding:10px 13px;background:var(--err-bg);border:1.5px solid var(--err-border);border-radius:10px;font-size:13px;color:var(--err);font-weight:500}
+.err-box.v{display:block}
+.hint{font-size:12px;color:var(--g2);line-height:1.55}
+.hint a{color:var(--ink)}
+
+/* ── SPINNER ── */
+.sp{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid rgba(0,0,0,.15);border-top-color:#000;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn-k .sp{border-color:rgba(255,255,255,.25);border-top-color:#fff}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;white-space:nowrap;z-index:9999;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── FOOTER ── */
+.footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:28px 20px;text-align:center}
+.footer-brand{font-family:var(--fd);font-size:24px;font-weight:900;color:#fff;margin-bottom:8px}
+.footer-brand span{color:var(--y)}
+.footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.footer-link{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
+.footer-link:hover{color:rgba(255,255,255,.8)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.2)}
+</style>
 </head>
 <body>
+<div class="toast" id="toast"></div>
 
+<!-- HEADER -->
 <header class="header">
-  <a href="#" class="db-brand" aria-label="dbarrio">
-    <span class="db-iconbox" aria-hidden="true">
-      <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
-    </span>
-    <span class="db-wordmark"><span class="d">d</span><span class="rest">barrio</span></span>
-    <span class="db-tag">SERVICIOS</span>
-  </a>
+  <div class="brand">
+    <div class="brand-icon" aria-hidden="true">
+      <span class="brand-letters"><span class="d">d</span><span class="b">b</span></span>
+    </div>
+    <span class="brand-name"><span class="d">d</span><span class="rest">barrio</span></span>
+  </div>
   <nav class="nav">
-    <a href="privacidad.html" target="_blank">Privacidad</a>
-    <a href="terminos.html" target="_blank">Términos</a>
+    <button class="nav-btn" onclick="open_('acc')">Entrar</button>
+    <button class="nav-btn cta" onclick="open_('sol')">Solicitar</button>
   </nav>
 </header>
 
+<!-- ══ HERO ══ -->
 <section class="hero">
+  <div class="hero-grid" aria-hidden="true"></div>
   <div class="hero-wm" aria-hidden="true">db</div>
+
   <div class="hero-chip">
     <span class="hero-dot"></span>
-    <span class="hero-chip-txt">Activo ahora</span>
+    <span class="hero-chip-txt">Técnicos activos en La Habana</span>
   </div>
-  <h1 class="hero-title">Encuentra un técnico <em>cerca de ti.</em></h1>
+
+  <h1 class="hero-title">
+    ¿Se te<br>rompió algo<br><em>en casa?</em>
+  </h1>
+
   <p class="hero-desc">
-    Reparaciones del hogar en La Habana sin complicaciones.
-    Electricidad, plomería, refrigeración y más en un solo lugar.
-    Solicita el servicio y coordinamos un técnico en tu municipio.
-    Guarda tu código <span class="code-badge">db-xxxx</span> para seguimiento, garantía y calificación.
+    Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más.
+    Solicita ahora — recibe tu <span class="code-b">db-xxxx</span> de seguimiento.
   </p>
+
+  <div class="hero-btns">
+    <button class="btn btn-y" onclick="open_('sol')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      Solicitar servicio
+    </button>
+    <button class="btn btn-outline" onclick="scrollTo('.section-como')">¿Cómo funciona?</button>
+  </div>
+
+  <!-- Tracker inline -->
+  <div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px">Seguimiento de tu solicitud</div>
+    <div class="hero-tracker">
+      <input type="text" id="trk-input" placeholder="db-xxxx — ingresa tu código" maxlength="12" oninput="this.value=this.value.replace(/[^0-9a-zA-Z\-]/g,'').toLowerCase()"/>
+      <button class="hero-tracker-btn" onclick="buscarEstado()">Buscar</button>
+    </div>
+    <div class="tracker-result" id="tracker-result"></div>
+  </div>
+
+  <!-- Stats -->
   <div class="hero-stats">
-    <div class="stat"><span class="stat-n">24h</span><span class="stat-l">Respuesta</span></div>
-    <div class="stat"><span class="stat-n">Técnicos</span><span class="stat-l">Verificados</span></div>
-    <div class="stat"><span class="stat-n">WhatsApp</span><span class="stat-l">Directo</span></div>
+    <div class="hstat"><span class="hstat-n">15</span><span class="hstat-l">Municipios</span></div>
+    <div class="hstat"><span class="hstat-n">4</span><span class="hstat-l">Zonas</span></div>
+    <div class="hstat"><span class="hstat-n">9</span><span class="hstat-l">Servicios</span></div>
+    <div class="hstat"><span class="hstat-n">24h</span><span class="hstat-l">Respuesta</span></div>
   </div>
 </section>
-<div class="hero-curve"></div>
 
-<div class="content">
+<!-- ══ SERVICIOS ══ -->
+<section class="section section-dark">
+  <div class="sec-label">🔧 Lo que resolvemos</div>
+  <h2 class="sec-title light">Selecciona<br><em style="font-style:normal;color:var(--y)">tu problema</em></h2>
+  <p class="sec-sub light">Técnicos especializados en cada área. Toca el servicio que necesitas y solicita directamente.</p>
 
-  <!-- CTA principal -->
-  <button class="btn-cta" onclick="open_('sol')">
-    <div class="btn-cta-body">
-      <span class="cta-title">Solicitar servicio</span>
-      <span class="cta-sub">Un técnico se pondrá en contacto contigo</span>
+  <div class="services-grid">
+    <div class="srv-card" onclick="abrirConServicio('Electrodomésticos')"><span class="srv-icon">🧺</span><span class="srv-label">Electro-domésticos</span></div>
+    <div class="srv-card" onclick="abrirConServicio('Plomería')"><span class="srv-icon">🚿</span><span class="srv-label">Plomería</span></div>
+    <div class="srv-card" onclick="abrirConServicio('Electricidad')"><span class="srv-icon">⚡</span><span class="srv-label">Electricidad</span></div>
+    <div class="srv-card" onclick="abrirConServicio('Refrigeración')"><span class="srv-icon">❄️</span><span class="srv-label">Refrigeración</span></div>
+    <div class="srv-card" onclick="abrirConServicio('Televisión / audio')"><span class="srv-icon">📺</span><span class="srv-label">TV / Audio</span></div>
+    <div class="srv-card" onclick="abrirConServicio('Computadoras')"><span class="srv-icon">💻</span><span class="srv-label">Computadoras</span></div>
+    <div class="srv-card" onclick="abrirConServicio('Celulares')"><span class="srv-icon">📱</span><span class="srv-label">Celulares</span></div>
+    <div class="srv-card" onclick="abrirConServicio('Cerrajería')"><span class="srv-icon">🔑</span><span class="srv-label">Cerrajería</span></div>
+    <div class="srv-card" onclick="abrirConServicio('Otro')"><span class="srv-icon">🛠</span><span class="srv-label">Otro</span></div>
+  </div>
+</section>
+
+<!-- ══ CÓMO FUNCIONA ══ -->
+<section class="section section-light section-como">
+  <div class="sec-label">✅ El proceso</div>
+  <h2 class="sec-title dark">Así de<br><em style="font-style:normal;color:var(--ink)">sencillo</em></h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Dinos qué necesitas</div>
+        <div class="step-desc">Llena el formulario con tu municipio, tipo de servicio y tu número de WhatsApp. Solo toma un minuto.</div>
+      </div>
     </div>
-    <div class="btn-cta-ico">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(28,28,46,.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Recibe tu código <span class="code-b" style="font-size:13px">db-xxxx</span></div>
+        <div class="step-desc">Al registrar tu solicitud obtienes un código único para hacer seguimiento, reclamar garantía o calificar el servicio.</div>
+      </div>
     </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Te asignamos un técnico</div>
+        <div class="step-desc">Un técnico verificado de tu zona se pone en contacto contigo por WhatsApp para coordinar la visita.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Servicio con garantía</div>
+        <div class="step-desc">El trabajo incluye garantía. Si algo falla dentro del período, lo resolvemos sin costo adicional.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COBERTURA ══ -->
+<section class="section section-dark">
+  <div class="sec-label">📍 Cobertura</div>
+  <h2 class="sec-title light">Toda<br><em style="font-style:normal;color:var(--y)">La Habana</em></h2>
+  <p class="sec-sub light">Cubrimos los 15 municipios de La Habana, organizados en 4 zonas de atención.</p>
+
+  <div class="mun-grid">
+    <div class="zona-group">
+      <div class="zona-name">Occidente</div>
+      <div class="zona-munis">
+        <span class="zona-muni">Playa</span>
+        <span class="zona-muni">La Lisa</span>
+        <span class="zona-muni">Marianao</span>
+      </div>
+    </div>
+    <div class="zona-group" style="grid-column:span 1">
+      <div class="zona-name">Centro</div>
+      <div class="zona-munis">
+        <span class="zona-muni">Plaza de la Rev.</span>
+        <span class="zona-muni">Centro Habana</span>
+        <span class="zona-muni">La Habana Vieja</span>
+        <span class="zona-muni">Diez de Octubre</span>
+        <span class="zona-muni">Cerro</span>
+      </div>
+    </div>
+    <div class="zona-group">
+      <div class="zona-name">Oriente</div>
+      <div class="zona-munis">
+        <span class="zona-muni">Regla</span>
+        <span class="zona-muni">H. del Este</span>
+        <span class="zona-muni">Guanabacoa</span>
+        <span class="zona-muni">S.M. del Padrón</span>
+      </div>
+    </div>
+    <div class="zona-group">
+      <div class="zona-name">Sur</div>
+      <div class="zona-munis">
+        <span class="zona-muni">Boyeros</span>
+        <span class="zona-muni">Arroyo Naranjo</span>
+        <span class="zona-muni">Cotorro</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIOS ══ -->
+<section class="section section-light">
+  <div class="sec-label">⭐ Clientes</div>
+  <h2 class="sec-title dark">Lo que<br><em style="font-style:normal;color:var(--ink)">dicen</em></h2>
+
+  <div class="testimonios">
+    <div class="test-card">
+      <div class="test-stars">⭐⭐⭐⭐⭐</div>
+      <p class="test-text">El técnico llegó el mismo día, resolvió el problema con el compresor y todo quedó funcionando perfecto. Muy profesional y rápido.</p>
+      <div class="test-author">
+        <div class="test-avatar">M</div>
+        <div>
+          <div class="test-name">María L.</div>
+          <div class="test-location">Playa · La Habana</div>
+          <div class="test-service">Refrigeración</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">⭐⭐⭐⭐⭐</div>
+      <p class="test-text">Llevaba semanas sin agua por un problema en la tubería. En menos de 2 horas desde que solicité ya tenía el técnico aquí. Increíble.</p>
+      <div class="test-author">
+        <div class="test-avatar">R</div>
+        <div>
+          <div class="test-name">Reinaldo P.</div>
+          <div class="test-location">Diez de Octubre · La Habana</div>
+          <div class="test-service">Plomería</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">⭐⭐⭐⭐⭐</div>
+      <p class="test-text">Reparó la lavadora que tres técnicos habían dicho que no tenía solución. Además dejó garantía de 30 días. Lo recomiendo sin dudas.</p>
+      <div class="test-author">
+        <div class="test-avatar">Y</div>
+        <div>
+          <div class="test-name">Yolanda M.</div>
+          <div class="test-location">Centro Habana · La Habana</div>
+          <div class="test-service">Electrodomésticos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PARA TÉCNICOS ══ -->
+<section class="section section-dark">
+  <div class="sec-label">👷 ¿Eres técnico?</div>
+  <h2 class="sec-title light">Trabaja con<br><em style="font-style:normal;color:var(--y)">nosotros</em></h2>
+  <p class="sec-sub light" style="margin-bottom:24px">Sin inversión. Sin papeleo. Tú pones la habilidad, nosotros ponemos el trabajo.</p>
+
+  <div class="tecnico-benefits">
+    <div class="benefit">
+      <div class="benefit-ico">📱</div>
+      <div><div class="benefit-title">Órdenes directo a tu teléfono</div><div class="benefit-desc">Recibes notificaciones por WhatsApp cuando hay trabajo en tu zona. Sin llamadas, sin intermediarios innecesarios.</div></div>
+    </div>
+    <div class="benefit">
+      <div class="benefit-ico">💰</div>
+      <div><div class="benefit-title">Tú cobras, nosotros cobramos poco</div><div class="benefit-desc">El cliente te paga a ti directamente. Nosotros tomamos solo una pequeña comisión por la gestión.</div></div>
+    </div>
+    <div class="benefit">
+      <div class="benefit-ico">🛡</div>
+      <div><div class="benefit-title">Técnico verificado y con respaldo</div><div class="benefit-desc">Tu perfil muestra tus trabajos y calificaciones. Los clientes confían más en técnicos con historial real.</div></div>
+    </div>
+  </div>
+
+  <button class="btn btn-y btn-full" style="margin-top:24px" onclick="open_('uni')">
+    Registrarme como técnico
   </button>
+</section>
 
-  <!-- Grid acciones -->
-  <div class="grid2">
-    <button class="acard" onclick="open_('gar')">
-      <div class="acard-icon icb">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4287f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-      </div>
-      <div class="acard-txt">
-        <span class="acard-title">Garantía</span>
-        <span class="acard-desc">Si el trabajo falló</span>
-      </div>
-    </button>
-
-    <button class="acard" onclick="open_('cal')">
-      <div class="acard-icon icy">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      </div>
-      <div class="acard-txt">
-        <span class="acard-title">Calificar</span>
-        <span class="acard-desc">Control de calidad</span>
-      </div>
-    </button>
-
-    <button class="acard hl" onclick="open_('uni')">
-      <div class="acard-icon ico">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DD6B20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <div class="acard-txt">
-        <span class="acard-title">Únete</span>
-        <span class="acard-desc">Trabaja con nosotros</span>
-      </div>
-    </button>
-
-    <button class="acard" onclick="location.href='zona-db.html'">
-      <div class="acard-icon icy">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9980D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M6 17V9l6-4 6 4v8"/><path d="M10 17v-4h4v4"/></svg>
-      </div>
-      <div class="acard-txt">
-        <span class="acard-title">Zona db</span>
-        <span class="acard-desc">Tips del barrio</span>
-      </div>
-    </button>
-  </div>
-
-  <!-- TESTIMONIOS -->
-  <div class="testi-wrap a1">
-    <div class="testi-hdr">Lo que dicen nuestros clientes</div>
-
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-texto">El técnico llegó puntual y resolvió el problema del split en menos de una hora. Pensábamos que necesitaba gas pero era solo el drenaje tapado. Ahorramos bastante dinero.</div>
-      <div class="testi-autor">
-        <div class="testi-avatar">ML</div>
-        <div class="testi-info">
-          <span class="testi-nombre">María L.</span>
-          <span class="testi-meta">Refrigeración · Vedado</span>
-        </div>
-      </div>
-      <div class="testi-nota">Código db-0041 · Servicio completado con garantía</div>
-    </div>
-
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-texto">Rápido y honesto. Me explicó todo lo que hizo, por qué saltaba el breaker y cómo evitarlo. Primera vez que un técnico me da ese nivel de detalle. Lo voy a recomendar.</div>
-      <div class="testi-autor">
-        <div class="testi-avatar">CR</div>
-        <div class="testi-info">
-          <span class="testi-nombre">Carlos R.</span>
-          <span class="testi-meta">Electricidad · Centro Habana</span>
-        </div>
-      </div>
-      <div class="testi-nota">Código db-0078 · 5 estrellas</div>
-    </div>
-
-    <div class="testi-card">
-      <div class="testi-stars">★★★★☆</div>
-      <div class="testi-texto">El código de seguimiento que me dieron fue muy útil para saber el estado. Al final el técnico fue puntual y la gotera quedó resuelta. Volveré a usarlo.</div>
-      <div class="testi-autor">
-        <div class="testi-avatar">YM</div>
-        <div class="testi-info">
-          <span class="testi-nombre">Yoandra M.</span>
-          <span class="testi-meta">Plomería · Playa</span>
-        </div>
-      </div>
-      <div class="testi-nota">Código db-0112 · Garantía activa</div>
-    </div>
-  </div>
-
-  <!-- Acceso privado -->
-  <button class="acard row dk a2" onclick="open_('acc')">
-    <div class="acard-icon ick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#454562" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-    <div class="acard-txt"><span class="acard-title">Acceso privado</span><span class="acard-desc">Admin, encargados y técnicos verificados</span></div>
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8B4AE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+<!-- ══ CTA FINAL ══ -->
+<section class="section section-mid" style="text-align:center;padding:48px 20px">
+  <h2 class="sec-title dark" style="margin-bottom:12px">¿Tienes algo<br>que reparar?</h2>
+  <p style="font-size:14px;color:var(--g1);margin-bottom:24px;line-height:1.6">No dejes que una falla pequeña se convierta en un problema grande.</p>
+  <button class="btn btn-k btn-full" style="max-width:320px;margin:0 auto" onclick="open_('sol')">
+    Solicitar ahora — es gratis
   </button>
+</section>
 
-  <!-- Tracker -->
-  <div class="tracker-wrap a3">
-    <div class="tracker-label">Consultar mi orden</div>
-    <div class="tracker-sub">Ingresa tu código para ver el estado</div>
-    <div class="tracker-input-row">
-      <input id="tr-cod" type="text" placeholder="db-xxxx" maxlength="12" autocomplete="off"
-        oninput="this.value=this.value.replace(/[^0-9db\-]/gi,'').toLowerCase()"
-        onkeydown="if(event.key==='Enter')buscarOrden()"/>
-      <button onclick="buscarOrden()">Buscar</button>
-    </div>
-    <div class="tracker-result" id="tr-result"></div>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">d<span>b</span>arrio</div>
+  <div class="footer-links">
+    <a class="footer-link" href="zona-db.html">Zona dbarrio</a>
+    <a class="footer-link" href="privacidad.html">Privacidad</a>
+    <a class="footer-link" href="terminos.html">Términos</a>
+    <a class="footer-link" href="javascript:void(0)" onclick="open_('acc')">Acceso técnicos</a>
   </div>
+  <div class="footer-copy">© 2025 dbarrio · La Habana · dbarrio-two.vercel.app</div>
+</footer>
 
-</div>
-
-<!-- ══ MODAL SOLICITAR ══ -->
+<!-- ══ MODAL SOLICITUD (multi-step) ══ -->
 <div class="ov" id="ov-sol" onclick="ovc(event,'sol')">
 <div class="sheet">
   <div class="pill"></div>
   <div class="sheet-hdr">
-    <span class="sheet-title">Solicitar técnico</span>
+    <span class="sheet-title">Solicitar servicio</span>
     <button class="sheet-x" onclick="close_('sol')">&times;</button>
   </div>
   <div class="mbody">
-    <div class="hint" style="margin-bottom:12px">
-      Estamos <strong>activando la red por municipios</strong>. Si aún no hay técnico disponible en tu zona,
-      tu solicitud queda registrada y te avisamos por WhatsApp cuando podamos atender.
+    <!-- Step indicator -->
+    <div class="step-indicator">
+      <div class="step-dot active" id="sdot-1"></div>
+      <div style="flex:1;height:2px;background:var(--line);border-radius:2px"><div id="sbar" style="height:100%;width:0;background:var(--y);border-radius:2px;transition:width .3s"></div></div>
+      <div class="step-dot" id="sdot-2"></div>
     </div>
-    <div class="fg">
-      <label>Nombre completo</label>
-      <input id="s-cli" type="text" placeholder="Tu nombre" autocomplete="name"/>
-      <div class="fe" id="es-cli">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>WhatsApp</label>
-      <div class="phone-row">
-        <select id="s-code">
-          <option value="+53" selected>Cuba (+53)</option>
-          <option value="+34">España (+34)</option>
-          <option value="+1">EE. UU. (+1)</option>
-          <option value="+52">México (+52)</option>
-        </select>
-        <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
+
+    <!-- PASO 1 -->
+    <div class="form-step active" id="step-1">
+      <div>
+        <div style="font-family:var(--fd);font-size:18px;font-weight:900;color:var(--ink);margin-bottom:4px">¿Qué necesitas reparar?</div>
+        <div style="font-size:12px;color:var(--g2)">Paso 1 de 2 — Tipo de servicio y datos de contacto</div>
       </div>
-      <div class="fe" id="es-wa">Número inválido.</div>
+
+      <div class="fg">
+        <label>Tipo de servicio</label>
+        <div class="srv-selector" id="srv-selector">
+          <button class="srv-opt" data-srv="Electrodomésticos" onclick="selSrv(this)"><span class="srv-opt-ico">🧺</span><span class="srv-opt-lbl">Electro-domésticos</span></button>
+          <button class="srv-opt" data-srv="Plomería" onclick="selSrv(this)"><span class="srv-opt-ico">🚿</span><span class="srv-opt-lbl">Plomería</span></button>
+          <button class="srv-opt" data-srv="Electricidad" onclick="selSrv(this)"><span class="srv-opt-ico">⚡</span><span class="srv-opt-lbl">Electricidad</span></button>
+          <button class="srv-opt" data-srv="Refrigeración" onclick="selSrv(this)"><span class="srv-opt-ico">❄️</span><span class="srv-opt-lbl">Refrigeración</span></button>
+          <button class="srv-opt" data-srv="Televisión / audio" onclick="selSrv(this)"><span class="srv-opt-ico">📺</span><span class="srv-opt-lbl">TV / Audio</span></button>
+          <button class="srv-opt" data-srv="Computadoras" onclick="selSrv(this)"><span class="srv-opt-ico">💻</span><span class="srv-opt-lbl">Computadoras</span></button>
+          <button class="srv-opt" data-srv="Celulares" onclick="selSrv(this)"><span class="srv-opt-ico">📱</span><span class="srv-opt-lbl">Celulares</span></button>
+          <button class="srv-opt" data-srv="Cerrajería" onclick="selSrv(this)"><span class="srv-opt-ico">🔑</span><span class="srv-opt-lbl">Cerrajería</span></button>
+          <button class="srv-opt" data-srv="Otro" onclick="selSrv(this)"><span class="srv-opt-ico">🛠</span><span class="srv-opt-lbl">Otro</span></button>
+        </div>
+        <div class="fe" id="es-srv">Selecciona un tipo de servicio.</div>
+      </div>
+
+      <div class="fg">
+        <label>Municipio</label>
+        <select id="s-mun">
+          <option value="">-- Seleccionar municipio --</option>
+          <optgroup label="Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
+          <optgroup label="Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
+          <optgroup label="Oriente"><option>Regla</option><option>La Habana del Este</option><option>Guanabacoa</option><option>San Miguel del Padrón</option></optgroup>
+          <optgroup label="Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
+        </select>
+        <div class="fe" id="es-mun">Selecciona tu municipio.</div>
+      </div>
+
+      <div class="fg">
+        <label>Tu nombre</label>
+        <input id="s-cli" type="text" placeholder="¿Cómo te llamamos?"/>
+        <div class="fe" id="es-cli">Escribe tu nombre.</div>
+      </div>
+
+      <div class="fg">
+        <label>WhatsApp</label>
+        <div class="phone-row">
+          <select id="s-code">
+            <option value="+53" selected>🇨🇺 +53</option>
+            <option value="+34">🇪🇸 +34</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+52">🇲🇽 +52</option>
+          </select>
+          <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
+        </div>
+        <div class="fe" id="es-wa">Número inválido.</div>
+      </div>
+
+      <button class="btn btn-k btn-full" onclick="irStep2()">Continuar →</button>
     </div>
-    <div class="fg">
-      <label>Municipio</label>
-      <select id="s-mun" onchange="autoZona()">
-        <option value="">-- Seleccionar municipio --</option>
-        <optgroup label="Occidente">
-          <option value="Playa">Playa</option>
-          <option value="La Lisa">La Lisa</option>
-          <option value="Marianao">Marianao</option>
-        </optgroup>
-        <optgroup label="Centro">
-          <option value="Plaza de la Revolución">Plaza de la Revolución</option>
-          <option value="Centro Habana">Centro Habana</option>
-          <option value="La Habana Vieja">La Habana Vieja</option>
-          <option value="Diez de Octubre">Diez de Octubre</option>
-          <option value="Cerro">Cerro</option>
-        </optgroup>
-        <optgroup label="Oriente">
-          <option value="Regla">Regla</option>
-          <option value="La Habana del Este">La Habana del Este</option>
-          <option value="Guanabacoa">Guanabacoa</option>
-          <option value="San Miguel del Padrón">San Miguel del Padrón</option>
-        </optgroup>
-        <optgroup label="Sur">
-          <option value="Boyeros">Boyeros</option>
-          <option value="Arroyo Naranjo">Arroyo Naranjo</option>
-          <option value="Cotorro">Cotorro</option>
-        </optgroup>
-      </select>
-      <div class="fe" id="es-mun">Selecciona tu municipio.</div>
-      <div id="zona-hint" style="display:none;font-size:11px;color:var(--g1);margin-top:4px;font-weight:600"></div>
+
+    <!-- PASO 2 -->
+    <div class="form-step" id="step-2">
+      <div>
+        <div style="font-family:var(--fd);font-size:18px;font-weight:900;color:var(--ink);margin-bottom:4px">Último paso</div>
+        <div style="font-size:12px;color:var(--g2)">Paso 2 de 2 — Detalles del problema y horario</div>
+      </div>
+
+      <div class="fg">
+        <label>¿Cuándo te viene bien?</label>
+        <div class="hora-opts" id="hora-opts">
+          <div class="hora-opt" data-hora="Hoy mismo — urgente" onclick="selHora(this)"><span class="hora-opt-ico">🔴</span><div><div class="hora-opt-txt">Hoy mismo — urgente</div><div class="hora-opt-sub">Lo antes posible</div></div></div>
+          <div class="hora-opt" data-hora="Mañana por la mañana (8:00–12:00)" onclick="selHora(this)"><span class="hora-opt-ico">🌅</span><div><div class="hora-opt-txt">Mañana por la mañana</div><div class="hora-opt-sub">8:00 – 12:00</div></div></div>
+          <div class="hora-opt" data-hora="Esta tarde (15:00–19:00)" onclick="selHora(this)"><span class="hora-opt-ico">🌇</span><div><div class="hora-opt-txt">Esta tarde</div><div class="hora-opt-sub">15:00 – 19:00</div></div></div>
+          <div class="hora-opt" data-hora="Esta semana — coordinar" onclick="selHora(this)"><span class="hora-opt-ico">📅</span><div><div class="hora-opt-txt">Esta semana</div><div class="hora-opt-sub">Coordinamos por WhatsApp</div></div></div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Describe el problema</label>
+        <textarea id="s-det" placeholder="¿Qué falla? Marca, modelo, desde cuándo... Cuanto más detalle, mejor."></textarea>
+      </div>
+
+      <div class="fg">
+        <label>Dirección (opcional)</label>
+        <input id="s-dir" type="text" placeholder="Calle, número, referencias..."/>
+      </div>
+
+      <div class="cb" id="cb-sol">
+        <input type="checkbox" id="s-cp"/>
+        <span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span>
+      </div>
+      <div class="fe" id="es-cp">Debes aceptar Términos y Privacidad.</div>
+
+      <div class="ok-box" id="ok-sol">
+        ✅ ¡Solicitud registrada!<br/>Tu código es:
+        <span class="ok-code" id="cod-sol"></span>
+        <span class="ok-note">Guárdalo — lo necesitas para seguimiento, garantía y calificación.</span>
+      </div>
+      <div class="err-box" id="err-sol"></div>
+
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-g" style="flex:0 0 auto" onclick="irStep1()">← Atrás</button>
+        <button class="btn btn-y" id="btn-sol" style="flex:1" onclick="envSol()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Registrar solicitud
+        </button>
+      </div>
+      <p class="hint">Recibirás un mensaje de WhatsApp cuando tengamos un técnico disponible en tu zona.</p>
     </div>
-    <!-- NUEVO: Hora preferida -->
-    <div class="fg">
-      <label>¿Cuándo te viene bien? (opcional)</label>
-      <select id="s-hora">
-        <option value="">-- Sin preferencia --</option>
-        <option value="Mañana (8:00–12:00)">Mañana (8:00–12:00)</option>
-        <option value="Mediodía (12:00–15:00)">Mediodía (12:00–15:00)</option>
-        <option value="Tarde (15:00–19:00)">Tarde (15:00–19:00)</option>
-        <option value="Cualquier horario">Cualquier horario</option>
-        <option value="Urgente — lo antes posible">Urgente — lo antes posible</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label>Dirección (opcional)</label>
-      <input id="s-dir" type="text" placeholder="Calle, número, referencias..."/>
-    </div>
-    <div class="fg">
-      <label>Tipo de servicio</label>
-      <select id="s-srv">
-        <option value="">-- Seleccionar --</option>
-        <option>Electrodomésticos</option>
-        <option>Plomería</option>
-        <option>Electricidad</option>
-        <option>Refrigeración</option>
-        <option>Televisión / audio</option>
-        <option>Computadoras</option>
-        <option>Celulares</option>
-        <option>Cerrajería</option>
-        <option>Otro</option>
-      </select>
-      <div class="fe" id="es-srv">Selecciona un servicio.</div>
-    </div>
-    <div class="fg">
-      <label>Descripción del problema</label>
-      <textarea id="s-det" placeholder="Describe qué falla o qué necesitas... (marca, modelo y desde cuándo)"></textarea>
-    </div>
-    <p class="hint" style="margin-top:-4px;margin-bottom:10px">
-      Recibirás un <strong>código db-xxxx</strong> para seguimiento, garantía y calificación.
-    </p>
-    <div class="cb">
-      <input type="checkbox" id="s-cp"/>
-      <span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span>
-    </div>
-    <div class="fe" id="es-cp">Debes aceptar Términos y Privacidad.</div>
-    <div class="ok-box" id="ok-sol">
-      ✅ Solicitud registrada. Tu código es:<br/>
-      <span class="ok-code" id="cod-sol"></span>
-      <span class="ok-note">Guárdalo — lo necesitas para garantía, reclamo y calificación.</span>
-    </div>
-    <div class="err-box" id="err-sol"></div>
-    <button class="btn btn-y" id="btn-sol" onclick="envSol()">Registrar solicitud</button>
-    <p class="hint" style="margin-top:10px">Si es urgente, selecciónalo en el horario o escríbelo en la descripción.</p>
   </div>
 </div></div>
 
 <!-- ══ MODAL GARANTÍA ══ -->
 <div class="ov" id="ov-gar" onclick="ovc(event,'gar')">
-<div class="sheet">
-  <div class="pill"></div>
-  <div class="sheet-hdr">
-    <span class="sheet-title">Reclamar garantía</span>
-    <button class="sheet-x" onclick="close_('gar')">&times;</button>
-  </div>
+<div class="sheet"><div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Reclamar garantía</span><button class="sheet-x" onclick="close_('gar')">&times;</button></div>
   <div class="mbody">
-    <div class="hint" style="margin-bottom:12px">Solo aplica para trabajos realizados dentro del período de garantía activa.</div>
-    <div class="fg">
-      <label>Código del servicio</label>
-      <input id="g-rec" type="text" placeholder="db-xxxx"/>
-      <div class="fe" id="eg-rec">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>Teléfono de contacto</label>
-      <input id="g-tel" type="tel" placeholder="+53..."/>
-      <div class="fe" id="eg-tel">Número inválido.</div>
-    </div>
-    <div class="fg">
-      <label>Describe la falla</label>
-      <textarea id="g-fal" placeholder="Qué falla presenta el trabajo..."></textarea>
-      <div class="fe" id="eg-fal">Requerido.</div>
-    </div>
-    <div class="cb">
-      <input type="checkbox" id="g-cp"/>
-      <span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span>
-    </div>
+    <p class="hint">Solo aplica para trabajos realizados dentro del período de garantía activa.</p>
+    <div class="fg"><label>Código del servicio</label><input id="g-rec" type="text" placeholder="db-xxxx"/><div class="fe" id="eg-rec">Requerido.</div></div>
+    <div class="fg"><label>Teléfono de contacto</label><input id="g-tel" type="tel" placeholder="+53..."/><div class="fe" id="eg-tel">Número inválido.</div></div>
+    <div class="fg"><label>Describe la falla</label><textarea id="g-fal" placeholder="¿Qué problema presenta el trabajo realizado?"></textarea><div class="fe" id="eg-fal">Requerido.</div></div>
+    <div class="cb"><input type="checkbox" id="g-cp"/><span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div>
     <div class="fe" id="eg-cp">Debes aceptar Términos y Privacidad.</div>
-    <div class="ok-box" id="ok-gar">✅ Garantía registrada. Nos contactaremos contigo pronto.</div>
+    <div class="ok-box" id="ok-gar">✅ Reclamo registrado. Nos contactaremos contigo pronto.</div>
     <div class="err-box" id="err-gar"></div>
-    <button class="btn btn-k" id="btn-gar" onclick="envGar()">Enviar reclamo</button>
+    <button class="btn btn-k btn-full" id="btn-gar" onclick="envGar()">Enviar reclamo</button>
   </div>
 </div></div>
 
 <!-- ══ MODAL CALIFICAR ══ -->
 <div class="ov" id="ov-cal" onclick="ovc(event,'cal')">
-<div class="sheet">
-  <div class="pill"></div>
+<div class="sheet"><div class="pill"></div>
   <div class="sheet-hdr"><span class="sheet-title">Calificar servicio</span><button class="sheet-x" onclick="close_('cal')">&times;</button></div>
   <div class="mbody">
     <div class="fg"><label>Código del servicio</label><input id="c-cod" type="text" placeholder="db-xxxx"/><div class="fe" id="ec-cod">Requerido.</div></div>
     <div class="fg"><label>Tu valoración</label>
-      <div class="stars" id="stars">
-        <span class="star" data-v="1" onclick="setStar(1)">★</span>
-        <span class="star" data-v="2" onclick="setStar(2)">★</span>
-        <span class="star" data-v="3" onclick="setStar(3)">★</span>
-        <span class="star" data-v="4" onclick="setStar(4)">★</span>
-        <span class="star" data-v="5" onclick="setStar(5)">★</span>
+      <div style="display:flex;gap:8px;margin-top:4px" id="stars">
+        <span class="star" data-v="1" onclick="setStar(1)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="2" onclick="setStar(2)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="3" onclick="setStar(3)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="4" onclick="setStar(4)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="5" onclick="setStar(5)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
       </div>
       <div class="fe" id="ec-st">Selecciona al menos una estrella.</div>
     </div>
-    <div class="ok-box" id="ok-cal">✅ Valoración registrada. Gracias por tu opinión.</div>
+    <div class="ok-box" id="ok-cal">✅ ¡Gracias por calificar! Tu opinión ayuda a otros clientes.</div>
     <div class="err-box" id="err-cal"></div>
-    <button class="btn btn-y" id="btn-cal" onclick="envCal()">Enviar valoración</button>
+    <button class="btn btn-y btn-full" id="btn-cal" onclick="envCal()">Enviar valoración</button>
   </div>
 </div></div>
 
 <!-- ══ MODAL ÚNETE ══ -->
 <div class="ov" id="ov-uni" onclick="ovc(event,'uni')">
-<div class="sheet">
-  <div class="pill"></div>
-  <div class="sheet-hdr">
-    <span class="sheet-title">Únete como técnico</span>
-    <button class="sheet-x" onclick="close_('uni')">&times;</button>
-  </div>
+<div class="sheet"><div class="pill"></div>
+  <div class="sheet-hdr"><span class="sheet-title">Únete como técnico</span><button class="sheet-x" onclick="close_('uni')">&times;</button></div>
   <div class="mbody">
-    <div class="fg">
-      <label>Nombre completo</label>
-      <input id="u-nom" type="text" placeholder="Tu nombre"/>
-      <div class="fe" id="eu-nom">Requerido.</div>
-    </div>
-    <div class="fg">
-      <label>Teléfono / WhatsApp</label>
+    <div class="fg"><label>Nombre completo</label><input id="u-nom" type="text" placeholder="Tu nombre"/><div class="fe" id="eu-nom">Requerido.</div></div>
+    <div class="fg"><label>WhatsApp</label>
       <div class="phone-row">
-        <select id="u-code">
-          <option value="+53" selected>Cuba (+53)</option>
-          <option value="+34">España (+34)</option>
-          <option value="+1">EE. UU. (+1)</option>
-          <option value="+52">México (+52)</option>
-        </select>
+        <select id="u-code"><option value="+53" selected>🇨🇺 +53</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
         <input id="u-tel" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
       </div>
-      <div class="fe" id="eu-tel">Introduce un número válido.</div>
+      <div class="fe" id="eu-tel">Número inválido.</div>
     </div>
-    <div class="fg">
-      <label>Especialidad</label>
+    <div class="fg"><label>Especialidad</label>
       <select id="u-esp">
         <option value="">-- Seleccionar --</option>
-        <option>Electrodomésticos</option><option>Plomería</option>
-        <option>Electricidad</option><option>Refrigeración</option>
-        <option>Televisión / audio</option><option>Computadoras</option>
-        <option>Celulares</option><option>Cerrajería</option>
-        <option>Multidisciplinario</option>
+        <option>Electrodomésticos</option><option>Plomería</option><option>Electricidad</option>
+        <option>Refrigeración</option><option>Televisión / audio</option><option>Computadoras</option>
+        <option>Celulares</option><option>Cerrajería</option><option>Multidisciplinario</option>
       </select>
       <div class="fe" id="eu-esp">Requerido.</div>
     </div>
-    <div class="fg">
-      <label>Años de experiencia</label>
+    <div class="fg"><label>Años de experiencia</label>
       <select id="u-exp">
         <option value="">-- Seleccionar --</option>
-        <option value="1">Menos de 1 año</option>
-        <option value="2">1 – 3 años</option>
-        <option value="4">3 – 5 años</option>
-        <option value="6">Más de 5 años</option>
+        <option value="1">Menos de 1 año</option><option value="2">1 – 3 años</option>
+        <option value="4">3 – 5 años</option><option value="6">Más de 5 años</option>
       </select>
       <div class="fe" id="eu-exp">Requerido.</div>
     </div>
-    <div class="fg">
-      <label>Municipio donde trabajas</label>
+    <div class="fg"><label>Municipio donde trabajas</label>
       <select id="u-zona">
         <option value="">-- Seleccionar municipio --</option>
-        <optgroup label="Occidente">
-          <option value="Playa">Playa</option>
-          <option value="La Lisa">La Lisa</option>
-          <option value="Marianao">Marianao</option>
-        </optgroup>
-        <optgroup label="Centro">
-          <option value="Plaza de la Revolución">Plaza de la Revolución</option>
-          <option value="Centro Habana">Centro Habana</option>
-          <option value="La Habana Vieja">La Habana Vieja</option>
-          <option value="Diez de Octubre">Diez de Octubre</option>
-          <option value="Cerro">Cerro</option>
-        </optgroup>
-        <optgroup label="Oriente">
-          <option value="Regla">Regla</option>
-          <option value="La Habana del Este">La Habana del Este</option>
-          <option value="Guanabacoa">Guanabacoa</option>
-          <option value="San Miguel del Padrón">San Miguel del Padrón</option>
-        </optgroup>
-        <optgroup label="Sur">
-          <option value="Boyeros">Boyeros</option>
-          <option value="Arroyo Naranjo">Arroyo Naranjo</option>
-          <option value="Cotorro">Cotorro</option>
-        </optgroup>
+        <optgroup label="Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
+        <optgroup label="Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
+        <optgroup label="Oriente"><option>Regla</option><option>La Habana del Este</option><option>Guanabacoa</option><option>San Miguel del Padrón</option></optgroup>
+        <optgroup label="Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
       </select>
       <div class="fe" id="eu-zona">Selecciona tu municipio.</div>
     </div>
-    <div class="sep">Crear cuenta de acceso</div>
-    <div class="fg">
-      <label>Correo electrónico</label>
-      <input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/>
-      <div class="fe" id="eu-email">Correo inválido.</div>
+    <div style="background:var(--blue-bg);border:1.5px solid rgba(37,99,235,.18);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--blue);line-height:1.6">
+      📋 Crear cuenta de acceso — úsala para entrar al panel de técnico.
     </div>
-    <div class="fg">
-      <label>Contraseña</label>
-      <input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/>
-      <div class="fe" id="eu-pass">Mínimo 6 caracteres.</div>
-    </div>
-    <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisamos por WhatsApp cuando puedas operar.</p>
-    <div class="ok-box" id="ok-uni">✅ Cuenta creada. Tu solicitud está en revisión. Te contactaremos por WhatsApp.</div>
+    <div class="fg"><label>Correo electrónico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="eu-email">Correo inválido.</div></div>
+    <div class="fg"><label>Contraseña</label><input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/><div class="fe" id="eu-pass">Mínimo 6 caracteres.</div></div>
+    <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisaremos por WhatsApp cuando puedas operar.</p>
+    <div class="ok-box" id="ok-uni">✅ Cuenta creada. Tu solicitud está en revisión — te contactaremos por WhatsApp.</div>
     <div class="err-box" id="err-uni"></div>
-    <button class="btn btn-k" id="btn-uni" onclick="envUni()">Crear cuenta</button>
+    <button class="btn btn-k btn-full" id="btn-uni" onclick="envUni()">Crear cuenta</button>
   </div>
 </div></div>
 
 <!-- ══ MODAL ACCESO ══ -->
 <div class="ov" id="ov-acc" onclick="ovc(event,'acc')">
-<div class="sheet">
-  <div class="pill"></div>
+<div class="sheet"><div class="pill"></div>
   <div class="sheet-hdr"><span class="sheet-title">Acceso privado</span><button class="sheet-x" onclick="close_('acc')">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="ea-email">Inválido.</div></div>
+    <div class="fg"><label>Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="ea-email">Correo inválido.</div></div>
     <div class="fg"><label>Contraseña</label><input id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password"/><div class="fe" id="ea-pass">Requerido.</div></div>
     <div class="err-box" id="err-acc"></div>
-    <button class="btn btn-k" id="btn-acc" onclick="doLogin()">Entrar</button>
-    <button class="btn btn-y" id="btn-rec-pass" onclick="doRecovery()" style="margin-top:10px">Olvidé mi contraseña</button>
-    <p class="hint">Te enviaremos un enlace para crear una nueva contraseña.</p>
+    <button class="btn btn-k btn-full" id="btn-acc" onclick="doLogin()">Entrar</button>
+    <button class="btn btn-g btn-full" id="btn-rec-pass" onclick="doRecovery()">Olvidé mi contraseña</button>
+    <p class="hint">Si eres técnico nuevo, primero <a href="javascript:void(0)" onclick="close_('acc');open_('uni')">regístrate aquí</a>.</p>
   </div>
 </div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SURL = 'https://gkxtdancgkwetdniooky.supabase.co';
-const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
+// ── CONFIG ──
+const SURL='https://gkxtdancgkwetdniooky.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
 
-const sbPublic = supabase.createClient(SURL, SKEY, {
-  auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
-});
-const sb = supabase.createClient(SURL, SKEY, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-});
+const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:false}});
+const sbPublic=supabase.createClient(SURL,SKEY,{auth:{persistSession:false}});
 
-let sv = 0;
+// ── MAPS ──
+const MUNICIPIO_ZONA={'Playa':'oeste','La Lisa':'oeste','Marianao':'oeste','Plaza de la Revolución':'centro','Centro Habana':'centro','La Habana Vieja':'centro','Diez de Octubre':'centro','Cerro':'centro','Regla':'este','La Habana del Este':'este','Guanabacoa':'este','San Miguel del Padrón':'este','Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur'};
 
-// ── MODALES ──
-function open_(k) { document.getElementById('ov-'+k).classList.add('open'); document.body.style.overflow = 'hidden'; }
-function close_(k) {
-  document.getElementById('ov-'+k).classList.remove('open');
-  document.body.style.overflow = '';
-  if (k === 'sol') resetSolForm();
-}
-function ovc(e, k) { if (e.target === document.getElementById('ov-'+k)) close_(k); }
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.querySelectorAll('.ov.open').forEach(o => { o.classList.remove('open'); document.body.style.overflow = ''; });
-});
+// ── STATE ──
+let sv=0, solSrv='', solHora='';
 
-// ── HELPERS ──
-function vt(t) { return String(t||'').trim().length >= 6; }
-function sE(id, m)  { const e=document.getElementById(id); if(e){ if(m) e.textContent=m; e.classList.add('v'); } }
-function cE(id)     { const e=document.getElementById(id); if(e) e.classList.remove('v'); }
-function sOK(id)    { const e=document.getElementById(id); if(e) e.classList.add('v'); }
-function sER(id, m) { const e=document.getElementById(id); if(e){ e.textContent=m; e.classList.add('v'); } }
-function cER(id)    { const e=document.getElementById(id); if(e) e.classList.remove('v'); }
-function dbc(id)    { return 'db-' + id; }
+// ── UTILS ──
+function toast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function dbc(id){return'db-'+id}
+function open_(k){document.getElementById('ov-'+k)?.classList.add('open')}
+function close_(k){document.getElementById('ov-'+k)?.classList.remove('open')}
+function ovc(e,k){if(e.target===e.currentTarget)close_(k)}
+function cE(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg||e.textContent;e.classList.remove('v')}}
+function sE(id,msg){const e=document.getElementById(id);if(e){if(msg)e.textContent=msg;e.classList.add('v')}}
+function cER(id){const e=document.getElementById(id);if(e){e.textContent='';e.classList.remove('v')}}
+function sER(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('v')}}
+function sOK(id){const e=document.getElementById(id);if(e)e.classList.add('v')}
+function setL(id,on,txt){const e=document.getElementById(id);if(!e)return;if(on){e._t=e._t||e.innerHTML;e.disabled=true;e.innerHTML=`<span class="sp"></span>${txt||'Enviando...'}`;}else{e.disabled=false;if(e._t)e.innerHTML=e._t;}}
+function vt(num){const n=String(num||'').replace(/[\s\-\(\)]/g,'');return n.length>=7&&/^\+?\d+$/.test(n)}
+function scrollTo(sel){const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
 
-function setL(id, on, txt='Enviando...') {
-  const b = document.getElementById(id); if (!b) return;
-  if (!b._t) b._t = b.innerHTML;
-  b.disabled = on;
-  b.innerHTML = on ? `<span class="sp"></span>${txt}` : b._t;
-}
-
-function normalizarTelefono(codeId, telId, errId) {
-  const code   = document.getElementById(codeId)?.value || '+53';
-  const numero = (document.getElementById(telId)?.value || '').replace(/\D/g, '');
-  const err    = document.getElementById(errId);
-  if (!numero || numero.length < 6 || numero.length > 15) { if (err) err.classList.add('v'); return null; }
-  if (err) err.classList.remove('v');
-  return { completo: `${code}${numero}` };
+function normalizarTelefono(codeId,numId,errId){
+  const code=document.getElementById(codeId)?.value||'+53';
+  const raw=document.getElementById(numId)?.value?.trim()||'';
+  const n=raw.replace(/[\s\-\(\)]/g,'');
+  if(!n||n.length<7){sE(errId,'Número inválido.');return null;}
+  const completo=n.startsWith('+')?n:(code+n);
+  cE(errId);
+  return{completo,local:n};
 }
 
-function resetSolForm() {
-  ['s-cli','s-wa','s-dir','s-det'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  ['s-mun','s-srv','s-hora'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  const cp=document.getElementById('s-cp'); if(cp) cp.checked=false;
-  const hint=document.getElementById('zona-hint'); if(hint) hint.style.display='none';
-  cER('err-sol');
-  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
-  const btn=document.getElementById('btn-sol');
-  if(btn){ btn.style.display=''; btn.disabled=false; if(btn._t) btn.innerHTML=btn._t; }
-  const ok=document.getElementById('ok-sol'); if(ok) ok.classList.remove('v');
+// ── FORMULARIO MULTI-STEP ──
+function selSrv(el){
+  document.querySelectorAll('.srv-opt').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  solSrv=el.dataset.srv;
+  cE('es-srv');
+}
+function selHora(el){
+  document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  solHora=el.dataset.hora;
+}
+function abrirConServicio(srv){
+  open_('sol');
+  setTimeout(()=>{
+    const btn=document.querySelector(`.srv-opt[data-srv="${srv}"]`);
+    if(btn) selSrv(btn);
+  },200);
 }
 
-// ── TRACKER ──
-async function buscarOrden() {
-  const input  = document.getElementById('tr-cod');
-  const result = document.getElementById('tr-result');
-  const raw    = (input?.value || '').trim().toLowerCase();
-  if (!raw) return;
-  const n = parseInt(raw.replace(/^db-/i, ''));
-  if (isNaN(n)) { result.className='tracker-result err v'; result.innerHTML='Formato inválido. Usa <strong>db-xxxx</strong>'; return; }
-  result.className='tracker-result v'; result.style=''; result.innerHTML='<span style="color:rgba(255,255,255,.4);font-size:12px">Buscando...</span>';
-  const { data, error } = await sbPublic.rpc('get_estado_solicitud', { p_id: n });
-  if (error || !data || data.length === 0) {
-    result.className='tracker-result err v';
-    result.innerHTML = error ? 'Error: ' + error.message : 'Código no encontrado. Verifica que sea correcto.';
-    return;
-  }
-  const sol = data[0];
-  const estadoLabel = {
-    pendiente:  '⏳ Pendiente — en espera de técnico',
-    asignada:   '🔧 En proceso — técnico asignado',
-    completada: '✅ Completada',
-    rechazada:  '❌ Rechazada',
-  }[sol.estado] || sol.estado;
-  const fecha    = sol.created_at ? new Date(sol.created_at).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}) : '—';
-  const fechaFin = sol.fecha_fin  ? new Date(sol.fecha_fin).toLocaleDateString('es-ES', {day:'2-digit',month:'2-digit',year:'2-digit'}) : null;
-  result.className='tracker-result v';
-  result.style.cssText='background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff';
-  result.innerHTML = `
-    <span class="tr-code">${dbc(sol.id)}</span>
-    <span class="tr-estado st-${sol.estado}">${estadoLabel}</span>
-    <div class="tr-info">
-      ${sol.servicio        ? `<div>🔩 ${sol.servicio}</div>`          : ''}
-      ${sol.municipio       ? `<div>📍 ${sol.municipio}</div>`         : ''}
-      ${sol.hora_preferida  ? `<div>🕐 ${sol.hora_preferida}</div>`    : ''}
-      <div>📅 Solicitado: ${fecha}</div>
-      ${fechaFin ? `<div>✅ Completado: ${fechaFin}</div>` : ''}
-    </div>`;
+function irStep2(){
+  cER('err-sol');['es-srv','es-mun','es-cli','es-wa'].forEach(id=>cE(id));
+  const mun=document.getElementById('s-mun')?.value;
+  const cli=document.getElementById('s-cli')?.value?.trim();
+  const tel=normalizarTelefono('s-code','s-wa','es-wa');
+  let ok=true;
+  if(!solSrv){sE('es-srv','Selecciona un tipo de servicio.');ok=false;}
+  if(!mun){sE('es-mun','Selecciona tu municipio.');ok=false;}
+  if(!cli){sE('es-cli','Escribe tu nombre.');ok=false;}
+  if(!tel){ok=false;}
+  if(!ok) return;
+  document.getElementById('step-1').classList.remove('active');
+  document.getElementById('step-2').classList.add('active');
+  document.getElementById('sdot-1').classList.remove('active');
+  document.getElementById('sdot-1').classList.add('done');
+  document.getElementById('sdot-2').classList.add('active');
+  document.getElementById('sbar').style.width='100%';
 }
-
-// ── MAPA MUNICIPIO → ZONA ──
-const MUNICIPIO_ZONA = {
-  'Playa':                  'oeste',
-  'La Lisa':                'oeste',
-  'Marianao':               'oeste',
-  'Plaza de la Revolución': 'centro',
-  'Centro Habana':          'centro',
-  'La Habana Vieja':        'centro',
-  'Diez de Octubre':        'centro',
-  'Cerro':                  'centro',
-  'Regla':                  'este',
-  'La Habana del Este':     'este',
-  'Guanabacoa':             'este',
-  'San Miguel del Padrón':  'este',
-  'Boyeros':                'sur',
-  'Arroyo Naranjo':         'sur',
-  'Cotorro':                'sur',
-};
-
-function autoZona() {
-  // Feedback visual: muestra la zona asignada junto al select (opcional)
-  const mun = document.getElementById('s-mun')?.value || '';
-  const zona = MUNICIPIO_ZONA[mun] || '';
-  const hint = document.getElementById('zona-hint');
-  if (hint) {
-    hint.textContent = zona ? `Zona asignada: ${zona}` : '';
-    hint.style.display = zona ? 'block' : 'none';
-  }
-  cE('es-mun');
+function irStep1(){
+  document.getElementById('step-2').classList.remove('active');
+  document.getElementById('step-1').classList.add('active');
+  document.getElementById('sdot-2').classList.remove('active');
+  document.getElementById('sdot-1').classList.remove('done');
+  document.getElementById('sdot-1').classList.add('active');
+  document.getElementById('sbar').style.width='0';
 }
 
 // ── SOLICITUD ──
-async function envSol() {
-  cER('err-sol');
-  ['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(cE);
-
-  const cli     = document.getElementById('s-cli')?.value.trim() || '';
-  const telData = normalizarTelefono('s-code', 's-wa', 'es-wa');
-  const mun     = document.getElementById('s-mun')?.value || '';
-  const hora    = document.getElementById('s-hora')?.value || '';
-  const dir     = document.getElementById('s-dir')?.value.trim() || '';
-  const srv     = document.getElementById('s-srv')?.value || '';
-  const det     = document.getElementById('s-det')?.value.trim() || '';
-  const cp      = !!document.getElementById('s-cp')?.checked;
-
-  // Zona derivada automáticamente del municipio
-  const zona = MUNICIPIO_ZONA[mun] || '';
-
-  let ok = true;
-  if (!cli)     { sE('es-cli'); ok = false; }
-  if (!telData) { sE('es-wa'); ok = false; }
-  if (!mun)     { sE('es-mun', 'Selecciona tu municipio.'); ok = false; }
-  if (!srv)     { sE('es-srv'); ok = false; }
-  if (!cp)      { sE('es-cp'); ok = false; }
-  if (!ok) return;
-
-  setL('btn-sol', true);
-  try {
-    const { data, error } = await sbPublic.rpc('create_solicitud_publica', {
-      p_cliente:        cli,
-      p_telefono:       telData.completo,
-      p_municipio:      mun,
-      p_direccion:      dir,
-      p_servicio:       srv,
-      p_detalles:       det,
-      p_consent_texto:  'solicitud publica v2',
-      p_zona:           zona || null,
-      p_hora_preferida: hora || null
+async function envSol(){
+  cER('err-sol');['es-cp'].forEach(id=>cE(id));
+  const cli=document.getElementById('s-cli')?.value?.trim()||'';
+  const tel=normalizarTelefono('s-code','s-wa','es-wa');
+  const mun=document.getElementById('s-mun')?.value||'';
+  const dir=document.getElementById('s-dir')?.value?.trim()||'';
+  const det=document.getElementById('s-det')?.value?.trim()||'';
+  const cp=!!document.getElementById('s-cp')?.checked;
+  const zona=MUNICIPIO_ZONA[mun]||null;
+  if(!cp){sE('es-cp');return;}
+  if(!tel) return;
+  setL('btn-sol',true,'Registrando...');
+  try{
+    const {data,error}=await sbPublic.rpc('create_solicitud_publica',{
+      p_cliente:cli,p_telefono:tel.completo,p_municipio:mun,
+      p_direccion:dir||null,p_servicio:solSrv||null,p_detalles:det||null,
+      p_consent_texto:'solicitud publica v3',
+      p_zona:zona,p_hora_preferida:solHora||null
     });
-    setL('btn-sol', false);
-    if (error) {
-      const msg = error.message?.includes('RATE_LIMIT')
-        ? '⚠️ Ya registraste 3 solicitudes hoy. Intenta mañana o contáctanos por WhatsApp.'
-        : 'Error: ' + error.message;
-      sER('err-sol', msg); return;
+    setL('btn-sol',false);
+    if(error){
+      sER('err-sol',error.message?.includes('RATE_LIMIT')?'⚠️ Ya registraste 3 solicitudes hoy. Intenta mañana o contáctanos por WhatsApp.':'Error: '+error.message);
+      return;
     }
-    document.getElementById('cod-sol').textContent = dbc(data);
+    document.getElementById('cod-sol').textContent=dbc(data);
     sOK('ok-sol');
-    document.getElementById('btn-sol').style.display = 'none';
-    setTimeout(() => { close_('sol'); window.scrollTo({ top: 0, behavior: 'smooth' }); }, 6000);
-  } catch (e) {
-    setL('btn-sol', false);
-    sER('err-sol', 'Error: ' + (e?.message || e));
-  }
+    document.getElementById('btn-sol').style.display='none';
+    document.querySelectorAll('#step-2 .btn').forEach(b=>{if(b.id!=='btn-sol')b.style.display='none';});
+    setTimeout(()=>{close_('sol');resetSolForm();},7000);
+  }catch(e){setL('btn-sol',false);sER('err-sol','Error: '+(e?.message||e));}
 }
 
+function resetSolForm(){
+  ['s-cli','s-wa','s-dir','s-det'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['s-mun','s-srv'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const cp=document.getElementById('s-cp');if(cp)cp.checked=false;
+  cER('err-sol');['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(id=>cE(id));
+  const btn=document.getElementById('btn-sol');
+  if(btn){btn.style.display='';btn.disabled=false;if(btn._t)btn.innerHTML=btn._t;}
+  document.querySelectorAll('#step-2 .btn').forEach(b=>b.style.display='');
+  document.getElementById('ok-sol')?.classList.remove('v');
+  document.querySelectorAll('.srv-opt').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));
+  solSrv='';solHora='';
+  irStep1();
+}
+
+// ── TRACKER ──
+const ESTADO_STEPS={pendiente:0,asignada:1,en_proceso:2,completada:3,rechazada:-1};
+const ESTADO_LABEL={pendiente:'Recibida',asignada:'Asignada',en_proceso:'En proceso',completada:'Completada',rechazada:'Rechazada'};
+const STEPS_LABELS=['Recibida','Asignada','En proceso','Completada'];
+
+async function buscarEstado(){
+  const raw=(document.getElementById('trk-input')?.value||'').trim().toLowerCase();
+  const n=parseInt(raw.replace(/^db-/,''));
+  const result=document.getElementById('tracker-result');
+  if(isNaN(n)||n<1){
+    result.className='tracker-result v';
+    result.innerHTML=`<div style="color:rgba(255,255,255,.5);font-size:13px">Formato inválido. Usa <strong style="color:var(--y)">db-xxxx</strong></div>`;
+    return;
+  }
+  result.className='tracker-result v';
+  result.innerHTML='<div style="color:rgba(255,255,255,.5);font-size:13px;text-align:center">Buscando...</div>';
+  try{
+    const {data:sol,error}=await sbPublic.rpc('get_estado_solicitud',{p_id:n});
+    if(error||!sol?.length){
+      result.innerHTML=`<div style="color:rgba(255,255,255,.45);font-size:13px">No encontramos una solicitud con ese código.</div>`;
+      return;
+    }
+    const s=Array.isArray(sol)?sol[0]:sol;
+    const step=ESTADO_STEPS[s.estado]??0;
+    const fecha=s.created_at?new Date(s.created_at).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'2-digit'}):'—';
+    const fechaFin=s.fecha_fin?new Date(s.fecha_fin).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'2-digit'}):null;
+    const progress=s.estado==='rechazada'?`<div style="background:var(--err-bg);border:1px solid var(--err-border);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--err)">❌ Solicitud rechazada</div>`:
+      `<div class="tr-progress">${STEPS_LABELS.map((l,i)=>`<div class="tr-step${i<step?' done':i===step?' active':''}">${l}</div>`).join('')}</div>`;
+    result.className='tracker-result v';
+    result.innerHTML=`
+      <span class="tr-code">${esc(dbc(s.id))}</span>
+      ${progress}
+      <div class="tr-info">
+        ${s.servicio?`<div>🔧 <strong>${esc(s.servicio)}</strong></div>`:''}
+        ${s.municipio?`<div>📍 <strong>${esc(s.municipio)}</strong></div>`:''}
+        ${s.hora_preferida?`<div>🕐 ${esc(s.hora_preferida)}</div>`:''}
+        <div>📅 Solicitado: ${fecha}</div>
+        ${fechaFin?`<div>✅ Completado: ${fechaFin}</div>`:''}
+      </div>`;
+  }catch(e){result.innerHTML=`<div style="color:rgba(255,255,255,.45);font-size:13px">Error al buscar. Intenta de nuevo.</div>`;}
+}
+
+// Enter en tracker
+document.getElementById('trk-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')buscarEstado();});
+
 // ── GARANTÍA ──
-async function envGar() {
-  cER('err-gar'); ['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(cE);
-  const rec = document.getElementById('g-rec').value.trim();
-  const tel = document.getElementById('g-tel').value.trim();
-  const fal = document.getElementById('g-fal').value.trim();
-  const cp  = document.getElementById('g-cp').checked;
-  let ok = true;
-  if (!rec)     { sE('eg-rec'); ok = false; }
-  if (!vt(tel)) { sE('eg-tel'); ok = false; }
-  if (!fal)     { sE('eg-fal'); ok = false; }
-  if (!cp)      { sE('eg-cp'); ok = false; }
-  if (!ok) return;
-  setL('btn-gar', true);
-  try {
-    const { error } = await sbPublic.rpc('create_garantia_reclamo_publico', {
-      p_telefono: tel, p_codigo: rec, p_mensaje: fal, p_consent_texto: 'reclamo garantia v1'
-    });
-    setL('btn-gar', false);
-    if (error) { sER('err-gar', 'Error: ' + error.message); return; }
-    sOK('ok-gar');
-    document.getElementById('btn-gar').style.display = 'none';
-  } catch(e) { setL('btn-gar', false); sER('err-gar', 'Error: ' + (e?.message || e)); }
+async function envGar(){
+  cER('err-gar');['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(id=>cE(id));
+  const rec=document.getElementById('g-rec').value.trim();
+  const tel=document.getElementById('g-tel').value.trim();
+  const fal=document.getElementById('g-fal').value.trim();
+  const cp=document.getElementById('g-cp').checked;
+  let ok=true;
+  if(!rec){sE('eg-rec');ok=false;}if(!vt(tel)){sE('eg-tel');ok=false;}if(!fal){sE('eg-fal');ok=false;}if(!cp){sE('eg-cp');ok=false;}
+  if(!ok) return;
+  setL('btn-gar',true);
+  try{
+    const {error}=await sbPublic.rpc('create_garantia_reclamo_publico',{p_telefono:tel,p_codigo:rec,p_mensaje:fal,p_consent_texto:'reclamo garantia v1'});
+    setL('btn-gar',false);
+    if(error){sER('err-gar','Error: '+error.message);return;}
+    sOK('ok-gar');document.getElementById('btn-gar').style.display='none';
+  }catch(e){setL('btn-gar',false);sER('err-gar','Error: '+(e?.message||e));}
 }
 
 // ── CALIFICAR ──
-function setStar(v) {
-  sv = v;
-  document.querySelectorAll('#stars .star').forEach(s => s.classList.toggle('on', parseInt(s.dataset.v) <= v));
+function setStar(v){
+  sv=v;
+  document.querySelectorAll('#stars .star').forEach((s,i)=>{
+    s.style.transform=i<v?'scale(1.15)':'scale(1)';
+    s.style.filter=i<v?'':'grayscale(1) opacity(.4)';
+  });
   cE('ec-st');
 }
-async function envCal() {
-  cER('err-cal'); ['ec-cod','ec-st'].forEach(cE);
-  const cod = document.getElementById('c-cod').value.trim();
-  let ok = true;
-  if (!cod) { sE('ec-cod'); ok = false; }
-  if (!sv)  { sE('ec-st'); ok = false; }
-  if (!ok) return;
-  const n = parseInt(cod.replace(/^db-/i, ''));
-  if (isNaN(n)) { sE('ec-cod', 'Formato inválido. Usa db-xxxx.'); return; }
-  setL('btn-cal', true);
-  const { error } = await sb.rpc('rate_solicitud', { p_id: n, p_valoracion: sv });
-  setL('btn-cal', false);
-  if (error) { sER('err-cal', 'Error: ' + error.message); return; }
-  sOK('ok-cal');
-  document.getElementById('btn-cal').style.display = 'none';
+async function envCal(){
+  cER('err-cal');['ec-cod','ec-st'].forEach(id=>cE(id));
+  const cod=document.getElementById('c-cod').value.trim();
+  let ok=true;
+  if(!cod){sE('ec-cod');ok=false;}if(!sv){sE('ec-st');ok=false;}
+  if(!ok) return;
+  const n=parseInt(cod.replace(/^db-/i,''));
+  if(isNaN(n)){sE('ec-cod','Formato inválido. Usa db-xxxx.');return;}
+  setL('btn-cal',true);
+  const {error}=await sb.rpc('rate_solicitud',{p_id:n,p_valoracion:sv});
+  setL('btn-cal',false);
+  if(error){sER('err-cal','Error: '+error.message);return;}
+  sOK('ok-cal');document.getElementById('btn-cal').style.display='none';
 }
 
 // ── ÚNETE ──
-async function envUni() {
-  cER('err-uni');
-  ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(cE);
-
-  const nom      = document.getElementById('u-nom').value.trim();
-  const telData  = normalizarTelefono('u-code', 'u-tel', 'eu-tel');
-  const esp      = document.getElementById('u-esp').value;
-  const exp      = document.getElementById('u-exp').value;
-  const municipio = document.getElementById('u-zona').value; // municipio seleccionado
-  const email    = document.getElementById('u-email').value.trim();
-  const pass     = document.getElementById('u-pass').value;
-
-  // Zona derivada automáticamente del municipio
-  const zona = MUNICIPIO_ZONA[municipio] || '';
-
-  let ok = true;
-  if (!nom)                                       { sE('eu-nom'); ok = false; }
-  if (!telData)                                   { sE('eu-tel'); ok = false; }
-  if (!esp)                                       { sE('eu-esp'); ok = false; }
-  if (!exp)                                       { sE('eu-exp'); ok = false; }
-  if (!municipio)                                 { sE('eu-zona', 'Selecciona tu municipio.'); ok = false; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('eu-email'); ok = false; }
-  if (pass.length < 6)                            { sE('eu-pass'); ok = false; }
-  if (!ok) return;
-
-  setL('btn-uni', true);
-  try {
-    const { data: ad, error: ae } = await sb.auth.signUp({
-      email, password: pass,
-      options: { emailRedirectTo: 'https://dbarrio-two.vercel.app/' }
-    });
-    if (ae || !ad?.user) { setL('btn-uni', false); sER('err-uni', 'Error: ' + (ae?.message || 'Error creando usuario.')); return; }
-
-    const { data: si, error: se1 } = await sb.auth.signInWithPassword({ email, password: pass });
-    if (se1 || !si?.session) { setL('btn-uni', false); sER('err-uni', 'Cuenta creada. Revisa tu correo y luego inicia sesión.'); return; }
-
-    const { error: se } = await sb.from('socios').insert({
-      auth_uid: si.session.user.id,
-      nombre: nom,
-      telefono: telData.completo,
-      especialidad: esp,
-      experiencia_anios: parseInt(exp, 10),
-      zona: zona,           // zona derivada (oeste/centro/este/sur)
-      municipio: municipio, // municipio exacto — si la tabla tiene esta columna
-      email,
-      admitido: false,
-      estado_socio: 'pendiente',
-      comision: 15,
-      deuda: 0,
-      trabajos: 0
-    });
-
+async function envUni(){
+  cER('err-uni');['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass'].forEach(id=>cE(id));
+  const nom=document.getElementById('u-nom').value.trim();
+  const telData=normalizarTelefono('u-code','u-tel','eu-tel');
+  const esp=document.getElementById('u-esp').value;
+  const exp=document.getElementById('u-exp').value;
+  const municipio=document.getElementById('u-zona').value;
+  const email=document.getElementById('u-email').value.trim();
+  const pass=document.getElementById('u-pass').value;
+  const zona=MUNICIPIO_ZONA[municipio]||'';
+  let ok=true;
+  if(!nom){sE('eu-nom');ok=false;}
+  if(!telData){ok=false;}
+  if(!esp){sE('eu-esp');ok=false;}
+  if(!exp){sE('eu-exp');ok=false;}
+  if(!municipio){sE('eu-zona','Selecciona tu municipio.');ok=false;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('eu-email');ok=false;}
+  if(pass.length<6){sE('eu-pass');ok=false;}
+  if(!ok) return;
+  setL('btn-uni',true,'Creando cuenta...');
+  try{
+    const {data:ad,error:ae}=await sb.auth.signUp({email,password:pass,options:{emailRedirectTo:'https://dbarrio-two.vercel.app/'}});
+    if(ae||!ad?.user){setL('btn-uni',false);sER('err-uni','Error: '+(ae?.message||'Error creando usuario.'));return;}
+    const {data:si,error:se1}=await sb.auth.signInWithPassword({email,password:pass});
+    if(se1||!si?.session){setL('btn-uni',false);sER('err-uni','Cuenta creada. Revisa tu correo e inicia sesión.');return;}
+    const insData={auth_uid:si.session.user.id,nombre:nom,telefono:telData.completo,especialidad:esp,experiencia_anios:parseInt(exp,10),zona:municipio,email,admitido:false,estado_socio:'pendiente',comision:15,deuda:0,trabajos:0};
+    const {error:se}=await sb.from('socios').insert(insData);
     await sb.auth.signOut();
-    setL('btn-uni', false);
-    if (se) {
-      // Si la tabla no tiene columna municipio, reintenta sin ella
-      if (se.message?.includes('municipio')) {
-        const { error: se2 } = await sb.from('socios').insert({
-          auth_uid: ad.user.id, nombre: nom, telefono: telData.completo,
-          especialidad: esp, experiencia_anios: parseInt(exp, 10),
-          zona: zona, email, admitido: false, estado_socio: 'pendiente',
-          comision: 15, deuda: 0, trabajos: 0
-        });
-        if (se2) { sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se2.message); return; }
-      } else {
-        sER('err-uni', 'Cuenta creada pero error al guardar datos: ' + se.message); return;
-      }
-    }
-
-    sOK('ok-uni');
-    document.getElementById('btn-uni').style.display = 'none';
-  } catch(e) {
-    setL('btn-uni', false);
-    sER('err-uni', 'Error: ' + (e?.message || e));
-  }
+    setL('btn-uni',false);
+    if(se&&!se.message?.includes('municipio')){sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);return;}
+    sOK('ok-uni');document.getElementById('btn-uni').style.display='none';
+  }catch(e){setL('btn-uni',false);sER('err-uni','Error: '+(e?.message||e));}
 }
 
 // ── LOGIN ──
-async function doLogin() {
-  cER('err-acc'); ['ea-email','ea-pass'].forEach(cE);
-  const email = document.getElementById('a-email').value.trim();
-  const pass  = document.getElementById('a-pass').value;
-  let ok = true;
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('ea-email'); ok = false; }
-  if (!pass) { sE('ea-pass'); ok = false; }
-  if (!ok) return;
-  setL('btn-acc', true, 'Verificando...');
-  const { data: auth, error: ae } = await sb.auth.signInWithPassword({ email, password: pass });
-  if (ae || !auth.session) { setL('btn-acc', false); sER('err-acc', 'Credenciales incorrectas. Verifica tu email y contraseña.'); return; }
-  const uid = auth.session.user.id;
-  const { data: adm } = await sb.from('admins').select('id').eq('auth_uid', uid).maybeSingle();
-  if (adm) { window.location.href = 'admin.html'; return; }
-  const { data: enc } = await sb.from('encargados').select('id,activo').eq('auth_uid', uid).maybeSingle();
-  if (enc) {
-    if (!enc.activo) { await sb.auth.signOut(); setL('btn-acc', false); sER('err-acc', 'Tu cuenta de encargado está desactivada. Contacta al administrador.'); return; }
-    window.location.href = 'admin.html'; return;
+async function doLogin(){
+  cER('err-acc');['ea-email','ea-pass'].forEach(id=>cE(id));
+  const email=document.getElementById('a-email').value.trim();
+  const pass=document.getElementById('a-pass').value;
+  let ok=true;
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');ok=false;}
+  if(!pass){sE('ea-pass');ok=false;}
+  if(!ok) return;
+  setL('btn-acc',true,'Verificando...');
+  const {data:auth,error:ae}=await sb.auth.signInWithPassword({email,password:pass});
+  if(ae||!auth.session){setL('btn-acc',false);sER('err-acc','Credenciales incorrectas. Verifica tu email y contraseña.');return;}
+  const uid=auth.session.user.id;
+  const [{data:adm},{data:enc},{data:soc}]=await Promise.all([
+    sb.from('admins').select('id').eq('auth_uid',uid).maybeSingle(),
+    sb.from('encargados').select('id,activo').eq('auth_uid',uid).maybeSingle(),
+    sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid',uid).maybeSingle()
+  ]);
+  if(adm){window.location.href='admin.html';return;}
+  if(enc){
+    if(!enc.activo){await sb.auth.signOut();setL('btn-acc',false);sER('err-acc','Tu cuenta de encargado está desactivada.');return;}
+    window.location.href='admin.html';return;
   }
-  const { data: soc } = await sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid', uid).maybeSingle();
-  if (soc) {
-    if (!soc.admitido || soc.estado_socio !== 'activo') {
-      await sb.auth.signOut(); setL('btn-acc', false);
-      sER('err-acc', soc.admitido ? 'Tu cuenta está en estado: ' + soc.estado_socio + '. Contacta al administrador.' : 'Cuenta pendiente de aprobación. Te avisaremos por WhatsApp.');
+  if(soc){
+    if(!soc.admitido||soc.estado_socio!=='activo'){
+      await sb.auth.signOut();setL('btn-acc',false);
+      sER('err-acc',soc.admitido?'Tu cuenta está en estado: '+soc.estado_socio+'. Contacta al administrador.':'Cuenta pendiente de aprobación. Te avisaremos por WhatsApp.');
       return;
     }
-    window.location.href = 'socio.html'; return;
+    window.location.href='socio.html';return;
   }
-  await sb.auth.signOut(); setL('btn-acc', false); sER('err-acc', 'Usuario no reconocido en el sistema.');
+  await sb.auth.signOut();setL('btn-acc',false);sER('err-acc','Usuario no reconocido en el sistema.');
 }
 
 // ── RECOVERY ──
-async function doRecovery() {
-  cER('err-acc'); cE('ea-email');
-  const email = document.getElementById('a-email').value.trim();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { sE('ea-email'); return; }
-  setL('btn-rec-pass', true, 'Enviando...');
-  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: 'https://dbarrio-two.vercel.app/reset.html' });
-  setL('btn-rec-pass', false);
-  if (error) { sER('err-acc', 'Error: ' + error.message); return; }
-  const el = document.getElementById('err-acc');
-  if (el) { el.textContent = '✅ Listo. Revisa tu correo (y carpeta de spam). Abre el enlace en el mismo navegador.'; el.style.cssText='display:block;background:#EDFAF3;border-color:#8DD4AA;color:#00856F'; }
+async function doRecovery(){
+  cER('err-acc');cE('ea-email');
+  const email=document.getElementById('a-email').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');return;}
+  setL('btn-rec-pass',true,'Enviando...');
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://dbarrio-two.vercel.app/reset.html'});
+  setL('btn-rec-pass',false);
+  if(error){sER('err-acc','Error: '+error.message);return;}
+  const el=document.getElementById('err-acc');
+  if(el){el.textContent='✅ Listo. Revisa tu correo (y carpeta de spam).';el.style.cssText='display:block;background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok)';}
 }
 
 // ── CHECKBOXES ──
-document.querySelectorAll('.cb').forEach(row => {
-  row.addEventListener('click', e => {
-    if (e.target.closest('a') || e.target.tagName === 'INPUT') return;
-    const input = row.querySelector('input[type="checkbox"]');
-    if (!input) return;
-    input.checked = !input.checked;
-    input.dispatchEvent(new Event('change', { bubbles: true }));
+document.querySelectorAll('.cb').forEach(row=>{
+  row.addEventListener('click',e=>{
+    if(e.target.closest('a')||e.target.tagName==='INPUT') return;
+    const input=row.querySelector('input[type="checkbox"]');
+    if(!input) return;
+    input.checked=!input.checked;
+    input.dispatchEvent(new Event('change',{bubbles:true}));
   });
 });
-document.getElementById('s-cp')?.addEventListener('change', () => cE('es-cp'));
-document.getElementById('g-cp')?.addEventListener('change', () => cE('eg-cp'));
+document.getElementById('s-cp')?.addEventListener('change',()=>cE('es-cp'));
+document.getElementById('g-cp')?.addEventListener('change',()=>cE('eg-cp'));
 </script>
 
 <script>
-if ('serviceWorker' in navigator) {
+if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/sw.js');
 }
 </script>
