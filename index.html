@@ -1044,11 +1044,26 @@ async function envUni(){
     if(ae||!ad?.user){setL('btn-uni',false);sER('err-uni','Error: '+(ae?.message||'Error creando usuario.'));return;}
     const {data:si,error:se1}=await sb.auth.signInWithPassword({email,password:pass});
     if(se1||!si?.session){setL('btn-uni',false);sER('err-uni','Cuenta creada. Revisa tu correo e inicia sesión.');return;}
-    const insData={auth_uid:si.session.user.id,nombre:nom,telefono:telData.completo,especialidad:esp,experiencia_anios:parseInt(exp,10),zona:municipio,email,admitido:false,estado_socio:'pendiente',comision:15,deuda:0,trabajos:0};
+    const insData={
+      auth_uid:si.session.user.id,
+      nombre:nom,
+      telefono:telData.completo,
+      especialidad:esp,
+      experiencia_anios:parseInt(exp,10),
+      zona: zona||municipio,     // slug (oeste/centro/este/sur) primero
+      email,
+      admitido:false,
+      estado_socio:'pendiente',
+      comision:15,
+      deuda:0,
+      trabajos:0
+    };
     const {error:se}=await sb.from('socios').insert(insData);
     await sb.auth.signOut();
     setL('btn-uni',false);
-    if(se&&!se.message?.includes('municipio')){sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);return;}
+    if(se&&!se.message?.includes('municipio')){
+      sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);return;
+    }
     sOK('ok-uni');document.getElementById('btn-uni').style.display='none';
   }catch(e){setL('btn-uni',false);sER('err-uni','Error: '+(e?.message||e));}
 }
