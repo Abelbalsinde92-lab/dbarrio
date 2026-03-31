@@ -73,7 +73,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .brand-name .d{color:#E0E0F0}.brand-name .rest{color:var(--y)}
 @media(max-width:360px){.brand-name{display:none}}
 .nav{display:flex;align-items:center;gap:6px;margin-left:auto}
-.nav-btn{height:34px;padding:0 13px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.65);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:var(--f)}
+.nav-btn{height:34px;padding:0 13px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.65);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:var(--f);display:inline-flex;align-items:center;justify-content:center;line-height:1}
 .nav-btn:hover{background:rgba(255,255,255,.08);color:#fff}
 .nav-btn.nav-sec{display:none}
 @media(min-width:480px){.nav-btn.nav-sec{display:inline-flex}}
@@ -281,7 +281,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 
 /* FORMULARIO MULTI-STEP */
 .form-step{display:none;flex-direction:column;gap:14px}
-.form-step.active{display:flex}
+.form-step.active{display:flex;flex-direction:column;gap:14px}
 .step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:4px}
 .step-dot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .2s}
 .step-dot.active{background:var(--y);width:20px;border-radius:4px}
@@ -649,7 +649,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
         <input id="s-dir" type="text" placeholder="Calle, número, referencias..."/>
       </div>
 
-      <div class="cb" id="cb-sol">
+      <div class="cb" id="cb-sol" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px">
         <input type="checkbox" id="s-cp"/>
         <span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span>
       </div>
@@ -683,7 +683,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="fg"><label>Código del servicio</label><input id="g-rec" type="text" placeholder="db-xxxx"/><div class="fe" id="eg-rec">Requerido.</div></div>
     <div class="fg"><label>Teléfono de contacto</label><input id="g-tel" type="tel" placeholder="+53..."/><div class="fe" id="eg-tel">Número inválido.</div></div>
     <div class="fg"><label>Describe la falla</label><textarea id="g-fal" placeholder="¿Qué problema presenta el trabajo realizado?"></textarea><div class="fe" id="eg-fal">Requerido.</div></div>
-    <div class="cb"><input type="checkbox" id="g-cp"/><span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div>
+    <div class="cb" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px"><input type="checkbox" id="g-cp"/><span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div>
     <div class="fe" id="eg-cp">Debes aceptar Términos y Privacidad.</div>
     <div class="ok-box" id="ok-gar">✅ Reclamo registrado. Nos contactaremos contigo pronto.</div>
     <div class="err-box" id="err-gar"></div>
@@ -759,7 +759,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="fg"><label>Correo electrónico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="eu-email">Correo inválido.</div></div>
     <div class="fg"><label>Contraseña</label><input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/><div class="fe" id="eu-pass">Mínimo 6 caracteres.</div></div>
     <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisaremos por WhatsApp cuando puedas operar.</p>
-    <div class="cb" id="cb-uni">
+    <div class="cb" id="cb-uni" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px">
       <input type="checkbox" id="u-cp"/>
       <span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span>
     </div>
