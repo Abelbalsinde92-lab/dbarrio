@@ -26,14 +26,12 @@
   --ease:cubic-bezier(.4,0,.2,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--ink);height:100%}
+html{background:var(--ink)}
 body{
-  min-height:100%;
+  min-height:100svh;
   background:var(--bg);color:var(--ink);
   font-family:var(--f);font-size:14px;line-height:1.5;
   -webkit-font-smoothing:antialiased;
-  overflow-y:auto;overflow-x:hidden;
-  overscroll-behavior-y:contain;
 }
 
 /* TOPBAR */
@@ -74,12 +72,26 @@ body{
 
 /* LAYOUT */
 .content{
-  padding-top:calc(var(--th)+env(safe-area-inset-top,0));
-  padding-bottom:calc(var(--nav)+env(safe-area-inset-bottom,0)+32px);
+  display:block;
+  padding-top:calc(var(--th) + env(safe-area-inset-top,0));
+  padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 48px);
   min-height:100svh;
+  width:100%;
 }
-.tab{display:none;padding:16px 16px 0;max-width:680px;margin:0 auto}
+.tab{
+  display:none;
+  padding:16px 16px 0;
+  max-width:680px;
+  margin:0 auto;
+  width:100%;
+  box-sizing:border-box;
+}
 .tab.active{display:block}
+
+/* En PC: el nav no tapa tanto, podemos reducir padding */
+@media(min-width:641px){
+  .content{padding-bottom:calc(var(--nav) + 40px)}
+}
 
 /* BOTTOM NAV */
 .bottom-nav{
@@ -574,7 +586,7 @@ async function loadHistorial(){
         <div class="hist-date">${r.fecha_fin?new Date(r.fecha_fin).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'}):'—'}</div>
       </div>
     </div>`;
-  }).join('');
+  }).join('')+'<div style="height:16px"></div>';
 }
 
 async function loadCuenta(){
@@ -621,7 +633,9 @@ async function loadCuenta(){
         <button class="btn btn-wa btn-full" onclick="waAdminGeneral()">${svgWA()} Escribir al admin</button>
         <p style="font-size:11px;color:var(--g2);line-height:1.55">Para dudas sobre pagos, órdenes o cualquier asunto operativo.</p>
       </div>
-    </div>`;
+    </div>
+    <div style="height:24px"></div>`;
+
 
   // Pre-seleccionar municipio guardado — DESPUÉS del innerHTML
   const pz=document.getElementById('p-zona');
