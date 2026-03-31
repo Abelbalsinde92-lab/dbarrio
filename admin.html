@@ -464,30 +464,31 @@ button{font-family:var(--f);cursor:pointer}
 .panel.open .panel-body{display:flex}
 
 /* ── STAT CARDS ── */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(min-width:640px){.stat-grid{grid-template-columns:repeat(4,1fr)}}
 .stat-card{
   background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);
-  padding:16px;position:relative;overflow:hidden;
+  padding:20px 18px 18px;position:relative;overflow:hidden;
   box-shadow:var(--sh-sm);
+  display:flex;flex-direction:column;gap:0;
 }
 .stat-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
 }
 .stat-card.s-total::before{background:var(--ink)}
 .stat-card.s-green::before{background:var(--ok)}
 .stat-card.s-yellow::before{background:var(--y)}
 .stat-card.s-blue::before{background:var(--blue)}
 .stat-n{
-  font-family:var(--fd);font-size:32px;font-weight:900;
+  font-family:var(--fd);font-size:40px;font-weight:900;
   line-height:1;letter-spacing:-.5px;color:var(--ink);
-  margin-bottom:6px;
+  margin-bottom:10px;
 }
 .stat-n.green{color:var(--ok)}
 .stat-n.yellow{color:var(--yd)}
 .stat-n.blue{color:var(--blue)}
-.stat-lbl{font-size:12px;font-weight:600;color:var(--g1)}
-.stat-sub{font-size:11px;color:var(--g2);margin-top:2px}
+.stat-lbl{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.stat-sub{font-size:11px;color:var(--g2)}
 
 .data-table{
   background:var(--card);border:1.5px solid var(--line);
@@ -503,12 +504,12 @@ button{font-family:var(--f);cursor:pointer}
 }
 .data-row{
   display:flex;align-items:center;justify-content:space-between;
-  padding:10px 16px;border-bottom:1.5px solid var(--line);gap:12px;
+  padding:14px 16px;border-bottom:1.5px solid var(--line);gap:12px;
 }
 .data-row:last-child{border-bottom:none}
 .data-row:hover{background:var(--bg)}
 .data-label{font-size:13px;font-weight:600;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.data-val{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink);flex-shrink:0}
+.data-val{font-family:var(--fd);font-size:18px;font-weight:900;color:var(--ink);flex-shrink:0}
 .data-val.green{color:var(--ok)}
 
 /* ── FORM FIELDS ── */
