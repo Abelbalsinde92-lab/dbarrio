@@ -3,210 +3,245 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-<meta name="theme-color" content="#1A1A2E"/>
+<meta name="theme-color" content="#0F0F1A"/>
 <title>Privacidad — dbarrio</title>
+<link rel="icon" type="image/png" sizes="32x32" href="db-32.png?v=2">
+<link rel="manifest" href="manifest.json?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --y:#F5C116;--yd:#C9980D;
-  --ink:#1A1A2E;--ink2:#24243C;
-  --bg:#F0EDE8;--card:#FFFFFF;
-  --line:rgba(28,28,46,.10);
-  --g1:rgba(28,28,46,.60);--g2:rgba(28,28,46,.35);
+  --y:#F5C116;--yd:#C9980D;--y-bg:rgba(245,193,22,.10);--y-border:rgba(245,193,22,.22);
+  --ink:#0F0F1A;--ink2:#1A1A2E;
+  --bg:#F2EFE9;--card:#FFFFFF;--card2:#F7F5F1;
+  --line:#E8E4DD;--g1:#5A5A6E;--g2:#9A96A0;
+  --ok:#16A34A;--ok-bg:rgba(22,163,74,.10);--ok-border:rgba(22,163,74,.20);
   --f:'DM Sans',system-ui,sans-serif;
   --fd:'Barlow Condensed',system-ui,sans-serif;
-  --th:54px;--r:16px;
+  --th:58px;--r:14px;
 }
 html{background:var(--ink)}
 body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
 
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:50;height:calc(var(--th) + env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 14px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.08)}
-.db-brand{display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none;-webkit-tap-highlight-color:transparent}
-.db-iconbox{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;flex:0 0 auto}
-.db-icon{font-family:var(--fd);font-weight:900;font-size:22px;letter-spacing:-1px;line-height:1}
-.db-icon .d{color:#E6E6E6}.db-icon .b{color:var(--y)}
-.db-wordmark{font-family:var(--fd);font-weight:900;font-size:28px;letter-spacing:-.6px;line-height:1;white-space:nowrap}
-.db-wordmark .d{color:#E6E6E6}.db-wordmark .rest{color:var(--y)}
-.db-tag{margin-left:6px;font-weight:900;letter-spacing:.6px;color:rgba(255,255,255,.45);font-size:12px;white-space:nowrap}
-.topbar-actions{display:flex;align-items:center;gap:8px}
-.tlink{font-size:12px;font-weight:700;color:rgba(255,255,255,.55);text-decoration:none;padding:7px 11px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);-webkit-tap-highlight-color:transparent;transition:color .15s,border-color .15s}
-.tlink:hover{color:var(--y);border-color:rgba(245,193,22,.25)}
-@media(max-width:560px){.db-wordmark{display:none}.db-tag{display:none}}
+/* HEADER */
+.header{position:sticky;top:0;z-index:50;height:calc(var(--th)+env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;-webkit-tap-highlight-color:transparent;flex-shrink:0}
+.brand-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,193,22,.15);border:1px solid var(--y-border);display:grid;place-items:center;flex-shrink:0}
+.brand-letters{font-family:var(--fd);font-size:19px;font-weight:900;letter-spacing:-1px;line-height:1}
+.brand-letters .d{color:#E0E0F0}.brand-letters .b{color:var(--y)}
+.brand-name{font-family:var(--fd);font-size:24px;font-weight:900;letter-spacing:-.5px;line-height:1}
+.brand-name .d{color:#E0E0F0}.brand-name .rest{color:var(--y)}
+@media(max-width:400px){.brand-name{display:none}}
+.nav-links{display:flex;gap:6px}
+.nav-link{height:32px;padding:0 12px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.6);font-size:12px;font-weight:600;display:inline-flex;align-items:center;text-decoration:none;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:var(--f)}
+.nav-link:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-link.active{background:var(--y-bg);border-color:var(--y-border);color:var(--y)}
 
-/* DOC HERO */
-.doc-hero{background:var(--ink2);padding:32px 16px 28px;position:relative;overflow:hidden;border-bottom:3px solid var(--y)}
-.doc-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(245,193,22,.12) 1px,transparent 1px);background-size:24px 24px;pointer-events:none}
+/* HERO */
+.doc-hero{background:var(--ink2);padding:36px 20px 0;position:relative;overflow:hidden}
+.doc-hero-grid{position:absolute;inset:0;background:radial-gradient(circle,rgba(245,193,22,.08) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.doc-hero-wm{position:absolute;right:-10px;bottom:-20px;font-family:var(--fd);font-size:160px;font-weight:900;color:rgba(245,193,22,.04);letter-spacing:-5px;line-height:1;pointer-events:none;user-select:none}
 .doc-hero-inner{position:relative;z-index:1;max-width:680px}
-.doc-eyebrow{font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
-.doc-title{font-family:var(--fd);font-size:clamp(32px,8vw,52px);font-weight:900;color:#fff;line-height:.95;letter-spacing:-.5px;margin-bottom:12px}
-.doc-title em{color:var(--y);font-style:normal}
-.doc-meta{font-size:12px;color:rgba(255,255,255,.35);font-weight:600;letter-spacing:.5px}
-.hero-curve{height:24px;background:var(--bg);border-radius:24px 24px 0 0}
+.doc-eyebrow{font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
+.doc-title{font-family:var(--fd);font-size:clamp(38px,9vw,58px);font-weight:900;color:#fff;line-height:.9;letter-spacing:-.5px;margin-bottom:14px}
+.doc-title em{color:var(--y);font-style:normal;display:block}
+.doc-meta{display:flex;align-items:center;gap:8px;margin-bottom:28px}
+.doc-meta-txt{font-size:12px;color:rgba(255,255,255,.3);font-weight:600}
+.doc-meta-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.2)}
+.hero-stats{display:flex;border-top:1px solid rgba(255,255,255,.07);margin:0 -20px}
+.hstat{flex:1;padding:12px 0;display:flex;flex-direction:column;align-items:center;gap:2px;border-right:1px solid rgba(255,255,255,.07)}
+.hstat:last-child{border-right:none}
+.hstat-n{font-family:var(--fd);font-size:18px;font-weight:900;color:var(--y);line-height:1}
+.hstat-l{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.hero-curve{height:24px;background:var(--bg);border-radius:24px 24px 0 0;margin-top:-1px}
 
 /* CONTENT */
-.wrap{max-width:700px;margin:0 auto;padding:20px 14px calc(56px + env(safe-area-inset-bottom,0))}
+.wrap{max-width:700px;margin:0 auto;padding:24px 16px calc(56px + env(safe-area-inset-bottom,0))}
 
-/* ALERT BOX */
-.alert-box{background:var(--y);border-radius:var(--r);padding:16px 18px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start}
-.alert-icon{font-size:20px;flex-shrink:0;margin-top:1px}
-.alert-text{font-size:14px;color:var(--ink);font-weight:600;line-height:1.6}
-.alert-text strong{font-weight:900}
+/* RESUMEN RÁPIDO */
+.summary-box{background:var(--ink);border-radius:var(--r);padding:20px 22px;margin-bottom:28px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.summary-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--y),rgba(245,193,22,.2))}
+.summary-title{font-family:var(--fd);font-size:18px;font-weight:900;color:var(--y);margin-bottom:12px;letter-spacing:-.2px}
+.summary-list{display:flex;flex-direction:column;gap:8px}
+.summary-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.55}
+.summary-ico{font-size:15px;flex-shrink:0;margin-top:1px}
 
 /* SECTIONS */
-.doc-section{background:var(--card);border-radius:var(--r);border:1px solid var(--line);overflow:hidden;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
-.doc-section-hdr{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(28,28,46,.02)}
-.doc-section-num{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--y);line-height:1;flex-shrink:0;min-width:28px}
-.doc-section-title{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink);letter-spacing:.2px}
-.doc-section-body{padding:14px 18px;font-size:14px;color:var(--g1);line-height:1.75}
-.doc-section-body p{margin-bottom:10px}
-.doc-section-body p:last-child{margin-bottom:0}
-.doc-section-body strong{color:rgba(28,28,46,.9);font-weight:700}
-.doc-list{margin:8px 0 10px 0;display:flex;flex-direction:column;gap:6px}
-.doc-list-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--g1);line-height:1.55}
-.doc-list-item::before{content:'—';color:var(--y);font-weight:900;flex-shrink:0;margin-top:1px}
+.sec-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--y);color:#000;font-family:var(--fd);font-size:14px;font-weight:900;flex-shrink:0;margin-right:10px;line-height:1}
+.sec-heading{display:flex;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1.5px solid var(--line)}
+.sec-heading-txt{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink);letter-spacing:-.2px}
+.doc-section{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:20px 20px 18px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.doc-section p{font-size:14px;color:var(--g1);line-height:1.75;margin-bottom:10px}
+.doc-section p:last-child{margin-bottom:0}
+.doc-section ul{padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.doc-section ul li{font-size:14px;color:var(--g1);line-height:1.6}
+.doc-section strong{color:var(--ink);font-weight:700}
 
 /* FOOTER */
-.doc-footer{margin-top:28px;text-align:center;padding:20px;background:var(--ink);border-radius:var(--r);border:1px solid rgba(255,255,255,.07)}
-.doc-footer-logo{font-family:var(--fd);font-size:32px;font-weight:900;color:var(--y);letter-spacing:-2px;line-height:1;margin-bottom:8px}
-.doc-footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
-.doc-footer-links a{font-size:12px;color:rgba(255,255,255,.4);font-weight:600;text-decoration:none;transition:color .15s}
-.doc-footer-links a:hover{color:var(--y)}
+.footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:20px 20px calc(20px+env(safe-area-inset-bottom,0));display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-brand{font-family:var(--fd);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.5px}
+.footer-brand span{color:var(--y)}
+.footer-links{display:flex;gap:12px;flex-wrap:wrap}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.3);font-weight:600;text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--y)}
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <a class="db-brand" href="index.html" aria-label="Inicio dbarrio">
-    <span class="db-iconbox" aria-hidden="true">
-      <span class="db-icon"><span class="d">d</span><span class="b">b</span></span>
-    </span>
-    <span class="db-wordmark"><span class="d">d</span><span class="rest">barrio</span></span>
-    <span class="db-tag">PRIVACIDAD</span>
+<header class="header">
+  <a class="brand" href="index.html">
+    <div class="brand-icon" aria-hidden="true"><span class="brand-letters"><span class="d">d</span><span class="b">b</span></span></div>
+    <span class="brand-name"><span class="d">d</span><span class="rest">barrio</span></span>
   </a>
-  <div class="topbar-actions">
-    <a class="tlink" href="terminos.html">Términos</a>
-    <a class="tlink" href="index.html">← Inicio</a>
-  </div>
+  <nav class="nav-links">
+    <a class="nav-link active" href="privacidad.html">Privacidad</a>
+    <a class="nav-link" href="terminos.html">Términos</a>
+    <a class="nav-link" href="index.html">← Inicio</a>
+  </nav>
 </header>
 
 <div class="doc-hero">
+  <div class="doc-hero-grid" aria-hidden="true"></div>
+  <div class="doc-hero-wm" aria-hidden="true">🔒</div>
   <div class="doc-hero-inner">
-    <div class="doc-eyebrow">Documento legal</div>
-    <h1 class="doc-title">Política de<br><em>privacidad</em></h1>
-    <div class="doc-meta">Vigente desde enero de 2025 · dbarrio</div>
+    <div class="doc-eyebrow">Documento legal · dbarrio</div>
+    <h1 class="doc-title">Política de<br><em>Privacidad</em></h1>
+    <div class="doc-meta">
+      <span class="doc-meta-txt">Versión 1.0</span>
+      <span class="doc-meta-dot"></span>
+      <span class="doc-meta-txt">2025</span>
+      <span class="doc-meta-dot"></span>
+      <span class="doc-meta-txt">La Habana</span>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-n">7</span><span class="hstat-l">Secciones</span></div>
+    <div class="hstat"><span class="hstat-n">0</span><span class="hstat-l">Anuncios</span></div>
+    <div class="hstat"><span class="hstat-n">Sin</span><span class="hstat-l">Venta datos</span></div>
   </div>
 </div>
 <div class="hero-curve"></div>
 
 <div class="wrap">
 
-  <div class="alert-box">
-    <span class="alert-icon">🔒</span>
-    <div class="alert-text">
-      En dbarrio usamos tus datos <strong>solo para operar el servicio</strong>: registrar la solicitud, coordinar al técnico, dar seguimiento y gestionar reclamos con tu código <strong>db-xxxx</strong>. Nada más.
+  <!-- RESUMEN -->
+  <div class="summary-box">
+    <div class="summary-title">En resumen, sin tecnicismos</div>
+    <div class="summary-list">
+      <div class="summary-item"><span class="summary-ico">✅</span><span>Solo pedimos los datos necesarios para gestionar tu solicitud de servicio.</span></div>
+      <div class="summary-item"><span class="summary-ico">🚫</span><span>No vendemos, cedemos ni alquilamos tus datos a terceros con fines comerciales.</span></div>
+      <div class="summary-item"><span class="summary-ico">📱</span><span>Tu número de WhatsApp se usa exclusivamente para coordinar el servicio que solicitaste.</span></div>
+      <div class="summary-item"><span class="summary-ico">🔒</span><span>Puedes solicitar la eliminación de tus datos en cualquier momento.</span></div>
     </div>
   </div>
 
+  <!-- 01 -->
   <div class="doc-section">
-    <div class="doc-section-hdr">
-      <span class="doc-section-num">01</span>
-      <span class="doc-section-title">Quiénes somos</span>
+    <div class="sec-heading">
+      <span class="sec-num">01</span>
+      <span class="sec-heading-txt">¿Quién es responsable de tus datos?</span>
     </div>
-    <div class="doc-section-body">
-      <p><strong>dbarrio</strong> es una plataforma que conecta personas con técnicos independientes para servicios en el hogar. Operamos principalmente en Cuba y también gestionamos solicitudes desde el exterior para servicios en territorio cubano.</p>
-    </div>
+    <p><strong>dbarrio</strong> es la plataforma de gestión de servicios técnicos a domicilio operada desde La Habana, Cuba, accesible en <strong>dbarrio-two.vercel.app</strong>. Somos responsables del tratamiento de los datos personales que recopilas al usar esta plataforma.</p>
+    <p>Para cualquier consulta sobre privacidad puedes escribirnos directamente por WhatsApp al número de contacto disponible en la plataforma.</p>
   </div>
 
+  <!-- 02 -->
   <div class="doc-section">
-    <div class="doc-section-hdr">
-      <span class="doc-section-num">02</span>
-      <span class="doc-section-title">Datos que recopilamos</span>
+    <div class="sec-heading">
+      <span class="sec-num">02</span>
+      <span class="sec-heading-txt">¿Qué datos recopilamos?</span>
     </div>
-    <div class="doc-section-body">
-      <p>Recopilamos únicamente lo necesario para coordinar y dar seguimiento:</p>
-      <div class="doc-list">
-        <div class="doc-list-item">Nombre y teléfono/WhatsApp del solicitante.</div>
-        <div class="doc-list-item">Municipio y, si lo indicas, dirección y referencias.</div>
-        <div class="doc-list-item">Tipo de servicio, descripción del problema y horario preferido.</div>
-        <div class="doc-list-item">Código de seguimiento (db-xxxx), estado, valoraciones y reclamos.</div>
-      </div>
-      <p>Para técnicos registrados, además: correo, especialidad, zona de trabajo y datos operativos del perfil.</p>
-      <p><strong>No</strong> solicitamos datos bancarios, documentos de identidad ni información sensible como regla general.</p>
-    </div>
+    <p>Recopilamos únicamente los datos que tú nos proporcionas de forma voluntaria:</p>
+    <ul>
+      <li><strong>Nombre:</strong> para identificarte en la comunicación con el técnico.</li>
+      <li><strong>Número de WhatsApp:</strong> para enviarte el código de seguimiento y coordinar el servicio.</li>
+      <li><strong>Municipio:</strong> para asignar el técnico de tu zona.</li>
+      <li><strong>Descripción del problema:</strong> para que el técnico llegue preparado.</li>
+      <li><strong>Dirección (opcional):</strong> solo si decides proporcionarla.</li>
+    </ul>
+    <p style="margin-top:10px">Los técnicos registrados también proporcionan su email y contraseña para acceder al panel de trabajo.</p>
   </div>
 
+  <!-- 03 -->
   <div class="doc-section">
-    <div class="doc-section-hdr">
-      <span class="doc-section-num">03</span>
-      <span class="doc-section-title">Cómo usamos tus datos</span>
+    <div class="sec-heading">
+      <span class="sec-num">03</span>
+      <span class="sec-heading-txt">¿Para qué usamos tus datos?</span>
     </div>
-    <div class="doc-section-body">
-      <div class="doc-list">
-        <div class="doc-list-item">Registrar solicitudes y asignar o coordinar un técnico.</div>
-        <div class="doc-list-item">Contactarte por WhatsApp para confirmar, coordinar o dar seguimiento.</div>
-        <div class="doc-list-item">Gestionar reclamos, garantía y valoración del servicio.</div>
-        <div class="doc-list-item">Mejorar seguridad y calidad (detección de abuso y control interno).</div>
-      </div>
-      <p>No usamos tus datos para publicidad masiva no solicitada.</p>
-    </div>
+    <ul>
+      <li>Gestionar y asignar tu solicitud de servicio técnico.</li>
+      <li>Enviarte tu código de seguimiento y actualizaciones del estado.</li>
+      <li>Coordinar la comunicación entre tú y el técnico asignado.</li>
+      <li>Procesar reclamaciones de garantía.</li>
+      <li>Mejorar el funcionamiento de la plataforma.</li>
+    </ul>
+    <p style="margin-top:10px"><strong>No usamos tus datos</strong> para publicidad, marketing de terceros, análisis de comportamiento comercial ni ningún fin distinto al servicio solicitado.</p>
   </div>
 
+  <!-- 04 -->
   <div class="doc-section">
-    <div class="doc-section-hdr">
-      <span class="doc-section-num">04</span>
-      <span class="doc-section-title">WhatsApp como canal</span>
+    <div class="sec-heading">
+      <span class="sec-num">04</span>
+      <span class="sec-heading-txt">¿Compartimos tus datos con terceros?</span>
     </div>
-    <div class="doc-section-body">
-      <p>WhatsApp es el canal principal para coordinación y seguimiento. Al proporcionar tu número, aceptas que podamos contactarte por esta vía en relación con tu solicitud.</p>
-      <p>No realizamos envíos masivos ni promociones no solicitadas.</p>
-    </div>
+    <p>Compartimos tus datos únicamente con el <strong>técnico asignado a tu solicitud</strong>, en la medida necesaria para que pueda prestarte el servicio (nombre, teléfono de contacto, municipio y descripción del problema).</p>
+    <p>Utilizamos <strong>Supabase</strong> como infraestructura de base de datos segura. Esta plataforma procesa los datos bajo estándares de seguridad internacionales.</p>
+    <p><strong>No vendemos, alquilamos ni cedemos</strong> tus datos personales a empresas, anunciantes ni terceros con ningún fin comercial.</p>
   </div>
 
+  <!-- 05 -->
   <div class="doc-section">
-    <div class="doc-section-hdr">
-      <span class="doc-section-num">05</span>
-      <span class="doc-section-title">Con quién compartimos datos</span>
+    <div class="sec-heading">
+      <span class="sec-num">05</span>
+      <span class="sec-heading-txt">¿Cuánto tiempo conservamos tus datos?</span>
     </div>
-    <div class="doc-section-body">
-      <p>Compartimos con el técnico asignado <strong>solo lo necesario</strong> para atenderte (teléfono, municipio y dirección si la diste).</p>
-      <p>No vendemos ni comercializamos tus datos personales.</p>
-      <p>Usamos proveedores de infraestructura como <strong>Supabase</strong> para almacenar y operar la información con medidas de seguridad.</p>
-    </div>
+    <p>Conservamos tus datos mientras sea necesario para:</p>
+    <ul>
+      <li>Gestionar el servicio solicitado y su período de garantía.</li>
+      <li>Atender posibles reclamaciones o disputas.</li>
+      <li>Cumplir con obligaciones operativas de la plataforma.</li>
+    </ul>
+    <p style="margin-top:10px">Puedes solicitarnos la eliminación de tus datos en cualquier momento. Procesaremos tu solicitud en un plazo razonable, salvo que exista una obligación legal de conservarlos.</p>
   </div>
 
+  <!-- 06 -->
   <div class="doc-section">
-    <div class="doc-section-hdr">
-      <span class="doc-section-num">06</span>
-      <span class="doc-section-title">Tus derechos</span>
+    <div class="sec-heading">
+      <span class="sec-num">06</span>
+      <span class="sec-heading-txt">Tus derechos</span>
     </div>
-    <div class="doc-section-body">
-      <p>Conservamos tus datos mientras sean necesarios para el seguimiento del servicio, reclamos/garantía y control interno de seguridad.</p>
-      <p>Puedes solicitar acceso, rectificación o eliminación de tus datos contactándonos por WhatsApp o a través de un reclamo en la plataforma.</p>
-    </div>
+    <p>Tienes derecho a:</p>
+    <ul>
+      <li><strong>Acceso:</strong> saber qué datos tenemos sobre ti.</li>
+      <li><strong>Rectificación:</strong> corregir datos inexactos.</li>
+      <li><strong>Eliminación:</strong> solicitar que borremos tus datos.</li>
+      <li><strong>Oposición:</strong> oponerte al tratamiento en cualquier momento.</li>
+    </ul>
+    <p style="margin-top:10px">Para ejercer cualquiera de estos derechos, contáctanos por WhatsApp desde el botón disponible en la plataforma.</p>
   </div>
 
+  <!-- 07 -->
   <div class="doc-section">
-    <div class="doc-section-hdr">
-      <span class="doc-section-num">07</span>
-      <span class="doc-section-title">Cambios a esta política</span>
+    <div class="sec-heading">
+      <span class="sec-num">07</span>
+      <span class="sec-heading-txt">Cambios en esta política</span>
     </div>
-    <div class="doc-section-body">
-      <p>Podemos actualizar esta política. Los cambios se publicarán en esta página. El uso continuado de la plataforma implica aceptación de la política vigente.</p>
-    </div>
+    <p>Podemos actualizar esta política cuando sea necesario. Si los cambios son relevantes, lo notificaremos de forma visible en la plataforma. La fecha de última actualización aparece en el encabezado de este documento.</p>
+    <p>El uso continuado de la plataforma tras la publicación de cambios implica la aceptación de la política actualizada.</p>
   </div>
-
-  <footer class="doc-footer">
-    <div class="doc-footer-logo">db</div>
-    <div class="doc-footer-links">
-      <a href="terminos.html">Términos de uso</a>
-      <a href="zona-db.html">Zona db</a>
-      <a href="index.html">Volver al inicio</a>
-    </div>
-  </footer>
 
 </div>
+
+<footer class="footer">
+  <span class="footer-brand">d<span>b</span>arrio</span>
+  <div class="footer-links">
+    <a href="index.html">Inicio</a>
+    <a href="terminos.html">Términos de uso</a>
+    <a href="zona-db.html">Zona db</a>
+  </div>
+</footer>
+
 </body>
 </html>
