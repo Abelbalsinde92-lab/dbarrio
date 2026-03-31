@@ -591,9 +591,13 @@ async function savePerfil(){
   const telefono=document.getElementById('p-tel')?.value?.trim()||null;
   const municipio=document.getElementById('p-zona')?.value||null;
   const especialidad=document.getElementById('p-esp')?.value?.trim()||null;
+  // Siempre guardamos el slug de zona (oeste/centro/este/sur), no el municipio
   const zona=MUNICIPIO_ZONA[municipio]||null;
-  // Guarda municipio en campo zona para compatibilidad con el sistema
-  const {error}=await sb.from('socios').update({telefono,zona:municipio||zona,especialidad}).eq('id',mySocio.id);
+  const {error}=await sb.from('socios').update({
+    telefono,
+    zona: zona||municipio||null,   // slug si existe, municipio como fallback
+    especialidad
+  }).eq('id',mySocio.id);
   if(error){toast('Error: '+error.message);return;}
   toast('✅ Datos actualizados');
   loadCuenta();
