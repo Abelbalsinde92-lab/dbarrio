@@ -75,6 +75,8 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .nav{display:flex;align-items:center;gap:6px;margin-left:auto}
 .nav-btn{height:34px;padding:0 13px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.65);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:var(--f)}
 .nav-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-btn.nav-sec{display:none}
+@media(min-width:480px){.nav-btn.nav-sec{display:inline-flex}}
 .nav-btn.cta{background:var(--y);color:#000;border-color:var(--y);font-weight:700}
 .nav-btn.cta:hover{background:var(--yd)}
 
@@ -378,8 +380,8 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <span class="brand-name"><span class="d">d</span><span class="rest">barrio</span></span>
   </div>
   <nav class="nav">
-    <button class="nav-btn" onclick="open_('gar')">Garantía</button>
-    <button class="nav-btn" onclick="open_('cal')">Calificar</button>
+    <button class="nav-btn nav-sec" onclick="open_('gar')">Garantía</button>
+    <button class="nav-btn nav-sec" onclick="open_('cal')">Calificar</button>
     <button class="nav-btn" onclick="open_('acc')">Entrar</button>
     <button class="nav-btn cta" onclick="open_('sol')">Solicitar</button>
   </nav>
