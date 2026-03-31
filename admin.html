@@ -1835,27 +1835,82 @@ async function loadStats(){
   sols.forEach(s=>{ const sv=s.servicio||'Sin especificar'; porServicio[sv]=(porServicio[sv]||0)+1; });
   const socioStats=(socios||[]).map(s=>({nombre:s.nombre,trabajos:s.trabajos||0,rating:s.rating_avg?parseFloat(s.rating_avg).toFixed(1):'—'})).sort((a,b)=>b.trabajos-a.trabajos).slice(0,6);
   el.innerHTML=`
-    <div class="stat-grid">
-      <div class="stat-card s-total"><div class="stat-n">${sols.length}</div><div class="stat-lbl">Total órdenes</div><div class="stat-sub">${completadas.length} completadas</div></div>
-      <div class="stat-card s-green"><div class="stat-n green">$${ingresos.toFixed(0)}</div><div class="stat-lbl">Comisiones cobradas</div><div class="stat-sub">${movs.length} registros</div></div>
-      <div class="stat-card s-yellow"><div class="stat-n yellow">${avgRating.toFixed(1)} ★</div><div class="stat-lbl">Rating promedio</div><div class="stat-sub">${conRating.length} valoraciones</div></div>
-      <div class="stat-card s-blue"><div class="stat-n blue">${avgDias.toFixed(1)}d</div><div class="stat-lbl">Tiempo promedio</div><div class="stat-sub">solicitud → cierre</div></div>
+    <!-- KPIs 2x2 en móvil, 4 columnas en desktop -->
+    <div class="stat-grid" style="margin-bottom:14px">
+      <div class="stat-card s-total">
+        <div class="stat-n">${sols.length}</div>
+        <div class="stat-lbl">Total órdenes</div>
+        <div class="stat-sub">${completadas.length} completadas</div>
+      </div>
+      <div class="stat-card s-green">
+        <div class="stat-n green">$${ingresos.toFixed(0)}</div>
+        <div class="stat-lbl">Comisiones</div>
+        <div class="stat-sub">${movs.length} registros</div>
+      </div>
+      <div class="stat-card s-yellow">
+        <div class="stat-n yellow">${avgRating.toFixed(1)} ★</div>
+        <div class="stat-lbl">Rating</div>
+        <div class="stat-sub">${conRating.length} valoraciones</div>
+      </div>
+      <div class="stat-card s-blue">
+        <div class="stat-n blue">${avgDias.toFixed(1)}d</div>
+        <div class="stat-lbl">Tiempo</div>
+        <div class="stat-sub">solicitud → cierre</div>
+      </div>
     </div>
-    <div class="data-table">
-      <div class="data-table-hdr"><span class="data-table-title">📍 Órdenes por zona</span></div>
-      ${Object.entries(porZona).sort((a,b)=>b[1]-a[1]).map(([zona,n])=>{
-        const label=ZONA_LABEL[zona]||(zona.charAt(0).toUpperCase()+zona.slice(1));
-        const munis=ZONA_MUNICIPIOS[zona]||zona;
-        return `<div class="data-row"><div style="flex:1;min-width:0"><div class="data-label">${esc(label)}</div><div style="font-size:10px;color:var(--g2);margin-top:1px">${esc(munis)}</div></div><span class="data-val">${n}</span></div>`;
-      }).join('')}
+
+    <!-- Panel zona -->
+    <div class="panel open" id="panel-zona-st">
+      <div class="panel-hdr" onclick="togglePanel('panel-zona-st')">
+        <div class="panel-hdr-left"><span class="panel-title">Órdenes por zona</span></div>
+        <svg class="panel-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="panel-body" style="padding:0">
+        ${Object.entries(porZona).sort((a,b)=>b[1]-a[1]).map(([zona,n])=>{
+          const label=ZONA_LABEL[zona]||(zona.charAt(0).toUpperCase()+zona.slice(1));
+          const munis=ZONA_MUNICIPIOS[zona]||zona;
+          return `<div class="data-row">
+            <div style="flex:1;min-width:0">
+              <div class="data-label">${esc(label)}</div>
+              <div style="font-size:10px;color:var(--g2);margin-top:1px">${esc(munis)}</div>
+            </div>
+            <span class="data-val">${n}</span>
+          </div>`;
+        }).join('')}
+      </div>
     </div>
-    <div class="data-table">
-      <div class="data-table-hdr"><span class="data-table-title">🔧 Servicios más solicitados</span></div>
-      ${Object.entries(porServicio).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([srv,n])=>`<div class="data-row"><span class="data-label">${esc(srv)}</span><span class="data-val">${n}</span></div>`).join('')}
+
+    <!-- Panel servicios -->
+    <div class="panel open" id="panel-srv-st">
+      <div class="panel-hdr" onclick="togglePanel('panel-srv-st')">
+        <div class="panel-hdr-left"><span class="panel-title">Servicios más solicitados</span></div>
+        <svg class="panel-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="panel-body" style="padding:0">
+        ${Object.entries(porServicio).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([srv,n])=>`
+          <div class="data-row">
+            <span class="data-label">${esc(srv)}</span>
+            <span class="data-val">${n}</span>
+          </div>`).join('')}
+      </div>
     </div>
-    <div class="data-table">
-      <div class="data-table-hdr"><span class="data-table-title">👤 Técnicos más activos</span></div>
-      ${socioStats.map(s=>`<div class="data-row"><span class="data-label">${esc(s.nombre)}</span><div style="display:flex;gap:10px;align-items:center"><span style="font-size:11px;color:var(--g2)">${s.rating} ★</span><span class="data-val green">${s.trabajos}</span></div></div>`).join('')}
+
+    <!-- Panel técnicos -->
+    <div class="panel open" id="panel-tec-st">
+      <div class="panel-hdr" onclick="togglePanel('panel-tec-st')">
+        <div class="panel-hdr-left"><span class="panel-title">Técnicos más activos</span></div>
+        <svg class="panel-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="panel-body" style="padding:0">
+        ${socioStats.length?socioStats.map(s=>`
+          <div class="data-row">
+            <span class="data-label">${esc(s.nombre)}</span>
+            <div style="display:flex;gap:12px;align-items:center;flex-shrink:0">
+              <span style="font-size:11px;color:var(--g2)">${s.rating} ★</span>
+              <span class="data-val green">${s.trabajos}</span>
+            </div>
+          </div>`).join(''):'<div class="empty" style="padding:24px"><span class="empty-txt">Sin datos aún</span></div>'}
+      </div>
     </div>`;
 }
 
