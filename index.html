@@ -785,7 +785,10 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 const SURL='https://gkxtdancgkwetdniooky.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
 
-const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:false}});
+// El cliente de autenticación DEBE tener persistSession:true
+// para que admin.html y socio.html encuentren la sesión al cargar
+const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage}});
+// Cliente público para solicitudes anónimas (sin sesión)
 const sbPublic=supabase.createClient(SURL,SKEY,{auth:{persistSession:false}});
 
 // ── MAPS ──
