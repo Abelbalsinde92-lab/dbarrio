@@ -26,11 +26,38 @@
   --ease:cubic-bezier(.4,0,.2,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--ink)}
-body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+html{background:var(--ink);height:100%}
+body{
+  min-height:100%;
+  background:var(--bg);color:var(--ink);
+  font-family:var(--f);font-size:14px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow-y:auto;overflow-x:hidden;
+  overscroll-behavior-y:contain;
+}
 
 /* TOPBAR */
-.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:calc(var(--th)+env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  height:calc(var(--th)+env(safe-area-inset-top,0));
+  padding:env(safe-area-inset-top,0) 16px 0;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+/* TOAST */
+.toast{
+  position:fixed;
+  bottom:calc(var(--nav)+env(safe-area-inset-bottom,0)+20px);
+  left:50%;transform:translateX(-50%) translateY(16px);
+  background:var(--ink);color:#fff;
+  border:1px solid rgba(255,255,255,.1);border-radius:12px;
+  padding:10px 20px;font-size:13px;font-weight:600;
+  white-space:nowrap;z-index:9999;opacity:0;
+  transition:opacity .22s,transform .22s;pointer-events:none;
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .brand-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,193,22,.15);border:1px solid var(--y-border);display:grid;place-items:center;flex-shrink:0}
 .brand-letters{font-family:var(--fd);font-size:19px;font-weight:900;letter-spacing:-1px;line-height:1}
@@ -46,13 +73,32 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .tb-exit:active{transform:scale(.97)}
 
 /* LAYOUT */
-.content{padding-top:calc(var(--th)+env(safe-area-inset-top,0));padding-bottom:calc(var(--nav)+env(safe-area-inset-bottom,0)+16px)}
-.tab{display:none;padding:16px 14px 0}
+.content{
+  padding-top:calc(var(--th)+env(safe-area-inset-top,0));
+  padding-bottom:calc(var(--nav)+env(safe-area-inset-bottom,0)+32px);
+  min-height:100svh;
+}
+.tab{display:none;padding:16px 16px 0;max-width:680px;margin:0 auto}
 .tab.active{display:block}
 
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:999;display:flex;align-items:stretch;background:var(--ink);border-top:1px solid rgba(255,255,255,.07);height:calc(var(--nav)+env(safe-area-inset-bottom,0));padding-bottom:env(safe-area-inset-bottom,0)}
-.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:10px 0 12px;border:none;background:none;color:rgba(255,255,255,.35);cursor:pointer;transition:color .15s;-webkit-tap-highlight-color:transparent;position:relative}
+.bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:999;
+  background:var(--ink);border-top:1px solid rgba(255,255,255,.07);
+  height:calc(var(--nav)+env(safe-area-inset-bottom,0));
+  padding-bottom:env(safe-area-inset-bottom,0);
+  display:flex;align-items:stretch;
+}
+.bnav-inner{
+  display:flex;align-items:stretch;
+  width:100%;max-width:680px;margin:0 auto;
+}
+.bnav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;padding:10px 0 12px;border:none;background:none;
+  color:rgba(255,255,255,.35);cursor:pointer;
+  transition:color .15s;-webkit-tap-highlight-color:transparent;position:relative;
+}
 .bnav-btn.active{color:var(--y)}
 .bnav-btn.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--y);border-radius:0 0 3px 3px}
 .bnav-ic{width:22px;height:22px;display:block;stroke:currentColor}
@@ -212,10 +258,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 @keyframes spin{to{transform:rotate(360deg)}}
 .sp{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px;opacity:.6}
 .btn-y .sp{border-color:#000;border-top-color:transparent}
-
-/* TOAST */
-.toast{position:fixed;bottom:calc(var(--nav)+env(safe-area-inset-bottom,0)+16px);left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;white-space:nowrap;z-index:9999;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.25)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -261,21 +303,23 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 </div>
 
 <nav class="bottom-nav" id="bottomNav" style="display:none">
-  <button class="bnav-btn active" id="bnav-ordenes" onclick="goTab('ordenes',this)">
-    <div style="position:relative">
-      <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span class="bnav-badge" id="badge-ordenes" style="display:none">0</span>
-    </div>
-    <span class="bnav-lbl">Órdenes</span>
-  </button>
-  <button class="bnav-btn" id="bnav-historial" onclick="goTab('historial',this)">
-    <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    <span class="bnav-lbl">Historial</span>
-  </button>
-  <button class="bnav-btn" id="bnav-cuenta" onclick="goTab('cuenta',this)">
-    <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-    <span class="bnav-lbl">Mi cuenta</span>
-  </button>
+  <div class="bnav-inner">
+    <button class="bnav-btn active" id="bnav-ordenes" onclick="goTab('ordenes',this)">
+      <div style="position:relative">
+        <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span class="bnav-badge" id="badge-ordenes" style="display:none">0</span>
+      </div>
+      <span class="bnav-lbl">Órdenes</span>
+    </button>
+    <button class="bnav-btn" id="bnav-historial" onclick="goTab('historial',this)">
+      <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span class="bnav-lbl">Historial</span>
+    </button>
+    <button class="bnav-btn" id="bnav-cuenta" onclick="goTab('cuenta',this)">
+      <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <span class="bnav-lbl">Mi cuenta</span>
+    </button>
+  </div>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
