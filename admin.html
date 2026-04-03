@@ -1540,10 +1540,13 @@ async function loadHi(){
 async function loadSocios(){
   const el=document.getElementById('lista-so');
   el.innerHTML='<div class="loading">Cargando...</div>';
-  await loadEncargadosMap(); // refrescar mapa de encargados para el selector captador
-  const {data,error}=await sb.from('socios').select('*').order('estado_socio').order('nombre');
+  await loadEncargadosMap();
+  let q=sb.from('socios').select('*').order('estado_socio').order('nombre');
+  // Encargado solo ve los técnicos de su zona
+  if(USER_ROLE==='encargado'&&USER_ZONA) q=q.eq('zona',USER_ZONA);
+  const {data,error}=await q;
   if(error){ el.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`; return }
-  if(!data?.length){ el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin técnicos registrados</span></div>'; return }
+  if(!data?.length){ el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin técnicos en tu zona</span></div>'; return }
   window._sociosData=data; filtrarSocios();
 }
 
@@ -1608,13 +1611,13 @@ function buildSocioCard(s){
         <div class="assign-row"><input id="com-${s.id}" type="number" min="0" max="100" value="${s.comision||15}" style="max-width:100px;height:36px;padding:0 10px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--f);font-size:13px;color:var(--ink);background:var(--card);outline:none"/><button class="btn btn-g btn-sm" onclick="saveComSocio(${s.id})">Guardar</button></div>
       </div>
       <div class="actions-row">
-        ${!s.admitido?`<button class="btn btn-y btn-sm" onclick='openAprobar(${s.id},${JSON.stringify(s.nombre||"")},${JSON.stringify(s.telefono||"")})'>Aprobar</button>`:''}
-        ${!s.admitido?`<button class="btn btn-r btn-sm" onclick="rechazarSocio(${s.id})">Rechazar</button>`:''}
-        ${s.estado_socio==='activo'?`<button class="btn btn-r btn-sm" onclick="cambiarEstadoSocio(${s.id},'baja')">Dar de baja</button>`:''}
-        ${s.estado_socio==='baja'?`<button class="btn btn-g btn-sm" onclick="cambiarEstadoSocio(${s.id},'activo')">Reactivar</button>`:''}
+        ${USER_ROLE==='admin'&&!s.admitido?`<button class="btn btn-y btn-sm" onclick='openAprobar(${s.id},${JSON.stringify(s.nombre||"")},${JSON.stringify(s.telefono||"")})'>Aprobar</button>`:''}
+        ${USER_ROLE==='admin'&&!s.admitido?`<button class="btn btn-r btn-sm" onclick="rechazarSocio(${s.id})">Rechazar</button>`:''}
+        ${USER_ROLE==='admin'&&s.estado_socio==='activo'?`<button class="btn btn-r btn-sm" onclick="cambiarEstadoSocio(${s.id},'baja')">Dar de baja</button>`:''}
+        ${USER_ROLE==='admin'&&s.estado_socio==='baja'?`<button class="btn btn-g btn-sm" onclick="cambiarEstadoSocio(${s.id},'activo')">Reactivar</button>`:''}
         ${s.telefono?`<button class="btn btn-wa btn-sm" onclick='waAdmin(${JSON.stringify(s.telefono||"")},${JSON.stringify(msgEnt)})'>WA</button>`:''}
       </div>
-      ${s.admitido?`
+      ${USER_ROLE==='admin'&&s.admitido?`
       <div class="assign-form" style="margin-top:8px">
         <label>Encargado captador</label>
         <div class="assign-row">
