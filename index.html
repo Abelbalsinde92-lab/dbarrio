@@ -853,12 +853,51 @@ function selSrv(el){
   el.classList.add('selected');
   solSrv=el.dataset.srv;
   cE('es-srv');
+  sessionStorage.setItem('db_sol_srv',solSrv);
 }
 function selHora(el){
   document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));
   el.classList.add('selected');
   solHora=el.dataset.hora;
+  sessionStorage.setItem('db_sol_hora',solHora);
 }
+
+// Restaurar datos del formulario desde sessionStorage al abrir el modal
+function open_(k){
+  document.getElementById('ov-'+k)?.classList.add('open');
+  if(k==='sol') restoreSolForm();
+}
+
+function restoreSolForm(){
+  const srv=sessionStorage.getItem('db_sol_srv');
+  const hora=sessionStorage.getItem('db_sol_hora');
+  const cli=sessionStorage.getItem('db_sol_cli');
+  const mun=sessionStorage.getItem('db_sol_mun');
+  const wa=sessionStorage.getItem('db_sol_wa');
+  if(srv){
+    const btn=document.querySelector(`.srv-opt[data-srv="${srv}"]`);
+    if(btn){btn.classList.add('selected');solSrv=srv;}
+  }
+  if(hora){
+    const btn=document.querySelector(`.hora-opt[data-hora="${hora}"]`);
+    if(btn){btn.classList.add('selected');solHora=hora;}
+  }
+  if(cli){const e=document.getElementById('s-cli');if(e)e.value=cli;}
+  if(mun){const e=document.getElementById('s-mun');if(e)e.value=mun;}
+  if(wa){const e=document.getElementById('s-wa');if(e)e.value=wa;}
+}
+
+// Guardar campos en sessionStorage mientras se editan
+document.addEventListener('DOMContentLoaded',()=>{
+  ['s-cli','s-mun','s-wa'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      const key='db_sol_'+id.replace('s-','');
+      el.addEventListener('input',()=>sessionStorage.setItem(key,el.value));
+      el.addEventListener('change',()=>sessionStorage.setItem(key,el.value));
+    }
+  });
+});
 function abrirConServicio(srv){
   open_('sol');
   setTimeout(()=>{
@@ -878,6 +917,8 @@ function irStep2(){
   if(!cli){sE('es-cli','Escribe tu nombre.');ok=false;}
   if(!tel){ok=false;}
   if(!ok) return;
+  // Guardar en sessionStorage — si cierra el modal no pierde los datos
+  try{sessionStorage.setItem('db_sol',JSON.stringify({cli,mun,srv:solSrv,code:document.getElementById('s-code')?.value||'+53',wa:document.getElementById('s-wa')?.value||''}));}catch(_){}
   document.getElementById('step-1').classList.remove('active');
   document.getElementById('step-2').classList.add('active');
   document.getElementById('sdot-1').classList.remove('active');
@@ -892,6 +933,22 @@ function irStep1(){
   document.getElementById('sdot-1').classList.remove('done');
   document.getElementById('sdot-1').classList.add('active');
   document.getElementById('sbar').style.width='0';
+}
+function restoreFormSession(){
+  try{
+    const saved=sessionStorage.getItem('db_sol');
+    if(!saved) return;
+    const d=JSON.parse(saved);
+    if(d.cli){const e=document.getElementById('s-cli');if(e)e.value=d.cli;}
+    if(d.mun){const e=document.getElementById('s-mun');if(e)e.value=d.mun;}
+    if(d.wa) {const e=document.getElementById('s-wa'); if(e)e.value=d.wa;}
+    if(d.code){const e=document.getElementById('s-code');if(e)e.value=d.code;}
+    if(d.srv){
+      solSrv=d.srv;
+      const btn=document.querySelector(`.srv-opt[data-srv="${CSS.escape(d.srv)}"]`);
+      if(btn) btn.classList.add('selected');
+    }
+  }catch(_){}
 }
 
 // ── SOLICITUD ──
