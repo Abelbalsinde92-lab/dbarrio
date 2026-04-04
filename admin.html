@@ -1607,6 +1607,20 @@ function buildSocioCard(s){
         <div class="info-item"><span class="info-lbl">Comisión</span><span class="info-val">${s.comision||15}%</span></div>
       </div>
       <div class="assign-form">
+        <label>Zona asignada</label>
+        <div class="assign-row">
+          <select id="zona-${s.id}" style="flex:1">
+            <option value="">-- Sin zona --</option>
+            <option value="oeste" ${s.zona==='oeste'?'selected':''}>Oeste — Playa, La Lisa, Marianao</option>
+            <option value="centro" ${s.zona==='centro'?'selected':''}>Centro — Plaza, C.Habana, H.Vieja, Diez de Oct., Cerro</option>
+            <option value="este" ${s.zona==='este'?'selected':''}>Este — Regla, H.del Este, Guanabacoa, S.M.Padrón</option>
+            <option value="sur" ${s.zona==='sur'?'selected':''}>Sur — Boyeros, Arroyo Naranjo, Cotorro</option>
+          </select>
+          <button class="btn btn-g btn-sm" onclick="saveZonaSocio(${s.id})">Guardar</button>
+        </div>
+        ${!['oeste','centro','este','sur'].includes(s.zona)?`<div style="font-size:11px;color:var(--warn);font-weight:700;margin-top:5px">⚠️ Zona actual inválida: "${esc(s.zona||'sin zona')}"</div>`:''}
+      </div>
+      <div class="assign-form" style="margin-top:8px">
         <label>Ajustar comisión (%)</label>
         <div class="assign-row"><input id="com-${s.id}" type="number" min="0" max="100" value="${s.comision||15}" style="max-width:100px;height:36px;padding:0 10px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--f);font-size:13px;color:var(--ink);background:var(--card);outline:none"/><button class="btn btn-g btn-sm" onclick="saveComSocio(${s.id})">Guardar</button></div>
       </div>
@@ -1684,6 +1698,7 @@ async function aprobarSocio(id, nombre, telefono){
   openAprobar(id, nombre, telefono);
 }
 async function cambiarEstadoSocio(id,est){ const {error}=await sb.from('socios').update({estado_socio:est}).eq('id',id); if(error){ toast('Error: '+error.message); return } toast(est==='activo'?'Técnico reactivado':'Técnico dado de baja'); loadSocios(); loadSociosMap(); }
+async function saveZonaSocio(id){ const val=document.getElementById('zona-'+id)?.value||null; const {error}=await sb.from('socios').update({zona:val}).eq('id',id); if(error){toast('Error: '+error.message);return;} toast('Zona actualizada ✓'); loadSocios(); loadSociosMap(); }
 async function saveComSocio(id){ const val=parseFloat(document.getElementById('com-'+id).value); if(isNaN(val)){ toast('Valor inválido'); return } const {error}=await sb.from('socios').update({comision:val}).eq('id',id); if(error){ toast('Error: '+error.message); return } toast('Comisión actualizada ✓'); loadSociosMap(); }
 async function rechazarSocio(id){ if(!confirm('¿Rechazar este candidato?')) return; const {error}=await sb.from('socios').update({estado_socio:'rechazado',admitido:false}).eq('id',id); if(error){ toast('Error: '+error.message); return } toast('Candidato rechazado'); loadSocios(); loadSociosMap(); }
 function waAdmin(tel,msg){ wa(tel,msg) }
