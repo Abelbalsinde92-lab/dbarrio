@@ -1220,6 +1220,13 @@ async function loadOp(){
     el.innerHTML=`<div class="empty"><span class="empty-ico">⚠</span><span class="empty-txt">Error: ${esc(error.message)}</span></div>`; return;
   }
   if(!data?.length){ el.innerHTML='<div class="empty"><span class="empty-ico">✓</span><span class="empty-txt">Sin órdenes activas ahora mismo</span></div>'; return; }
+  // Cargar historial por teléfono para detectar clientes recurrentes
+  const telefonos=[...new Set(data.map(s=>s.telefono).filter(Boolean))];
+  window._clienteHist={};
+  if(telefonos.length){
+    const {data:hist}=await sb.from('solicitudes').select('telefono,estado').in('telefono',telefonos).eq('estado','completada');
+    (hist||[]).forEach(h=>{ window._clienteHist[h.telefono]=(window._clienteHist[h.telefono]||0)+1; });
+  }
   el.innerHTML=data.map(buildCardOp).join('');
   loadKPIs();
 }
@@ -1238,7 +1245,8 @@ function buildCardOp(s){
 
   const horaFlag  = s.hora_preferida?`<span class="hora-badge">🕐 ${esc(s.hora_preferida)}</span>`:'';
   const zonaFlag  = zonaLabel?`<span class="zona-badge">📍 ${esc(zonaLabel)}</span>`:'';
-
+  const prevServ  = (window._clienteHist||{})[s.telefono]||0;
+  const recurFlag = prevServ>0?`<span style="display:inline-flex;align-items:center;padding:3px 9px;background:rgba(124,58,237,.10);color:#7C3AED;border:1px solid rgba(124,58,237,.2);border-radius:20px;font-size:10px;font-weight:700">${prevServ} servicio${prevServ>1?'s':''} previo${prevServ>1?'s':''}</span>`:'';
   const cierreFlag = cierreRep?`<div class="flag flag-ok">✅ Cierre reportado por el técnico${s.monto_socio!=null?`<div style="margin-top:4px;font-weight:600">Monto: ${fmtM(s.monto_socio)}</div>`:''}</div>`:'';
   const rechazoFlag= rechazoS?`<div class="flag flag-err">❌ Rechazada por el técnico<div style="margin-top:4px;font-weight:600;font-size:12px">${esc(s.motivo_rechazo_socio||'Sin motivo')}</div></div>`:'';
 
@@ -1261,7 +1269,7 @@ function buildCardOp(s){
         <div class="op-meta-row">
           <span class="chip ${cls}">${txt}</span>
           <span class="op-code">${esc(dbc(s.id))}</span>
-          ${zonaFlag}${horaFlag}
+          ${zonaFlag}${horaFlag}${recurFlag}${recurFlag}
         </div>
         <div class="op-detail">${esc(s.cliente)} · ${esc(s.servicio||'—')} · ${fmt(s.fecha_ts)}</div>
       </div>
@@ -1457,8 +1465,16 @@ async function doCompletar(){
     }
   }
   try{ await sb.from('garantias').insert({recibo:dbc(pendingCompId),telefono:sol.telefono||null,falla:null,estado:'activa',garantia_dias:garDias,garantia_expira:finGarISO,socio_id:sol.socio_asignado||null}); }catch(_){}
+  // ── t3 AUTOMÁTICO al cliente ──
+  if(sol.telefono){
+    const socioNom=sol.socio_asignado?(sociosMap[sol.socio_asignado]?.nombre||'—'):'—';
+    const venceTxt=finGarISO?new Date(finGarISO).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}):'No aplica';
+    const garTxt=garDias>0?`${garDias} días`:'Sin garantía';
+    const msgT3=CFG.t3.replaceAll('{cliente}',sol.cliente||'').replaceAll('{code}',dbc(cId)).replaceAll('{socio}',socioNom).replaceAll('{monto}',fmtM(monto)).replaceAll('{garantia}',garTxt).replaceAll('{vence}',venceTxt).replaceAll('{detalles}',sol.nota_socio||'—');
+    setTimeout(()=>wa(sol.telefono,msgT3),1200);
+  }
   const cId=pendingCompId; pendingCompId=null;
-  closeModal('comp'); toast('Orden completada ✓');
+  closeModal('comp'); toast('Orden completada ✓ — mensaje enviado al cliente');
   logActividad('completar',cId,`Monto: ${fmtM(monto)}`);
   rst(); loadOp(); loadKPIs();
 }
@@ -1835,10 +1851,11 @@ async function notaReclamo(id){ const nota=prompt('Nota admin (opcional):'); if(
 async function loadStats(){
   const el=document.getElementById('lista-st'); if(!el) return;
   el.innerHTML='<div class="loading">Calculando estadísticas...</div>';
-  const [{data:solicitudes},{data:socios},{data:movimientos}]=await Promise.all([
+  const [{data:solicitudes},{data:socios},{data:movimientos},{data:encargados}]=await Promise.all([
     sb.from('solicitudes').select('id,estado,zona,municipio,servicio,fecha_ts,fecha_fin,monto,valoracion,socio_asignado'),
     sb.from('socios').select('id,nombre,trabajos,rating_avg,deuda'),
-    sb.from('movimientos').select('monto,tipo,created_at').eq('tipo','cargo_comision')
+    sb.from('movimientos').select('monto,tipo,created_at').eq('tipo','cargo_comision'),
+    sb.from('encargados').select('id,nombre,zona').eq('activo',true)
   ]);
   const sols=solicitudes||[], movs=movimientos||[];
   const completadas=sols.filter(s=>s.estado==='completada');
@@ -1928,6 +1945,35 @@ async function loadStats(){
               <span class="data-val green">${s.trabajos}</span>
             </div>
           </div>`).join(''):'<div class="empty" style="padding:24px"><span class="empty-txt">Sin datos aún</span></div>'}
+      </div>
+    </div>
+
+    <!-- Panel encargados -->
+    <div class="panel open" id="panel-enc-st">
+      <div class="panel-hdr" onclick="togglePanel('panel-enc-st')">
+        <div class="panel-hdr-left"><span class="panel-title">Rendimiento por encargado</span></div>
+        <svg class="panel-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="panel-body" style="padding:0">
+        ${(encargados||[]).map(e=>{
+          const ordZona=sols.filter(s=>s.zona===e.zona);
+          const compZona=ordZona.filter(s=>s.estado==='completada');
+          const pendZona=ordZona.filter(s=>s.estado==='pendiente');
+          const tiemposEnc=compZona.filter(s=>s.fecha_ts&&s.fecha_fin).map(s=>(new Date(s.fecha_fin)-new Date(s.fecha_ts))/(1000*3600));
+          const avgH=tiemposEnc.length?(tiemposEnc.reduce((a,b)=>a+b,0)/tiemposEnc.length):null;
+          return `<div class="data-row" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
+              <span style="font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink)">${esc(e.nombre)}</span>
+              <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--g2)">${esc(ZONA_LABEL[e.zona]||e.zona)}</span>
+            </div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap">
+              <span style="font-size:12px;color:var(--g1)">📋 <strong>${ordZona.length}</strong> órdenes</span>
+              <span style="font-size:12px;color:var(--ok)">✅ <strong>${compZona.length}</strong> completadas</span>
+              <span style="font-size:12px;color:var(--warn)">⏳ <strong>${pendZona.length}</strong> pendientes</span>
+              ${avgH!=null?`<span style="font-size:12px;color:var(--blue)">⏱ <strong>${avgH.toFixed(1)}h</strong> promedio</span>`:''}
+            </div>
+          </div>`;
+        }).join('')||'<div class="empty" style="padding:24px"><span class="empty-txt">Sin encargados activos</span></div>'}
       </div>
     </div>`;
 }
