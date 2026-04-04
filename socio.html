@@ -66,6 +66,13 @@ body{
 @media(max-width:420px){.brand-name{display:none}.brand-role{display:none}}
 .tb-right{display:flex;align-items:center;gap:10px;margin-left:auto;min-width:0}
 .tb-nombre{font-size:12px;font-weight:600;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.tb-deuda{
+  height:28px;padding:0 10px;border-radius:7px;
+  background:var(--err-bg);border:1px solid var(--err-border);
+  color:var(--err);font-size:11px;font-weight:700;
+  display:none;align-items:center;gap:4px;flex-shrink:0;
+}
+.tb-deuda.v{display:flex}
 .tb-exit{height:34px;padding:0 12px;border-radius:9px;flex-shrink:0;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);font-weight:700;font-size:12px;cursor:pointer;transition:background .15s;-webkit-tap-highlight-color:transparent}
 .tb-exit:hover{background:rgba(255,255,255,.12);color:#fff}
 .tb-exit:active{transform:scale(.97)}
@@ -282,6 +289,7 @@ body{
     <span class="brand-role">TÉCNICO</span>
   </div>
   <div class="tb-right">
+    <span id="tbDeuda" style="display:none;background:var(--err);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap"></span>
     <span class="tb-nombre" id="tbNombre">—</span>
     <button class="tb-exit" onclick="exitSocio()">Salir</button>
   </div>
@@ -372,6 +380,17 @@ async function init(session){
   document.body.dataset.ok='1';
   mySocio=data;
   document.getElementById('tbNombre').textContent=data.nombre;
+  // Badge de deuda en topbar
+  const deudaAmt=parseFloat(data.deuda||0);
+  const tbD=document.getElementById('tbDeuda');
+  if(tbD&&deudaAmt>0){ tbD.textContent=`⚠ $${deudaAmt.toFixed(2)}`; tbD.style.display='inline-flex'; }
+  // Badge de deuda en topbar
+  const deudaAmt=parseFloat(data.deuda||0);
+  const tbDeuda=document.getElementById('tbDeuda');
+  if(tbDeuda){
+    if(deudaAmt>0){ tbDeuda.textContent='Deuda: $'+deudaAmt.toFixed(2); tbDeuda.style.display='flex'; }
+    else tbDeuda.style.display='none';
+  }
   document.getElementById('appContent').style.display='';
   document.getElementById('bottomNav').style.display='';
   suscribirPush();
@@ -459,7 +478,15 @@ function cardOrden(s){
     </div>
   </div>`:'';
   const btnProc=(!enP&&!rej&&!rep)?`<button class="btn btn-y btn-full" onclick="marcarEnProceso(${s.id})">✅ Llegué — marcar en proceso</button>`:'';
+  const btnConfirmar=(!enP&&!rej&&!rep&&s.sub_estado!=='confirmada')?`<button class="btn btn-g btn-full" onclick="confirmarOrden(${s.id})">👁 Confirmar recepción de orden</button>`:(s.sub_estado==='confirmada'&&!enP&&!rep&&!rej)?`<div style="font-size:12px;color:var(--ok);font-weight:700;padding:6px 0">✓ Orden confirmada</div>`:'';
   const btnCierre=(!rep&&!rej)?`<button class="btn btn-k btn-full" onclick="toggleCierre(${s.id})">📋 Reportar cierre</button>`:'';
+  const btnPresupuesto=(!rep&&!rej&&s.telefono)?`<button class="btn btn-g btn-full" onclick="togglePresupuesto(${s.id})">💬 Enviar presupuesto al cliente</button>`:'';
+
+  const formPresupuesto=(!rep&&!rej&&s.telefono)?`<div class="cierre-form" id="fp-${s.id}" style="display:none">
+    <div><label class="form-lbl">Monto estimado ($)</label><input class="form-input" id="presu-monto-${s.id}" type="number" min="0" step="0.01" placeholder="Ej: 25.00"/></div>
+    <div><label class="form-lbl">Describe brevemente el trabajo</label><textarea class="form-textarea" id="presu-nota-${s.id}" placeholder="Ej: Revisión y carga de gas R410A..."></textarea></div>
+    <button class="btn btn-wa btn-full" onclick="enviarPresupuesto(${s.id})">Enviar presupuesto por WhatsApp</button>
+  </div>`:'';
   const btnNP=!rej?`<button class="btn btn-r" style="flex:1" onclick="toggleNoPuedo(${s.id})">❌ No puedo atender</button>`:`<button class="btn btn-ghost" disabled style="flex:1">Ya notificaste al admin</button>`;
   const waRapidos=s.telefono?`<div>
     <div class="wa-section-lbl">Mensajes rápidos al cliente</div>
@@ -491,7 +518,11 @@ function cardOrden(s){
       </div>
       ${flagC}${flagR}
       ${waRapidos}
-      ${btnProc}${btnCierre}${formC}
+      ${btnConfirmar}
+      ${btnProc}
+      ${btnPresupuesto}
+      ${formPresupuesto}
+      ${btnCierre}${formC}
       <div class="btn-row">
         <button class="btn btn-wa" style="flex:1" onclick="waAdmin(${s.id})">${svgWA()} Admin</button>
         ${btnNP}
@@ -531,6 +562,69 @@ async function confNoPuedo(id){
   if(error){toast('Error: '+error.message);return;}
   toast('Aviso enviado. Queda pendiente de reasignación.');
   loadOrdenes();
+}
+
+async function confirmarOrden(id){
+  const {error}=await sb.from('solicitudes').update({sub_estado:'confirmada'}).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast('✅ Orden confirmada');
+  loadOrdenes();
+}
+
+function togglePresupuesto(id){
+  const fp=document.getElementById('fp-'+id);
+  const fc=document.getElementById('fc-'+id);
+  if(fc) fc.style.display='none';
+  if(fp) fp.style.display=fp.style.display==='none'?'flex':'none';
+  const c=document.getElementById('or'+id);
+  if(c&&!c.classList.contains('open')) c.classList.add('open');
+}
+
+async function enviarPresupuesto(id){
+  const monto=document.getElementById('presu-monto-'+id)?.value||'';
+  const nota=(document.getElementById('presu-nota-'+id)?.value||'').trim();
+  if(!monto&&!nota){toast('Ingresa el monto o descripción del presupuesto');return;}
+  const {data:s}=await sb.from('solicitudes').select('cliente,telefono,servicio').eq('id',id).maybeSingle();
+  if(!s?.telefono){toast('Esta orden no tiene teléfono del cliente.');return;}
+  const msg=`Hola ${s.cliente||'cliente'}, soy tu técnico de dbarrio.\n\n💬 *Presupuesto para ${s.servicio||'el servicio'}:*\n${monto?`💰 Estimado: $${monto}\n`:''}${nota?`📝 ${nota}\n`:''}\n¿Confirmamos la visita?`;
+  openWA(s.telefono,msg);
+  // Guardar presupuesto en nota_socio para trazabilidad
+  await sb.from('solicitudes').update({nota_socio:`PRESUPUESTO: $${monto} — ${nota}`}).eq('id',id);
+  document.getElementById('fp-'+id).style.display='none';
+  toast('Presupuesto enviado');
+}
+
+async function confirmarOrden(id){
+  const {error}=await sb.from('solicitudes').update({sub_estado:'confirmada'}).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast('✅ Orden confirmada — el admin lo sabe');
+  loadOrdenes();
+}
+
+function togglePresupuesto(id){
+  const fp=document.getElementById('fp-'+id);
+  const fc=document.getElementById('fc-'+id);
+  const fn=document.getElementById('fn-'+id);
+  if(fc)fc.style.display='none';
+  if(fn)fn.style.display='none';
+  if(fp)fp.style.display=fp.style.display==='none'?'flex':'none';
+  const c=document.getElementById('or'+id);
+  if(c&&!c.classList.contains('open'))c.classList.add('open');
+}
+
+async function enviarPresupuesto(id){
+  const monto=document.getElementById('presu-monto-'+id)?.value;
+  const nota=(document.getElementById('presu-nota-'+id)?.value||'').trim();
+  if(!monto){toast('Ingresa el monto estimado');return;}
+  const {data:s}=await sb.from('solicitudes').select('cliente,telefono,servicio').eq('id',id).maybeSingle();
+  if(!s?.telefono){toast('Esta orden no tiene teléfono del cliente.');return;}
+  const msg=`Hola ${s.cliente||'cliente'}, soy tu técnico de dbarrio.\n\n💬 *Presupuesto estimado* para ${s.servicio||'el servicio'}:\n\n💰 Monto aprox: *$${parseFloat(monto).toFixed(2)}*\n📋 Trabajo: ${nota||'—'}\n\n¿Te parece bien que continúe?`;
+  openWA(s.telefono,msg);
+  // Guardar presupuesto en la orden
+  await sb.from('solicitudes').update({nota_admin:`Presupuesto técnico: $${monto} — ${nota}`}).eq('id',id);
+  toast('Presupuesto enviado por WhatsApp ✓');
+  const fp=document.getElementById('fp-'+id);
+  if(fp)fp.style.display='none';
 }
 
 async function marcarEnProceso(id){
