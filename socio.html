@@ -383,10 +383,6 @@ async function init(session){
   document.getElementById('tbNombre').textContent=data.nombre;
   // Badge de deuda en topbar
   const deudaAmt=parseFloat(data.deuda||0);
-  const tbD=document.getElementById('tbDeuda');
-  if(tbD&&deudaAmt>0){ tbD.textContent=`⚠ $${deudaAmt.toFixed(2)}`; tbD.style.display='inline-flex'; }
-  // Badge de deuda en topbar
-  const deudaAmt=parseFloat(data.deuda||0);
   const tbDeuda=document.getElementById('tbDeuda');
   if(tbDeuda){
     if(deudaAmt>0){ tbDeuda.textContent='Deuda: $'+deudaAmt.toFixed(2); tbDeuda.style.display='flex'; }
@@ -563,36 +559,6 @@ async function confNoPuedo(id){
   if(error){toast('Error: '+error.message);return;}
   toast('Aviso enviado. Queda pendiente de reasignación.');
   loadOrdenes();
-}
-
-async function confirmarOrden(id){
-  const {error}=await sb.from('solicitudes').update({sub_estado:'confirmada'}).eq('id',id);
-  if(error){toast('Error: '+error.message);return;}
-  toast('✅ Orden confirmada');
-  loadOrdenes();
-}
-
-function togglePresupuesto(id){
-  const fp=document.getElementById('fp-'+id);
-  const fc=document.getElementById('fc-'+id);
-  if(fc) fc.style.display='none';
-  if(fp) fp.style.display=fp.style.display==='none'?'flex':'none';
-  const c=document.getElementById('or'+id);
-  if(c&&!c.classList.contains('open')) c.classList.add('open');
-}
-
-async function enviarPresupuesto(id){
-  const monto=document.getElementById('presu-monto-'+id)?.value||'';
-  const nota=(document.getElementById('presu-nota-'+id)?.value||'').trim();
-  if(!monto&&!nota){toast('Ingresa el monto o descripción del presupuesto');return;}
-  const {data:s}=await sb.from('solicitudes').select('cliente,telefono,servicio').eq('id',id).maybeSingle();
-  if(!s?.telefono){toast('Esta orden no tiene teléfono del cliente.');return;}
-  const msg=`Hola ${s.cliente||'cliente'}, soy tu técnico de dbarrio.\n\n💬 *Presupuesto para ${s.servicio||'el servicio'}:*\n${monto?`💰 Estimado: $${monto}\n`:''}${nota?`📝 ${nota}\n`:''}\n¿Confirmamos la visita?`;
-  openWA(s.telefono,msg);
-  // Guardar presupuesto en nota_socio para trazabilidad
-  await sb.from('solicitudes').update({nota_socio:`PRESUPUESTO: $${monto} — ${nota}`}).eq('id',id);
-  document.getElementById('fp-'+id).style.display='none';
-  toast('Presupuesto enviado');
 }
 
 async function confirmarOrden(id){
