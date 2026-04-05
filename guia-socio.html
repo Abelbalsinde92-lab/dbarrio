@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#0F0F1A"/>
+<title>Guía del técnico — dbarrio</title>
+<link rel="icon" type="image/png" sizes="32x32" href="db-32.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --y:#F5C116;--yd:#C9980D;--y-bg:rgba(245,193,22,.10);--y-border:rgba(245,193,22,.22);
+  --ink:#0F0F1A;--ink2:#1A1A2E;
+  --bg:#F2EFE9;--card:#FFFFFF;--card2:#F7F5F1;
+  --line:#E8E4DD;--g1:#5A5A6E;--g2:#9A96A0;
+  --ok:#16A34A;--ok-bg:rgba(22,163,74,.10);--ok-border:rgba(22,163,74,.20);
+  --err:#DC2626;--err-bg:rgba(220,38,38,.09);--err-border:rgba(220,38,38,.18);
+  --warn:#D97706;--warn-bg:rgba(217,119,6,.09);
+  --blue:#2563EB;--blue-bg:rgba(37,99,235,.09);
+  --f:'DM Sans',system-ui,sans-serif;
+  --fd:'Barlow Condensed',system-ui,sans-serif;
+  --th:58px;--r:14px;
+}
+html{background:var(--ink);scroll-behavior:smooth}
+body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:50;height:calc(var(--th)+env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,193,22,.15);border:1px solid var(--y-border);display:grid;place-items:center;flex-shrink:0}
+.brand-letters{font-family:var(--fd);font-size:19px;font-weight:900;letter-spacing:-1px;line-height:1}
+.brand-letters .d{color:#E0E0F0}.brand-letters .b{color:var(--y)}
+.brand-name{font-family:var(--fd);font-size:24px;font-weight:900;letter-spacing:-.5px;line-height:1}
+.brand-name .d{color:#E0E0F0}.brand-name .rest{color:var(--y)}
+@media(max-width:380px){.brand-name{display:none}}
+.h-back{height:32px;padding:0 12px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.6);font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;text-decoration:none;transition:all .15s;font-family:var(--f)}
+.h-back:hover{background:rgba(255,255,255,.08);color:#fff}
+
+/* HERO */
+.hero{background:var(--ink);padding:32px 20px 0;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px);pointer-events:none}
+.hero-wm{position:absolute;right:-15px;top:-10px;font-family:var(--fd);font-size:180px;font-weight:900;color:rgba(245,193,22,.04);letter-spacing:-8px;line-height:1;pointer-events:none;user-select:none}
+.hero-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(245,193,22,.10);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:5px 13px 5px 9px;margin-bottom:16px}
+.hero-dot{width:7px;height:7px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 7px rgba(245,193,22,0)}}
+.hero-chip-txt{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase}
+.hero-title{font-family:var(--fd);font-size:clamp(44px,10vw,64px);font-weight:900;color:#fff;line-height:.9;letter-spacing:-.5px;margin-bottom:12px;position:relative;z-index:1}
+.hero-title em{color:var(--y);font-style:normal;display:block}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.45);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1}
+.hero-curve{height:32px;background:var(--bg);border-radius:32px 32px 0 0;margin-top:0}
+
+/* ÍNDICE RÁPIDO */
+.indice{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);margin:20px 16px 0;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.indice-title{font-family:var(--fd);font-size:13px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--g2);margin-bottom:12px}
+.indice-list{display:flex;flex-direction:column;gap:0}
+.indice-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);text-decoration:none;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.indice-item:last-child{border-bottom:none}
+.indice-item:hover .indice-lbl{color:var(--ink)}
+.indice-num{width:24px;height:24px;border-radius:50%;background:var(--y);color:#000;font-family:var(--fd);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1}
+.indice-lbl{font-size:13px;font-weight:600;color:var(--g1);flex:1}
+.indice-arrow{color:var(--g3);font-size:16px}
+
+/* MAIN */
+.main{padding:0 0 calc(40px + env(safe-area-inset-bottom,0))}
+
+/* SECCIÓN PASO */
+.paso{margin:24px 16px 0}
+.paso-hdr{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
+.paso-num{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  background:var(--y);color:#000;
+  font-family:var(--fd);font-size:22px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;line-height:1;
+}
+.paso-num.verde{background:var(--ok);color:#fff}
+.paso-num.azul{background:var(--blue);color:#fff}
+.paso-num.rojo{background:var(--err);color:#fff}
+.paso-num.naranja{background:var(--warn);color:#fff}
+.paso-hdr-txt{flex:1;padding-top:4px}
+.paso-titulo{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--ink);line-height:1;letter-spacing:-.2px;margin-bottom:3px}
+.paso-sub{font-size:12px;color:var(--g2);font-weight:500}
+
+/* PASO CONTENT */
+.paso-body{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.paso-body-hdr{padding:12px 16px;border-bottom:1.5px solid var(--line);font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2)}
+
+/* STEP ITEMS */
+.step-list{padding:4px 0}
+.step-item{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);position:relative}
+.step-item:last-child{border-bottom:none}
+.step-ico{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+  background:var(--card2);border:1.5px solid var(--line);
+}
+.step-ico.y{background:var(--y-bg);border-color:var(--y-border)}
+.step-ico.g{background:var(--ok-bg);border-color:var(--ok-border)}
+.step-ico.b{background:var(--blue-bg);border-color:rgba(37,99,235,.2)}
+.step-ico.r{background:var(--err-bg);border-color:var(--err-border)}
+.step-ico.o{background:var(--warn-bg);border-color:rgba(217,119,6,.2)}
+.step-content{flex:1;min-width:0}
+.step-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.3}
+.step-desc{font-size:13px;color:var(--g1);line-height:1.55}
+.step-desc strong{color:var(--ink);font-weight:700}
+.step-tag{display:inline-flex;align-items:center;margin-top:7px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.tag-opt{background:var(--card2);color:var(--g2);border:1px solid var(--line)}
+.tag-imp{background:var(--err-bg);color:var(--err);border:1px solid var(--err-border)}
+.tag-rec{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border)}
+.tag-new{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+
+/* ALERT BOX */
+.alert{border-radius:var(--r);padding:14px 16px;margin:12px 16px 0;font-size:13px;line-height:1.6;display:flex;align-items:flex-start;gap:10px}
+.alert-warn{background:var(--warn-bg);border:1.5px solid rgba(217,119,6,.2);color:var(--warn)}
+.alert-ok{background:var(--ok-bg);border:1.5px solid var(--ok-border);color:var(--ok)}
+.alert-blue{background:var(--blue-bg);border:1.5px solid rgba(37,99,235,.2);color:var(--blue)}
+.alert-ico{font-size:18px;flex-shrink:0;margin-top:1px}
+.alert-txt{flex:1}
+.alert-txt strong{font-weight:700}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:12px;margin:28px 16px 0;color:var(--g3);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line)}
+
+/* ESTADO CHIPS */
+.chips-row{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px}
+.estado-chip{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:700;border:1.5px solid}
+.ec-nueva{background:rgba(217,119,6,.09);border-color:rgba(217,119,6,.2);color:var(--warn)}
+.ec-confirm{background:var(--blue-bg);border-color:rgba(37,99,235,.2);color:var(--blue)}
+.ec-proceso{background:rgba(37,99,235,.09);border-color:rgba(37,99,235,.2);color:var(--blue)}
+.ec-cierre{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok)}
+.ec-rechazo{background:var(--err-bg);border-color:var(--err-border);color:var(--err)}
+.ec-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.ec-desc{font-size:11px;color:var(--g2);margin-top:1px;font-weight:400}
+
+/* WA PREVIEW */
+.wa-preview{
+  background:#1A1A1A;border-radius:12px;padding:12px 14px;
+  margin:0 16px;font-size:12px;color:rgba(255,255,255,.6);
+  line-height:1.6;border:1px solid rgba(255,255,255,.06);
+  position:relative;
+}
+.wa-preview::before{content:'WhatsApp';position:absolute;top:-9px;left:12px;background:#25D366;color:#fff;font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;letter-spacing:.5px}
+.wa-preview strong{color:#fff}
+.wa-preview .wa-code{color:var(--y);font-weight:700;font-family:var(--fd);font-size:14px}
+
+/* REGLAS */
+.regla-list{padding:4px 0}
+.regla{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.regla:last-child{border-bottom:none}
+.regla-mark{font-size:16px;flex-shrink:0;margin-top:1px}
+.regla-txt{font-size:13px;color:var(--g1);line-height:1.5}
+.regla-txt strong{color:var(--ink);font-weight:700}
+
+/* CTA FINAL */
+.cta-final{background:var(--ink);border-radius:var(--r);margin:24px 16px 0;padding:24px 20px;text-align:center;position:relative;overflow:hidden}
+.cta-final::before{content:'db';position:absolute;right:-10px;bottom:-20px;font-family:var(--fd);font-size:100px;font-weight:900;color:rgba(245,193,22,.05);line-height:1;pointer-events:none}
+.cta-final::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--y),rgba(245,193,22,.2))}
+.cta-title{font-family:var(--fd);font-size:26px;font-weight:900;color:#fff;line-height:1;margin-bottom:8px;position:relative;z-index:1}
+.cta-title em{color:var(--y);font-style:normal}
+.cta-sub{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:18px;position:relative;z-index:1;line-height:1.6}
+.btn-wa-final{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#16A34A;color:#fff;font-size:14px;font-weight:700;border:none;border-radius:10px;padding:13px 24px;width:100%;cursor:pointer;font-family:var(--f);-webkit-tap-highlight-color:transparent;transition:opacity .15s;position:relative;z-index:1;text-decoration:none}
+.btn-wa-final:hover{opacity:.9}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 20px;font-size:11px;color:var(--g3)}
+.footer a{color:var(--g2);text-decoration:none}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="brand" href="socio.html">
+    <div class="brand-icon" aria-hidden="true"><span class="brand-letters"><span class="d">d</span><span class="b">b</span></span></div>
+    <span class="brand-name"><span class="d">d</span><span class="rest">barrio</span></span>
+  </a>
+  <a href="socio.html" class="h-back">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Mi panel
+  </a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-wm" aria-hidden="true">db</div>
+  <div class="hero-chip"><span class="hero-dot"></span><span class="hero-chip-txt">Para técnicos dbarrio</span></div>
+  <h1 class="hero-title">Cómo procesar<br><em>tus órdenes</em></h1>
+  <p class="hero-sub">Guía paso a paso para gestionar tus trabajos correctamente desde que recibes una orden hasta que cobras.</p>
+</div>
+<div class="hero-curve"></div>
+
+<!-- ÍNDICE -->
+<div class="indice">
+  <div class="indice-title">En esta guía</div>
+  <div class="indice-list">
+    <a class="indice-item" href="#paso-1"><div class="indice-num">1</div><span class="indice-lbl">Recibes una orden nueva</span><span class="indice-arrow">›</span></a>
+    <a class="indice-item" href="#paso-2"><div class="indice-num">2</div><span class="indice-lbl">Confirmas y te preparas</span><span class="indice-arrow">›</span></a>
+    <a class="indice-item" href="#paso-3"><div class="indice-num">3</div><span class="indice-lbl">Llegas y coordinas con el cliente</span><span class="indice-arrow">›</span></a>
+    <a class="indice-item" href="#paso-4"><div class="indice-num" style="background:var(--ok);color:#fff">4</div><span class="indice-lbl">Realizas el trabajo</span><span class="indice-arrow">›</span></a>
+    <a class="indice-item" href="#paso-5"><div class="indice-num" style="background:var(--blue);color:#fff">5</div><span class="indice-lbl">Reportas el cierre al admin</span><span class="indice-arrow">›</span></a>
+    <a class="indice-item" href="#paso-6"><div class="indice-num" style="background:var(--err);color:#fff">6</div><span class="indice-lbl">Si no puedes atender</span><span class="indice-arrow">›</span></a>
+    <a class="indice-item" href="#estados"><div class="indice-num" style="background:var(--ink2);color:rgba(255,255,255,.6)">◎</div><span class="indice-lbl">Estados de una orden</span><span class="indice-arrow">›</span></a>
+    <a class="indice-item" href="#reglas"><div class="indice-num" style="background:var(--ink2);color:rgba(255,255,255,.6)">!</div><span class="indice-lbl">Reglas importantes</span><span class="indice-arrow">›</span></a>
+  </div>
+</div>
+
+<main class="main">
+
+<!-- ══ PASO 1 ══ -->
+<div class="paso" id="paso-1">
+  <div class="paso-hdr">
+    <div class="paso-num">1</div>
+    <div class="paso-hdr-txt">
+      <div class="paso-titulo">Recibes una orden nueva</div>
+      <div class="paso-sub">Te llega por WhatsApp y en tu panel</div>
+    </div>
+  </div>
+  <div class="paso-body">
+    <div class="paso-body-hdr">Qué va a pasar</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-ico y">📱</div>
+        <div class="step-content">
+          <div class="step-title">Te llega un WhatsApp del sistema</div>
+          <div class="step-desc">Recibirás un mensaje automático con: nombre del cliente, municipio, teléfono, tipo de servicio y detalles del problema.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico b">🗂</div>
+        <div class="step-content">
+          <div class="step-title">La orden aparece en tu panel</div>
+          <div class="step-desc">Entra a <strong>Mis órdenes</strong> en la app. Verás la tarjeta con todos los datos. El municipio aparece grande arriba — es lo más importante para organizarte.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico y">🔔</div>
+        <div class="step-content">
+          <div class="step-title">Badge de nueva orden</div>
+          <div class="step-desc">El botón de Órdenes en la barra de abajo mostrará un número rojo. Desaparece cuando entras a verla.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PASO 2 ══ -->
+<div class="paso" id="paso-2">
+  <div class="paso-hdr">
+    <div class="paso-num">2</div>
+    <div class="paso-hdr-txt">
+      <div class="paso-titulo">Confirmas y te preparas</div>
+      <div class="paso-sub">Antes de ir a casa del cliente</div>
+    </div>
+  </div>
+  <div class="paso-body">
+    <div class="paso-body-hdr">Acciones disponibles</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-ico b">👁</div>
+        <div class="step-content">
+          <div class="step-title">Confirmar recepción de la orden</div>
+          <div class="step-desc">Toca <strong>"Confirmar recepción"</strong>. Esto avisa al admin que viste la orden. <strong>Hazlo siempre</strong> — si no confirmas, el admin no sabe si recibiste el mensaje.</div>
+          <span class="step-tag tag-rec">Recomendado</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico y">💬</div>
+        <div class="step-content">
+          <div class="step-title">Enviar presupuesto previo al cliente</div>
+          <div class="step-desc">Si puedes estimar el costo antes de ir, toca <strong>"Enviar presupuesto"</strong>. Escribe el monto estimado y una descripción breve. Se envía por WhatsApp al cliente. <strong>Evita sorpresas de precio al llegar.</strong></div>
+          <span class="step-tag tag-opt">Opcional pero recomendado</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico g">🚗</div>
+        <div class="step-content">
+          <div class="step-title">Mensaje rápido "Voy en camino"</div>
+          <div class="step-desc">Usa los botones de mensajes rápidos para avisar al cliente que vas. Solo toca <strong>"Voy en camino"</strong> y el WhatsApp se abre listo para enviar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-blue">
+  <span class="alert-ico">💡</span>
+  <div class="alert-txt">Si hay un <strong>horario preferido</strong> del cliente (ej: "Mañana 8-12h") lo verás destacado en la tarjeta. Intenta respetar ese horario o coordina con el cliente si no puedes.</div>
+</div>
+
+<!-- ══ PASO 3 ══ -->
+<div class="paso" id="paso-3">
+  <div class="paso-hdr">
+    <div class="paso-num verde">3</div>
+    <div class="paso-hdr-txt">
+      <div class="paso-titulo">Llegaste — marcas en proceso</div>
+      <div class="paso-sub">Cuando estás en casa del cliente</div>
+    </div>
+  </div>
+  <div class="paso-body">
+    <div class="paso-body-hdr">Al llegar al domicilio</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-ico g">📍</div>
+        <div class="step-content">
+          <div class="step-title">Toca "Llegué — marcar en proceso"</div>
+          <div class="step-desc">Este botón aparece cuando la orden está asignada y aún no empezaste. Al tocarlo, el estado cambia a <strong>En proceso</strong> y el admin sabe que ya estás trabajando.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico b">📱</div>
+        <div class="step-content">
+          <div class="step-title">Más mensajes rápidos disponibles</div>
+          <div class="step-desc">Desde la tarjeta también puedes enviar: <strong>Coordinar hora</strong>, <strong>Ya estoy aquí</strong>, y <strong>Presupuesto</strong> directo por WhatsApp al cliente.</div>
+          <span class="step-tag tag-opt">Opcional</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PASO 4 ══ -->
+<div class="paso" id="paso-4">
+  <div class="paso-hdr">
+    <div class="paso-num verde">4</div>
+    <div class="paso-hdr-txt">
+      <div class="paso-titulo">Realizas el trabajo</div>
+      <div class="paso-sub">Buenas prácticas</div>
+    </div>
+  </div>
+  <div class="paso-body">
+    <div class="paso-body-hdr">Durante el servicio</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-ico y">🔧</div>
+        <div class="step-content">
+          <div class="step-title">Explica lo que haces</div>
+          <div class="step-desc">Describe brevemente al cliente qué encontraste y qué vas a hacer. Un cliente informado es un cliente satisfecho.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico y">💰</div>
+        <div class="step-content">
+          <div class="step-title">Acuerda el precio antes de cobrar</div>
+          <div class="step-desc">Si el trabajo resultó diferente al presupuesto, avisa al cliente <strong>antes de cobrar</strong>. Nunca pongas el precio al final sin haberlo mencionado.</div>
+          <span class="step-tag tag-imp">Importante</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico g">📝</div>
+        <div class="step-content">
+          <div class="step-title">Anota qué hiciste exactamente</div>
+          <div class="step-desc">Vas a necesitar describir el trabajo al reportar el cierre. Toma nota: marca del equipo, qué falló, qué reparaste y con qué piezas.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PASO 5 ══ -->
+<div class="paso" id="paso-5">
+  <div class="paso-hdr">
+    <div class="paso-num azul">5</div>
+    <div class="paso-hdr-txt">
+      <div class="paso-titulo">Reportas el cierre</div>
+      <div class="paso-sub">Obligatorio para que te registren el trabajo</div>
+    </div>
+  </div>
+  <div class="paso-body">
+    <div class="paso-body-hdr">Cómo reportar</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-ico b">📋</div>
+        <div class="step-content">
+          <div class="step-title">Toca "Reportar cierre" en la tarjeta</div>
+          <div class="step-desc">Aparece un formulario con tres campos. Todos son obligatorios.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico y">💵</div>
+        <div class="step-content">
+          <div class="step-title">1 — Monto cobrado al cliente</div>
+          <div class="step-desc">Escribe el total exacto que te pagó el cliente. <strong>Este es el monto sobre el que se calcula tu comisión.</strong> No pongas menos del real.</div>
+          <span class="step-tag tag-imp">Obligatorio</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico g">🛡</div>
+        <div class="step-content">
+          <div class="step-title">2 — Días de garantía</div>
+          <div class="step-desc">¿Cuántos días garantizas el trabajo? Si es 0, escribe 0. Si ofreces 30 días, escribe 30. El cliente recibirá un mensaje con la fecha de vencimiento de la garantía.</div>
+          <span class="step-tag tag-imp">Obligatorio</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico b">📝</div>
+        <div class="step-content">
+          <div class="step-title">3 — Descripción del trabajo</div>
+          <div class="step-desc">Describe qué hiciste. Ejemplo: <em>"Limpié filtros del split, verifiqué carga de gas R410A, revisé conexiones eléctricas. Todo operativo."</em> Cuanto más detalle, mejor para posibles garantías.</div>
+          <span class="step-tag tag-imp">Obligatorio</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico y">📤</div>
+        <div class="step-content">
+          <div class="step-title">Toca "Enviar reporte al admin"</div>
+          <div class="step-desc">El admin revisa tu reporte. Cuando lo aprueba, la orden se cierra, <strong>se le envía la garantía al cliente automáticamente</strong>, y el trabajo queda registrado en tu historial.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-ok">
+  <span class="alert-ico">✅</span>
+  <div class="alert-txt">Una vez aprobado el cierre, el cliente recibe automáticamente un mensaje por WhatsApp con el resumen del servicio, el monto, los días de garantía y la fecha de vencimiento.</div>
+</div>
+
+<div class="alert alert-warn">
+  <span class="alert-ico">⚠️</span>
+  <div class="alert-txt"><strong>Tu comisión</strong> se calcula sobre el monto que reportas. Se registra como deuda en tu cuenta y la pagas periódicamente al encargado de tu zona.</div>
+</div>
+
+<!-- ══ PASO 6 ══ -->
+<div class="paso" id="paso-6">
+  <div class="paso-hdr">
+    <div class="paso-num rojo">6</div>
+    <div class="paso-hdr-txt">
+      <div class="paso-titulo">Si no puedes atender</div>
+      <div class="paso-sub">Cómo notificar correctamente</div>
+    </div>
+  </div>
+  <div class="paso-body">
+    <div class="paso-body-hdr">Cuando no puedes ir</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-ico r">❌</div>
+        <div class="step-content">
+          <div class="step-title">Toca "No puedo atender" en la tarjeta</div>
+          <div class="step-desc">Aparece un campo de texto. <strong>Escribe el motivo con claridad</strong> — el admin lo necesita para reasignar la orden a otro técnico.</div>
+          <span class="step-tag tag-imp">Avisa siempre — no dejes la orden sin respuesta</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico o">🔄</div>
+        <div class="step-content">
+          <div class="step-title">La orden vuelve a pendiente</div>
+          <div class="step-desc">El admin ve tu notificación, libera la orden y la reasigna a otro técnico. El cliente no pierde su solicitud.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-ico y">📱</div>
+        <div class="step-content">
+          <div class="step-title">También puedes escribir al admin</div>
+          <div class="step-desc">Desde la tarjeta, el botón <strong>"Admin"</strong> abre WhatsApp directo con el contexto de la orden incluido.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ESTADOS ══ -->
+<div class="divider" id="estados">Estados de una orden</div>
+
+<div class="paso-body" style="margin:0 16px">
+  <div class="paso-body-hdr">Qué significa cada estado</div>
+  <div class="chips-row" style="flex-direction:column;gap:10px">
+    <div>
+      <div class="estado-chip ec-nueva" style="margin-bottom:5px"><span class="ec-dot"></span>Nueva orden</div>
+      <div class="ec-desc" style="padding-left:4px">La orden fue asignada. Todavía no la has confirmado ni empezado.</div>
+    </div>
+    <div>
+      <div class="estado-chip ec-confirm" style="margin-bottom:5px"><span class="ec-dot"></span>Confirmada</div>
+      <div class="ec-desc" style="padding-left:4px">Confirmaste que recibiste la orden. El admin sabe que la viste.</div>
+    </div>
+    <div>
+      <div class="estado-chip ec-proceso" style="margin-bottom:5px"><span class="ec-dot"></span>En proceso</div>
+      <div class="ec-desc" style="padding-left:4px">Tocaste "Llegué". Estás trabajando en casa del cliente.</div>
+    </div>
+    <div>
+      <div class="estado-chip ec-cierre" style="margin-bottom:5px"><span class="ec-dot"></span>Cierre reportado</div>
+      <div class="ec-desc" style="padding-left:4px">Enviaste el reporte. El admin lo está revisando para aprobar y cerrar.</div>
+    </div>
+    <div>
+      <div class="estado-chip ec-rechazo" style="margin-bottom:5px"><span class="ec-dot"></span>No puedo atender</div>
+      <div class="ec-desc" style="padding-left:4px">Notificaste que no puedes ir. El admin reasignará la orden.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REGLAS ══ -->
+<div class="divider" id="reglas">Reglas importantes</div>
+
+<div class="paso-body" style="margin:0 16px">
+  <div class="paso-body-hdr">Para que todo funcione bien</div>
+  <div class="regla-list">
+    <div class="regla"><span class="regla-mark">✅</span><div class="regla-txt"><strong>Siempre confirma la orden</strong> — el admin necesita saber que la recibiste, especialmente si la notificación llega de noche.</div></div>
+    <div class="regla"><span class="regla-mark">✅</span><div class="regla-txt"><strong>Reporta el cierre el mismo día</strong> — no dejes pasar más de 24h después de terminar el trabajo.</div></div>
+    <div class="regla"><span class="regla-mark">✅</span><div class="regla-txt"><strong>El monto del reporte debe ser el real</strong> — sobre ese monto se calcula tu comisión. Si hay discrepancia, puede afectar tu cuenta.</div></div>
+    <div class="regla"><span class="regla-mark">✅</span><div class="regla-txt"><strong>Si no puedes atender, notifica inmediatamente</strong> — no dejes una orden sin respuesta más de 2 horas. El cliente está esperando.</div></div>
+    <div class="regla"><span class="regla-mark">✅</span><div class="regla-txt"><strong>Mantén tu teléfono actualizado</strong> — en Mi cuenta, verifica que tu WhatsApp esté correcto. Sin teléfono válido no recibes órdenes.</div></div>
+    <div class="regla"><span class="regla-mark">⚠️</span><div class="regla-txt"><strong>No gestiones pagos fuera del sistema</strong> — el cliente paga a ti en mano, pero el cierre siempre se reporta en la app para que quede registrado.</div></div>
+    <div class="regla"><span class="regla-mark">⚠️</span><div class="regla-txt"><strong>Tu deuda se ve en el panel</strong> — en Mi cuenta aparece el saldo pendiente. Págalo al encargado de tu zona según lo acordado.</div></div>
+    <div class="regla"><span class="regla-mark">❌</span><div class="regla-txt"><strong>No hagas acuerdos directos con clientes fuera de la plataforma</strong> — capta siempre a través de dbarrio. Es lo que te protege y da respaldo ante problemas.</div></div>
+  </div>
+</div>
+
+<!-- ══ CTA ══ -->
+<div class="cta-final">
+  <div class="cta-title">¿Tienes alguna<br><em>duda?</em></div>
+  <p class="cta-sub">Escríbele al admin directamente. Te responderemos por WhatsApp.</p>
+  <a href="https://wa.me/34627493593?text=Hola%2C+soy+t%C3%A9cnico+de+dbarrio+y+tengo+una+duda+sobre+la+gu%C3%ADa." class="btn-wa-final" target="_blank" rel="noopener">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.057-.002-.115-.003-.172-.003-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    Escribir al admin
+  </a>
+</div>
+
+<div class="footer">
+  <a href="socio.html">← Volver a mi panel</a> · <a href="privacidad.html">Privacidad</a> · <a href="terminos.html">Términos</a>
+</div>
+
+</main>
+</body>
+</html>
