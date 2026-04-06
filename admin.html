@@ -972,6 +972,22 @@ button{font-family:var(--f);cursor:pointer}
 <div class="sheet"><div class="pill"></div>
   <div class="sheet-hdr"><span class="sheet-title">Completar orden</span><button class="sheet-x" onclick="closeModal('comp')">&times;</button></div>
   <div class="mbody">
+    <!-- Badge afiliado (se muestra solo si el cliente tiene plan activo) -->
+    <div id="comp-afi-info" style="display:none;background:var(--y-bg);border:1.5px solid var(--y-border);border-radius:10px;padding:11px 14px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--yd);margin-bottom:3px">Cliente afiliado</div>
+      <div style="font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink)" id="comp-afi-plan">—</div>
+      <div style="font-size:12px;color:var(--g1);margin-top:2px" id="comp-afi-uso">—</div>
+    </div>
+    <!-- Checkbox servicio incluido -->
+    <div id="comp-incluido-wrap" style="display:none;background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:10px;padding:11px 14px">
+      <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+        <input type="checkbox" id="comp-incluido" style="width:18px;height:18px;accent-color:var(--ok);flex-shrink:0;margin-top:2px"/>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--ok)">Servicio incluido en el plan</div>
+          <div style="font-size:11px;color:var(--g1);margin-top:2px">dbarrio paga $15 al técnico. Si el trabajo costó más, el cliente ya pagó el extra con descuento.</div>
+        </div>
+      </label>
+    </div>
     <div class="fg"><label>Monto cobrado ($)</label><input id="comp-monto" type="number" min="0" step="0.01" placeholder="0.00"/></div>
     <div class="fg"><label>Garantía (días)</label><input id="comp-gar" type="number" min="0" step="1" placeholder="0"/></div>
     <div class="fg"><label>Nota (opcional)</label><textarea id="comp-nota" placeholder="Observaciones del servicio..."></textarea></div>
@@ -1242,6 +1258,10 @@ async function loadOp(){
   const el=document.getElementById('lista-op');
   el.innerHTML='<div class="loading">Cargando órdenes...</div>';
   await loadSociosMap();
+  // Cargar afiliados activos para badge en cards
+  const {data:afisActivos}=await sb.from('afiliados').select('telefono,tipo,servicios_mes').eq('estado','activo');
+  window._afiadosActivos={};
+  (afisActivos||[]).forEach(a=>{ if(a.telefono) window._afiadosActivos[a.telefono]=a; });
   let q=sb.from('solicitudes').select('*').in('estado',['pendiente','asignada']).order('created_at',{ascending:true});
   if(USER_ROLE==='encargado'&&USER_ZONA) q=q.eq('zona',USER_ZONA);
   const {data,error}=await q;
@@ -1279,6 +1299,9 @@ function buildCardOp(s){
   const zonaFlag  = zonaLabel?`<span class="zona-badge">📍 ${esc(zonaLabel)}</span>`:'';
   const prevServ  = (window._clienteHist||{})[s.telefono]||0;
   const recurFlag = prevServ>0?`<span style="display:inline-flex;align-items:center;padding:3px 9px;background:rgba(124,58,237,.10);color:#7C3AED;border:1px solid rgba(124,58,237,.2);border-radius:20px;font-size:10px;font-weight:700">${prevServ} servicio${prevServ>1?'s':''} previo${prevServ>1?'s':''}</span>`:'';
+  // Badge afiliado
+  const afiDat=(window._afiadosActivos||{})[s.telefono];
+  const afiFlag=afiDat?`<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:var(--y-bg);color:var(--yd);border:1px solid var(--y-border);border-radius:20px;font-size:10px;font-weight:900">🏠 ${esc(PLAN_LABEL[afiDat.tipo]||afiDat.tipo)} · ${afiDat.servicios_mes||0}/${PLAN_MAX[afiDat.tipo]||2}</span>`:'';
   const cierreFlag = cierreRep?`<div class="flag flag-ok">✅ Cierre reportado por el técnico${s.monto_socio!=null?`<div style="margin-top:4px;font-weight:600">Monto: ${fmtM(s.monto_socio)}</div>`:''}</div>`:'';
   const rechazoFlag= rechazoS?`<div class="flag flag-err">❌ Rechazada por el técnico<div style="margin-top:4px;font-weight:600;font-size:12px">${esc(s.motivo_rechazo_socio||'Sin motivo')}</div></div>`:'';
 
@@ -1301,7 +1324,7 @@ function buildCardOp(s){
         <div class="op-meta-row">
           <span class="chip ${cls}">${txt}</span>
           <span class="op-code">${esc(dbc(s.id))}</span>
-          ${zonaFlag}${horaFlag}${recurFlag}
+          ${zonaFlag}${horaFlag}${recurFlag}${afiFlag}
         </div>
         <div class="op-detail">${esc(s.cliente)} · ${esc(s.servicio||'—')} · ${fmt(s.fecha_ts)}</div>
       </div>
@@ -1409,6 +1432,36 @@ async function openCompletar(id){
   const msgCli=CFG.t3.replaceAll('{cliente}',sol.cliente||'').replaceAll('{code}',dbc(id)).replaceAll('{socio}',socioNom).replaceAll('{monto}',fmtM(sol.monto_socio)).replaceAll('{garantia}',garTxt).replaceAll('{vence}',venceTxt).replaceAll('{detalles}',sol.nota_socio||'—');
   pendingCompMsg=msgCli; pendingCompTel=sol.telefono||null;
   const ta=document.getElementById('comp-msg'); if(ta) ta.value=msgCli;
+
+  // ── Detectar si el cliente es afiliado ──
+  const infoEl=document.getElementById('comp-afi-info');
+  const inclWrap=document.getElementById('comp-incluido-wrap');
+  const inclCb=document.getElementById('comp-incluido');
+  if(inclCb) inclCb.checked=false;
+  if(infoEl) infoEl.style.display='none';
+  if(inclWrap) inclWrap.style.display='none';
+  window._compAfiId=null;
+
+  if(sol.telefono){
+    const {data:afis}=await sb.from('afiliados')
+      .select('*').eq('telefono',sol.telefono).eq('estado','activo').maybeSingle();
+    if(afis){
+      window._compAfiId=afis.id;
+      const max=PLAN_MAX[afis.tipo]||2;
+      const usado=afis.servicios_mes||0;
+      const queda=Math.max(0,max-usado);
+      if(infoEl){
+        infoEl.style.display='block';
+        document.getElementById('comp-afi-plan').textContent=`${PLAN_LABEL[afis.tipo]||afis.tipo} — ${PLAN_PRECIO[afis.tipo]||''}`;
+        document.getElementById('comp-afi-uso').textContent=`${usado}/${max} servicios usados este mes${queda>0?` · Quedan ${queda}`:' · Plan agotado este mes'}`;
+      }
+      // Solo mostrar checkbox si quedan servicios incluidos
+      if(queda>0&&inclWrap){
+        inclWrap.style.display='block';
+        if(inclCb) inclCb.checked=true; // pre-marcado por defecto si hay saldo
+      }
+    }
+  }
   openModal('comp');
 }
 
@@ -1506,9 +1559,40 @@ async function doCompletar(){
     const msgT3=CFG.t3.replaceAll('{cliente}',sol.cliente||'').replaceAll('{code}',dbc(cId)).replaceAll('{socio}',socioNom).replaceAll('{monto}',fmtM(monto)).replaceAll('{garantia}',garTxt).replaceAll('{vence}',venceTxt).replaceAll('{detalles}',sol.nota_socio||'—');
     setTimeout(()=>wa(sol.telefono,msgT3),1200);
   }
+  // ── SERVICIO INCLUIDO EN PLAN DE AFILIACIÓN ──
+  const esIncluido=document.getElementById('comp-incluido')?.checked&&window._compAfiId;
+  if(esIncluido){
+    const afiId=window._compAfiId;
+    const {data:afi}=await sb.from('afiliados').select('*').eq('id',afiId).single();
+    if(afi){
+      // +1 servicio usado este mes
+      const nuevoUso=(afi.servicios_mes||0)+1;
+      // Acumular pago pendiente al técnico ($15 por servicio incluido)
+      const nuevoPago=parseFloat(afi.pago_tecnico_pendiente||0)+PLAN_PAGO_TEC;
+      await sb.from('afiliados').update({
+        servicios_mes:nuevoUso,
+        pago_tecnico_pendiente:nuevoPago.toFixed(2)
+      }).eq('id',afiId);
+      // Registrar en movimientos como gasto dbarrio → técnico
+      if(sol.socio_asignado){
+        await sb.from('movimientos').insert({
+          socio_id:sol.socio_asignado,
+          solicitud_id:cId,
+          tipo:'pago',
+          monto:PLAN_PAGO_TEC,
+          nota:`Pago servicio incluido — Plan ${PLAN_LABEL[afi.tipo]||afi.tipo} — ${afi.nombre} — ${dbc(cId)}`
+        });
+      }
+      toast(`Orden completada ✓ — Servicio #${nuevoUso} del plan ${PLAN_LABEL[afi.tipo]||afi.tipo} descontado`);
+    }
+  } else {
+    toast('Orden completada ✓ — mensaje enviado al cliente');
+  }
+  window._compAfiId=null;
+
   const cId=pendingCompId; pendingCompId=null;
-  closeModal('comp'); toast('Orden completada ✓ — mensaje enviado al cliente');
-  logActividad('completar',cId,`Monto: ${fmtM(monto)}`);
+  closeModal('comp');
+  logActividad('completar',cId,`Monto: ${fmtM(monto)}${esIncluido?' — Servicio incluido plan':''}`);
   rst(); loadOp(); loadKPIs();
 }
 
@@ -2015,6 +2099,8 @@ async function loadStats(){
 const PLAN_LABEL={esencial:'Esencial',hogar:'Hogar',negocio:'Negocio'};
 const PLAN_PRECIO={esencial:'$15/mes',hogar:'$30/mes',negocio:'$60/mes'};
 const PLAN_COLOR={esencial:'var(--blue)',hogar:'var(--yd)',negocio:'var(--ok)'};
+const PLAN_MAX={esencial:1,hogar:2,negocio:4};
+const PLAN_PAGO_TEC=15; // $ máximo que dbarrio paga al técnico por servicio incluido
 
 async function loadAfiliados(){
   const el=document.getElementById('lista-afi'); if(!el) return;
@@ -2064,15 +2150,33 @@ function filtrarAfiliados(){
       <div class="socio-body">
         <div class="info-grid" style="margin-bottom:12px">
           <div class="info-item"><span class="info-lbl">Teléfono</span><a href="tel:${esc(telL)}" class="call-link">${esc(a.telefono||'—')}</a></div>
-          <div class="info-item"><span class="info-lbl">Servicios este mes</span><span class="info-val">${a.servicios_mes||0}</span></div>
+          <div class="info-item">
+            <span class="info-lbl">Servicios este mes</span>
+            <span class="info-val" style="font-family:var(--fd);font-size:18px;font-weight:900;color:${(a.servicios_mes||0)>=(PLAN_MAX[a.tipo]||2)?'var(--err)':'var(--ok)'}">
+              ${a.servicios_mes||0} / ${PLAN_MAX[a.tipo]||2}
+            </span>
+          </div>
           ${a.direccion?`<div class="info-item info-full"><span class="info-lbl">Dirección</span><span class="info-val">${esc(a.direccion)}</span></div>`:''}
           ${a.descripcion?`<div class="info-item info-full"><span class="info-lbl">Descripción</span><span class="info-val">${esc(a.descripcion)}</span></div>`:''}
           <div class="info-item"><span class="info-lbl">Solicitud</span><span class="info-val">${fmtD(a.created_at)}</span></div>
           ${a.fecha_inicio?`<div class="info-item"><span class="info-lbl">Inicio</span><span class="info-val">${fmtD(a.fecha_inicio)}</span></div>`:''}
+          ${(a.pago_tecnico_pendiente||0)>0?`<div class="info-item info-full"><span class="info-lbl">⚠️ Pago pendiente al técnico</span><span class="info-val" style="color:var(--err);font-weight:700">${fmtM(a.pago_tecnico_pendiente)}</span></div>`:''}
+        </div>
+        <!-- Técnico asignado -->
+        <div class="assign-form" style="margin-bottom:10px">
+          <label>Técnico asignado al plan</label>
+          <div class="assign-row">
+            <select id="afi-soc-${a.id}" style="flex:1">
+              <option value="">Sin técnico asignado</option>
+              ${Object.values(sociosMap).filter(s=>s&&s.nombre&&s.estado_socio==='activo').map(s=>`<option value="${s.id}" ${String(a.socio_id)===String(s.id)?'selected':''}>${esc(s.nombre)}</option>`).join('')}
+            </select>
+            <button class="btn btn-g btn-sm" onclick="saveAfiSocio(${a.id})">Guardar</button>
+          </div>
+          ${a.socio_id&&sociosMap[a.socio_id]?`<div style="margin-top:5px;font-size:11px;color:var(--ok);font-weight:700">🔧 Técnico: ${esc(sociosMap[a.socio_id]?.nombre||'—')}</div>`:''}
         </div>
         <div class="actions-row">
           ${a.estado==='pendiente'?`<button class="btn btn-y btn-sm" onclick="activarAfiliado(${a.id})">Activar plan</button>`:''}
-          ${a.estado==='activo'?`<button class="btn btn-g btn-sm" onclick="sumarServicio(${a.id})">+1 servicio usado</button>`:''}
+          ${a.estado==='activo'?`<button class="btn btn-g btn-sm" onclick="pagarTecnicoAfiliado(${a.id})">Liquidar técnico</button>`:''}
           ${a.estado==='activo'?`<button class="btn btn-g btn-sm" onclick="renovarAfiliado(${a.id})">Renovar</button>`:''}
           ${['pendiente','activo'].includes(a.estado)?`<button class="btn btn-r btn-sm" onclick="cancelarAfiliado(${a.id})">Cancelar</button>`:''}
           ${a.telefono?`<button class="btn btn-wa btn-sm" onclick="waAfiliado(${a.id})">WA</button>`:''}
@@ -2102,6 +2206,51 @@ async function activarAfiliado(id){
     wa(a.telefono,msg);
   }
   loadAfiliados();
+}
+
+async function saveAfiSocio(afiId){
+  const sel=document.getElementById('afi-soc-'+afiId);
+  const socId=sel?.value?parseInt(sel.value):null;
+  const {error}=await sb.from('afiliados').update({socio_id:socId}).eq('id',afiId);
+  if(error){toast('Error: '+error.message);return;}
+  const nom=socId?sociosMap[socId]?.nombre||'—':'eliminado';
+  toast(socId?`Técnico asignado: ${nom} ✓`:'Técnico asignado eliminado ✓');
+  // Si hay técnico y afiliado activo, mandar WA de presentación
+  if(socId){
+    const {data:a}=await sb.from('afiliados').select('nombre,telefono,tipo').eq('id',afiId).single();
+    const soc=sociosMap[socId];
+    if(a?.telefono&&soc?.telefono){
+      const msgCli=`Hola ${a.nombre} 👋\n\nTe presentamos a *${soc.nombre}*, tu técnico dbarrio asignado al *${PLAN_LABEL[a.tipo]||a.tipo}*.\n\nPara cualquier servicio o consulta de tu casa, puedes escribirle directamente.\n\n— dbarrio`;
+      setTimeout(()=>wa(a.telefono,msgCli),400);
+    }
+  }
+  loadAfiliados();
+}
+
+async function pagarTecnicoAfiliado(afiId){
+  const {data:a}=await sb.from('afiliados').select('*').eq('id',afiId).single();
+  if(!a){toast('Afiliado no encontrado');return;}
+  const pendiente=parseFloat(a.pago_tecnico_pendiente||0);
+  if(pendiente<=0){toast('No hay pago pendiente para este técnico');return;}
+  if(!a.socio_id){toast('Este plan no tiene técnico asignado');return;}
+  if(!confirm(`¿Confirmar pago de ${fmtM(pendiente)} al técnico ${sociosMap[a.socio_id]?.nombre||'—'}?`)) return;
+  // Registrar movimiento de pago al técnico desde dbarrio
+  await sb.from('movimientos').insert({
+    socio_id:a.socio_id,
+    tipo:'pago',
+    monto:pendiente,
+    nota:`Pago servicios incluidos Plan ${PLAN_LABEL[a.tipo]||a.tipo} — ${a.nombre}`
+  });
+  // Actualizar deuda del técnico (restar el pago)
+  const soc=sociosMap[a.socio_id];
+  if(soc){
+    const nuevaDeuda=Math.max(0,parseFloat(soc.deuda||0)-pendiente);
+    await sb.from('socios').update({deuda:nuevaDeuda.toFixed(2)}).eq('id',a.socio_id);
+  }
+  // Resetear pago pendiente del afiliado
+  await sb.from('afiliados').update({pago_tecnico_pendiente:0}).eq('id',afiId);
+  toast(`Pago de ${fmtM(pendiente)} registrado ✓`);
+  loadAfiliados(); loadSociosMap();
 }
 
 async function sumarServicio(id){
