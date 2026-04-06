@@ -246,7 +246,44 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .zona-muni{font-size:12px;color:var(--g1);display:flex;align-items:center;gap:5px}
 .zona-muni::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--g3);flex-shrink:0}
 
-/* ── CARRUSEL HORIZONTAL ── */
+/* ── PLANES ── */
+.planes-grid{display:flex;flex-direction:column;gap:12px}
+@media(min-width:640px){.planes-grid{flex-direction:row;align-items:stretch}}
+.plan-card{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);
+  border-radius:var(--r);padding:22px 20px;
+  display:flex;flex-direction:column;gap:0;
+  position:relative;
+  flex:1;
+}
+.plan-card-featured{
+  background:rgba(245,193,22,.08);
+  border-color:rgba(245,193,22,.3);
+  border-width:1.5px;
+}
+.plan-tag{
+  position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  background:var(--y);color:#000;
+  font-family:var(--fd);font-size:10px;font-weight:900;
+  letter-spacing:1px;text-transform:uppercase;
+  padding:3px 12px;border-radius:20px;white-space:nowrap;
+}
+.plan-badge{
+  font-family:var(--fd);font-size:11px;font-weight:900;
+  letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-bottom:10px;
+}
+.plan-badge-y{color:var(--y)}
+.plan-precio{
+  font-family:var(--fd);font-size:44px;font-weight:900;
+  color:#fff;line-height:1;letter-spacing:-1px;margin-bottom:8px;
+}
+.plan-mes{font-size:16px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:0}
+.plan-desc{font-size:12px;color:rgba(255,255,255,.45);line-height:1.55;margin-bottom:16px}
+.plan-features{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;flex:1}
+.plan-feat{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.6);line-height:1.4}
+.feat-check{color:rgba(255,255,255,.35);font-size:13px;flex-shrink:0;margin-top:1px}
+.feat-y{color:var(--y)}
 .testimonios-scroll{
   display:flex;gap:12px;overflow-x:auto;
   padding-right:20px;padding-bottom:4px;
@@ -517,6 +554,64 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   </div>
 </section>
 
+<!-- ══ PLANES DE AFILIACIÓN ══ -->
+<section class="section section-dark" id="sec-planes">
+  <div class="sec-label" style="color:var(--y);opacity:.7">Membresía dbarrio</div>
+  <h2 class="sec-title light">Vincula tu<br><em style="font-style:normal;color:var(--y)">casa o negocio</em></h2>
+  <p class="sec-sub light" style="margin-bottom:24px">Paga una cuota fija y ten técnicos disponibles cuando los necesites. Sin sorpresas, con garantía.</p>
+
+  <div class="planes-grid">
+
+    <div class="plan-card">
+      <div class="plan-badge">Esencial</div>
+      <div class="plan-precio">$15<span class="plan-mes">/mes</span></div>
+      <div class="plan-desc">Para quien quiere tranquilidad básica en casa.</div>
+      <div class="plan-features">
+        <div class="plan-feat"><span class="feat-check">✓</span>1 visita de diagnóstico al mes</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>20% descuento en servicios</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Atención prioritaria en 24h</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Garantía extendida en trabajos</div>
+      </div>
+      <button class="btn btn-outline btn-full" onclick="openAfiliacion('esencial')">Solicitar plan</button>
+    </div>
+
+    <div class="plan-card plan-card-featured">
+      <div class="plan-tag">Más popular</div>
+      <div class="plan-badge plan-badge-y">Hogar</div>
+      <div class="plan-precio">$30<span class="plan-mes">/mes</span></div>
+      <div class="plan-desc">2 servicios incluidos + descuentos para el resto.</div>
+      <div class="plan-features">
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>2 servicios básicos incluidos</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>25% descuento en servicios extra</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Técnico de referencia fijo</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Respuesta en 12h</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Garantía extendida</div>
+      </div>
+      <button class="btn btn-y btn-full" onclick="openAfiliacion('hogar')">Solicitar plan</button>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-badge">Negocio</div>
+      <div class="plan-precio">$60<span class="plan-mes">/mes</span></div>
+      <div class="plan-desc">Para paladares, hostales y empresas con mantenimiento constante.</div>
+      <div class="plan-features">
+        <div class="plan-feat"><span class="feat-check">✓</span>4 servicios incluidos</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>30% descuento en servicios extra</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Técnico asignado fijo</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Respuesta prioritaria en 6h</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Garantía extendida + cobertura total</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Reporte mensual de mantenimiento</div>
+      </div>
+      <button class="btn btn-outline btn-full" onclick="openAfiliacion('negocio')">Solicitar plan</button>
+    </div>
+
+  </div>
+
+  <p style="font-size:11px;color:rgba(255,255,255,.3);text-align:center;margin-top:16px;line-height:1.6">
+    Pago trimestral en efectivo · Servicios incluidos hasta $15 de mano de obra · Extra con descuento del plan
+  </p>
+</section>
+
 <!-- ══ TESTIMONIOS (carrusel horizontal) ══ -->
 <section class="section section-mid" style="padding:28px 0 28px 20px">
   <div class="sec-label" style="padding-right:20px">⭐ Lo que dicen</div>
@@ -778,6 +873,49 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="ok-box" id="ok-uni">✅ Cuenta creada. Tu solicitud está en revisión — te contactaremos por WhatsApp.</div>
     <div class="err-box" id="err-uni"></div>
     <button class="btn btn-k btn-full" id="btn-uni" onclick="envUni()">Crear cuenta</button>
+  </div>
+</div></div>
+
+<!-- ══ MODAL AFILIACIÓN ══ -->
+<div class="ov" id="ov-afi" onclick="ovc(event,'afi')">
+<div class="sheet"><div class="pill"></div>
+  <div class="sheet-hdr">
+    <span class="sheet-title" id="afi-title">Solicitar plan</span>
+    <button class="sheet-x" onclick="close_('afi')">&times;</button>
+  </div>
+  <div class="mbody">
+    <div id="afi-plan-info" style="background:var(--y-bg);border:1.5px solid var(--y-border);border-radius:10px;padding:12px 14px;margin-bottom:2px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--yd);margin-bottom:2px">Plan seleccionado</div>
+      <div style="font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink)" id="afi-plan-nombre">—</div>
+      <div style="font-size:12px;color:var(--g1);margin-top:2px" id="afi-plan-desc">—</div>
+    </div>
+    <div class="fg"><label>Nombre completo o empresa</label><input id="afi-nom" type="text" placeholder="Tu nombre o nombre del negocio"/><div class="fe" id="eafi-nom">Requerido.</div></div>
+    <div class="fg"><label>WhatsApp</label>
+      <div class="phone-row">
+        <select id="afi-code"><option value="+53" selected>🇨🇺 +53</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+        <input id="afi-tel" type="tel" inputmode="numeric" placeholder="Número WhatsApp"/>
+      </div>
+      <div class="fe" id="eafi-tel">Número inválido.</div>
+    </div>
+    <div class="fg"><label>Municipio</label>
+      <select id="afi-mun">
+        <option value="">-- Seleccionar --</option>
+        <optgroup label="Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
+        <optgroup label="Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
+        <optgroup label="Oriente"><option>Regla</option><option>La Habana del Este</option><option>Guanabacoa</option><option>San Miguel del Padrón</option></optgroup>
+        <optgroup label="Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
+      </select>
+      <div class="fe" id="eafi-mun">Selecciona tu municipio.</div>
+    </div>
+    <div class="fg"><label>Dirección (opcional)</label><input id="afi-dir" type="text" placeholder="Calle, número, referencias..."/></div>
+    <div class="fg"><label>Cuéntanos brevemente (opcional)</label><textarea id="afi-desc" placeholder="Tipo de negocio, cuántas habitaciones, equipos que tienes..."></textarea></div>
+    <div class="ok-box" id="ok-afi">
+      ✅ ¡Solicitud recibida!<br/>
+      <span style="font-size:13px;font-weight:400">Te contactaremos por WhatsApp en menos de 24 horas para coordinar los detalles.</span>
+    </div>
+    <div class="err-box" id="err-afi"></div>
+    <button class="btn btn-y btn-full" id="btn-afi" onclick="envAfiliacion()">Enviar solicitud</button>
+    <p class="hint">Sin compromiso. Te explicamos todo por WhatsApp antes de confirmar.</p>
   </div>
 </div></div>
 
@@ -1063,6 +1201,60 @@ async function buscarEstado(){
 
 // Enter en tracker
 document.getElementById('trk-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')buscarEstado();});
+
+// ── AFILIACIÓN ──
+const PLANES={
+  esencial:{nombre:'Plan Esencial',precio:'$15/mes',desc:'1 diagnóstico + 20% descuento + atención 24h'},
+  hogar:   {nombre:'Plan Hogar',   precio:'$30/mes',desc:'2 servicios incluidos + 25% descuento + técnico fijo'},
+  negocio: {nombre:'Plan Negocio', precio:'$60/mes',desc:'4 servicios incluidos + técnico asignado + respuesta 6h'},
+};
+let afiTipo='';
+
+function openAfiliacion(tipo){
+  afiTipo=tipo;
+  const p=PLANES[tipo];
+  document.getElementById('afi-title').textContent='Solicitar '+p.nombre;
+  document.getElementById('afi-plan-nombre').textContent=p.nombre+' — '+p.precio;
+  document.getElementById('afi-plan-desc').textContent=p.desc;
+  ['afi-nom','afi-tel','afi-dir','afi-desc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['afi-mun'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['eafi-nom','eafi-tel','eafi-mun'].forEach(id=>cE(id));
+  cER('err-afi');
+  document.getElementById('ok-afi')?.classList.remove('v');
+  const btn=document.getElementById('btn-afi');
+  if(btn){btn.style.display='';btn.disabled=false;if(btn._t)btn.innerHTML=btn._t;}
+  open_('afi');
+}
+
+async function envAfiliacion(){
+  cER('err-afi');['eafi-nom','eafi-tel','eafi-mun'].forEach(id=>cE(id));
+  const nom=document.getElementById('afi-nom')?.value?.trim()||'';
+  const tel=normalizarTelefono('afi-code','afi-tel','eafi-tel');
+  const mun=document.getElementById('afi-mun')?.value||'';
+  const dir=document.getElementById('afi-dir')?.value?.trim()||'';
+  const desc=document.getElementById('afi-desc')?.value?.trim()||'';
+  let ok=true;
+  if(!nom){sE('eafi-nom');ok=false;}
+  if(!tel){ok=false;}
+  if(!mun){sE('eafi-mun','Selecciona tu municipio.');ok=false;}
+  if(!ok) return;
+  setL('btn-afi',true,'Enviando...');
+  try{
+    const {error}=await sbPublic.from('afiliados').insert({
+      nombre:nom, telefono:tel.completo, tipo:afiTipo,
+      municipio:mun, direccion:dir||null, descripcion:desc||null,
+      estado:'pendiente'
+    });
+    setL('btn-afi',false);
+    if(error){sER('err-afi','Error: '+error.message);return;}
+    sOK('ok-afi');
+    document.getElementById('btn-afi').style.display='none';
+    // WhatsApp automático al admin
+    const p=PLANES[afiTipo];
+    const msgAdmin=`🏠 *Nueva solicitud de afiliación*\n\n👤 ${nom}\n📱 ${tel.completo}\n📍 ${mun}${dir?' · '+dir:''}\n📋 ${p.nombre} — ${p.precio}${desc?'\n\n💬 '+desc:''}`;
+    setTimeout(()=>wa('34627493593',msgAdmin),800);
+  }catch(e){setL('btn-afi',false);sER('err-afi','Error: '+(e?.message||e));}
+}
 
 // ── GARANTÍA ──
 async function envGar(){
