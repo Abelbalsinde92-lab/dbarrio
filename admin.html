@@ -1204,8 +1204,8 @@ function goSec(id){
   if(id==='hi') loadHi();
   if(id==='so'){ loadSociosMap(); loadSocios(); }
   if(id==='ca') loadCaja();
-  if(id==='sp'&&USER_ROLE==='admin') loadSoporte();
-  if(id==='afi'&&USER_ROLE==='admin') loadAfiliados();
+  if(id==='sp') loadSoporte();
+  if(id==='afi') loadAfiliados();
   if(id==='st'&&USER_ROLE==='admin') loadStats();
   if(id==='enc'&&USER_ROLE==='admin') loadEncargados();
   if(id==='log'&&USER_ROLE==='admin') loadActivityLog();
@@ -1758,7 +1758,7 @@ function buildSocioCard(s){
         <div class="assign-row"><input id="com-${s.id}" type="number" min="0" max="100" value="${s.comision||15}" style="max-width:100px;height:36px;padding:0 10px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--f);font-size:13px;color:var(--ink);background:var(--card);outline:none"/><button class="btn btn-g btn-sm" onclick="saveComSocio(${s.id})">Guardar</button></div>
       </div>
       <div class="actions-row">
-        ${USER_ROLE==='admin'&&!s.admitido?`<button class="btn btn-y btn-sm" onclick='openAprobar(${s.id},${JSON.stringify(s.nombre||"")},${JSON.stringify(s.telefono||"")})'>Aprobar</button>`:''}
+        ${(USER_ROLE==='admin'||USER_ROLE==='encargado')&&!s.admitido?`<button class="btn btn-y btn-sm" onclick='openAprobar(${s.id},${JSON.stringify(s.nombre||"")},${JSON.stringify(s.telefono||"")})'>Aprobar</button>`:''}
         ${USER_ROLE==='admin'&&!s.admitido?`<button class="btn btn-r btn-sm" onclick="rechazarSocio(${s.id})">Rechazar</button>`:''}
         ${USER_ROLE==='admin'&&s.estado_socio==='activo'?`<button class="btn btn-r btn-sm" onclick="cambiarEstadoSocio(${s.id},'baja')">Dar de baja</button>`:''}
         ${USER_ROLE==='admin'&&s.estado_socio==='baja'?`<button class="btn btn-g btn-sm" onclick="cambiarEstadoSocio(${s.id},'activo')">Reactivar</button>`:''}
@@ -1915,7 +1915,9 @@ async function loadSoporte(){
   const elR=document.getElementById('lista-gar-rec');
   elG.innerHTML='<div class="loading">Cargando...</div>';
   elR.innerHTML='<div class="loading">Cargando...</div>';
-  const {data:sols,error:e1}=await sb.from('solicitudes').select('id,telefono,fecha_fin,garantia_dias,garantia_expira,socio_asignado').eq('estado','completada').gt('garantia_dias',0).order('fecha_fin',{ascending:false}).limit(200);
+  let qGar=sb.from('solicitudes').select('id,telefono,fecha_fin,garantia_dias,garantia_expira,socio_asignado,zona').eq('estado','completada').gt('garantia_dias',0).order('fecha_fin',{ascending:false}).limit(200);
+  if(USER_ROLE==='encargado'&&USER_ZONA) qGar=qGar.eq('zona',USER_ZONA);
+  const {data:sols,error:e1}=await qGar;
   if(e1) elG.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(e1.message)}</span></div>`;
   else if(!sols?.length) elG.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin garantías registradas</span></div>';
   else elG.innerHTML=sols.map(s=>{
@@ -1940,29 +1942,103 @@ async function loadSoporte(){
   else elR.innerHTML=reclamos.map(r=>{
     const soc=r.socio_id?(sociosMap[r.socio_id]?.nombre||'—'):'—';
     const cCls={pendiente:'cp',en_proceso:'ce',resuelto:'cc',rechazado:'cr'}[r.estado]||'cp';
+    const yaVisita=r.visita_solicitud_id;
     return `<div class="soporte-card" style="margin-bottom:8px">
       <div class="soporte-hdr" onclick="toggleSoporteCard(this)">
         <div class="soporte-hdr-left">
           <div class="soporte-title">${esc(r.codigo_servicio||('db-'+(r.solicitud_id||'')))} · ${esc(r.telefono||'')}</div>
-          <div class="soporte-meta">${fmt(r.created_at)} · <span class="chip ${cCls}">${esc(r.estado)}</span></div>
+          <div class="soporte-meta">${fmt(r.created_at)} · <span class="chip ${cCls}">${esc(r.estado)}</span>${yaVisita?` · <span style="color:var(--ok);font-size:11px;font-weight:700">🔧 Visita db-${r.visita_solicitud_id} creada</span>`:''}</div>
         </div>
         <svg class="card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="soporte-body">
-        <div style="font-size:13px;margin-bottom:8px"><strong>Falla:</strong> ${esc(r.mensaje)}</div>
-        <div style="font-size:13px;color:var(--g1);margin-bottom:10px">👤 Técnico: ${esc(soc)}</div>
+        <div style="background:var(--err-bg);border:1.5px solid var(--err-border);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+          <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--err);margin-bottom:4px">Falla reportada por el cliente</div>
+          <div style="font-size:13px;color:var(--ink);line-height:1.55">${esc(r.mensaje)}</div>
+        </div>
+        ${r.estado_previo?`<div style="background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+          <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--warn);margin-bottom:4px">Estado previo — documentado por el técnico</div>
+          <div style="font-size:13px;color:var(--ink);line-height:1.55">${esc(r.estado_previo)}</div>
+        </div>`:''}
+        ${r.causa_raiz?`<div style="background:var(--blue-bg);border:1.5px solid var(--blue-border);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+          <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Causa raíz — diagnóstico técnico</div>
+          <div style="font-size:13px;color:var(--ink);line-height:1.55">${esc(r.causa_raiz)}</div>
+          ${r.responsabilidad?`<div style="margin-top:5px;font-size:11px;font-weight:700;color:${{dbarrio:'var(--err)',externa:'var(--ok)',cliente:'var(--warn)'}[r.responsabilidad]||'var(--g1)'}">Responsabilidad: ${r.responsabilidad}</div>`:''}
+        </div>`:''}
+        ${r.admin_nota?`<div style="background:var(--y-bg);border:1.5px solid var(--y-border);border-radius:8px;padding:10px 14px;margin-bottom:10px">
+          <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--yd);margin-bottom:4px">Nota del admin</div>
+          <div style="font-size:13px;color:var(--ink)">${esc(r.admin_nota)}</div>
+        </div>`:''}
+        <div style="font-size:12px;color:var(--g2);margin-bottom:10px">👤 Técnico original: <strong>${esc(soc)}</strong>${r.resuelto_ts?` · ✅ Resuelto: ${fmt(r.resuelto_ts)}`:''}</div>
         <div class="actions-row">
-          ${r.estado!=='resuelto'?`<button class="btn btn-y btn-sm" onclick="setReclamoEstado(${r.id},'en_proceso')">En proceso</button>`:''}
-          ${r.estado!=='resuelto'?`<button class="btn btn-k btn-sm" onclick="resolverReclamo(${r.id})">Marcar resuelto</button>`:''}
-          <button class="btn btn-g btn-sm" onclick="notaReclamo(${r.id})">Nota</button>
+          ${!yaVisita&&r.estado!=='resuelto'?`<button class="btn btn-y btn-sm" onclick="crearVisitaGarantia(${r.id})">🔧 Crear visita</button>`:''}
+          ${r.estado!=='resuelto'?`<button class="btn btn-k btn-sm" onclick="setReclamoEstado(${r.id},'en_proceso')">En proceso</button>`:''}
+          ${r.estado!=='resuelto'?`<button class="btn btn-g btn-sm" onclick="resolverReclamo(${r.id})">Resuelto</button>`:''}
+          ${r.estado!=='resuelto'?`<button class="btn btn-r btn-sm" onclick="setReclamoEstado(${r.id},'rechazado')">Rechazar</button>`:''}
+          <button class="btn btn-g btn-sm" onclick="notaReclamo(${r.id})">Nota admin</button>
         </div>
       </div>
     </div>`;
   }).join('');
 }
-async function setReclamoEstado(id,estado){ const {error}=await sb.from('garantia_reclamos').update({estado}).eq('id',id); if(error){ toast('Error: '+error.message); return } toast('Actualizado'); loadSoporte(); }
+async function crearVisitaGarantia(reclamoId){
+  // Carga el reclamo completo
+  const {data:r}=await sb.from('garantia_reclamos')
+    .select('*').eq('id',reclamoId).single();
+  if(!r){toast('Reclamo no encontrado');return;}
+
+  // Busca la solicitud original para copiar datos
+  let solOrig=null;
+  if(r.solicitud_id){
+    const {data:s}=await sb.from('solicitudes').select('*').eq('id',r.solicitud_id).single();
+    solOrig=s;
+  }
+
+  // Crea nueva solicitud de garantía
+  const {data:nueva,error}=await sb.from('solicitudes').insert({
+    cliente:       solOrig?.cliente||r.telefono||'Cliente garantía',
+    telefono:      r.telefono||solOrig?.telefono||null,
+    municipio:     solOrig?.municipio||null,
+    servicio:      solOrig?.servicio||'Garantía',
+    detalles:      `🛡 VISITA DE GARANTÍA\nReclamo #${reclamoId}\nFalla: ${r.mensaje}`,
+    zona:          solOrig?.zona||null,
+    estado:        'pendiente',
+    fecha_ts:      new Date().toISOString(),
+    consent_texto: 'garantia v1',
+    nota_admin:    `Visita de garantía — reclamo original #${reclamoId} — orden ${r.codigo_servicio||''}`,
+    socio_asignado:r.socio_id||solOrig?.socio_asignado||null,
+  }).select('id').single();
+
+  if(error){toast('Error al crear visita: '+error.message);return;}
+
+  // Si había técnico, asignarla directamente
+  if(r.socio_id||solOrig?.socio_asignado){
+    await sb.from('solicitudes').update({
+      estado:'asignada',
+      socio_asignado:r.socio_id||solOrig?.socio_asignado
+    }).eq('id',nueva.id);
+  }
+
+  // Vincular reclamo → visita
+  await sb.from('garantia_reclamos').update({
+    estado:'en_proceso',
+    visita_solicitud_id:nueva.id
+  }).eq('id',reclamoId);
+
+  // WA al técnico si hay teléfono
+  const socId=r.socio_id||solOrig?.socio_asignado;
+  const soc=socId?sociosMap[socId]:null;
+  if(soc?.telefono){
+    const msg=`Hola ${soc.nombre} 👋\n\n🛡 *Visita de garantía asignada*\n\nCódigo: *${dbc(nueva.id)}*\nCliente: ${solOrig?.cliente||r.telefono||'—'}\nMunicipio: ${solOrig?.municipio||'—'}\nServicio: ${solOrig?.servicio||'—'}\n\nFalla reportada:\n"${r.mensaje}"\n\nAl llegar documenta el estado previo en tu panel.\n\n— dbarrio`;
+    wa(soc.telefono,msg);
+  }
+  toast(`Visita de garantía ${dbc(nueva.id)} creada ✓`);
+  loadSoporte(); loadOp(); loadKPIs();
+}
+
+async function setReclamoEstado(id,estado){ const {error}=await sb.from('garantia_reclamos').update({estado}).eq('id',id); if(error){ toast('Error: '+error.message); return } toast('Actualizado ✓'); loadSoporte(); }
 async function resolverReclamo(id){ const {error}=await sb.from('garantia_reclamos').update({estado:'resuelto',resuelto_ts:new Date().toISOString()}).eq('id',id); if(error){ toast('Error: '+error.message); return } toast('Reclamo resuelto ✓'); loadSoporte(); }
-async function notaReclamo(id){ const nota=prompt('Nota admin (opcional):'); if(nota===null) return; const {error}=await sb.from('garantia_reclamos').update({admin_nota:nota.trim()||null}).eq('id',id); if(error){ toast('Error: '+error.message); return } toast('Nota guardada'); loadSoporte(); }
+async function notaReclamo(id){ const nota=prompt('Nota admin:'); if(nota===null) return; const {error}=await sb.from('garantia_reclamos').update({admin_nota:nota.trim()||null}).eq('id',id); if(error){ toast('Error: '+error.message); return } toast('Nota guardada ✓'); loadSoporte(); }
 
 // ══ STATS ══
 async function loadStats(){
@@ -2105,7 +2181,9 @@ const PLAN_PAGO_TEC=15; // $ máximo que dbarrio paga al técnico por servicio i
 async function loadAfiliados(){
   const el=document.getElementById('lista-afi'); if(!el) return;
   el.innerHTML='<div class="loading">Cargando...</div>';
-  const {data,error}=await sb.from('afiliados').select('*').order('created_at',{ascending:false});
+  let q=sb.from('afiliados').select('*').order('created_at',{ascending:false});
+  if(USER_ROLE==='encargado'&&USER_ZONA) q=q.eq('municipio',USER_ZONA); // filtro por zona aprox
+  const {data,error}=await q;
   if(error){el.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`;return;}
   if(!data?.length){el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin solicitudes de afiliación aún</span></div>';return;}
   window._afiadosData=data;
@@ -2178,7 +2256,7 @@ function filtrarAfiliados(){
           ${a.estado==='pendiente'?`<button class="btn btn-y btn-sm" onclick="activarAfiliado(${a.id})">Activar plan</button>`:''}
           ${a.estado==='activo'?`<button class="btn btn-g btn-sm" onclick="pagarTecnicoAfiliado(${a.id})">Liquidar técnico</button>`:''}
           ${a.estado==='activo'?`<button class="btn btn-g btn-sm" onclick="renovarAfiliado(${a.id})">Renovar</button>`:''}
-          ${['pendiente','activo'].includes(a.estado)?`<button class="btn btn-r btn-sm" onclick="cancelarAfiliado(${a.id})">Cancelar</button>`:''}
+          ${USER_ROLE==='admin'&&['pendiente','activo'].includes(a.estado)?`<button class="btn btn-r btn-sm" onclick="cancelarAfiliado(${a.id})">Cancelar</button>`:''}
           ${a.telefono?`<button class="btn btn-wa btn-sm" onclick="waAfiliado(${a.id})">WA</button>`:''}
         </div>
       </div>
@@ -2302,11 +2380,17 @@ function applyRoleUI(){
   const role=document.getElementById('brandRole');
   if(isEnc&&role){ role.textContent='ZONA: '+(USER_ZONA||'').toUpperCase(); }
   if(isEnc){
-    ['nav-ca','nav-sp','nav-aj','nav-enc','nav-log','nav-st'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='none'; });
-    ['sec-ca','sec-sp','sec-aj','sec-enc','sec-log','sec-st'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.style.display='none'; el.classList.remove('active'); } });
+    // Ocultar solo lo financiero y de configuración global
+    ['nav-ca','nav-aj','nav-enc','nav-log','nav-st'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='none'; });
+    ['sec-ca','sec-aj','sec-enc','sec-log','sec-st'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.style.display='none'; el.classList.remove('active'); } });
+    // Dar acceso a soporte, afiliados e historial
+    ['nav-sp','nav-afi','nav-hi'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='flex'; });
     // Ocultar KPI de caja
     const cajaKpi=document.querySelector('.kpi-item.money'); if(cajaKpi) cajaKpi.style.display='none';
+    // Ocultar acciones exclusivas de admin en soporte (ya manejado por flag)
+    window._encargadoMode=true;
   } else {
+    window._encargadoMode=false;
     ['nav-enc','nav-log','nav-st','nav-afi'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='flex'; });
   }
 }
