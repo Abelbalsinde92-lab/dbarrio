@@ -455,17 +455,36 @@ function cardOrden(s){
   const rep=s.sub_estado==='cierre_reportado'||s.monto_socio!=null;
   const rej=s.sub_estado==='rechazada_por_socio';
   const enP=s.sub_estado==='en_proceso';
+  const esGarantia=s.nota_admin&&s.nota_admin.startsWith('🛡 VISITA DE GARANTÍA');
   const estado=rep?'cierre':rej?'rechazo':enP?'proceso':'nueva';
-  const chips={nueva:`<span class="chip ch-nueva">Nueva orden</span>`,proceso:`<span class="chip ch-proceso">En proceso</span>`,cierre:`<span class="chip ch-cierre">Cierre reportado</span>`,rechazo:`<span class="chip ch-rechazo">No puedo atender</span>`};
+  const chips={nueva:`<span class="chip ch-nueva">${esGarantia?'🛡 Garantía':'Nueva orden'}</span>`,proceso:`<span class="chip ch-proceso">En proceso</span>`,cierre:`<span class="chip ch-cierre">Cierre reportado</span>`,rechazo:`<span class="chip ch-rechazo">No puedo atender</span>`};
   const hora=s.hora_preferida?`<span class="hora-badge">🕐 ${esc(s.hora_preferida)}</span>`:'';
+
+  const flagGarantia=esGarantia?`<div class="flag" style="background:rgba(245,193,22,.12);border:1.5px solid var(--y-border);color:var(--yd)">🛡 Visita de garantía — documenta el estado previo al llegar</div>`:'';
   const flagC=rep?`<div class="flag flag-ok">✅ Reporte enviado. El admin lo revisará y cerrará la orden.</div>`:'';
   const flagR=rej?`<div class="flag flag-err">❌ Notificaste que no puedes atender. Pendiente de reasignación.</div>`:'';
+
   const formC=(!rep&&!rej)?`<div class="cierre-form" id="fc-${s.id}" style="display:none">
-    <div><label class="form-lbl">Monto cobrado al cliente ($)</label><input class="form-input" id="monto-${s.id}" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+    <div><label class="form-lbl">Monto cobrado al cliente ($)</label><input class="form-input" id="monto-${s.id}" type="number" min="0" step="0.01" placeholder="${esGarantia?'0.00 si es sin costo':'0.00'}"/></div>
     <div><label class="form-lbl">Garantía que ofreces (días)</label><input class="form-input" id="gar-${s.id}" type="number" min="0" step="1" placeholder="0 = sin garantía"/></div>
     <div><label class="form-lbl">¿Qué hiciste? Describe el trabajo</label><textarea class="form-textarea" id="nota-${s.id}" placeholder="Ej: Limpié filtros, sellé tubería..."></textarea></div>
+    ${esGarantia?`
+    <div style="background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:9px;padding:12px">
+      <label class="form-lbl" style="color:var(--warn);margin-bottom:8px;display:block">🛡 Diagnóstico de garantía — obligatorio</label>
+      <div><label class="form-lbl">Estado previo encontrado al llegar</label><textarea class="form-textarea" id="estado-previo-${s.id}" placeholder="Ej: Había un corte eléctrico, el circuito estaba quemado antes de nuestra intervención..."></textarea></div>
+      <div style="margin-top:8px"><label class="form-lbl">Causa raíz del problema</label><textarea class="form-textarea" id="causa-raiz-${s.id}" placeholder="Ej: Cortocircuito por instalación previa defectuosa, no relacionado con el trabajo realizado..."></textarea></div>
+      <div style="margin-top:8px"><label class="form-lbl">Responsabilidad</label>
+        <select class="form-input" id="responsabilidad-${s.id}">
+          <option value="">-- Seleccionar --</option>
+          <option value="dbarrio">dbarrio — fallo del trabajo realizado</option>
+          <option value="externa">Externa — causa ajena al trabajo</option>
+          <option value="cliente">Cliente — mal uso o modificación posterior</option>
+        </select>
+      </div>
+    </div>`:''}
     <button class="btn btn-y btn-full" onclick="reportarCierre(${s.id},this)">Enviar reporte al admin</button>
   </div>`:'';
+
   const formN=!rej?`<div class="nopuedo-form" id="fn-${s.id}" style="display:none">
     <label class="form-lbl" style="color:var(--err)">¿Por qué no puedes atender esta orden?</label>
     <textarea class="form-textarea" id="motivo-${s.id}" style="border-color:var(--err-border)" placeholder="Explica el motivo al admin..."></textarea>
@@ -474,7 +493,19 @@ function cardOrden(s){
       <button class="btn btn-ghost" onclick="toggleNoPuedo(${s.id})">Cancelar</button>
     </div>
   </div>`:'';
-  const btnProc=(!enP&&!rej&&!rep)?`<button class="btn btn-y btn-full" onclick="marcarEnProceso(${s.id})">✅ Llegué — marcar en proceso</button>`:'';
+
+  // Al llegar: si es garantía mostrar campo estado previo inline
+  const btnProc=(!enP&&!rej&&!rep)?`
+    ${esGarantia?`<div id="ep-wrap-${s.id}" style="display:none;background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:9px;padding:12px;margin-bottom:8px">
+      <label class="form-lbl" style="color:var(--warn);margin-bottom:6px;display:block">⚠️ Documenta el estado antes de trabajar</label>
+      <textarea class="form-textarea" id="ep-${s.id}" placeholder="Describe qué encontraste al llegar — corte eléctrico, equipo ya dañado, etc."></textarea>
+      <button class="btn btn-y btn-full" style="margin-top:8px" onclick="marcarEnProcesoConEstado(${s.id})">✅ Llegué — confirmar con nota</button>
+      <button class="btn btn-ghost" style="margin-top:4px" onclick="document.getElementById('ep-wrap-${s.id}').style.display='none'">Cancelar</button>
+    </div>
+    <button class="btn btn-y btn-full" onclick="document.getElementById('ep-wrap-${s.id}').style.display='flex';this.style.display='none'">✅ Llegué — marcar en proceso</button>`
+    :`<button class="btn btn-y btn-full" onclick="marcarEnProceso(${s.id})">✅ Llegué — marcar en proceso</button>`}
+  `:'';
+
   const btnConfirmar=(!enP&&!rej&&!rep&&s.sub_estado!=='confirmada')?`<button class="btn btn-g btn-full" onclick="confirmarOrden(${s.id})">👁 Confirmar recepción de orden</button>`:(s.sub_estado==='confirmada'&&!enP&&!rep&&!rej)?`<div style="font-size:12px;color:var(--ok);font-weight:700;padding:6px 0">✓ Orden confirmada</div>`:'';
   const btnCierre=(!rep&&!rej)?`<button class="btn btn-k btn-full" onclick="toggleCierre(${s.id})">📋 Reportar cierre</button>`:'';
   const btnPresupuesto=(!rep&&!rej&&s.telefono)?`<button class="btn btn-g btn-full" onclick="togglePresupuesto(${s.id})">💬 Enviar presupuesto al cliente</button>`:'';
@@ -548,11 +579,31 @@ async function reportarCierre(id,btn){
     const monto=parseFloat(document.getElementById('monto-'+id)?.value);
     const gar=parseInt(document.getElementById('gar-'+id)?.value||'0',10);
     const nota=(document.getElementById('nota-'+id)?.value||'').trim();
-    if(!Number.isFinite(monto)||monto<=0){toast('Ingresa el monto cobrado al cliente');return;}
+    if(!Number.isFinite(monto)||monto<0){toast('Ingresa el monto (puede ser 0 si es sin costo)');return;}
     if(!Number.isFinite(gar)||gar<0){toast('Días de garantía inválidos');return;}
     if(!nota){toast('Describe el trabajo que realizaste');return;}
-    const {error}=await sb.from('solicitudes').update({monto_socio:monto,garantia_dias:gar,nota_socio:nota,cierre_ts:new Date().toISOString(),sub_estado:'cierre_reportado',solicita_cierre:false}).eq('id',id);
+
+    // Campos adicionales para visitas de garantía
+    const causaRaiz=(document.getElementById('causa-raiz-'+id)?.value||'').trim();
+    const responsabilidad=document.getElementById('responsabilidad-'+id)?.value||null;
+    const estadoPrevioFc=(document.getElementById('estado-previo-'+id)?.value||'').trim();
+
+    const upd={monto_socio:monto,garantia_dias:gar,nota_socio:nota,cierre_ts:new Date().toISOString(),sub_estado:'cierre_reportado',solicita_cierre:false};
+    const {error}=await sb.from('solicitudes').update(upd).eq('id',id);
     if(error){toast('Error: '+error.message);return;}
+
+    // Si es visita de garantía, guardar diagnóstico en garantia_reclamos
+    if(causaRaiz||responsabilidad||estadoPrevioFc){
+      const {data:rcl}=await sb.from('garantia_reclamos')
+        .select('id').eq('visita_solicitud_id',id).maybeSingle();
+      if(rcl?.id){
+        const rclUpd={};
+        if(causaRaiz) rclUpd.causa_raiz=causaRaiz;
+        if(responsabilidad) rclUpd.responsabilidad=responsabilidad;
+        if(estadoPrevioFc) rclUpd.estado_previo=estadoPrevioFc;
+        await sb.from('garantia_reclamos').update(rclUpd).eq('id',rcl.id);
+      }
+    }
     toast('✅ Reporte enviado — el admin lo revisará pronto');
     await loadOrdenes();
   }catch(e){toast('Error inesperado. Inténtalo de nuevo.');}
@@ -599,6 +650,24 @@ async function enviarPresupuesto(id){
   toast('Presupuesto enviado por WhatsApp ✓');
   const fp=document.getElementById('fp-'+id);
   if(fp)fp.style.display='none';
+}
+
+async function marcarEnProcesoConEstado(id){
+  const ep=(document.getElementById('ep-'+id)?.value||'').trim();
+  if(!ep){toast('Describe el estado previo antes de continuar');return;}
+  // Guardar estado previo en garantia_reclamos vinculado
+  const {data:rcl}=await sb.from('garantia_reclamos')
+    .select('id').eq('visita_solicitud_id',id).maybeSingle();
+  if(rcl?.id){
+    await sb.from('garantia_reclamos').update({estado_previo:ep}).eq('id',rcl.id);
+  }
+  // Guardar en nota_socio de la solicitud también
+  await sb.from('solicitudes').update({
+    sub_estado:'en_proceso',
+    nota_socio:`ESTADO PREVIO: ${ep}`
+  }).eq('id',id);
+  toast('✅ Estado previo documentado — en proceso');
+  loadOrdenes();
 }
 
 async function marcarEnProceso(id){
