@@ -521,8 +521,15 @@ function cardOrden(s){
       ${formPresupuesto}
       ${btnCierre}${formC}
       <div class="btn-row">
-        <button class="btn btn-wa" style="flex:1" onclick="waAdmin(${s.id})">${svgWA()} Admin</button>
+        <button class="btn btn-wa" style="flex:1" onclick="toggleNotaAdmin(${s.id})">${svgWA()} Admin</button>
         ${btnNP}
+      </div>
+      <div id="naf-${s.id}" style="display:none;margin-top:8px">
+        <textarea class="form-textarea" id="nat-${s.id}" placeholder="Escribe tu consulta o aviso al admin..."></textarea>
+        <div class="btn-row" style="margin-top:8px">
+          <button class="btn btn-wa btn-full" onclick="enviarNotaAdmin(${s.id})">${svgWA()} Enviar al admin</button>
+          <button class="btn btn-ghost" onclick="toggleNotaAdmin(${s.id})">Cancelar</button>
+        </div>
       </div>
       ${formN}
     </div>
@@ -601,9 +608,32 @@ async function marcarEnProceso(id){
   loadOrdenes();
 }
 
-async function waAdmin(idOrden){
-  const {data:s}=await sb.from('solicitudes').select('cliente,servicio,municipio').eq('id',idOrden).maybeSingle();
-  openWA(WA_ADMIN,`Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\nConsulta sobre la orden *${dbc(idOrden)}*\n👤 Cliente: ${s?.cliente||'—'}\n🔧 Servicio: ${s?.servicio||'—'}\n📍 Municipio: ${s?.municipio||'—'}\n\n`);
+function toggleNotaAdmin(id){
+  const el=document.getElementById('naf-'+id);
+  if(!el) return;
+  const visible=el.style.display==='none';
+  el.style.display=visible?'block':'none';
+  if(visible) document.getElementById('nat-'+id)?.focus();
+  // Cerrar otros formularios
+  const c=document.getElementById('or'+id);
+  if(c&&!c.classList.contains('open')) c.classList.add('open');
+}
+
+async function enviarNotaAdmin(id){
+  const txt=document.getElementById('nat-'+id)?.value?.trim()||'';
+  if(!txt){toast('Escribe algo antes de enviar');return;}
+  // Guardar en Supabase
+  const {data:s}=await sb.from('solicitudes').select('cliente,servicio,municipio').eq('id',id).maybeSingle();
+  await sb.from('solicitudes').update({nota_socio:txt}).eq('id',id);
+  // Abrir WhatsApp con el mensaje
+  const msg=`Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\nConsulta sobre la orden *${dbc(id)}*\n👤 Cliente: ${s?.cliente||'—'}\n🔧 Servicio: ${s?.servicio||'—'}\n📍 Municipio: ${s?.municipio||'—'}\n\n${txt}`;
+  toast('✅ Nota guardada — abriendo WhatsApp');
+  setTimeout(()=>openWA(WA_ADMIN, msg), 700);
+  // Cerrar formulario
+  const el=document.getElementById('naf-'+id);
+  if(el) el.style.display='none';
+  const inp=document.getElementById('nat-'+id);
+  if(inp) inp.value='';
 }
 async function waCliente(idOrden,tipo){
   const {data:s}=await sb.from('solicitudes').select('cliente,telefono,servicio,municipio').eq('id',idOrden).maybeSingle();
