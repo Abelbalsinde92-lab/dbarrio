@@ -679,6 +679,11 @@ button{font-family:var(--f);cursor:pointer}
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     Soporte
   </div>
+  <div class="sb-item" id="nav-afi" onclick="goSec('afi')" style="display:none">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Afiliados
+    <span class="sb-badge" id="sb-badge-afi" style="display:none">0</span>
+  </div>
   <div class="sb-divider"></div>
   <span class="sb-group-label">Análisis</span>
   <div class="sb-item" id="nav-st" onclick="goSec('st')" style="display:none">
@@ -823,6 +828,32 @@ button{font-family:var(--f);cursor:pointer}
     </div>
     <div class="panel-body"><div id="lista-gar-rec"><div class="loading">Cargando...</div></div></div>
   </div>
+</div>
+
+<!-- AFILIADOS -->
+<div class="section" id="sec-afi">
+  <div class="sec-hdr">
+    <div class="sec-hdr-left">
+      <div class="sec-title">Afiliados</div>
+      <div class="sec-sub">Planes Esencial · Hogar · Negocio</div>
+    </div>
+  </div>
+  <div class="filters">
+    <select id="f-afi-est" onchange="filtrarAfiliados()">
+      <option value="">Todos los estados</option>
+      <option value="pendiente">Pendientes</option>
+      <option value="activo">Activos</option>
+      <option value="vencido">Vencidos</option>
+      <option value="cancelado">Cancelados</option>
+    </select>
+    <select id="f-afi-tipo" onchange="filtrarAfiliados()">
+      <option value="">Todos los planes</option>
+      <option value="esencial">Esencial</option>
+      <option value="hogar">Hogar</option>
+      <option value="negocio">Negocio</option>
+    </select>
+  </div>
+  <div id="lista-afi"><div class="loading">Cargando...</div></div>
 </div>
 
 <!-- STATS -->
@@ -1158,6 +1189,7 @@ function goSec(id){
   if(id==='so'){ loadSociosMap(); loadSocios(); }
   if(id==='ca') loadCaja();
   if(id==='sp'&&USER_ROLE==='admin') loadSoporte();
+  if(id==='afi'&&USER_ROLE==='admin') loadAfiliados();
   if(id==='st'&&USER_ROLE==='admin') loadStats();
   if(id==='enc'&&USER_ROLE==='admin') loadEncargados();
   if(id==='log'&&USER_ROLE==='admin') loadActivityLog();
@@ -1269,7 +1301,7 @@ function buildCardOp(s){
         <div class="op-meta-row">
           <span class="chip ${cls}">${txt}</span>
           <span class="op-code">${esc(dbc(s.id))}</span>
-          ${zonaFlag}${horaFlag}${recurFlag}${recurFlag}
+          ${zonaFlag}${horaFlag}${recurFlag}
         </div>
         <div class="op-detail">${esc(s.cliente)} · ${esc(s.servicio||'—')} · ${fmt(s.fecha_ts)}</div>
       </div>
@@ -1294,6 +1326,7 @@ function buildCardOp(s){
         ${s.direccion?`<div class="info-item info-full"><span class="info-lbl">Dirección</span><span class="info-val">${esc(s.direccion)}</span></div>`:''}
         ${socioNom?`<div class="info-item"><span class="info-lbl">Técnico asignado</span><span class="info-val">${esc(socioNom)}</span></div>`:''}
         ${s.nota_admin?`<div class="info-item info-full"><span class="info-lbl">Nota admin</span><span class="info-val" style="background:var(--y-bg);border-radius:6px;padding:5px 8px">${esc(s.nota_admin)}</span></div>`:''}
+        ${s.nota_socio?`<div class="info-item info-full"><span class="info-lbl" style="display:flex;align-items:center;gap:5px">💬 Mensaje del técnico <span style="background:var(--blue);color:#fff;font-size:9px;font-weight:900;padding:2px 6px;border-radius:10px;letter-spacing:.5px">NUEVO</span></span><span class="info-val" style="background:var(--blue-bg);border:1.5px solid var(--blue-border);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--ink);line-height:1.55">${esc(s.nota_socio)}</span></div>`:''}
       </div>
       ${cierreFlag}${rechazoFlag}
       ${asignarHTML}
@@ -1978,6 +2011,136 @@ async function loadStats(){
     </div>`;
 }
 
+// ══ AFILIADOS ══
+const PLAN_LABEL={esencial:'Esencial',hogar:'Hogar',negocio:'Negocio'};
+const PLAN_PRECIO={esencial:'$15/mes',hogar:'$30/mes',negocio:'$60/mes'};
+const PLAN_COLOR={esencial:'var(--blue)',hogar:'var(--yd)',negocio:'var(--ok)'};
+
+async function loadAfiliados(){
+  const el=document.getElementById('lista-afi'); if(!el) return;
+  el.innerHTML='<div class="loading">Cargando...</div>';
+  const {data,error}=await sb.from('afiliados').select('*').order('created_at',{ascending:false});
+  if(error){el.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`;return;}
+  if(!data?.length){el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin solicitudes de afiliación aún</span></div>';return;}
+  window._afiadosData=data;
+  // Badge sidebar
+  const pendientes=data.filter(a=>a.estado==='pendiente').length;
+  const badge=document.getElementById('sb-badge-afi');
+  if(badge){badge.textContent=pendientes;badge.style.display=pendientes>0?'flex':'none';}
+  filtrarAfiliados();
+}
+
+function filtrarAfiliados(){
+  const data=window._afiadosData; if(!data) return;
+  const est=document.getElementById('f-afi-est')?.value||'';
+  const tipo=document.getElementById('f-afi-tipo')?.value||'';
+  const filtered=data.filter(a=>{
+    if(est&&a.estado!==est) return false;
+    if(tipo&&a.tipo!==tipo) return false;
+    return true;
+  });
+  const el=document.getElementById('lista-afi');
+  if(!filtered.length){el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin resultados para ese filtro</span></div>';return;}
+  el.innerHTML=filtered.map(a=>{
+    const estCls={pendiente:'cp',activo:'cc',vencido:'cr',cancelado:'cr'}[a.estado]||'cp';
+    const color=PLAN_COLOR[a.tipo]||'var(--g1)';
+    const telL=(a.telefono||'').replace(/\s/g,'');
+    return `<div class="socio-card" id="afi-${a.id}" style="margin-bottom:8px">
+      <div class="socio-hdr" onclick="toggleAfiCard(this)">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+            <span style="font-family:var(--fd);font-size:13px;font-weight:900;color:${color};text-transform:uppercase;letter-spacing:1px">${esc(PLAN_LABEL[a.tipo]||a.tipo)}</span>
+            <span style="font-size:11px;color:var(--g2);font-weight:600">${esc(PLAN_PRECIO[a.tipo]||'')}</span>
+          </div>
+          <div class="socio-name">${esc(a.nombre)}</div>
+          <div class="socio-meta">${esc(a.municipio||'')}${a.fecha_vence?` · Vence: ${fmtD(a.fecha_vence)}`:''}
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="chip ${estCls}">${a.estado}</span>
+          <svg class="card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="socio-body">
+        <div class="info-grid" style="margin-bottom:12px">
+          <div class="info-item"><span class="info-lbl">Teléfono</span><a href="tel:${esc(telL)}" class="call-link">${esc(a.telefono||'—')}</a></div>
+          <div class="info-item"><span class="info-lbl">Servicios este mes</span><span class="info-val">${a.servicios_mes||0}</span></div>
+          ${a.direccion?`<div class="info-item info-full"><span class="info-lbl">Dirección</span><span class="info-val">${esc(a.direccion)}</span></div>`:''}
+          ${a.descripcion?`<div class="info-item info-full"><span class="info-lbl">Descripción</span><span class="info-val">${esc(a.descripcion)}</span></div>`:''}
+          <div class="info-item"><span class="info-lbl">Solicitud</span><span class="info-val">${fmtD(a.created_at)}</span></div>
+          ${a.fecha_inicio?`<div class="info-item"><span class="info-lbl">Inicio</span><span class="info-val">${fmtD(a.fecha_inicio)}</span></div>`:''}
+        </div>
+        <div class="actions-row">
+          ${a.estado==='pendiente'?`<button class="btn btn-y btn-sm" onclick="activarAfiliado(${a.id})">Activar plan</button>`:''}
+          ${a.estado==='activo'?`<button class="btn btn-g btn-sm" onclick="sumarServicio(${a.id})">+1 servicio usado</button>`:''}
+          ${a.estado==='activo'?`<button class="btn btn-g btn-sm" onclick="renovarAfiliado(${a.id})">Renovar</button>`:''}
+          ${['pendiente','activo'].includes(a.estado)?`<button class="btn btn-r btn-sm" onclick="cancelarAfiliado(${a.id})">Cancelar</button>`:''}
+          ${a.telefono?`<button class="btn btn-wa btn-sm" onclick="waAfiliado(${a.id})">WA</button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleAfiCard(el){el.closest('.socio-card')?.classList.toggle('open')}
+
+async function activarAfiliado(id){
+  const hoy=new Date();
+  const vence=new Date(hoy); vence.setMonth(vence.getMonth()+1);
+  const {error}=await sb.from('afiliados').update({
+    estado:'activo',
+    fecha_inicio:hoy.toISOString().split('T')[0],
+    fecha_vence:vence.toISOString().split('T')[0],
+    servicios_mes:0
+  }).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast('Plan activado ✓');
+  // WA al afiliado
+  const {data:a}=await sb.from('afiliados').select('nombre,telefono,tipo').eq('id',id).single();
+  if(a?.telefono){
+    const msg=`Hola ${a.nombre} 👋\n\nTu *${PLAN_LABEL[a.tipo]||a.tipo}* con dbarrio está *activo* ✅\n\nYa puedes solicitar servicios con todos los beneficios de tu plan.\n\nSi necesitas algo, escríbenos aquí.\n\n— dbarrio`;
+    wa(a.telefono,msg);
+  }
+  loadAfiliados();
+}
+
+async function sumarServicio(id){
+  const {data:a}=await sb.from('afiliados').select('servicios_mes,nombre').eq('id',id).single();
+  const nuevo=(parseInt(a?.servicios_mes||0)+1);
+  const {error}=await sb.from('afiliados').update({servicios_mes:nuevo}).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast(`Servicio registrado — ${nuevo} este mes ✓`);
+  loadAfiliados();
+}
+
+async function renovarAfiliado(id){
+  const {data:a}=await sb.from('afiliados').select('fecha_vence').eq('id',id).single();
+  const base=a?.fecha_vence?new Date(a.fecha_vence):new Date();
+  const nueva=new Date(base); nueva.setMonth(nueva.getMonth()+1);
+  const {error}=await sb.from('afiliados').update({
+    fecha_vence:nueva.toISOString().split('T')[0],
+    servicios_mes:0,
+    estado:'activo'
+  }).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast('Plan renovado ✓');
+  loadAfiliados();
+}
+
+async function cancelarAfiliado(id){
+  if(!confirm('¿Cancelar este plan?')) return;
+  const {error}=await sb.from('afiliados').update({estado:'cancelado'}).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast('Plan cancelado');
+  loadAfiliados();
+}
+
+async function waAfiliado(id){
+  const {data:a}=await sb.from('afiliados').select('nombre,telefono,tipo').eq('id',id).single();
+  if(!a?.telefono){toast('Sin teléfono');return;}
+  wa(a.telefono,`Hola ${a.nombre} 👋\n\nTe escribimos de dbarrio sobre tu *${PLAN_LABEL[a.tipo]||a.tipo}*.\n\n`);
+}
+
 // ══ AJUSTES ══
 function loadAjsUI(){ ['wa','com','t1','t4','t2','t3'].forEach(k=>{ const el=document.getElementById('aj-'+k); if(el) el.value=CFG[k]; }); }
 function saveWA(){ CFG.wa=document.getElementById('aj-wa').value.trim(); toast('Número guardado ✓') }
@@ -1995,7 +2158,7 @@ function applyRoleUI(){
     // Ocultar KPI de caja
     const cajaKpi=document.querySelector('.kpi-item.money'); if(cajaKpi) cajaKpi.style.display='none';
   } else {
-    ['nav-enc','nav-log','nav-st'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='flex'; });
+    ['nav-enc','nav-log','nav-st','nav-afi'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='flex'; });
   }
 }
 
