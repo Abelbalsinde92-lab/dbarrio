@@ -661,6 +661,11 @@ button{font-family:var(--f);cursor:pointer}
     Operación
     <span class="sb-badge" id="sb-badge-op" style="display:none">0</span>
   </div>
+  <div class="sb-item" id="nav-ag" onclick="goSec('ag')">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Agenda del día
+    <span class="sb-badge" id="sb-badge-ag" style="display:none;background:var(--warn)">0</span>
+  </div>
   <div class="sb-item" id="nav-hi" onclick="goSec('hi')">
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
     Historial
@@ -711,6 +716,59 @@ button{font-family:var(--f);cursor:pointer}
 
 <!-- MAIN -->
 <main class="main">
+
+<!-- AGENDA DEL DÍA -->
+<div class="section" id="sec-ag">
+  <div class="sec-hdr">
+    <div class="sec-hdr-left">
+      <div class="sec-title">Agenda del día</div>
+      <div class="sec-sub" id="ag-fecha">Cargando...</div>
+    </div>
+    <button class="btn btn-g btn-sm" onclick="loadAgenda()">↺ Actualizar</button>
+  </div>
+
+  <!-- Bloque 1: Órdenes de hoy -->
+  <div class="panel open" id="panel-ag-ordenes">
+    <div class="panel-hdr" onclick="togglePanel('panel-ag-ordenes')">
+      <div class="panel-hdr-left">
+        <span class="panel-title">🔧 Órdenes asignadas hoy</span>
+        <span class="panel-sub" id="ag-ord-count">—</span>
+      </div>
+      <svg class="panel-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="panel-body" id="ag-ordenes">
+      <div class="loading">Cargando...</div>
+    </div>
+  </div>
+
+  <!-- Bloque 2: Afiliados con servicios sin usar -->
+  <div class="panel open" id="panel-ag-afiliados">
+    <div class="panel-hdr" onclick="togglePanel('panel-ag-afiliados')">
+      <div class="panel-hdr-left">
+        <span class="panel-title">🏠 Afiliados sin usar servicios</span>
+        <span class="panel-sub" id="ag-afi-count">—</span>
+      </div>
+      <svg class="panel-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="panel-body" id="ag-afiliados">
+      <div class="loading">Cargando...</div>
+    </div>
+  </div>
+
+  <!-- Bloque 3: Planes por vencer -->
+  <div class="panel open" id="panel-ag-vencen">
+    <div class="panel-hdr" onclick="togglePanel('panel-ag-vencen')">
+      <div class="panel-hdr-left">
+        <span class="panel-title">⏳ Planes por vencer</span>
+        <span class="panel-sub" id="ag-venc-count">—</span>
+      </div>
+      <svg class="panel-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="panel-body" id="ag-vencen">
+      <div class="loading">Cargando...</div>
+    </div>
+  </div>
+</div>
 
 <!-- OPERACION -->
 <div class="section active" id="sec-op">
@@ -1120,6 +1178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadEncargadosMap();
     await loadKPIs();
     await loadOp();
+    loadAgenda();
   } catch(e) {
     console.error(e);
     try { await sb.auth.signOut(); } catch(_) {}
@@ -1201,7 +1260,7 @@ function goSec(id){
   const nav=document.getElementById('nav-'+id);
   if(nav) nav.classList.add('active');
   closeSidebar();
-  if(id==='hi') loadHi();
+  if(id==='ag') loadAgenda();
   if(id==='so'){ loadSociosMap(); loadSocios(); }
   if(id==='ca') loadCaja();
   if(id==='sp') loadSoporte();
@@ -1212,6 +1271,113 @@ function goSec(id){
 }
 function toggleSidebar(){ document.getElementById('sidebar')?.classList.toggle('open'); document.getElementById('sb-overlay')?.classList.toggle('open'); }
 function closeSidebar(){ document.getElementById('sidebar')?.classList.remove('open'); document.getElementById('sb-overlay')?.classList.remove('open'); }
+
+// ══ AGENDA DEL DÍA ══
+async function loadAgenda(){
+  await loadSociosMap();
+  const hoy=new Date();
+  const hoyStr=hoy.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
+  const el=document.getElementById('ag-fecha');
+  if(el) el.textContent=hoyStr.charAt(0).toUpperCase()+hoyStr.slice(1);
+
+  // ── BLOQUE 1: Órdenes asignadas hoy ──
+  const elOrd=document.getElementById('ag-ordenes');
+  const inicio=new Date(hoy); inicio.setHours(0,0,0,0);
+  const fin=new Date(hoy); fin.setHours(23,59,59,999);
+  let qOrd=sb.from('solicitudes').select('*').eq('estado','asignada').gte('fecha_ts',inicio.toISOString()).lte('fecha_ts',fin.toISOString());
+  if(USER_ROLE==='encargado'&&USER_ZONA) qOrd=qOrd.eq('zona',USER_ZONA);
+  const {data:ords}=await qOrd;
+  const ordList=ords||[];
+  document.getElementById('ag-ord-count').textContent=ordList.length?`${ordList.length} orden${ordList.length>1?'es':''}  hoy`:'Sin órdenes asignadas hoy';
+  if(!ordList.length){
+    elOrd.innerHTML='<div class="empty"><span class="empty-ico">✓</span><span class="empty-txt">No hay órdenes asignadas para hoy</span></div>';
+  } else {
+    elOrd.innerHTML=ordList.map(s=>{
+      const soc=s.socio_asignado?sociosMap[s.socio_asignado]:null;
+      const socNom=soc?.nombre||'Sin técnico';
+      const socTel=soc?.telefono||null;
+      const msgRec=`Hola ${socNom} 👋\n\nRecordatorio de tu orden de hoy:\n\n*${dbc(s.id)}* — ${s.servicio||'Servicio'}\n📍 ${s.municipio||'—'}\n👤 ${s.cliente||'—'}\n📞 ${s.telefono||'—'}\n${s.hora_preferida?`🕐 ${s.hora_preferida}`:''}\n${s.direccion?`🏠 ${s.direccion}`:''}\n\n— dbarrio`;
+      return `<div class="soporte-card" style="margin-bottom:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink)">${esc(dbc(s.id))} — ${esc(s.servicio||'—')}</div>
+            <div style="font-size:12px;color:var(--g2);margin-top:2px">📍 ${esc(s.municipio||'—')} · 👤 ${esc(s.cliente||'—')}</div>
+            <div style="font-size:12px;color:var(--g1);margin-top:2px;font-weight:600">🔧 ${esc(socNom)}${s.hora_preferida?` · 🕐 ${esc(s.hora_preferida)}`:''}</div>
+          </div>
+          ${socTel?`<button class="btn btn-wa btn-sm" onclick="wa('${esc(socTel)}',${JSON.stringify(msgRec)})">WA recordatorio</button>`:'<span style="font-size:11px;color:var(--g3)">Sin tel</span>'}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── BLOQUE 2: Afiliados con servicios sin usar (más de 15 días del mes) ──
+  const elAfi=document.getElementById('ag-afiliados');
+  let qAfi=sb.from('afiliados').select('*').eq('estado','activo');
+  const {data:afis}=await qAfi;
+  const diaDelMes=hoy.getDate();
+  const sinUsar=(afis||[]).filter(a=>{
+    const max=PLAN_MAX[a.tipo]||2;
+    const usado=a.servicios_mes||0;
+    return usado<max && diaDelMes>15;
+  });
+  document.getElementById('ag-afi-count').textContent=sinUsar.length?`${sinUsar.length} afiliado${sinUsar.length>1?'s':''} con saldo disponible`:'Todos al día';
+  if(!sinUsar.length){
+    elAfi.innerHTML='<div class="empty"><span class="empty-ico">✓</span><span class="empty-txt">Todos los afiliados han usado sus servicios este mes</span></div>';
+  } else {
+    elAfi.innerHTML=sinUsar.map(a=>{
+      const max=PLAN_MAX[a.tipo]||2;
+      const resto=max-(a.servicios_mes||0);
+      const plan=PLAN_LABEL[a.tipo]||a.tipo;
+      const msgAfi=`Hola ${a.nombre} 👋\n\nRecuerda que tu *${plan} dbarrio* incluye *${resto} servicio${resto>1?'s':''} más* este mes.\n\nSi necesitas algún trabajo en casa, escríbenos y te lo coordinamos.\n\n— dbarrio`;
+      return `<div class="soporte-card" style="margin-bottom:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink)">${esc(a.nombre)}</div>
+            <div style="font-size:12px;color:var(--g2);margin-top:2px">${esc(plan)} · ${esc(a.municipio||'—')}</div>
+            <div style="font-size:12px;font-weight:700;color:var(--warn);margin-top:2px">Quedan ${resto} servicio${resto>1?'s':''} sin usar este mes</div>
+          </div>
+          ${a.telefono?`<button class="btn btn-wa btn-sm" onclick="wa('${esc(a.telefono)}',${JSON.stringify(msgAfi)})">WA recordatorio</button>`:'<span style="font-size:11px;color:var(--g3)">Sin tel</span>'}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── BLOQUE 3: Planes por vencer en 7 días ──
+  const elVenc=document.getElementById('ag-vencen');
+  const en7=new Date(hoy); en7.setDate(en7.getDate()+7);
+  const vencen=(afis||[]).filter(a=>{
+    if(!a.fecha_vence||a.estado!=='activo') return false;
+    const v=new Date(a.fecha_vence);
+    return v>=hoy && v<=en7;
+  });
+  document.getElementById('ag-venc-count').textContent=vencen.length?`${vencen.length} plan${vencen.length>1?'es':''} vencen pronto`:'Sin vencimientos próximos';
+  if(!vencen.length){
+    elVenc.innerHTML='<div class="empty"><span class="empty-ico">✓</span><span class="empty-txt">No hay planes que venzan en los próximos 7 días</span></div>';
+  } else {
+    elVenc.innerHTML=vencen.map(a=>{
+      const v=new Date(a.fecha_vence);
+      const diasRest=Math.ceil((v-hoy)/(1000*60*60*24));
+      const plan=PLAN_LABEL[a.tipo]||a.tipo;
+      const precio=PLAN_PRECIO[a.tipo]||'';
+      const msgRen=`Hola ${a.nombre} 👋\n\nTu *${plan} dbarrio* vence en *${diasRest} día${diasRest>1?'s':''}*.\n\nPara renovarlo y seguir disfrutando de tus beneficios coordínanos el pago (${precio} — trimestral en efectivo).\n\n— dbarrio`;
+      return `<div class="soporte-card" style="margin-bottom:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px">
+          <div style="flex:1;min-width:0">
+            <div style="font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink)">${esc(a.nombre)}</div>
+            <div style="font-size:12px;color:var(--g2);margin-top:2px">${esc(plan)} ${esc(precio)} · ${esc(a.municipio||'—')}</div>
+            <div style="font-size:12px;font-weight:700;color:${diasRest<=2?'var(--err)':'var(--warn)'};margin-top:2px">Vence en ${diasRest} día${diasRest>1?'s':''} — ${v.toLocaleDateString('es-ES')}</div>
+          </div>
+          ${a.telefono?`<button class="btn btn-wa btn-sm" onclick="wa('${esc(a.telefono)}',${JSON.stringify(msgRen)})">WA renovación</button>`:'<span style="font-size:11px;color:var(--g3)">Sin tel</span>'}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Badge sidebar
+  const total=ordList.length+sinUsar.length+vencen.length;
+  const badge=document.getElementById('sb-badge-ag');
+  if(badge){badge.textContent=total;badge.style.display=total>0?'inline-flex':'none';}
+}
 
 // ══ KPIs ══
 async function loadKPIs(){
