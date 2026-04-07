@@ -556,59 +556,61 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 
 <!-- ══ PLANES DE AFILIACIÓN ══ -->
 <section class="section section-dark" id="sec-planes">
-  <div class="sec-label" style="color:var(--y);opacity:.7">Membresía dbarrio</div>
-  <h2 class="sec-title light">Vincula tu<br><em style="font-style:normal;color:var(--y)">casa o negocio</em></h2>
-  <p class="sec-sub light" style="margin-bottom:24px">Paga una cuota fija y ten técnicos disponibles cuando los necesites. Sin sorpresas, con garantía.</p>
+  <div class="sec-label" style="color:var(--y);opacity:.7">dbarrio para empresas</div>
+  <h2 class="sec-title light">Mantenimiento fijo<br><em style="font-style:normal;color:var(--y)">para tu negocio</em></h2>
+  <p class="sec-sub light" style="margin-bottom:24px">Paladares, hostales, oficinas y negocios. Paga una cuota mensual fija y ten un técnico de confianza siempre disponible — sin buscar, sin sorpresas.</p>
 
   <div class="planes-grid">
 
     <div class="plan-card">
-      <div class="plan-badge">Esencial</div>
-      <div class="plan-precio">$15<span class="plan-mes">/mes</span></div>
-      <div class="plan-desc">Para quien quiere tranquilidad básica en casa.</div>
+      <div class="plan-badge" style="color:rgba(37,99,235,.8)">Mipyme</div>
+      <div class="plan-precio">$40<span class="plan-mes">/mes</span></div>
+      <div class="plan-desc">Para negocios pequeños con equipos básicos.</div>
       <div class="plan-features">
-        <div class="plan-feat"><span class="feat-check">✓</span>1 visita de diagnóstico al mes</div>
-        <div class="plan-feat"><span class="feat-check">✓</span>20% descuento en servicios</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Visita de diagnóstico mensual</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Técnico fijo asignado a tu negocio</div>
         <div class="plan-feat"><span class="feat-check">✓</span>Atención prioritaria en 24h</div>
-        <div class="plan-feat"><span class="feat-check">✓</span>Garantía extendida en trabajos</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Garantía extendida 90 días</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Cada trabajo se cobra aparte</div>
       </div>
-      <button class="btn btn-outline btn-full" onclick="openAfiliacion('esencial')">Solicitar plan</button>
+      <button class="btn btn-outline btn-full" onclick="openAfiliacion('basico')">Solicitar plan</button>
     </div>
 
     <div class="plan-card plan-card-featured">
-      <div class="plan-tag">Más popular</div>
-      <div class="plan-badge plan-badge-y">Hogar</div>
-      <div class="plan-precio">$30<span class="plan-mes">/mes</span></div>
-      <div class="plan-desc">2 servicios incluidos + descuentos para el resto.</div>
+      <div class="plan-tag">Más solicitado</div>
+      <div class="plan-badge plan-badge-y">Empresa</div>
+      <div class="plan-precio">$60<span class="plan-mes">/mes</span></div>
+      <div class="plan-desc">Para paladares, hostales y negocios con mayor volumen de equipos.</div>
       <div class="plan-features">
-        <div class="plan-feat"><span class="feat-check feat-y">✓</span>2 servicios básicos incluidos</div>
-        <div class="plan-feat"><span class="feat-check feat-y">✓</span>25% descuento en servicios extra</div>
-        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Técnico de referencia fijo</div>
-        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Respuesta en 12h</div>
-        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Garantía extendida</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>2 visitas de diagnóstico al mes</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Técnico fijo dedicado</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Respuesta prioritaria en 12h</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Garantía extendida 90 días</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Reporte mensual de equipos</div>
+        <div class="plan-feat"><span class="feat-check feat-y">✓</span>Cada trabajo se cobra aparte</div>
       </div>
-      <button class="btn btn-y btn-full" onclick="openAfiliacion('hogar')">Solicitar plan</button>
+      <button class="btn btn-y btn-full" onclick="openAfiliacion('estandar')">Solicitar plan</button>
     </div>
 
     <div class="plan-card">
-      <div class="plan-badge">Negocio</div>
-      <div class="plan-precio">$60<span class="plan-mes">/mes</span></div>
-      <div class="plan-desc">Para paladares, hostales y empresas con mantenimiento constante.</div>
+      <div class="plan-badge" style="color:rgba(22,163,74,.8)">Corporativo</div>
+      <div class="plan-precio">$90<span class="plan-mes">/mes</span></div>
+      <div class="plan-desc">Para instalaciones grandes con equipos críticos — hoteles, restaurantes, centros.</div>
       <div class="plan-features">
-        <div class="plan-feat"><span class="feat-check">✓</span>4 servicios incluidos</div>
-        <div class="plan-feat"><span class="feat-check">✓</span>30% descuento en servicios extra</div>
-        <div class="plan-feat"><span class="feat-check">✓</span>Técnico asignado fijo</div>
-        <div class="plan-feat"><span class="feat-check">✓</span>Respuesta prioritaria en 6h</div>
-        <div class="plan-feat"><span class="feat-check">✓</span>Garantía extendida + cobertura total</div>
-        <div class="plan-feat"><span class="feat-check">✓</span>Reporte mensual de mantenimiento</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Visitas ilimitadas de diagnóstico</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Técnico dedicado exclusivo</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Respuesta en 6h — máxima prioridad</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Garantía extendida 90 días</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Reporte mensual detallado</div>
+        <div class="plan-feat"><span class="feat-check">✓</span>Cada trabajo se cobra aparte</div>
       </div>
-      <button class="btn btn-outline btn-full" onclick="openAfiliacion('negocio')">Solicitar plan</button>
+      <button class="btn btn-outline btn-full" onclick="openAfiliacion('premium')">Solicitar plan</button>
     </div>
 
   </div>
 
   <p style="font-size:11px;color:rgba(255,255,255,.3);text-align:center;margin-top:16px;line-height:1.6">
-    Pago trimestral en efectivo · Servicios incluidos hasta $15 de mano de obra · Extra con descuento del plan
+    Pago trimestral en efectivo · Sin contratos · La cuota cubre disponibilidad y técnico fijo · Cada servicio se cobra a precio normal
   </p>
 </section>
 
@@ -889,8 +891,8 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       <div style="font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink)" id="afi-plan-nombre">—</div>
       <div style="font-size:12px;color:var(--g1);margin-top:2px" id="afi-plan-desc">—</div>
     </div>
-    <div class="fg"><label>Nombre completo o empresa</label><input id="afi-nom" type="text" placeholder="Tu nombre o nombre del negocio"/><div class="fe" id="eafi-nom">Requerido.</div></div>
-    <div class="fg"><label>WhatsApp</label>
+    <div class="fg"><label>Nombre del negocio o empresa</label><input id="afi-nom" type="text" placeholder="Ej: Paladar La Guarida, Hostal Vista Mar..."/><div class="fe" id="eafi-nom">Requerido.</div></div>
+    <div class="fg"><label>WhatsApp del responsable</label>
       <div class="phone-row">
         <select id="afi-code"><option value="+53" selected>🇨🇺 +53</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
         <input id="afi-tel" type="tel" inputmode="numeric" placeholder="Número WhatsApp"/>
@@ -907,15 +909,15 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       </select>
       <div class="fe" id="eafi-mun">Selecciona tu municipio.</div>
     </div>
-    <div class="fg"><label>Dirección (opcional)</label><input id="afi-dir" type="text" placeholder="Calle, número, referencias..."/></div>
-    <div class="fg"><label>Cuéntanos brevemente (opcional)</label><textarea id="afi-desc" placeholder="Tipo de negocio, cuántas habitaciones, equipos que tienes..."></textarea></div>
+    <div class="fg"><label>Dirección del negocio (opcional)</label><input id="afi-dir" type="text" placeholder="Calle, número, referencias..."/></div>
+    <div class="fg"><label>Cuéntanos sobre tu negocio (opcional)</label><textarea id="afi-desc" placeholder="Tipo de negocio, equipos que tienen (aires, neveras, instalación eléctrica), cuántos..."></textarea></div>
     <div class="ok-box" id="ok-afi">
       ✅ ¡Solicitud recibida!<br/>
-      <span style="font-size:13px;font-weight:400">Te contactaremos por WhatsApp en menos de 24 horas para coordinar los detalles.</span>
+      <span style="font-size:13px;font-weight:400">Te contactaremos por WhatsApp en menos de 24 horas para presentarte el técnico y coordinar los detalles.</span>
     </div>
     <div class="err-box" id="err-afi"></div>
     <button class="btn btn-y btn-full" id="btn-afi" onclick="envAfiliacion()">Enviar solicitud</button>
-    <p class="hint">Sin compromiso. Te explicamos todo por WhatsApp antes de confirmar.</p>
+    <p class="hint">Sin compromiso. Te presentamos el técnico y explicamos todo por WhatsApp antes de confirmar el plan.</p>
   </div>
 </div></div>
 
@@ -1204,9 +1206,9 @@ document.getElementById('trk-input')?.addEventListener('keydown',e=>{if(e.key===
 
 // ── AFILIACIÓN ──
 const PLANES={
-  esencial:{nombre:'Plan Esencial',precio:'$15/mes',desc:'1 diagnóstico + 20% descuento + atención 24h'},
-  hogar:   {nombre:'Plan Hogar',   precio:'$30/mes',desc:'2 servicios incluidos + 25% descuento + técnico fijo'},
-  negocio: {nombre:'Plan Negocio', precio:'$60/mes',desc:'4 servicios incluidos + técnico asignado + respuesta 6h'},
+  basico:  {nombre:'Plan Mipyme',   precio:'$40/mes', desc:'Visita mensual + técnico fijo + prioridad 24h'},
+  estandar:{nombre:'Plan Empresa',  precio:'$60/mes', desc:'2 visitas/mes + técnico dedicado + respuesta 12h + reporte mensual'},
+  premium: {nombre:'Plan Corporativo', precio:'$90/mes', desc:'Visitas ilimitadas + técnico exclusivo + respuesta 6h + reporte detallado'},
 };
 let afiTipo='';
 
