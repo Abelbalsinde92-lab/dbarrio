@@ -587,12 +587,44 @@ button{font-family:var(--f);cursor:pointer}
   transform:translateX(-50%) translateY(16px);
   background:var(--ink);color:#fff;
   border:1px solid rgba(255,255,255,.1);border-radius:12px;
-  padding:10px 20px;font-size:13px;font-weight:600;
-  white-space:nowrap;z-index:999;opacity:0;
+  padding:11px 18px 11px 14px;font-size:13px;font-weight:600;
+  white-space:nowrap;z-index:9999;opacity:0;
   transition:opacity .22s,transform .22s;pointer-events:none;
-  box-shadow:var(--sh-lg);
+  box-shadow:var(--sh-lg);display:flex;align-items:center;gap:9px;
+  max-width:calc(100vw - 40px);
 }
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.toast.t-ok{background:var(--ok);border-color:rgba(255,255,255,.2)}
+.toast.t-warn{background:var(--warn);border-color:rgba(255,255,255,.2)}
+.toast.t-err{background:var(--err);border-color:rgba(255,255,255,.2)}
+.toast.t-info{background:var(--blue);border-color:rgba(255,255,255,.2)}
+.toast-ico{font-size:16px;flex-shrink:0}
+.toast-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.toast-x{opacity:.6;cursor:pointer;padding:0 0 0 4px;font-size:16px;line-height:1}
+.toast-x:hover{opacity:1}
+
+/* ── NOTIF BADGE en topbar ── */
+.notif-btn{position:relative;width:34px;height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.65);flex-shrink:0;transition:all .15s}
+.notif-btn:hover{background:rgba(255,255,255,.08);color:#fff}
+.notif-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--err);border:1.5px solid var(--ink);display:none}
+.notif-dot.v{display:block}
+.notif-drawer{position:fixed;top:calc(var(--th) + env(safe-area-inset-top,0) + 8px);right:12px;width:320px;max-height:420px;overflow-y:auto;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-lg);z-index:500;display:none;flex-direction:column}
+.notif-drawer.open{display:flex}
+.notif-drawer-hdr{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.notif-drawer-title{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink)}
+.notif-clear{font-size:11px;font-weight:700;color:var(--g2);cursor:pointer;padding:3px 6px;border-radius:6px;border:none;background:transparent}
+.notif-clear:hover{color:var(--err);background:var(--err-bg)}
+.notif-list{display:flex;flex-direction:column;padding:6px 0}
+.notif-item{padding:10px 14px;border-bottom:1px solid var(--line2);cursor:pointer;transition:background .12s}
+.notif-item:hover{background:var(--card2)}
+.notif-item:last-child{border-bottom:none}
+.notif-item-top{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.notif-item-ico{font-size:14px;flex-shrink:0}
+.notif-item-msg{font-size:13px;font-weight:600;color:var(--ink);flex:1;line-height:1.3}
+.notif-item-time{font-size:10px;color:var(--g3);flex-shrink:0}
+.notif-item-sub{font-size:11px;color:var(--g2);line-height:1.4}
+.notif-empty{padding:24px;text-align:center;font-size:13px;color:var(--g2)}
+
 
 /* ── RESPONSIVE SIDEBAR ── */
 @media(max-width:640px){
@@ -649,8 +681,24 @@ button{font-family:var(--f);cursor:pointer}
       </div>
     </div>
     <button class="btn-exit" onclick="exitAdmin()">Salir</button>
+    <!-- Campana de notificaciones -->
+    <button class="notif-btn" id="notif-btn" onclick="toggleNotifDrawer()" title="Notificaciones">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="notif-dot" id="notif-dot"></span>
+    </button>
   </div>
 </header>
+
+<!-- DRAWER NOTIFICACIONES -->
+<div class="notif-drawer" id="notif-drawer">
+  <div class="notif-drawer-hdr">
+    <span class="notif-drawer-title">Notificaciones</span>
+    <button class="notif-clear" onclick="clearNotifs()">Limpiar todo</button>
+  </div>
+  <div class="notif-list" id="notif-list">
+    <div class="notif-empty">Sin notificaciones</div>
+  </div>
+</div>
 
 <div class="body">
 <!-- SIDEBAR -->
@@ -1198,27 +1246,71 @@ function setupRealtime(){
   const solF = (USER_ROLE==='encargado'&&USER_ZONA)
     ? {event:'*',schema:'public',table:'solicitudes',filter:`zona=eq.${USER_ZONA}`}
     : {event:'*',schema:'public',table:'solicitudes'};
-  sb.channel('rt-sol').on('postgres_changes',solF,()=>{
+
+  sb.channel('rt-sol').on('postgres_changes',solF,(payload)=>{
+    const ev=payload.eventType;
+    const rec=payload.new||{};
+    const old=payload.old||{};
     if(secActive('op')) loadOp();
     if(secActive('hi')) loadHi();
-    if(secActive('so')){ loadSociosMap(); loadSocios(); }
-    if(secActive('ca')&&USER_ROLE==='admin') loadCaja();
+    if(secActive('ag')) loadAgenda();
     if(secActive('sp')&&USER_ROLE==='admin') loadSoporte();
     loadKPIs();
+    // Notificación descriptiva
+    if(ev==='INSERT'){
+      pushNotif('🆕',`Nueva solicitud — ${rec.servicio||'Servicio'}`,`${rec.cliente||'Cliente'} · ${rec.municipio||'—'}`,'info',()=>goSec('op'));
+    } else if(ev==='UPDATE'){
+      if(rec.estado==='completada'&&old.estado!=='completada'){
+        pushNotif('✅',`Orden completada — ${dbc(rec.id)}`,`${rec.cliente||'—'} · ${rec.servicio||'—'}`,'ok',()=>goSec('hi'));
+      } else if(rec.sub_estado==='cierre_reportado'&&old.sub_estado!=='cierre_reportado'){
+        pushNotif('📋',`Cierre reportado — ${dbc(rec.id)}`,`${rec.cliente||'—'} · Monto: ${fmtM(rec.monto_socio)}`,'warn',()=>goSec('op'));
+      } else if(rec.sub_estado==='rechazada_por_socio'&&old.sub_estado!=='rechazada_por_socio'){
+        pushNotif('❌',`Técnico no puede atender — ${dbc(rec.id)}`,`${rec.cliente||'—'} · ${rec.municipio||'—'}`,'err',()=>goSec('op'));
+      } else if(rec.estado==='asignada'&&old.estado==='pendiente'){
+        pushNotif('🔧',`Orden asignada — ${dbc(rec.id)}`,`${rec.servicio||'—'} · ${rec.municipio||'—'}`,'info',()=>goSec('op'));
+      }
+    }
   }).subscribe();
-  if(USER_ROLE==='admin'){
-    sb.channel('rt-gar').on('postgres_changes',{event:'*',schema:'public',table:'garantia_reclamos'},()=>{
+
+  if(USER_ROLE==='admin'||USER_ROLE==='encargado'){
+    sb.channel('rt-gar').on('postgres_changes',{event:'*',schema:'public',table:'garantia_reclamos'},(payload)=>{
       if(secActive('sp')) loadSoporte();
       if(secActive('hi')) loadHi();
-    }).subscribe();
-    sb.channel('rt-movs').on('postgres_changes',{event:'*',schema:'public',table:'movimientos'},()=>{
-      if(secActive('ca')) loadCaja(); loadKPIs();
+      if(payload.eventType==='INSERT'){
+        const rec=payload.new||{};
+        pushNotif('🛡','Nuevo reclamo de garantía',`Código: ${rec.codigo_servicio||'—'} · Tel: ${rec.telefono||'—'}`,'warn',()=>goSec('sp'));
+      }
     }).subscribe();
   }
-  sb.channel('rt-socios').on('postgres_changes',{event:'*',schema:'public',table:'socios'},()=>{
+
+  if(USER_ROLE==='admin'){
+    sb.channel('rt-movs').on('postgres_changes',{event:'*',schema:'public',table:'movimientos'},(payload)=>{
+      if(secActive('ca')) loadCaja();
+      loadKPIs();
+      if(payload.eventType==='INSERT'){
+        const rec=payload.new||{};
+        if(rec.tipo==='pago') pushNotif('💰',`Pago registrado — ${fmtM(rec.monto)}`,rec.nota||'','ok',()=>goSec('ca'));
+      }
+    }).subscribe();
+  }
+
+  sb.channel('rt-socios').on('postgres_changes',{event:'*',schema:'public',table:'socios'},(payload)=>{
     loadSociosMap();
     if(secActive('so')) loadSocios();
     if(secActive('ca')&&USER_ROLE==='admin') loadCaja();
+    if(payload.eventType==='INSERT'){
+      const rec=payload.new||{};
+      pushNotif('👷',`Nuevo técnico registrado`,`${rec.nombre||'—'} · ${rec.zona||'—'}`,'info',()=>goSec('so'));
+    }
+  }).subscribe();
+
+  sb.channel('rt-afiliados').on('postgres_changes',{event:'*',schema:'public',table:'afiliados'},(payload)=>{
+    if(secActive('afi')) loadAfiliados();
+    if(secActive('ag')) loadAgenda();
+    if(payload.eventType==='INSERT'){
+      const rec=payload.new||{};
+      pushNotif('🏠',`Nueva solicitud de membresía`,`${rec.nombre||'—'} · ${PLAN_LABEL[rec.tipo]||rec.tipo}`,'info',()=>goSec('afi'));
+    }
   }).subscribe();
 }
 
@@ -1235,10 +1327,83 @@ function fmtD(ts){ if(!ts)return'—'; return new Date(ts).toLocaleDateString('e
 function fmtM(n){ return n!=null?'$'+parseFloat(n).toFixed(2):'—' }
 function stars(v,n=5){ return Array.from({length:n},(_,i)=>`<span class="star-r${i<(v||0)?' on':''}">\u2605</span>`).join('') }
 function setT(id,v){ const e=document.getElementById(id); if(e) e.textContent=v }
-function toast(msg,dur=2800){
-  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),dur);
+// ══ SISTEMA DE NOTIFICACIONES ══
+const _notifs=[];
+let _toastTimer=null;
+
+function toast(msg,dur=2800,tipo=''){
+  const t=document.getElementById('toast');
+  if(!t) return;
+  t.className='toast'+(tipo?' t-'+tipo:'');
+  t.innerHTML=`<span class="toast-ico">${{ok:'✓',warn:'⚠',err:'✕',info:'ℹ'}[tipo]||'•'}</span><span class="toast-txt">${msg}</span><span class="toast-x" onclick="document.getElementById('toast').classList.remove('show')">×</span>`;
+  t.classList.add('show');
+  if(_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>t.classList.remove('show'),dur);
 }
+
+function pushNotif(ico,msg,sub,tipo,onClick){
+  const n={ico,msg,sub,tipo,ts:new Date(),onClick};
+  _notifs.unshift(n);
+  if(_notifs.length>30) _notifs.pop();
+  renderNotifList();
+  const dot=document.getElementById('notif-dot');
+  if(dot) dot.classList.add('v');
+  toast(msg,3500,tipo);
+  // Vibración suave en móvil
+  try{if(navigator.vibrate) navigator.vibrate([80]);}catch(_){}
+}
+
+function renderNotifList(){
+  const el=document.getElementById('notif-list');
+  if(!el) return;
+  if(!_notifs.length){el.innerHTML='<div class="notif-empty">Sin notificaciones nuevas</div>';return;}
+  el.innerHTML=_notifs.map((n,i)=>{
+    const mins=Math.floor((new Date()-n.ts)/60000);
+    const timeStr=mins<1?'ahora':mins<60?`${mins}m`:new Date(n.ts).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="notif-item" onclick="handleNotifClick(${i})">
+      <div class="notif-item-top">
+        <span class="notif-item-ico">${n.ico}</span>
+        <span class="notif-item-msg">${n.msg}</span>
+        <span class="notif-item-time">${timeStr}</span>
+      </div>
+      ${n.sub?`<div class="notif-item-sub">${n.sub}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function handleNotifClick(i){
+  const n=_notifs[i];
+  if(n?.onClick) n.onClick();
+  toggleNotifDrawer();
+}
+
+function toggleNotifDrawer(){
+  const d=document.getElementById('notif-drawer');
+  if(!d) return;
+  d.classList.toggle('open');
+  if(d.classList.contains('open')){
+    const dot=document.getElementById('notif-dot');
+    if(dot) dot.classList.remove('v');
+    renderNotifList();
+  }
+}
+
+function clearNotifs(){
+  _notifs.length=0;
+  renderNotifList();
+}
+
+// Cerrar drawer al clicar fuera
+document.addEventListener('click',e=>{
+  const d=document.getElementById('notif-drawer');
+  const b=document.getElementById('notif-btn');
+  if(d&&b&&!d.contains(e.target)&&!b.contains(e.target)) d.classList.remove('open');
+});
+
+function toast_ok(msg){ toast(msg,3000,'ok'); }
+function toast_warn(msg){ toast(msg,4000,'warn'); }
+function toast_err(msg){ toast(msg,5000,'err'); }
+
 function wa(num,msg){ const url='https://wa.me/'+String(num||'').replace(/\D/g,'')+
   '?text='+encodeURIComponent(msg||''); const w=window.open(url,'_blank'); if(!w) window.location.href=url; }
 function openModal(k){ document.getElementById('ov-'+k).classList.add('open') }
