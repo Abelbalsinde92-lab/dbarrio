@@ -1195,7 +1195,7 @@ const CFG = {
 };
 
 // ══ STATE ══
-let USER_ROLE = 'admin', USER_ZONA = null, USER_ENC_ID = null;
+let USER_ROLE = 'admin', USER_ZONA = null, USER_ZONAS = [], USER_ENC_ID = null;
 let sociosMap = {};
 let encargadosMap = {};  // id → {id, nombre, zona}
 let pendingCompId = null, pendingRechId = null;
@@ -1212,8 +1212,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (adm) {
       USER_ROLE = 'admin';
     } else {
-      const { data:enc } = await sb.from('encargados').select('id,zona,nombre').eq('auth_uid',session.user.id).eq('activo',true).maybeSingle();
-      if (enc) { USER_ROLE='encargado'; USER_ZONA=enc.zona; USER_ENC_ID=enc.id; }
+      const { data:enc } = await sb.from('encargados').select('id,zona,zonas,nombre').eq('auth_uid',session.user.id).eq('activo',true).maybeSingle();
+      if (enc) { 
+        USER_ROLE='encargado'; 
+        USER_ZONA=enc.zona; 
+        USER_ZONAS=(enc.zonas&&enc.zonas.length>0)?enc.zonas:[enc.zona];
+        USER_ENC_ID=enc.id; 
+      }
       else { await sb.auth.signOut(); window.location.href='index.html'; return; }
     }
     applyRoleUI();
@@ -1242,7 +1247,7 @@ async function exitAdmin(){
 function setupRealtime(){
   try { sb.removeAllChannels(); } catch(_) {}
   const solF = (USER_ROLE==='encargado'&&USER_ZONA)
-    ? {event:'*',schema:'public',table:'solicitudes',filter:`zona=eq.${USER_ZONA}`}
+    ? {event:'*',schema:'public',table:'solicitudes',filter:`zona=in.(${USER_ZONAS.join(',')})`}
     : {event:'*',schema:'public',table:'solicitudes'};
 
   sb.channel('rt-sol').on('postgres_changes',solF,(payload)=>{
@@ -1448,7 +1453,7 @@ async function loadAgenda(){
   const inicio=new Date(hoy); inicio.setHours(0,0,0,0);
   const fin=new Date(hoy); fin.setHours(23,59,59,999);
   let qOrd=sb.from('solicitudes').select('*').eq('estado','asignada').gte('fecha_ts',inicio.toISOString()).lte('fecha_ts',fin.toISOString());
-  if(USER_ROLE==='encargado'&&USER_ZONA) qOrd=qOrd.eq('zona',USER_ZONA);
+  if(USER_ROLE==='encargado'&&USER_ZONAS.length) qOrd=qOrd.in('zona',USER_ZONAS);
   const {data:ords}=await qOrd;
   const ordList=ords||[];
   document.getElementById('ag-ord-count').textContent=ordList.length?`${ordList.length} orden${ordList.length>1?'es':''}  hoy`:'Sin órdenes asignadas hoy';
@@ -1544,8 +1549,8 @@ async function loadAgenda(){
 
 // ══ KPIs ══
 async function loadKPIs(){
-  if(USER_ROLE==='encargado'&&USER_ZONA){
-    const {data} = await sb.from('solicitudes').select('estado').eq('zona',USER_ZONA);
+  if(USER_ROLE==='encargado'&&USER_ZONAS.length){
+    const {data} = await sb.from('solicitudes').select('estado').in('zona',USER_ZONAS);
     const s=data||[];
     setKpis({pend:s.filter(x=>x.estado==='pendiente').length,asig:s.filter(x=>x.estado==='asignada').length,comp:s.filter(x=>x.estado==='completada').length,caja:0});
     return;
@@ -1592,7 +1597,7 @@ async function loadOp(){
   window._afiadosActivos={};
   (afisActivos||[]).forEach(a=>{ if(a.telefono) window._afiadosActivos[a.telefono]=a; });
   let q=sb.from('solicitudes').select('*').in('estado',['pendiente','asignada']).order('created_at',{ascending:true});
-  if(USER_ROLE==='encargado'&&USER_ZONA) q=q.eq('zona',USER_ZONA);
+  if(USER_ROLE==='encargado'&&USER_ZONAS.length) q=q.in('zona',USER_ZONAS);
   const {data,error}=await q;
   if(error){
     if(error.message?.includes('JWT')||error.code==='PGRST301'){
@@ -1929,7 +1934,7 @@ async function loadHi(){
   const d1 =document.getElementById('f-d1').value;
   const d2 =document.getElementById('f-d2').value;
   let q=sb.from('solicitudes').select('*',{count:'exact'}).eq('estado','completada').not('fecha_fin','is',null).order('fecha_fin',{ascending:false}).range(window._hiPage*20,(window._hiPage*20)+19);
-  if(USER_ROLE==='encargado'&&USER_ZONA) q=q.eq('zona',USER_ZONA);
+  if(USER_ROLE==='encargado'&&USER_ZONAS.length) q=q.in('zona',USER_ZONAS);
   if(cli) q=q.ilike('cliente','%'+cli+'%');
   if(cod){ const n=parseInt(cod.replace(/^db-/i,'')); if(!isNaN(n)) q=q.eq('id',n); }
   if(d1) q=q.gte('fecha_fin',d1);
@@ -1980,7 +1985,7 @@ async function loadSocios(){
   await loadEncargadosMap();
   let q=sb.from('socios').select('*').order('estado_socio').order('nombre');
   // Encargado solo ve los técnicos de su zona
-  if(USER_ROLE==='encargado'&&USER_ZONA) q=q.eq('zona',USER_ZONA);
+  if(USER_ROLE==='encargado'&&USER_ZONAS.length) q=q.in('zona',USER_ZONAS);
   const {data,error}=await q;
   if(error){ el.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`; return }
   if(!data?.length){ el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin técnicos en tu zona</span></div>'; return }
@@ -2220,7 +2225,7 @@ async function loadSoporte(){
   elG.innerHTML='<div class="loading">Cargando...</div>';
   elR.innerHTML='<div class="loading">Cargando...</div>';
   let qGar=sb.from('solicitudes').select('id,telefono,fecha_fin,garantia_dias,garantia_expira,socio_asignado,zona').eq('estado','completada').gt('garantia_dias',0).order('fecha_fin',{ascending:false}).limit(200);
-  if(USER_ROLE==='encargado'&&USER_ZONA) qGar=qGar.eq('zona',USER_ZONA);
+  if(USER_ROLE==='encargado'&&USER_ZONAS.length) qGar=qGar.in('zona',USER_ZONAS);
   const {data:sols,error:e1}=await qGar;
   if(e1) elG.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(e1.message)}</span></div>`;
   else if(!sols?.length) elG.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin garantías registradas</span></div>';
@@ -2486,7 +2491,7 @@ async function loadAfiliados(){
   const el=document.getElementById('lista-afi'); if(!el) return;
   el.innerHTML='<div class="loading">Cargando...</div>';
   let q=sb.from('afiliados').select('*').order('created_at',{ascending:false});
-  if(USER_ROLE==='encargado'&&USER_ZONA) q=q.eq('municipio',USER_ZONA); // filtro por zona aprox
+  if(USER_ROLE==='encargado'&&USER_ZONAS.length) q=q.in('municipio',USER_ZONAS); // filtro por zona aprox
   const {data,error}=await q;
   if(error){el.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`;return;}
   if(!data?.length){el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin solicitudes de afiliación aún</span></div>';return;}
@@ -2677,7 +2682,7 @@ function saveTemplates(){ ['t1','t4','t2','t3'].forEach(k=>{ const el=document.g
 function applyRoleUI(){
   const isEnc=USER_ROLE==='encargado';
   const role=document.getElementById('brandRole');
-  if(isEnc&&role){ role.textContent='ZONA: '+(USER_ZONA||'').toUpperCase(); }
+  if(isEnc&&role){ role.textContent='ZONA: '+(USER_ZONAS.length>1?USER_ZONAS.map(z=>z.toUpperCase()).join('+'):(USER_ZONA||'').toUpperCase()); }
   if(isEnc){
     // Ocultar solo lo financiero y de configuración global
     ['nav-ca','nav-aj','nav-enc','nav-log','nav-st'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='none'; });
@@ -2705,15 +2710,31 @@ async function loadEncargados(){
     const cCls=e.activo?'cc':'cr';
     const cTxt=e.activo?'activo':'inactivo';
     const zonaL=ZONA_LABEL[e.zona]||e.zona||'—';
+    const zonasExtra=(e.zonas_extra||[]).filter(z=>z!==e.zona);
+    const zonasExtraHtml=zonasExtra.length
+      ? zonasExtra.map(z=>`<span class="enc-zone" style="background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue)">📍 ${ZONA_LABEL[z]||z} <button onclick="quitarZonaExtra(${e.id},'${z}')" style="background:none;border:none;cursor:pointer;color:var(--err);font-size:11px;padding:0 2px;font-weight:900">✕</button></span>`).join('')
+      : '';
+    // Zonas disponibles para añadir (que no tenga ya)
+    const todasZonas=['oeste','centro','este','sur'];
+    const zonasDisp=todasZonas.filter(z=>z!==e.zona&&!zonasExtra.includes(z));
+    const optsZonas=zonasDisp.map(z=>`<option value="${z}">${ZONA_LABEL[z]}</option>`).join('');
     return `<div class="enc-card" style="margin-bottom:8px">
       <div class="enc-info">
         <div class="enc-name">${esc(e.nombre)}</div>
         <div class="enc-meta">${e.telefono||'—'}</div>
         <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap">
-          <span class="enc-zone">📍 ${esc(zonaL)}</span>
+          <span class="enc-zone">📍 ${esc(zonaL)} <span style="font-size:9px;opacity:.6">principal</span></span>
+          ${zonasExtraHtml}
           <span class="chip ${cCls}">${cTxt}</span>
           ${e.auth_uid?'<span style="font-size:10px;color:var(--ok);font-weight:700">✓ vinculado</span>':'<span style="font-size:10px;color:var(--g2);font-weight:700">sin vincular</span>'}
         </div>
+        ${zonasDisp.length?`<div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+          <select id="zona-extra-sel-${e.id}" class="form-input" style="flex:1;font-size:12px;padding:6px 8px">
+            <option value="">+ Asignar zona adicional</option>
+            ${optsZonas}
+          </select>
+          <button class="btn btn-g btn-sm" onclick="agregarZonaExtra(${e.id})">Añadir</button>
+        </div>`:'<div style="font-size:11px;color:var(--g2);margin-top:6px">Cubre todas las zonas</div>'}
       </div>
       <div class="enc-actions">
         <button class="btn btn-sm ${e.activo?'btn-r':'btn-g'}" onclick="toggleEnc(${e.id},${!e.activo})">${e.activo?'Desactivar':'Activar'}</button>
@@ -2743,6 +2764,31 @@ async function doCrearEncargado(){
   closeModal('enc'); toast('Encargado creado ✓'); loadEncargados();
 }
 async function toggleEnc(id,activo){ const {error}=await sb.from('encargados').update({activo}).eq('id',id); if(error){ toast('Error: '+error.message); return } toast(activo?'Encargado activado':'Encargado desactivado'); loadEncargados(); }
+
+async function agregarZonaExtra(id){
+  const sel=document.getElementById('zona-extra-sel-'+id);
+  const zona=sel?.value;
+  if(!zona){toast('Selecciona una zona');return;}
+  const {data:enc}=await sb.from('encargados').select('zonas_extra,zona').eq('id',id).single();
+  if(!enc){toast('Error al cargar encargado');return;}
+  const actuales=(enc.zonas_extra||[]);
+  if(actuales.includes(zona)||zona===enc.zona){toast('Ya tiene esa zona asignada');return;}
+  const nuevas=[...actuales,zona];
+  const {error}=await sb.from('encargados').update({zonas_extra:nuevas}).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast(`✓ Zona ${ZONA_LABEL[zona]||zona} añadida`);
+  loadEncargados();
+}
+
+async function quitarZonaExtra(id,zona){
+  const {data:enc}=await sb.from('encargados').select('zonas_extra').eq('id',id).single();
+  if(!enc){toast('Error');return;}
+  const nuevas=(enc.zonas_extra||[]).filter(z=>z!==zona);
+  const {error}=await sb.from('encargados').update({zonas_extra:nuevas}).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast(`Zona ${ZONA_LABEL[zona]||zona} quitada`);
+  loadEncargados();
+}
 
 // ══ ACTIVITY LOG ══
 async function logActividad(accion,solicitudId=null,detalle=null){
