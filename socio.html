@@ -478,6 +478,12 @@ function cardOrden(s){
     <div><label class="form-lbl">Monto cobrado al cliente ($)</label><input class="form-input" id="monto-${s.id}" type="number" min="0" step="0.01" placeholder="${esGarantia?'0.00 si es sin costo':'0.00'}"/></div>
     <div><label class="form-lbl">Garantía que ofreces (días)</label><input class="form-input" id="gar-${s.id}" type="number" min="0" step="1" placeholder="0 = sin garantía"/></div>
     <div><label class="form-lbl">¿Qué hiciste? Describe el trabajo</label><textarea class="form-textarea" id="nota-${s.id}" placeholder="Ej: Limpié filtros, sellé tubería..."></textarea></div>
+    <div style="background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:9px;padding:12px">
+      <label class="form-lbl" style="color:var(--ok);margin-bottom:8px;display:block">📷 Foto del trabajo terminado — obligatoria</label>
+      <input type="file" id="foto-despues-${s.id}" accept="image/*" capture="environment" style="display:none" onchange="document.getElementById('foto-despues-lbl-${s.id}').textContent=this.files[0]?'✓ '+this.files[0].name:'Sin foto seleccionada'"/>
+      <button class="btn btn-g btn-full" onclick="document.getElementById('foto-despues-${s.id}').click()">📷 Tomar foto / Seleccionar</button>
+      <div id="foto-despues-lbl-${s.id}" style="font-size:12px;color:var(--g1);margin-top:6px">Sin foto seleccionada</div>
+    </div>
     ${esGarantia?`
     <div style="background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:9px;padding:12px">
       <label class="form-lbl" style="color:var(--warn);margin-bottom:8px;display:block">🛡 Diagnóstico de garantía — obligatorio</label>
@@ -513,7 +519,13 @@ function cardOrden(s){
       <button class="btn btn-ghost" style="margin-top:4px" onclick="document.getElementById('ep-wrap-${s.id}').style.display='none'">Cancelar</button>
     </div>
     <button class="btn btn-y btn-full" onclick="document.getElementById('ep-wrap-${s.id}').style.display='flex';this.style.display='none'">✅ Llegué — marcar en proceso</button>`
-    :`<button class="btn btn-y btn-full" onclick="marcarEnProceso(${s.id})">✅ Llegué — marcar en proceso</button>`}
+    :`<div style="background:var(--blue-bg);border:1.5px solid var(--blue-border);border-radius:9px;padding:12px;margin-bottom:8px">
+      <label class="form-lbl" style="color:var(--blue);margin-bottom:8px;display:block">📷 Foto del estado actual — obligatoria</label>
+      <input type="file" id="foto-antes-${s.id}" accept="image/*" capture="environment" style="display:none" onchange="this.nextElementSibling.textContent=this.files[0]?'✓ '+this.files[0].name:'Sin foto'"/>
+      <button class="btn btn-g btn-full" style="margin-bottom:8px" onclick="document.getElementById('foto-antes-${s.id}').click()">📷 Tomar foto / Seleccionar</button>
+      <div id="foto-antes-lbl-${s.id}" style="font-size:12px;color:var(--g1);margin-bottom:8px">Sin foto seleccionada</div>
+      <button class="btn btn-y btn-full" onclick="marcarEnProceso(${s.id})">✅ Llegué — marcar en proceso</button>
+    </div>`}
   `:'';
 
   const btnConfirmar=(!enP&&!rej&&!rep&&s.sub_estado!=='confirmada')?`<button class="btn btn-g btn-full" onclick="confirmarOrden(${s.id})">👁 Confirmar recepción de orden</button>`:(s.sub_estado==='confirmada'&&!enP&&!rep&&!rej)?`<div style="font-size:12px;color:var(--ok);font-weight:700;padding:6px 0">✓ Orden confirmada</div>`:'';
@@ -593,12 +605,24 @@ async function reportarCierre(id,btn){
     if(!Number.isFinite(gar)||gar<0){toast('Días de garantía inválidos');return;}
     if(!nota){toast('Describe el trabajo que realizaste');return;}
 
+    // Foto después — obligatoria
+    const fileInputD=document.getElementById('foto-despues-'+id);
+    const fileD=fileInputD?.files?.[0];
+    if(!fileD){toast('📷 Debes subir una foto del trabajo terminado');setBtn(false);sendingCierre[id]=false;fileInputD?.click();return;}
+    toast('Subiendo foto del trabajo...');
+    const extD=fileD.name.split('.').pop();
+    const pathD=`despues/${id}_${Date.now()}.${extD}`;
+    const {error:upErrD}=await sb.storage.from('evidencias').upload(pathD,fileD,{contentType:fileD.type,upsert:true});
+    if(upErrD){toast('Error subiendo foto: '+upErrD.message);return;}
+    const {data:urlDataD}=sb.storage.from('evidencias').getPublicUrl(pathD);
+    const fotoDespues=urlDataD?.publicUrl||pathD;
+
     // Campos adicionales para visitas de garantía
     const causaRaiz=(document.getElementById('causa-raiz-'+id)?.value||'').trim();
     const responsabilidad=document.getElementById('responsabilidad-'+id)?.value||null;
     const estadoPrevioFc=(document.getElementById('estado-previo-'+id)?.value||'').trim();
 
-    const upd={monto_socio:monto,garantia_dias:gar,nota_socio:nota,cierre_ts:new Date().toISOString(),sub_estado:'cierre_reportado',solicita_cierre:false};
+    const upd={monto_socio:monto,garantia_dias:gar,nota_socio:nota,cierre_ts:new Date().toISOString(),sub_estado:'cierre_reportado',solicita_cierre:false,foto_despues:fotoDespues};
     const {error}=await sb.from('solicitudes').update(upd).eq('id',id);
     if(error){toast('Error: '+error.message);return;}
 
@@ -681,9 +705,19 @@ async function marcarEnProcesoConEstado(id){
 }
 
 async function marcarEnProceso(id){
-  const {error}=await sb.from('solicitudes').update({sub_estado:'en_proceso'}).eq('id',id);
+  const fileInput=document.getElementById('foto-antes-'+id);
+  const file=fileInput?.files?.[0];
+  if(!file){toast('📷 Debes subir una foto del estado actual antes de continuar');fileInput?.click();return;}
+  toast('Subiendo foto...');
+  const ext=file.name.split('.').pop();
+  const path=`antes/${id}_${Date.now()}.${ext}`;
+  const {error:upErr}=await sb.storage.from('evidencias').upload(path,file,{contentType:file.type,upsert:true});
+  if(upErr){toast('Error subiendo foto: '+upErr.message);return;}
+  const {data:urlData}=sb.storage.from('evidencias').getPublicUrl(path);
+  const fotoUrl=urlData?.publicUrl||path;
+  const {error}=await sb.from('solicitudes').update({sub_estado:'en_proceso',foto_antes:fotoUrl}).eq('id',id);
   if(error){toast('Error: '+error.message);return;}
-  toast('✅ Marcada como en proceso');
+  toast('✅ Foto guardada — orden en proceso');
   loadOrdenes();
 }
 
