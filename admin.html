@@ -1679,6 +1679,23 @@ function buildCardOp(s){
         ${socioNom?`<div class="info-item"><span class="info-lbl">Técnico asignado</span><span class="info-val">${esc(socioNom)}</span></div>`:''}
         ${s.nota_admin?`<div class="info-item info-full"><span class="info-lbl">Nota admin</span><span class="info-val" style="background:var(--y-bg);border-radius:6px;padding:5px 8px">${esc(s.nota_admin)}</span></div>`:''}
         ${s.nota_socio?`<div class="info-item info-full"><span class="info-lbl" style="display:flex;align-items:center;gap:5px">💬 Mensaje del técnico <span style="background:var(--blue);color:#fff;font-size:9px;font-weight:900;padding:2px 6px;border-radius:10px;letter-spacing:.5px">NUEVO</span></span><span class="info-val" style="background:var(--blue-bg);border:1.5px solid var(--blue-border);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--ink);line-height:1.55">${esc(s.nota_socio)}</span></div>`:''}
+        ${(s.foto_antes||s.foto_despues)?`<div class="info-item info-full">
+          <span class="info-lbl">📷 Evidencia fotográfica</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+            ${s.foto_antes?`<div style="flex:1;min-width:120px">
+              <div style="font-size:10px;font-weight:700;color:var(--g1);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Antes</div>
+              <a href="${esc(s.foto_antes)}" target="_blank" rel="noopener">
+                <img src="${esc(s.foto_antes)}" style="width:100%;border-radius:8px;border:1.5px solid var(--line);object-fit:cover;aspect-ratio:4/3" loading="lazy" onerror="this.style.display='none'"/>
+              </a>
+            </div>`:''}
+            ${s.foto_despues?`<div style="flex:1;min-width:120px">
+              <div style="font-size:10px;font-weight:700;color:var(--ok);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Después</div>
+              <a href="${esc(s.foto_despues)}" target="_blank" rel="noopener">
+                <img src="${esc(s.foto_despues)}" style="width:100%;border-radius:8px;border:1.5px solid var(--ok-border);object-fit:cover;aspect-ratio:4/3" loading="lazy" onerror="this.style.display='none'"/>
+              </a>
+            </div>`:''}
+          </div>
+        </div>`:''}
       </div>
       ${cierreFlag}${rechazoFlag}
       ${asignarHTML}
