@@ -1,4 +1,4 @@
-const CACHE = 'dbarrio-v3';
+const CACHE = 'dbarrio-v4';
 const ASSETS = [
   '/',
   '/index.html',
@@ -6,17 +6,15 @@ const ASSETS = [
   '/socio.html',
   '/offline.html',
   '/manifest.json',
-  '/assets/icons/db-icon-192.png',
-  '/assets/icons/db-icon-512.png'
+  '/db-192.png',
+  '/db-512.png'
 ];
-
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(c => c.addAll(ASSETS))
   );
   self.skipWaiting();
 });
-
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -25,10 +23,8 @@ self.addEventListener('activate', e => {
   );
   self.clients.claim();
 });
-
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-
   e.respondWith(
     fetch(e.request)
       .then(res => {
@@ -45,15 +41,14 @@ self.addEventListener('fetch', e => {
       )
   );
 });
-
 self.addEventListener('push', e => {
   let data = {};
   try { data = e.data?.json() || {}; } catch (_) {}
   e.waitUntil(
     self.registration.showNotification(data.title || 'dbarrio', {
       body:    data.body  || 'Nueva actividad',
-      icon:    data.icon  || '/assets/icons/db-icon-192.png',
-      badge:            '/assets/icons/db-icon-192.png',
+      icon:    data.icon  || '/db-192.png',
+      badge:            '/db-192.png',
       vibrate: [200, 100, 200],
       tag:     data.tag   || 'dbarrio-notif',
       renotify: true,
@@ -61,7 +56,6 @@ self.addEventListener('push', e => {
     })
   );
 });
-
 self.addEventListener('notificationclick', e => {
   e.notification.close();
   const url = e.notification.data?.url || '/admin.html';
