@@ -25,113 +25,36 @@
   --sh:0 4px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04);
   --ease:cubic-bezier(.4,0,.2,1);
 }
-*{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--ink)}
-body{
-  min-height:100svh;
-  background:var(--bg);color:var(--ink);
-  font-family:var(--f);font-size:14px;line-height:1.5;
-  -webkit-font-smoothing:antialiased;
-}
-
-/* TOPBAR */
-.topbar{
-  position:fixed;top:0;left:0;right:0;z-index:50;
-  height:calc(var(--th)+env(safe-area-inset-top,0));
-  padding:env(safe-area-inset-top,0) 16px 0;
-  background:var(--ink);
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-/* TOAST */
-.toast{
-  position:fixed;
-  bottom:calc(var(--nav)+env(safe-area-inset-bottom,0)+20px);
-  left:50%;transform:translateX(-50%) translateY(16px);
-  background:var(--ink);color:#fff;
-  border:1px solid rgba(255,255,255,.1);border-radius:12px;
-  padding:10px 20px;font-size:13px;font-weight:600;
-  white-space:nowrap;z-index:9999;opacity:0;
-  transition:opacity .22s,transform .22s;pointer-events:none;
-  box-shadow:0 8px 32px rgba(0,0,0,.3);
-}
+body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:calc(var(--th)+env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06);}
+.toast{position:fixed;bottom:calc(var(--nav)+env(safe-area-inset-bottom,0)+20px);left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;white-space:nowrap;z-index:9999;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.3);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.brand-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,193,22,.15);border:1px solid var(--y-border);display:grid;place-items:center;flex-shrink:0}
-.brand-letters{font-family:var(--fd);font-size:19px;font-weight:900;letter-spacing:-1px;line-height:1}
-.brand-letters .d{color:#E0E0F0}.brand-letters .b{color:var(--y)}
-.brand-name{font-family:var(--fd);font-size:24px;font-weight:900;letter-spacing:-.5px;line-height:1}
-.brand-name .d{color:#E0E0F0}.brand-name .rest{color:var(--y)}
 .brand-role{margin-left:2px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35)}
-@media(max-width:420px){.brand-name{display:none}.brand-role{display:none}}
+@media(max-width:420px){.brand-role{display:none}}
 .tb-right{display:flex;align-items:center;gap:10px;margin-left:auto;min-width:0}
 .tb-nombre{font-size:12px;font-weight:600;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
-.tb-deuda{
-  height:28px;padding:0 10px;border-radius:7px;
-  background:var(--err-bg);border:1px solid var(--err-border);
-  color:var(--err);font-size:11px;font-weight:700;
-  display:none;align-items:center;gap:4px;flex-shrink:0;
-}
-.tb-deuda.v{display:flex}
 .tb-exit{height:34px;padding:0 12px;border-radius:9px;flex-shrink:0;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);font-weight:700;font-size:12px;cursor:pointer;transition:background .15s;-webkit-tap-highlight-color:transparent}
 .tb-exit:hover{background:rgba(255,255,255,.12);color:#fff}
 .tb-exit:active{transform:scale(.97)}
-
-/* LAYOUT */
-.content{
-  display:block;
-  padding-top:calc(var(--th) + env(safe-area-inset-top,0));
-  padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 48px);
-  min-height:100svh;
-  width:100%;
-}
-.tab{
-  display:none;
-  padding:16px 16px 0;
-  max-width:680px;
-  margin:0 auto;
-  width:100%;
-  box-sizing:border-box;
-}
+.content{display:block;padding-top:calc(var(--th) + env(safe-area-inset-top,0));padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 48px);min-height:100svh;width:100%;}
+.tab{display:none;padding:16px 16px 0;max-width:680px;margin:0 auto;width:100%;box-sizing:border-box;}
 .tab.active{display:block}
-
-/* En PC: el nav no tapa tanto, podemos reducir padding */
-@media(min-width:641px){
-  .content{padding-bottom:calc(var(--nav) + 40px)}
-}
-
-/* BOTTOM NAV */
-.bottom-nav{
-  position:fixed;left:0;right:0;bottom:0;z-index:999;
-  background:var(--ink);border-top:1px solid rgba(255,255,255,.07);
-  height:calc(var(--nav)+env(safe-area-inset-bottom,0));
-  padding-bottom:env(safe-area-inset-bottom,0);
-  display:flex;align-items:stretch;
-}
-.bnav-inner{
-  display:flex;align-items:stretch;
-  width:100%;max-width:680px;margin:0 auto;
-}
-.bnav-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:5px;padding:10px 0 12px;border:none;background:none;
-  color:rgba(255,255,255,.35);cursor:pointer;
-  transition:color .15s;-webkit-tap-highlight-color:transparent;position:relative;
-}
+@media(min-width:641px){.content{padding-bottom:calc(var(--nav) + 40px)}}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:999;background:var(--ink);border-top:1px solid rgba(255,255,255,.07);height:calc(var(--nav)+env(safe-area-inset-bottom,0));padding-bottom:env(safe-area-inset-bottom,0);display:flex;align-items:stretch;}
+.bnav-inner{display:flex;align-items:stretch;width:100%;max-width:680px;margin:0 auto;}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:10px 0 12px;border:none;background:none;color:rgba(255,255,255,.35);cursor:pointer;transition:color .15s;-webkit-tap-highlight-color:transparent;position:relative;}
 .bnav-btn.active{color:var(--y)}
 .bnav-btn.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--y);border-radius:0 0 3px 3px}
 .bnav-ic{width:22px;height:22px;display:block;stroke:currentColor}
 .bnav-lbl{font-size:10px;font-weight:700;letter-spacing:.3px;line-height:1;text-transform:uppercase}
 .bnav-badge{position:absolute;top:8px;right:calc(50% - 20px);background:var(--err);color:#fff;font-size:9px;font-weight:900;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--ink)}
-
-/* SECTION HEADER */
 .sec-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:12px}
 .sec-title{font-family:var(--fd);font-size:26px;font-weight:900;color:var(--ink);letter-spacing:-.3px;line-height:1}
 .sec-sub{font-size:12px;color:var(--g1);margin-top:3px}
 .btn-refresh{height:34px;padding:0 12px;border-radius:8px;background:var(--card2);border:1.5px solid var(--line);color:var(--g1);font-size:12px;font-weight:700;display:flex;align-items:center;gap:5px;cursor:pointer;transition:background .15s}
 .btn-refresh:hover{background:var(--line);color:var(--ink)}
-
-/* ORDEN CARDS */
 .orden-card{background:var(--card);border-radius:var(--r);border:1.5px solid var(--line);box-shadow:var(--sh-sm);margin-bottom:12px;overflow:hidden;transition:box-shadow .2s}
 .orden-card:hover{box-shadow:var(--sh)}
 .orden-card.st-nueva{border-left:4px solid var(--warn)}
@@ -150,8 +73,6 @@ body{
 .orden-card.open .orden-chevron{transform:rotate(180deg);color:var(--y)}
 .orden-body{display:none;padding:14px 16px;flex-direction:column;gap:12px}
 .orden-card.open .orden-body{display:flex}
-
-/* CHIPS */
 .chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap;border:1px solid transparent}
 .chip::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
 .ch-nueva{background:var(--warn-bg);color:var(--warn);border-color:var(--warn-border)}
@@ -159,8 +80,6 @@ body{
 .ch-cierre{background:var(--ok-bg);color:var(--ok);border-color:var(--ok-border)}
 .ch-rechazo{background:var(--err-bg);color:var(--err);border-color:var(--err-border)}
 .hora-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);border-radius:20px;font-size:10px;font-weight:700}
-
-/* INFO GRID */
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .info-full{grid-column:1/-1}
 .info-item{display:flex;flex-direction:column;gap:3px}
@@ -169,13 +88,9 @@ body{
 .info-val.hl{color:var(--blue);font-weight:700}
 .tel-link{font-size:18px;font-weight:900;color:var(--ink);text-decoration:none;transition:color .15s}
 .tel-link:hover{color:var(--y)}
-
-/* FLAGS */
 .flag{border-radius:10px;padding:11px 14px;font-size:12px;font-weight:700;line-height:1.55}
 .flag-ok{background:var(--ok-bg);border:1.5px solid var(--ok-border);color:#15803D}
 .flag-err{background:var(--err-bg);border:1.5px solid var(--err-border);color:var(--err)}
-
-/* WA QUICK */
 .wa-section-lbl{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g2);margin-bottom:8px}
 .wa-quick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .wa-btn{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:11px 12px;border-radius:10px;background:rgba(22,163,74,.08);border:1.5px solid rgba(22,163,74,.18);cursor:pointer;font-family:var(--f);transition:background .15s;-webkit-tap-highlight-color:transparent;text-align:left}
@@ -184,8 +99,6 @@ body{
 .wa-btn-icon{font-size:18px;line-height:1}
 .wa-btn-label{font-size:12px;font-weight:700;color:#15803D;line-height:1.2}
 .wa-btn-sub{font-size:10px;color:rgba(22,163,74,.6);font-weight:500}
-
-/* FORMS */
 .cierre-form{background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px}
 .nopuedo-form{background:var(--err-bg);border:1.5px solid var(--err-border);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px}
 .form-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g1);display:block;margin-bottom:4px}
@@ -195,8 +108,6 @@ body{
 .form-textarea{width:100%;padding:10px 12px;background:var(--card);border:1.5px solid var(--line);border-radius:9px;font-family:var(--f);font-size:14px;color:var(--ink);outline:none;resize:vertical;min-height:72px;transition:border-color .15s}
 .form-textarea:focus{border-color:var(--y);box-shadow:0 0 0 3px var(--y-bg)}
 .nopuedo-form .form-textarea{border-color:var(--err-border)}
-
-/* BUTTONS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 16px;border-radius:10px;font-family:var(--f);font-size:13px;font-weight:700;border:1.5px solid transparent;cursor:pointer;transition:transform .12s,background .15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
@@ -212,8 +123,7 @@ body{
 .btn-ghost{background:var(--card2);color:var(--g2);border-color:var(--line)}
 .btn-row{display:flex;flex-wrap:wrap;gap:8px}
 .btn-row .btn{flex:1}
-
-/* HISTORIAL */
+.btn-sm{padding:7px 12px;font-size:12px;border-radius:8px}
 .hist-summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .hist-kpi{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px;text-align:center;box-shadow:var(--sh-sm);position:relative;overflow:hidden}
 .hist-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
@@ -234,8 +144,6 @@ body{
 .stars{display:flex;gap:2px;justify-content:flex-end;margin-top:4px}
 .star{font-size:12px;color:var(--g3)}
 .star.on{color:var(--y)}
-
-/* CUENTA */
 .cuenta-hero{background:var(--ink);border-radius:var(--r);padding:20px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:var(--sh)}
 .cuenta-hero::before{content:'db';position:absolute;right:-12px;bottom:-20px;font-family:var(--fd);font-size:100px;font-weight:900;color:rgba(245,193,22,.06);line-height:1;pointer-events:none}
 .cuenta-nombre{font-family:var(--fd);font-size:28px;font-weight:900;color:#fff;line-height:1;letter-spacing:-.3px;margin-bottom:4px;position:relative;z-index:1}
@@ -248,8 +156,6 @@ body{
 .cst-n.y{color:var(--y)}
 .cst-l{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.35)}
 .deuda-banner{background:var(--err-bg);border:1.5px solid var(--err-border);border-radius:var(--r);padding:13px 16px;margin-bottom:14px;font-size:13px;font-weight:600;color:var(--err);line-height:1.55}
-
-/* PANELS */
 .panel{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm);margin-bottom:10px}
 .panel-hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;border-bottom:1.5px solid transparent;transition:border-color .15s,background .15s;-webkit-tap-highlight-color:transparent}
 .panel.open .panel-hdr{border-color:var(--line)}
@@ -260,14 +166,10 @@ body{
 .panel.open .panel-chev{transform:rotate(180deg);color:var(--y)}
 .panel-body{display:none;padding:16px;flex-direction:column;gap:12px}
 .panel.open .panel-body{display:flex}
-
-/* FG */
 .fg{display:flex;flex-direction:column;gap:6px}
 .fg label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g1)}
-.fg input,.fg select{padding:11px 13px;background:var(--card2);border:1.5px solid var(--line);border-radius:9px;font-family:var(--f);font-size:14px;color:var(--ink);outline:none;-webkit-appearance:none;width:100%;transition:border-color .15s,box-shadow .15s}
-.fg input:focus,.fg select:focus{border-color:var(--y);box-shadow:0 0 0 3px var(--y-bg);background:var(--card)}
-
-/* STATES */
+.fg input,.fg select,.fg textarea{padding:11px 13px;background:var(--card2);border:1.5px solid var(--line);border-radius:9px;font-family:var(--f);font-size:14px;color:var(--ink);outline:none;-webkit-appearance:none;width:100%;transition:border-color .15s,box-shadow .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--y);box-shadow:0 0 0 3px var(--y-bg);background:var(--card)}
 .vacio{text-align:center;padding:48px 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
 .vacio-ico{font-size:44px}
 .vacio-txt{font-size:13px;color:var(--g2);line-height:1.6}
@@ -277,25 +179,85 @@ body{
 @keyframes spin{to{transform:rotate(360deg)}}
 .sp{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px;opacity:.6}
 .btn-y .sp{border-color:#000;border-top-color:transparent}
+
+/* ── PRECIOS / CATÁLOGO ── */
+.srv-card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;box-shadow:var(--sh-sm);transition:box-shadow .15s}
+.srv-card:hover{box-shadow:var(--sh)}
+.srv-card.inactive{opacity:.6}
+.srv-nombre{font-family:var(--fd);font-size:18px;font-weight:900;color:var(--ink);line-height:1;margin-bottom:4px}
+.srv-desc{font-size:12px;color:var(--g1);margin-bottom:8px;line-height:1.5}
+.srv-precio{display:flex;align-items:baseline;gap:6px}
+.srv-precio-val{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--ok);line-height:1}
+.srv-precio-max{font-size:14px;color:var(--g2)}
+.srv-precio-uni{font-size:11px;color:var(--g2);font-weight:600}
+.srv-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.srv-badge-activo{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border)}
+.srv-badge-inactivo{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--g3);color:#fff}
+/* Modal / overlay de edición */
+.ov{display:none;position:fixed;inset:0;background:rgba(15,15,26,.75);backdrop-filter:blur(6px);z-index:200;align-items:flex-end;justify-content:center}
+.ov.open{display:flex}
+.sheet{background:var(--card);border-radius:22px 22px 0 0;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px);box-shadow:0 -8px 48px rgba(0,0,0,.2);animation:sheetUp .25s cubic-bezier(.22,.72,0,1) both}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.pill{width:36px;height:4px;border-radius:3px;background:var(--line);margin:12px auto 0}
+.sheet-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 12px;border-bottom:1.5px solid var(--line)}
+.sheet-title{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink);letter-spacing:-.2px}
+.sheet-x{width:30px;height:30px;border-radius:50%;background:var(--card2);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--g1);cursor:pointer;transition:background .15s}
+.sheet-x:hover{background:var(--line)}
+.mbody{padding:16px 20px 24px;display:flex;flex-direction:column;gap:14px}
+.err-box{display:none;padding:10px 13px;background:var(--err-bg);border:1.5px solid var(--err-border);border-radius:10px;font-size:13px;color:var(--err);font-weight:500}
+.err-box.v{display:block}
+/* Precio hints */
+.precio-hint{background:var(--y-bg);border:1px solid var(--y-border);border-radius:9px;padding:10px 13px;font-size:12px;color:var(--yd);line-height:1.55}
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
 
+<!-- MODAL EDITAR / CREAR SERVICIO -->
+<div class="ov" id="ov-srv" onclick="if(event.target===this)closeSrvModal()">
+<div class="sheet"><div class="pill"></div>
+  <div class="sheet-hdr">
+    <span class="sheet-title" id="srv-modal-title">Nuevo servicio</span>
+    <button class="sheet-x" onclick="closeSrvModal()">&times;</button>
+  </div>
+  <div class="mbody">
+    <div class="precio-hint">💡 Pon precios reales. El cliente los ve antes de reservar — te ayuda a cerrar más trabajos.</div>
+    <div class="fg"><label>Nombre del servicio *</label><input id="srv-nombre" type="text" placeholder="Ej: Cambio de enchufe, Revisión de tablero..."/></div>
+    <div class="fg"><label>Descripción breve</label><textarea id="srv-desc" rows="2" placeholder="¿Qué incluye? ¿Cuánto tarda normalmente?"></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="fg"><label>Precio mínimo ($) *</label><input id="srv-precio-min" type="number" min="0" step="0.01" placeholder="0.00"/></div>
+      <div class="fg"><label>Precio máximo ($)</label><input id="srv-precio-max" type="number" min="0" step="0.01" placeholder="Opcional"/></div>
+    </div>
+    <div class="fg"><label>Unidad de cobro</label>
+      <select id="srv-unidad">
+        <option value="servicio">Por servicio</option>
+        <option value="hora">Por hora</option>
+        <option value="visita">Por visita</option>
+        <option value="metro">Por metro</option>
+        <option value="pieza">Por pieza</option>
+      </select>
+    </div>
+    <input type="hidden" id="srv-edit-id" value=""/>
+    <div class="err-box" id="err-srv"></div>
+    <button class="btn btn-y btn-full" id="btn-srv-save" onclick="guardarServicio()">Guardar servicio</button>
+    <button class="btn btn-r btn-full" id="btn-srv-delete" style="display:none" onclick="eliminarServicio()">Eliminar servicio</button>
+  </div>
+</div></div>
+
 <header class="topbar">
-    <div class="brand">
+  <div class="brand">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 353.63 293.2" height="42" aria-label="DeBarrio" style="flex-shrink:0">
-  <path fill="#f6f6f6" d="M0,239.3h20.54c16.39,0,26.22,9.47,26.22,26.37s-9.83,26.44-26.22,26.44H0v-52.81ZM34.02,265.67c0-10.78-5.68-16.32-13.91-16.32h-7.57v32.7h7.57c8.23,0,13.91-5.61,13.91-16.39Z"/>
-  <path fill="#f6f6f6" d="M50.99,265.67c0-16.1,9.69-27.46,26.15-27.46s24.62,10.85,24.25,30.23h-37.15c.73,9.32,4.73,14.93,12.67,14.93,6.05,0,9.98-3.13,11.22-8.96h12.67c-2.11,11.8-11,18.79-23.67,18.79-16.46,0-26.15-11.44-26.15-27.53ZM88.35,259.26c-.95-7.36-4.88-11.22-11.22-11.22-6.77,0-11,4.22-12.46,11.22h23.67Z"/>
-  <path fill="#f6f6f6" d="M107.58,239.3h22.94c11.51,0,17.99,4.95,17.99,13.26,0,5.61-2.91,9.47-8.89,11.29v.22c7.07,1.31,10.93,5.75,10.93,12.6,0,9.32-7.36,15.44-18.79,15.44h-24.18v-52.81ZM136.28,254.67c0-3.79-2.26-5.68-6.99-5.68h-9.18v11.65h9.18c4.66,0,6.99-2.04,6.99-5.97ZM138.1,275.79c0-4.15-2.55-6.56-7.57-6.56h-10.42v13.18h10.49c4.66,0,7.5-2.26,7.5-6.63Z"/>
-  <path fill="#f6f6f6" d="M154.57,277.76c0-9.47,5.61-15.3,21.2-16.53l12.38-.95v-2.77c0-6.05-3.06-9.32-9.03-9.32-5.46,0-8.81,2.62-9.47,6.92h-12.67c.87-10.56,9.4-16.9,22.73-16.9,14.42,0,20.83,6.7,20.83,21.2v20.18c0,2.4.73,3.21,2.84,3.21.8,0,1.46-.07,2.19-.22h.22v9.83c-1.97.36-3.71.58-5.68.58-6.85,0-10.12-2.4-10.12-7.65v-.73h-.22c-3.64,5.24-9.61,8.59-17.19,8.59-10.2,0-17.99-5.39-17.99-15.44ZM175.4,283.37c7.5,0,12.75-5.03,12.75-12.31v-2.4l-10.85.95c-7.28.66-9.83,2.84-9.83,7.28,0,4.08,2.84,6.48,7.94,6.48Z"/>
-  <path fill="#f6f6f6" d="M211.16,239.3h11.8v8.59h.29c3.21-6.34,8.38-9.03,17.34-9.03h1.53v11.51h-3.13c-10.63,0-15.3,4.59-15.3,15.15v26.59h-12.53v-52.81Z"/>
-  <path fill="#f6f6f6" d="M247.14,239.3h11.8v8.59h.29c3.21-6.63,7.94-9.69,14.35-9.69,1.6,0,3.13.22,4.52.66v12.02h-.29c-1.38-.36-2.7-.58-4.37-.58-8.59,0-13.77,5.39-13.77,15.51v26.29h-12.53v-52.81Z"/>
-  <path fill="#f6f6f6" d="M283.13,238.87h12.53v10.05h-12.53v-10.05ZM283.13,253.14h12.53v38.97h-12.53v-38.97Z"/>
-  <path fill="#f6f6f6" d="M301.7,265.67c0-15.81,9.83-27.46,26-27.46s25.93,11.65,25.93,27.46-9.76,27.53-25.93,27.53-26-11.73-26-27.53ZM340.52,265.67c0-9.91-4.15-17.19-12.82-17.19s-12.89,7.28-12.89,17.19,4.22,17.26,12.89,17.26,12.82-7.36,12.82-17.26Z"/>
-  <path fill="#F3C120" d="M268.5,106.63c-2.18-2.85-4.85-5.38-7.74-7.74l-10.21-10.21h.16l25.97-25.97V25.97L250.71,0H120.29c-.02,1.26-.12,2.51-.28,3.75,44.04,10.39,72.4,42.47,72.4,89.42s-28.18,78.77-71.98,89.26c.12,1.28.17,2.56.14,3.85h129.99l28.59-28.59v-40.43l-10.64-10.64Z"/>
-  <polygon fill="#F3C120" points="100.67 61.54 74.5 61.54 74.5 124.74 100.67 124.74 119.18 106.23 119.18 80.05 100.67 61.54"/>
-</svg>
+      <path fill="#f6f6f6" d="M0,239.3h20.54c16.39,0,26.22,9.47,26.22,26.37s-9.83,26.44-26.22,26.44H0v-52.81ZM34.02,265.67c0-10.78-5.68-16.32-13.91-16.32h-7.57v32.7h7.57c8.23,0,13.91-5.61,13.91-16.39Z"/>
+      <path fill="#f6f6f6" d="M50.99,265.67c0-16.1,9.69-27.46,26.15-27.46s24.62,10.85,24.25,30.23h-37.15c.73,9.32,4.73,14.93,12.67,14.93,6.05,0,9.98-3.13,11.22-8.96h12.67c-2.11,11.8-11,18.79-23.67,18.79-16.46,0-26.15-11.44-26.15-27.53ZM88.35,259.26c-.95-7.36-4.88-11.22-11.22-11.22-6.77,0-11,4.22-12.46,11.22h23.67Z"/>
+      <path fill="#f6f6f6" d="M107.58,239.3h22.94c11.51,0,17.99,4.95,17.99,13.26,0,5.61-2.91,9.47-8.89,11.29v.22c7.07,1.31,10.93,5.75,10.93,12.6,0,9.32-7.36,15.44-18.79,15.44h-24.18v-52.81ZM136.28,254.67c0-3.79-2.26-5.68-6.99-5.68h-9.18v11.65h9.18c4.66,0,6.99-2.04,6.99-5.97ZM138.1,275.79c0-4.15-2.55-6.56-7.57-6.56h-10.42v13.18h10.49c4.66,0,7.5-2.26,7.5-6.63Z"/>
+      <path fill="#f6f6f6" d="M154.57,277.76c0-9.47,5.61-15.3,21.2-16.53l12.38-.95v-2.77c0-6.05-3.06-9.32-9.03-9.32-5.46,0-8.81,2.62-9.47,6.92h-12.67c.87-10.56,9.4-16.9,22.73-16.9,14.42,0,20.83,6.7,20.83,21.2v20.18c0,2.4.73,3.21,2.84,3.21.8,0,1.46-.07,2.19-.22h.22v9.83c-1.97.36-3.71.58-5.68.58-6.85,0-10.12-2.4-10.12-7.65v-.73h-.22c-3.64,5.24-9.61,8.59-17.19,8.59-10.2,0-17.99-5.39-17.99-15.44ZM175.4,283.37c7.5,0,12.75-5.03,12.75-12.31v-2.4l-10.85.95c-7.28.66-9.83,2.84-9.83,7.28,0,4.08,2.84,6.48,7.94,6.48Z"/>
+      <path fill="#f6f6f6" d="M211.16,239.3h11.8v8.59h.29c3.21-6.34,8.38-9.03,17.34-9.03h1.53v11.51h-3.13c-10.63,0-15.3,4.59-15.3,15.15v26.59h-12.53v-52.81Z"/>
+      <path fill="#f6f6f6" d="M247.14,239.3h11.8v8.59h.29c3.21-6.63,7.94-9.69,14.35-9.69,1.6,0,3.13.22,4.52.66v12.02h-.29c-1.38-.36-2.7-.58-4.37-.58-8.59,0-13.77,5.39-13.77,15.51v26.29h-12.53v-52.81Z"/>
+      <path fill="#f6f6f6" d="M283.13,238.87h12.53v10.05h-12.53v-10.05ZM283.13,253.14h12.53v38.97h-12.53v-38.97Z"/>
+      <path fill="#f6f6f6" d="M301.7,265.67c0-15.81,9.83-27.46,26-27.46s25.93,11.65,25.93,27.46-9.76,27.53-25.93,27.53-26-11.73-26-27.53ZM340.52,265.67c0-9.91-4.15-17.19-12.82-17.19s-12.89,7.28-12.89,17.19,4.22,17.26,12.89,17.26,12.82-7.36,12.82-17.26Z"/>
+      <path fill="#F3C120" d="M268.5,106.63c-2.18-2.85-4.85-5.38-7.74-7.74l-10.21-10.21h.16l25.97-25.97V25.97L250.71,0H120.29c-.02,1.26-.12,2.51-.28,3.75,44.04,10.39,72.4,42.47,72.4,89.42s-28.18,78.77-71.98,89.26c.12,1.28.17,2.56.14,3.85h129.99l28.59-28.59v-40.43l-10.64-10.64Z"/>
+      <polygon fill="#F3C120" points="100.67 61.54 74.5 61.54 74.5 124.74 100.67 124.74 119.18 106.23 119.18 80.05 100.67 61.54"/>
+    </svg>
     <span class="brand-role">TÉCNICO</span>
     <a href="guia-socio.html" style="margin-left:4px;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-decoration:none;border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:2px 7px;letter-spacing:.3px;white-space:nowrap;flex-shrink:0">Guía</a>
   </div>
@@ -310,6 +272,7 @@ body{
 
 <div class="content" id="appContent" style="display:none">
 
+  <!-- TAB ÓRDENES -->
   <div class="tab active" id="tab-ordenes">
     <div class="sec-hdr">
       <div><div class="sec-title">Mis órdenes</div><div class="sec-sub">Activas ahora mismo</div></div>
@@ -321,11 +284,33 @@ body{
     <div id="listaOrd"><div class="cargando">Cargando...</div></div>
   </div>
 
+  <!-- TAB HISTORIAL -->
   <div class="tab" id="tab-historial">
     <div class="sec-hdr"><div><div class="sec-title">Mi historial</div><div class="sec-sub">Servicios completados</div></div></div>
     <div id="listaHist"><div class="cargando">Cargando...</div></div>
   </div>
 
+  <!-- TAB PRECIOS (NUEVO) -->
+  <div class="tab" id="tab-precios">
+    <div class="sec-hdr">
+      <div>
+        <div class="sec-title">Mis precios</div>
+        <div class="sec-sub">Los clientes ven esto antes de reservar</div>
+      </div>
+      <button class="btn btn-y btn-sm" onclick="openSrvModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Añadir
+      </button>
+    </div>
+    <!-- Info box -->
+    <div style="background:var(--ink);border-radius:var(--r);padding:14px 16px;margin-bottom:14px">
+      <div style="font-family:var(--fd);font-size:15px;font-weight:900;color:#fff;margin-bottom:6px">¿Cómo funciona?</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5);line-height:1.65">El cliente entra a dbarrio, selecciona el servicio que necesita y ve tu precio antes de reservar. Tú decides cuánto cobras — dbarrio toma el <strong style="color:var(--y)">15%</strong> de lo que cobres. Sin sorpresas.</div>
+    </div>
+    <div id="listaCatalogo"><div class="cargando">Cargando catálogo...</div></div>
+  </div>
+
+  <!-- TAB CUENTA -->
   <div class="tab" id="tab-cuenta">
     <div class="sec-hdr"><div><div class="sec-title">Mi cuenta</div></div></div>
     <div id="cuentaContent"><div class="cargando">Cargando...</div></div>
@@ -346,6 +331,10 @@ body{
       <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       <span class="bnav-lbl">Historial</span>
     </button>
+    <button class="bnav-btn" id="bnav-precios" onclick="goTab('precios',this)">
+      <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span class="bnav-lbl">Precios</span>
+    </button>
     <button class="bnav-btn" id="bnav-cuenta" onclick="goTab('cuenta',this)">
       <svg class="bnav-ic" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       <span class="bnav-lbl">Mi cuenta</span>
@@ -359,6 +348,7 @@ const SURL='https://gkxtdancgkwetdniooky.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
 const WA_ADMIN='34627493593';
 const MUNICIPIO_ZONA={'Playa':'oeste','La Lisa':'oeste','Marianao':'oeste','Plaza de la Revolución':'centro','Centro Habana':'centro','La Habana Vieja':'centro','Diez de Octubre':'centro','Cerro':'centro','Regla':'este','La Habana del Este':'este','Guanabacoa':'este','San Miguel del Padrón':'este','Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur'};
+const UNIDAD_LABEL={servicio:'por servicio',hora:'por hora',visita:'por visita',metro:'por metro',pieza:'por pieza'};
 const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const sendingCierre={};
 let mySocio=null,rtSolic=null,rtMovs=null,rtSocio=null;
@@ -391,7 +381,6 @@ async function init(session){
   document.body.dataset.ok='1';
   mySocio=data;
   document.getElementById('tbNombre').textContent=data.nombre;
-  // Badge de deuda en topbar
   const deudaAmt=parseFloat(data.deuda||0);
   const tbDeuda=document.getElementById('tbDeuda');
   if(tbDeuda){
@@ -430,7 +419,7 @@ async function exitSocio(){
   await sb.auth.signOut();goIdx();
 }
 
-const TABS={ordenes:loadOrdenes,historial:loadHistorial,cuenta:loadCuenta};
+const TABS={ordenes:loadOrdenes,historial:loadHistorial,precios:loadCatalogo,cuenta:loadCuenta};
 function goTab(name,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
@@ -449,6 +438,7 @@ async function actualizarBadge(){
 }
 function ocultarBadge(){const b=document.getElementById('badge-ordenes');if(b)b.style.display='none';}
 
+// ══ ÓRDENES ══
 async function loadOrdenes(){
   const el=document.getElementById('listaOrd');
   if(!mySocio){el.innerHTML='<div class="cargando">Iniciando...</div>';return;}
@@ -469,11 +459,9 @@ function cardOrden(s){
   const estado=rep?'cierre':rej?'rechazo':enP?'proceso':'nueva';
   const chips={nueva:`<span class="chip ch-nueva">${esGarantia?'🛡 Garantía':'Nueva orden'}</span>`,proceso:`<span class="chip ch-proceso">En proceso</span>`,cierre:`<span class="chip ch-cierre">Cierre reportado</span>`,rechazo:`<span class="chip ch-rechazo">No puedo atender</span>`};
   const hora=s.hora_preferida?`<span class="hora-badge">🕐 ${esc(s.hora_preferida)}</span>`:'';
-
   const flagGarantia=esGarantia?`<div class="flag" style="background:rgba(245,193,22,.12);border:1.5px solid var(--y-border);color:var(--yd)">🛡 Visita de garantía — documenta el estado previo al llegar</div>`:'';
   const flagC=rep?`<div class="flag flag-ok">✅ Reporte enviado. El admin lo revisará y cerrará la orden.</div>`:'';
   const flagR=rej?`<div class="flag flag-err">❌ Notificaste que no puedes atender. Pendiente de reasignación.</div>`:'';
-
   const formC=(!rep&&!rej)?`<div class="cierre-form" id="fc-${s.id}" style="display:none">
     <div><label class="form-lbl">Monto cobrado al cliente ($)</label><input class="form-input" id="monto-${s.id}" type="number" min="0" step="0.01" placeholder="${esGarantia?'0.00 si es sin costo':'0.00'}"/></div>
     <div><label class="form-lbl">Garantía que ofreces (días)</label><input class="form-input" id="gar-${s.id}" type="number" min="0" step="1" placeholder="0 = sin garantía"/></div>
@@ -487,8 +475,8 @@ function cardOrden(s){
     ${esGarantia?`
     <div style="background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:9px;padding:12px">
       <label class="form-lbl" style="color:var(--warn);margin-bottom:8px;display:block">🛡 Diagnóstico de garantía — obligatorio</label>
-      <div><label class="form-lbl">Estado previo encontrado al llegar</label><textarea class="form-textarea" id="estado-previo-${s.id}" placeholder="Ej: Había un corte eléctrico, el circuito estaba quemado antes de nuestra intervención..."></textarea></div>
-      <div style="margin-top:8px"><label class="form-lbl">Causa raíz del problema</label><textarea class="form-textarea" id="causa-raiz-${s.id}" placeholder="Ej: Cortocircuito por instalación previa defectuosa, no relacionado con el trabajo realizado..."></textarea></div>
+      <div><label class="form-lbl">Estado previo encontrado al llegar</label><textarea class="form-textarea" id="estado-previo-${s.id}" placeholder="Ej: Había un corte eléctrico..."></textarea></div>
+      <div style="margin-top:8px"><label class="form-lbl">Causa raíz del problema</label><textarea class="form-textarea" id="causa-raiz-${s.id}" placeholder="Ej: Cortocircuito por instalación previa..."></textarea></div>
       <div style="margin-top:8px"><label class="form-lbl">Responsabilidad</label>
         <select class="form-input" id="responsabilidad-${s.id}">
           <option value="">-- Seleccionar --</option>
@@ -500,7 +488,6 @@ function cardOrden(s){
     </div>`:''}
     <button class="btn btn-y btn-full" onclick="reportarCierre(${s.id},this)">Enviar reporte al admin</button>
   </div>`:'';
-
   const formN=!rej?`<div class="nopuedo-form" id="fn-${s.id}" style="display:none">
     <label class="form-lbl" style="color:var(--err)">¿Por qué no puedes atender esta orden?</label>
     <textarea class="form-textarea" id="motivo-${s.id}" style="border-color:var(--err-border)" placeholder="Explica el motivo al admin..."></textarea>
@@ -509,12 +496,10 @@ function cardOrden(s){
       <button class="btn btn-ghost" onclick="toggleNoPuedo(${s.id})">Cancelar</button>
     </div>
   </div>`:'';
-
-  // Al llegar: si es garantía mostrar campo estado previo inline
   const btnProc=(!enP&&!rej&&!rep)?`
     ${esGarantia?`<div id="ep-wrap-${s.id}" style="display:none;background:var(--warn-bg);border:1.5px solid var(--warn-border);border-radius:9px;padding:12px;margin-bottom:8px">
       <label class="form-lbl" style="color:var(--warn);margin-bottom:6px;display:block">⚠️ Documenta el estado antes de trabajar</label>
-      <textarea class="form-textarea" id="ep-${s.id}" placeholder="Describe qué encontraste al llegar — corte eléctrico, equipo ya dañado, etc."></textarea>
+      <textarea class="form-textarea" id="ep-${s.id}" placeholder="Describe qué encontraste al llegar..."></textarea>
       <button class="btn btn-y btn-full" style="margin-top:8px" onclick="marcarEnProcesoConEstado(${s.id})">✅ Llegué — confirmar con nota</button>
       <button class="btn btn-ghost" style="margin-top:4px" onclick="document.getElementById('ep-wrap-${s.id}').style.display='none'">Cancelar</button>
     </div>
@@ -527,11 +512,9 @@ function cardOrden(s){
       <button class="btn btn-y btn-full" onclick="marcarEnProceso(${s.id})">✅ Llegué — marcar en proceso</button>
     </div>`}
   `:'';
-
   const btnConfirmar=(!enP&&!rej&&!rep&&s.sub_estado!=='confirmada')?`<button class="btn btn-g btn-full" onclick="confirmarOrden(${s.id})">👁 Confirmar recepción de orden</button>`:(s.sub_estado==='confirmada'&&!enP&&!rep&&!rej)?`<div style="font-size:12px;color:var(--ok);font-weight:700;padding:6px 0">✓ Orden confirmada</div>`:'';
   const btnCierre=(!rep&&!rej)?`<button class="btn btn-k btn-full" onclick="toggleCierre(${s.id})">📋 Reportar cierre</button>`:'';
   const btnPresupuesto=(!rep&&!rej&&s.telefono)?`<button class="btn btn-g btn-full" onclick="togglePresupuesto(${s.id})">💬 Enviar presupuesto al cliente</button>`:'';
-
   const formPresupuesto=(!rep&&!rej&&s.telefono)?`<div class="cierre-form" id="fp-${s.id}" style="display:none">
     <div><label class="form-lbl">Monto estimado ($)</label><input class="form-input" id="presu-monto-${s.id}" type="number" min="0" step="0.01" placeholder="Ej: 25.00"/></div>
     <div><label class="form-lbl">Describe brevemente el trabajo</label><textarea class="form-textarea" id="presu-nota-${s.id}" placeholder="Ej: Revisión y carga de gas R410A..."></textarea></div>
@@ -547,7 +530,6 @@ function cardOrden(s){
       <button class="wa-btn" onclick="waCliente(${s.id},'presupuesto')"><span class="wa-btn-icon">💬</span><span class="wa-btn-label">Presupuesto</span><span class="wa-btn-sub">Enviar estimado</span></button>
     </div>
   </div>`:'';
-
   return `<div class="orden-card st-${estado}" id="${cid}">
     <div class="orden-hdr" onclick="toggleCard('${cid}')">
       <div class="orden-top">
@@ -604,8 +586,6 @@ async function reportarCierre(id,btn){
     if(!Number.isFinite(monto)||monto<0){toast('Ingresa el monto (puede ser 0 si es sin costo)');return;}
     if(!Number.isFinite(gar)||gar<0){toast('Días de garantía inválidos');return;}
     if(!nota){toast('Describe el trabajo que realizaste');return;}
-
-    // Foto después — obligatoria
     const fileInputD=document.getElementById('foto-despues-'+id);
     const fileD=fileInputD?.files?.[0];
     if(!fileD){toast('📷 Debes subir una foto del trabajo terminado');setBtn(false);sendingCierre[id]=false;fileInputD?.click();return;}
@@ -616,20 +596,14 @@ async function reportarCierre(id,btn){
     if(upErrD){toast('Error subiendo foto: '+upErrD.message);return;}
     const {data:urlDataD}=sb.storage.from('evidencias').getPublicUrl(pathD);
     const fotoDespues=urlDataD?.publicUrl||pathD;
-
-    // Campos adicionales para visitas de garantía
     const causaRaiz=(document.getElementById('causa-raiz-'+id)?.value||'').trim();
     const responsabilidad=document.getElementById('responsabilidad-'+id)?.value||null;
     const estadoPrevioFc=(document.getElementById('estado-previo-'+id)?.value||'').trim();
-
     const upd={monto_socio:monto,garantia_dias:gar,nota_socio:nota,cierre_ts:new Date().toISOString(),sub_estado:'cierre_reportado',solicita_cierre:false,foto_despues:fotoDespues};
     const {error}=await sb.from('solicitudes').update(upd).eq('id',id);
     if(error){toast('Error: '+error.message);return;}
-
-    // Si es visita de garantía, guardar diagnóstico en garantia_reclamos
     if(causaRaiz||responsabilidad||estadoPrevioFc){
-      const {data:rcl}=await sb.from('garantia_reclamos')
-        .select('id').eq('visita_solicitud_id',id).maybeSingle();
+      const {data:rcl}=await sb.from('garantia_reclamos').select('id').eq('visita_solicitud_id',id).maybeSingle();
       if(rcl?.id){
         const rclUpd={};
         if(causaRaiz) rclUpd.causa_raiz=causaRaiz;
@@ -679,7 +653,6 @@ async function enviarPresupuesto(id){
   if(!s?.telefono){toast('Esta orden no tiene teléfono del cliente.');return;}
   const msg=`Hola ${s.cliente||'cliente'}, soy tu técnico de dbarrio.\n\n💬 *Presupuesto estimado* para ${s.servicio||'el servicio'}:\n\n💰 Monto aprox: *$${parseFloat(monto).toFixed(2)}*\n📋 Trabajo: ${nota||'—'}\n\n¿Te parece bien que continúe?`;
   openWA(s.telefono,msg);
-  // Guardar presupuesto en la orden
   await sb.from('solicitudes').update({nota_admin:`Presupuesto técnico: $${monto} — ${nota}`}).eq('id',id);
   toast('Presupuesto enviado por WhatsApp ✓');
   const fp=document.getElementById('fp-'+id);
@@ -689,17 +662,9 @@ async function enviarPresupuesto(id){
 async function marcarEnProcesoConEstado(id){
   const ep=(document.getElementById('ep-'+id)?.value||'').trim();
   if(!ep){toast('Describe el estado previo antes de continuar');return;}
-  // Guardar estado previo en garantia_reclamos vinculado
-  const {data:rcl}=await sb.from('garantia_reclamos')
-    .select('id').eq('visita_solicitud_id',id).maybeSingle();
-  if(rcl?.id){
-    await sb.from('garantia_reclamos').update({estado_previo:ep}).eq('id',rcl.id);
-  }
-  // Guardar en nota_socio de la solicitud también
-  await sb.from('solicitudes').update({
-    sub_estado:'en_proceso',
-    nota_socio:`ESTADO PREVIO: ${ep}`
-  }).eq('id',id);
+  const {data:rcl}=await sb.from('garantia_reclamos').select('id').eq('visita_solicitud_id',id).maybeSingle();
+  if(rcl?.id) await sb.from('garantia_reclamos').update({estado_previo:ep}).eq('id',rcl.id);
+  await sb.from('solicitudes').update({sub_estado:'en_proceso',nota_socio:`ESTADO PREVIO: ${ep}`}).eq('id',id);
   toast('✅ Estado previo documentado — en proceso');
   loadOrdenes();
 }
@@ -727,7 +692,6 @@ function toggleNotaAdmin(id){
   const visible=el.style.display==='none';
   el.style.display=visible?'block':'none';
   if(visible) document.getElementById('nat-'+id)?.focus();
-  // Cerrar otros formularios
   const c=document.getElementById('or'+id);
   if(c&&!c.classList.contains('open')) c.classList.add('open');
 }
@@ -735,19 +699,17 @@ function toggleNotaAdmin(id){
 async function enviarNotaAdmin(id){
   const txt=document.getElementById('nat-'+id)?.value?.trim()||'';
   if(!txt){toast('Escribe algo antes de enviar');return;}
-  // Guardar en Supabase
   const {data:s}=await sb.from('solicitudes').select('cliente,servicio,municipio').eq('id',id).maybeSingle();
   await sb.from('solicitudes').update({nota_socio:txt}).eq('id',id);
-  // Abrir WhatsApp con el mensaje
   const msg=`Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\nConsulta sobre la orden *${dbc(id)}*\n👤 Cliente: ${s?.cliente||'—'}\n🔧 Servicio: ${s?.servicio||'—'}\n📍 Municipio: ${s?.municipio||'—'}\n\n${txt}`;
   toast('✅ Nota guardada — abriendo WhatsApp');
   setTimeout(()=>openWA(WA_ADMIN, msg), 700);
-  // Cerrar formulario
   const el=document.getElementById('naf-'+id);
   if(el) el.style.display='none';
   const inp=document.getElementById('nat-'+id);
   if(inp) inp.value='';
 }
+
 async function waCliente(idOrden,tipo){
   const {data:s}=await sb.from('solicitudes').select('cliente,telefono,servicio,municipio').eq('id',idOrden).maybeSingle();
   if(!s?.telefono){toast('Esta orden no tiene teléfono del cliente.');return;}
@@ -763,6 +725,7 @@ async function waCliente(idOrden,tipo){
 function waAdminGeneral(){openWA(WA_ADMIN,`Hola, soy *${mySocio.nombre}* (técnico dbarrio).\n\n`);}
 function openWA(num,txt){window.location.href='https://wa.me/'+String(num).replace(/\D/g,'')+'?text='+encodeURIComponent(txt);}
 
+// ══ HISTORIAL ══
 async function loadHistorial(){
   const el=document.getElementById('listaHist');
   if(!mySocio) return;
@@ -793,6 +756,117 @@ async function loadHistorial(){
   }).join('')+'<div style="height:16px"></div>';
 }
 
+// ══ CATÁLOGO DE PRECIOS ══
+async function loadCatalogo(){
+  const el=document.getElementById('listaCatalogo');
+  if(!mySocio){el.innerHTML='<div class="cargando">Cargando...</div>';return;}
+  el.innerHTML='<div class="cargando">Cargando catálogo...</div>';
+  const {data,error}=await sb.from('servicios_catalogo')
+    .select('*').eq('socio_id',mySocio.id).order('activo',{ascending:false}).order('nombre');
+  if(error){el.innerHTML=`<div class="vacio"><div class="vacio-ico">⚠️</div><div class="vacio-txt">${esc(error.message)}</div></div>`;return;}
+  if(!data?.length){
+    el.innerHTML=`<div class="vacio">
+      <div class="vacio-ico">💰</div>
+      <div class="vacio-txt">Tu catálogo está vacío.<br>Añade los servicios que haces con sus precios.</div>
+      <div class="vacio-sub">Los clientes los verán antes de reservar.</div>
+      <button class="btn btn-y" onclick="openSrvModal()" style="margin-top:12px">Añadir primer servicio</button>
+    </div>`;
+    return;
+  }
+  const activos=data.filter(s=>s.activo).length;
+  el.innerHTML=`<div style="font-size:12px;color:var(--g2);margin-bottom:12px">${activos} servicio${activos!==1?'s':''} activo${activos!==1?'s':''} · visible${activos!==1?'s':''} para clientes</div>`
+    + data.map(srv=>`
+    <div class="srv-card ${!srv.activo?'inactive':''}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div style="flex:1;min-width:0">
+          <div class="srv-nombre">${esc(srv.nombre)}</div>
+          ${srv.descripcion?`<div class="srv-desc">${esc(srv.descripcion)}</div>`:''}
+          <div class="srv-precio">
+            <span class="srv-precio-val">$${parseFloat(srv.precio_min).toFixed(2)}</span>
+            ${srv.precio_max&&parseFloat(srv.precio_max)>0?`<span class="srv-precio-max">— $${parseFloat(srv.precio_max).toFixed(2)}</span>`:''}
+            <span class="srv-precio-uni">/ ${esc(UNIDAD_LABEL[srv.unidad]||srv.unidad||'servicio')}</span>
+          </div>
+        </div>
+        <span class="${srv.activo?'srv-badge-activo':'srv-badge-inactivo'}">${srv.activo?'Activo':'Inactivo'}</span>
+      </div>
+      <div class="srv-actions">
+        <button class="btn btn-g btn-sm" onclick="editarServicio(${srv.id})">✏️ Editar</button>
+        <button class="btn ${srv.activo?'btn-r':'btn-y'} btn-sm" onclick="toggleServicio(${srv.id},${!srv.activo})">${srv.activo?'Desactivar':'Activar'}</button>
+      </div>
+    </div>`).join('');
+}
+
+function openSrvModal(srv=null){
+  document.getElementById('srv-modal-title').textContent=srv?'Editar servicio':'Nuevo servicio';
+  document.getElementById('srv-nombre').value=srv?.nombre||'';
+  document.getElementById('srv-desc').value=srv?.descripcion||'';
+  document.getElementById('srv-precio-min').value=srv?.precio_min||'';
+  document.getElementById('srv-precio-max').value=srv?.precio_max||'';
+  document.getElementById('srv-unidad').value=srv?.unidad||'servicio';
+  document.getElementById('srv-edit-id').value=srv?.id||'';
+  document.getElementById('err-srv').classList.remove('v');
+  document.getElementById('btn-srv-delete').style.display=srv?'':'none';
+  const btn=document.getElementById('btn-srv-save');
+  btn.disabled=false;btn.textContent='Guardar servicio';
+  document.getElementById('ov-srv').classList.add('open');
+}
+
+function closeSrvModal(){document.getElementById('ov-srv').classList.remove('open');}
+
+function editarServicio(id){
+  // Buscar en el DOM o recargar — buscamos en Supabase
+  sb.from('servicios_catalogo').select('*').eq('id',id).single().then(({data})=>{
+    if(data) openSrvModal(data);
+  });
+}
+
+async function guardarServicio(){
+  const btn=document.getElementById('btn-srv-save');
+  const errEl=document.getElementById('err-srv');
+  errEl.classList.remove('v');
+  const nombre=document.getElementById('srv-nombre').value.trim();
+  const desc=document.getElementById('srv-desc').value.trim();
+  const precioMin=parseFloat(document.getElementById('srv-precio-min').value);
+  const precioMax=parseFloat(document.getElementById('srv-precio-max').value)||null;
+  const unidad=document.getElementById('srv-unidad').value||'servicio';
+  const editId=document.getElementById('srv-edit-id').value;
+  if(!nombre){errEl.textContent='El nombre del servicio es obligatorio.';errEl.classList.add('v');return;}
+  if(isNaN(precioMin)||precioMin<0){errEl.textContent='El precio mínimo es obligatorio.';errEl.classList.add('v');return;}
+  if(precioMax&&precioMax<precioMin){errEl.textContent='El precio máximo no puede ser menor que el mínimo.';errEl.classList.add('v');return;}
+  btn.disabled=true;btn.innerHTML='<span class="sp"></span>Guardando...';
+  const payload={nombre,descripcion:desc||null,precio_min:precioMin,precio_max:precioMax||null,unidad,socio_id:mySocio.id,activo:true};
+  let error;
+  if(editId){
+    ({error}=await sb.from('servicios_catalogo').update(payload).eq('id',parseInt(editId)));
+  } else {
+    ({error}=await sb.from('servicios_catalogo').insert(payload));
+  }
+  btn.disabled=false;btn.textContent='Guardar servicio';
+  if(error){errEl.textContent='Error: '+error.message;errEl.classList.add('v');return;}
+  toast(editId?'Servicio actualizado ✓':'Servicio añadido ✓');
+  closeSrvModal();
+  loadCatalogo();
+}
+
+async function toggleServicio(id,activo){
+  const {error}=await sb.from('servicios_catalogo').update({activo}).eq('id',id);
+  if(error){toast('Error: '+error.message);return;}
+  toast(activo?'Servicio activado ✓':'Servicio desactivado');
+  loadCatalogo();
+}
+
+async function eliminarServicio(){
+  const editId=document.getElementById('srv-edit-id').value;
+  if(!editId) return;
+  if(!confirm('¿Eliminar este servicio? No se puede deshacer.')) return;
+  const {error}=await sb.from('servicios_catalogo').delete().eq('id',parseInt(editId));
+  if(error){toast('Error: '+error.message);return;}
+  toast('Servicio eliminado');
+  closeSrvModal();
+  loadCatalogo();
+}
+
+// ══ CUENTA ══
 async function loadCuenta(){
   const el=document.getElementById('cuentaContent');
   if(!mySocio) return;
@@ -802,8 +876,7 @@ async function loadCuenta(){
   if(data) mySocio=data;
   const s=mySocio;
   const deuda=parseFloat(s.deuda||0);
-  const munSelect=m=>`<optgroup label="Occidente"><option value="Playa">Playa</option><option value="La Lisa">La Lisa</option><option value="Marianao">Marianao</option></optgroup><optgroup label="Centro"><option value="Plaza de la Revolución">Plaza de la Revolución</option><option value="Centro Habana">Centro Habana</option><option value="La Habana Vieja">La Habana Vieja</option><option value="Diez de Octubre">Diez de Octubre</option><option value="Cerro">Cerro</option></optgroup><optgroup label="Oriente"><option value="Regla">Regla</option><option value="La Habana del Este">La Habana del Este</option><option value="Guanabacoa">Guanabacoa</option><option value="San Miguel del Padrón">San Miguel del Padrón</option></optgroup><optgroup label="Sur"><option value="Boyeros">Boyeros</option><option value="Arroyo Naranjo">Arroyo Naranjo</option><option value="Cotorro">Cotorro</option></optgroup>`;
-
+  const munSelect=()=>`<optgroup label="Occidente"><option value="Playa">Playa</option><option value="La Lisa">La Lisa</option><option value="Marianao">Marianao</option></optgroup><optgroup label="Centro"><option value="Plaza de la Revolución">Plaza de la Revolución</option><option value="Centro Habana">Centro Habana</option><option value="La Habana Vieja">La Habana Vieja</option><option value="Diez de Octubre">Diez de Octubre</option><option value="Cerro">Cerro</option></optgroup><optgroup label="Oriente"><option value="Regla">Regla</option><option value="La Habana del Este">La Habana del Este</option><option value="Guanabacoa">Guanabacoa</option><option value="San Miguel del Padrón">San Miguel del Padrón</option></optgroup><optgroup label="Sur"><option value="Boyeros">Boyeros</option><option value="Arroyo Naranjo">Arroyo Naranjo</option><option value="Cotorro">Cotorro</option></optgroup>`;
   el.innerHTML=`
     ${deuda>0?`<div class="deuda-banner">⚠️ Tienes una deuda pendiente de <strong>$${deuda.toFixed(2)}</strong>.<br>Coordina el pago con el admin para mantener tu cuenta activa.</div>`:''}
     <div class="cuenta-hero">
@@ -828,6 +901,16 @@ async function loadCuenta(){
         <button class="btn btn-k btn-full" onclick="savePerfil()">Guardar cambios</button>
       </div>
     </div>
+    <div class="panel" id="panel-precios-quick">
+      <div class="panel-hdr" onclick="togglePanel('panel-precios-quick')">
+        <div><div class="panel-title">Mi catálogo de precios</div><div class="panel-sub">Servicios visibles para clientes</div></div>
+        <svg class="panel-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="panel-body">
+        <div id="cuenta-catalogo-mini"><div class="cargando" style="padding:20px">Cargando...</div></div>
+        <button class="btn btn-y btn-full" onclick="goTab('precios',document.getElementById('bnav-precios'))">Gestionar mis precios →</button>
+      </div>
+    </div>
     <div class="panel" id="panel-admin">
       <div class="panel-hdr" onclick="togglePanel('panel-admin')">
         <div><div class="panel-title">¿Necesitas algo?</div><div class="panel-sub">Contacta al administrador</div></div>
@@ -839,11 +922,27 @@ async function loadCuenta(){
       </div>
     </div>
     <div style="height:24px"></div>`;
-
-
-  // Pre-seleccionar municipio guardado — DESPUÉS del innerHTML
+  // Pre-seleccionar municipio
   const pz=document.getElementById('p-zona');
   if(pz&&s.zona) pz.value=s.zona;
+  // Cargar mini catálogo
+  loadCatalogoMini();
+}
+
+async function loadCatalogoMini(){
+  const el=document.getElementById('cuenta-catalogo-mini');
+  if(!el||!mySocio) return;
+  const {data}=await sb.from('servicios_catalogo')
+    .select('id,nombre,precio_min,precio_max,activo')
+    .eq('socio_id',mySocio.id).eq('activo',true).order('nombre').limit(4);
+  if(!data?.length){
+    el.innerHTML=`<div style="font-size:13px;color:var(--g2);padding:4px 0">Sin servicios activos todavía.<br>Añade tus servicios en la pestaña Precios.</div>`;
+    return;
+  }
+  el.innerHTML=data.map(s=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)">
+    <span style="font-size:13px;font-weight:600;color:var(--ink)">${esc(s.nombre)}</span>
+    <span style="font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ok)">$${parseFloat(s.precio_min).toFixed(2)}${s.precio_max?'+':''}</span>
+  </div>`).join('')+`<div style="font-size:11px;color:var(--g2);margin-top:6px">${data.length} servicio${data.length!==1?'s':''} activo${data.length!==1?'s':''}</div>`;
 }
 
 function togglePanel(id){document.getElementById(id)?.classList.toggle('open')}
@@ -853,12 +952,9 @@ async function savePerfil(){
   const telefono=document.getElementById('p-tel')?.value?.trim()||null;
   const municipio=document.getElementById('p-zona')?.value||null;
   const especialidad=document.getElementById('p-esp')?.value?.trim()||null;
-  // Siempre guardamos el slug de zona (oeste/centro/este/sur), no el municipio
   const zona=MUNICIPIO_ZONA[municipio]||null;
   const {error}=await sb.from('socios').update({
-    telefono,
-    zona: zona||municipio||null,   // slug si existe, municipio como fallback
-    especialidad
+    telefono,zona:zona||municipio||null,especialidad
   }).eq('id',mySocio.id);
   if(error){toast('Error: '+error.message);return;}
   toast('✅ Datos actualizados');
