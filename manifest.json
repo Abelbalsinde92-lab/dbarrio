@@ -1,6 +1,6 @@
 {
   "name": "dbarrio",
-  "short_name": "db",
+  "short_name": "dbarrio",
   "description": "Servicios técnicos del barrio",
   "start_url": "/",
   "scope": "/",
