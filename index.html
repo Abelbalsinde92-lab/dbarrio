@@ -227,6 +227,11 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 /* ── UPLOAD INPUT STYLE ── */
 .upload-input{padding:8px;background:var(--bg);border:1.5px dashed var(--line);border-radius:9px;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color .15s}
 .upload-input:hover{border-color:var(--y)}
+.precio-zona-box{background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:10px;padding:12px 14px;display:none;flex-direction:column;gap:6px}
+.precio-zona-box.v{display:flex}
+.precio-zona-item{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:4px 0}
+.precio-zona-nombre{color:var(--ink);font-weight:500}
+.precio-zona-val{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ok)}
 </style>
 </head>
 <body>
@@ -461,7 +466,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       </div>
       <div class="fg">
         <label>Municipio</label>
-        <select id="s-mun">
+        <select id="s-mun" onchange="cargarPreciosZona()">
           <option value="">-- Seleccionar municipio --</option>
           <optgroup label="Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
           <optgroup label="Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
@@ -469,6 +474,11 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
           <optgroup label="Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
         </select>
         <div class="fe" id="es-mun">Selecciona tu municipio.</div>
+        <div class="precio-zona-box" id="precios-zona-box">
+        <div class="precio-zona-title">💰 Precios en tu zona</div>
+        <div id="precios-zona-list"></div>
+        <div style="font-size:11px;color:var(--ok);margin-top:4px">El precio final lo confirma el técnico al llegar.</div>
+      </div>
       </div>
       <div class="fg"><label>Tu nombre</label><input id="s-cli" type="text" placeholder="¿Cómo te llamamos?"/><div class="fe" id="es-cli">Escribe tu nombre.</div></div>
       <div class="fg">
@@ -746,6 +756,7 @@ function selSrv(el){
   document.querySelectorAll('.srv-opt').forEach(b=>b.classList.remove('selected'));
   el.classList.add('selected');solSrv=el.dataset.srv;cE('es-srv');
   sessionStorage.setItem('db_sol_srv',solSrv);
+  cargarPreciosZona();
 }
 function selHora(el){
   document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));
@@ -1132,6 +1143,33 @@ document.querySelectorAll('.cb').forEach(row=>{
 document.getElementById('s-cp')?.addEventListener('change',()=>cE('es-cp'));
 document.getElementById('g-cp')?.addEventListener('change',()=>cE('eg-cp'));
 document.getElementById('u-cp')?.addEventListener('change',()=>cE('eu-cp'));
+
+async function cargarPreciosZona(){
+  const mun=document.getElementById('s-mun')?.value;
+  const box=document.getElementById('precios-zona-box');
+  const list=document.getElementById('precios-zona-list');
+  if(!box||!list) return;
+  if(!mun||!solSrv){ box.classList.remove('v'); return; }
+  const zona=MUNICIPIO_ZONA[mun]||null;
+  if(!zona){ box.classList.remove('v'); return; }
+  const {data:tecnicos}=await sbPublic.from('socios')
+    .select('id').eq('zona',zona).eq('estado_socio','activo').eq('admitido',true);
+  if(!tecnicos?.length){ box.classList.remove('v'); return; }
+  const ids=tecnicos.map(t=>t.id);
+  const srvKey=solSrv.split('/')[0].trim().split(' ')[0];
+  const {data:precios}=await sbPublic.from('servicios_catalogo')
+    .select('nombre,precio_min,precio_max,unidad')
+    .in('socio_id',ids).eq('activo',true)
+    .ilike('nombre','%'+srvKey+'%')
+    .order('precio_min').limit(4);
+  if(!precios?.length){ box.classList.remove('v'); return; }
+  list.innerHTML=precios.map(p=>`
+    <div class="precio-zona-item">
+      <span class="precio-zona-nombre">${esc(p.nombre)}</span>
+      <span class="precio-zona-val">desde $${parseFloat(p.precio_min).toFixed(2)}</span>
+    </div>`).join('');
+  box.classList.add('v');
+}
 </script>
 <script>
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js'); }
