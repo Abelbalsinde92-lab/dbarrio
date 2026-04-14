@@ -4,14 +4,14 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="theme-color" content="#0F0F1A"/>
-<title>dbarrio — técnicos a domicilio en La Habana</title>
+<title>dbarrio — técnicos a domicilio · La Habana &amp; Santo Domingo</title>
 <meta name="description" content="¿Se te rompió algo en casa? Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Servicio rápido en La Habana."/>
 <meta name="keywords" content="técnicos La Habana, reparaciones a domicilio, plomería, electricidad, refrigeración, electrodomésticos, dbarrio"/>
 <meta property="og:type" content="website"/>
-<meta property="og:url" content="https://dbarrio-two.vercel.app/"/>
-<meta property="og:title" content="dbarrio — técnicos a domicilio en La Habana"/>
+<meta property="og:url" content="https://dbarrio.app/"/>
+<meta property="og:title" content="dbarrio — técnicos a domicilio · La Habana &amp; Santo Domingo"/>
 <meta property="og:description" content="Técnicos verificados en tu municipio. Solicita ahora y recibe tu código de seguimiento."/>
-<meta property="og:image" content="https://dbarrio-two.vercel.app/db-512.png"/>
+<meta property="og:image" content="https://dbarrio.app/db-512.png"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="dbarrio — técnicos en La Habana"/>
 <meta name="twitter:description" content="Técnicos verificados en tu municipio. Solicita ahora."/>
@@ -224,7 +224,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .footer-link{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
 .footer-link:hover{color:rgba(255,255,255,.8)}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.2)}
-/* ── UPLOAD INPUT STYLE ── */
 .upload-input{padding:8px;background:var(--bg);border:1.5px dashed var(--line);border-radius:9px;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color .15s}
 .upload-input:hover{border-color:var(--y)}
 .precio-zona-box{background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:10px;padding:12px 14px;display:none;flex-direction:column;gap:6px}
@@ -236,7 +235,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 </head>
 <body>
 <div class="toast" id="toast"></div>
-
 <header class="header">
   <div class="brand">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 353.63 293.2" height="42" aria-label="DeBarrio" style="flex-shrink:0">
@@ -265,7 +263,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   <div class="hero-wm" aria-hidden="true">db</div>
   <div class="hero-chip">
     <span class="hero-dot"></span>
-    <span class="hero-chip-txt">Técnicos activos en La Habana</span>
+    <span class="hero-chip-txt">Técnicos activos · La Habana &amp; Santo Domingo</span>
   </div>
   <h1 class="hero-title">¿Se te<br>rompió algo<br><em>en casa?</em></h1>
   <p class="hero-desc">Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Solicita ahora — recibe tu <span class="code-b">db-xxxx</span> de seguimiento.</p>
@@ -332,6 +330,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
           <div class="zona-group"><div class="zona-name">Centro</div><div class="zona-munis"><span class="zona-muni">Plaza de la Rev.</span><span class="zona-muni">Centro Habana</span><span class="zona-muni">La Habana Vieja</span><span class="zona-muni">Diez de Octubre</span><span class="zona-muni">Cerro</span></div></div>
           <div class="zona-group"><div class="zona-name">Oriente</div><div class="zona-munis"><span class="zona-muni">Regla</span><span class="zona-muni">H. del Este</span><span class="zona-muni">Guanabacoa</span><span class="zona-muni">S.M. del Padrón</span></div></div>
           <div class="zona-group"><div class="zona-name">Sur</div><div class="zona-munis"><span class="zona-muni">Boyeros</span><span class="zona-muni">Arroyo Naranjo</span><span class="zona-muni">Cotorro</span></div></div>
+          <div class="zona-group" style="grid-column:1/-1;border-top:2px solid var(--y-border);padding-top:14px;margin-top:4px"><div class="zona-name" style="color:var(--y)">🇩🇴 Santo Domingo RD</div><div class="zona-munis" style="display:grid;grid-template-columns:1fr 1fr;gap:3px"><span class="zona-muni">Santo Domingo (DN)</span><span class="zona-muni">Santo Domingo Este</span><span class="zona-muni">Santo Domingo Norte</span><span class="zona-muni">Santo Domingo Oeste</span><span class="zona-muni">Los Alcarrizos</span><span class="zona-muni">Boca Chica</span><span class="zona-muni">Pedro Brand</span><span class="zona-muni">San Antonio de Guerra</span></div></div>
         </div>
       </div>
     </div>
@@ -431,7 +430,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <a class="footer-link" href="privacidad.html">Privacidad</a>
     <a class="footer-link" href="terminos.html">Términos de uso</a>
   </div>
-  <div class="footer-copy">© 2025 dbarrio · La Habana</div>
+  <div class="footer-copy">© 2025 dbarrio · La Habana · Santo Domingo · Santo Domingo</div>
 </footer>
 
 <!-- ══ MODAL SOLICITUD ══ -->
@@ -468,23 +467,25 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
         <label>Municipio</label>
         <select id="s-mun" onchange="cargarPreciosZona()">
           <option value="">-- Seleccionar municipio --</option>
-          <optgroup label="Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
-          <optgroup label="Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
-          <optgroup label="Oriente"><option>Regla</option><option>La Habana del Este</option><option>Guanabacoa</option><option>San Miguel del Padrón</option></optgroup>
-          <optgroup label="Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
+          <optgroup label="🇨🇺 La Habana — Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
+          <optgroup label="🇨🇺 La Habana — Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
+          <optgroup label="🇨🇺 La Habana — Oriente"><option>Regla</option><option>La Habana del Este</option><option>Guanabacoa</option><option>San Miguel del Padrón</option></optgroup>
+          <optgroup label="🇨🇺 La Habana — Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
+          <optgroup label="🇩🇴 Distrito Nacional RD"><option>Santo Domingo (DN)</option></optgroup>
+          <optgroup label="🇩🇴 Provincia Santo Domingo"><option>Santo Domingo Este</option><option>Santo Domingo Norte</option><option>Santo Domingo Oeste</option><option>Los Alcarrizos</option><option>Boca Chica</option><option>Pedro Brand</option><option>San Antonio de Guerra</option></optgroup>
         </select>
         <div class="fe" id="es-mun">Selecciona tu municipio.</div>
         <div class="precio-zona-box" id="precios-zona-box">
-        <div class="precio-zona-title">💰 Precios en tu zona</div>
-        <div id="precios-zona-list"></div>
-        <div style="font-size:11px;color:var(--ok);margin-top:4px">El precio final lo confirma el técnico al llegar.</div>
-      </div>
+          <div class="precio-zona-title">💰 Precios en tu zona</div>
+          <div id="precios-zona-list"></div>
+          <div style="font-size:11px;color:var(--ok);margin-top:4px">El precio final lo confirma el técnico al llegar.</div>
+        </div>
       </div>
       <div class="fg"><label>Tu nombre</label><input id="s-cli" type="text" placeholder="¿Cómo te llamamos?"/><div class="fe" id="es-cli">Escribe tu nombre.</div></div>
       <div class="fg">
         <label>WhatsApp</label>
         <div class="phone-row">
-          <select id="s-code"><option value="+53" selected>🇨🇺 +53</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+          <select id="s-code"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
           <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
         </div>
         <div class="fe" id="es-wa">Número inválido.</div>
@@ -565,7 +566,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   </div>
 </div></div>
 
-<!-- ══ MODAL ÚNETE — CON DOCUMENTOS ══ -->
+<!-- ══ MODAL ÚNETE ══ -->
 <div class="ov" id="ov-uni" onclick="ovc(event,'uni')">
 <div class="sheet"><div class="pill"></div>
   <div class="sheet-hdr"><span class="sheet-title">Únete como técnico</span><button class="sheet-x" onclick="close_('uni')">&times;</button></div>
@@ -573,7 +574,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="fg"><label>Nombre completo</label><input id="u-nom" type="text" placeholder="Tu nombre"/><div class="fe" id="eu-nom">Requerido.</div></div>
     <div class="fg"><label>WhatsApp</label>
       <div class="phone-row">
-        <select id="u-code"><option value="+53" selected>🇨🇺 +53</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+        <select id="u-code"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
         <input id="u-tel" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
       </div>
       <div class="fe" id="eu-tel">Número inválido.</div>
@@ -598,68 +599,34 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="fg"><label>Municipio donde trabajas</label>
       <select id="u-zona">
         <option value="">-- Seleccionar municipio --</option>
-        <optgroup label="Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
-        <optgroup label="Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
-        <optgroup label="Oriente"><option>Regla</option><option>La Habana del Este</option><option>Guanabacoa</option><option>San Miguel del Padrón</option></optgroup>
-        <optgroup label="Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
+        <optgroup label="🇨🇺 La Habana — Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
+        <optgroup label="🇨🇺 La Habana — Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
+        <optgroup label="🇨🇺 La Habana — Oriente"><option>Regla</option><option>La Habana del Este</option><option>Guanabacoa</option><option>San Miguel del Padrón</option></optgroup>
+        <optgroup label="🇨🇺 La Habana — Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
+        <optgroup label="🇩🇴 Distrito Nacional RD"><option>Santo Domingo (DN)</option></optgroup>
+        <optgroup label="🇩🇴 Provincia Santo Domingo"><option>Santo Domingo Este</option><option>Santo Domingo Norte</option><option>Santo Domingo Oeste</option><option>Los Alcarrizos</option><option>Boca Chica</option><option>Pedro Brand</option><option>San Antonio de Guerra</option></optgroup>
       </select>
       <div class="fe" id="eu-zona">Selecciona tu municipio.</div>
     </div>
-
-    <!-- ── DOCUMENTOS REQUERIDOS ── -->
     <div style="background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px">
       <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g1);margin-bottom:10px">Documentos requeridos</div>
       <div style="display:flex;flex-direction:column;gap:10px">
-        <div class="fg">
-          <label>Carnet de identidad (foto)</label>
-          <input type="file" id="u-carnet" accept="image/*" capture="environment" class="upload-input"/>
-          <div style="font-size:11px;color:var(--g2);margin-top:3px">Foto clara del carnet — máx 1 MB</div>
-          <div class="fe" id="eu-carnet">Requerido.</div>
-        </div>
-        <div class="fg">
-          <label>Título o certificado de estudios</label>
-          <input type="file" id="u-titulo" accept="image/*,.pdf" class="upload-input"/>
-          <div style="font-size:11px;color:var(--g2);margin-top:3px">Imagen o PDF — máx 2 MB</div>
-          <div class="fe" id="eu-titulo">Requerido.</div>
-        </div>
-        <div class="fg">
-          <label>Currículo</label>
-          <input type="file" id="u-curriculum" accept=".pdf" class="upload-input"/>
-          <div style="font-size:11px;color:var(--g2);margin-top:3px">Solo PDF — máx 2 MB</div>
-          <div class="fe" id="eu-curriculum">Requerido.</div>
-        </div>
-        <div class="fg">
-          <label>Foto de perfil</label>
-          <input type="file" id="u-foto-perfil" accept="image/*" capture="user" class="upload-input"/>
-          <div style="font-size:11px;color:var(--g2);margin-top:3px">Foto tuya — máx 1 MB</div>
-          <div class="fe" id="eu-foto-perfil">Requerido.</div>
-        </div>
-        <div class="fg">
-          <label>Foto con tus herramientas</label>
-          <input type="file" id="u-foto-herramientas" accept="image/*" capture="environment" class="upload-input"/>
-          <div style="font-size:11px;color:var(--g2);margin-top:3px">Foto en tu entorno de trabajo — máx 1 MB</div>
-          <div class="fe" id="eu-foto-herramientas">Requerido.</div>
-        </div>
+        <div class="fg"><label>Carnet de identidad (foto)</label><input type="file" id="u-carnet" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto clara del carnet — máx 1 MB</div><div class="fe" id="eu-carnet">Requerido.</div></div>
+        <div class="fg"><label>Título o certificado de estudios</label><input type="file" id="u-titulo" accept="image/*,.pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Imagen o PDF — máx 2 MB</div><div class="fe" id="eu-titulo">Requerido.</div></div>
+        <div class="fg"><label>Currículo</label><input type="file" id="u-curriculum" accept=".pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Solo PDF — máx 2 MB</div><div class="fe" id="eu-curriculum">Requerido.</div></div>
+        <div class="fg"><label>Foto de perfil</label><input type="file" id="u-foto-perfil" accept="image/*" capture="user" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto tuya — máx 1 MB</div><div class="fe" id="eu-foto-perfil">Requerido.</div></div>
+        <div class="fg"><label>Foto con tus herramientas</label><input type="file" id="u-foto-herramientas" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto en tu entorno de trabajo — máx 1 MB</div><div class="fe" id="eu-foto-herramientas">Requerido.</div></div>
       </div>
-      <!-- Barra de progreso -->
       <div id="u-upload-progress" style="display:none;margin-top:10px">
         <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px" id="u-upload-status">Subiendo documentos...</div>
-        <div style="background:var(--line);border-radius:4px;height:6px;overflow:hidden">
-          <div id="u-upload-bar" style="height:100%;background:var(--y);border-radius:4px;width:0;transition:width .3s"></div>
-        </div>
+        <div style="background:var(--line);border-radius:4px;height:6px;overflow:hidden"><div id="u-upload-bar" style="height:100%;background:var(--y);border-radius:4px;width:0;transition:width .3s"></div></div>
       </div>
     </div>
-
-    <div style="background:var(--blue-bg);border:1.5px solid rgba(37,99,235,.18);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--blue);line-height:1.6">
-      📋 Crear cuenta de acceso — úsala para entrar al panel de técnico.
-    </div>
+    <div style="background:var(--blue-bg);border:1.5px solid rgba(37,99,235,.18);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--blue);line-height:1.6">📋 Crear cuenta de acceso — úsala para entrar al panel de técnico.</div>
     <div class="fg"><label>Correo electrónico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="eu-email">Correo inválido.</div></div>
     <div class="fg"><label>Contraseña</label><input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/><div class="fe" id="eu-pass">Mínimo 6 caracteres.</div></div>
     <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisaremos por WhatsApp cuando puedas operar.</p>
-    <div class="cb" id="cb-uni" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px">
-      <input type="checkbox" id="u-cp"/>
-      <span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span>
-    </div>
+    <div class="cb" id="cb-uni" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px"><input type="checkbox" id="u-cp"/><span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span></div>
     <div class="fe" id="eu-cp">Debes aceptar Términos y Privacidad.</div>
     <div class="ok-box" id="ok-uni">✅ Cuenta creada. Tu solicitud está en revisión — te contactaremos por WhatsApp.</div>
     <div class="err-box" id="err-uni"></div>
@@ -680,7 +647,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="fg"><label>Nombre del negocio o empresa</label><input id="afi-nom" type="text" placeholder="Ej: Paladar La Guarida, Hostal Vista Mar..."/><div class="fe" id="eafi-nom">Requerido.</div></div>
     <div class="fg"><label>WhatsApp del responsable</label>
       <div class="phone-row">
-        <select id="afi-code"><option value="+53" selected>🇨🇺 +53</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+        <select id="afi-code"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
         <input id="afi-tel" type="tel" inputmode="numeric" placeholder="Número WhatsApp"/>
       </div>
       <div class="fe" id="eafi-tel">Número inválido.</div>
@@ -688,10 +655,12 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="fg"><label>Municipio</label>
       <select id="afi-mun">
         <option value="">-- Seleccionar --</option>
-        <optgroup label="Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
-        <optgroup label="Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
-        <optgroup label="Oriente"><option>Regla</option><option>La Habana del Este</option><option>Guanabacoa</option><option>San Miguel del Padrón</option></optgroup>
-        <optgroup label="Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
+        <optgroup label="🇨🇺 La Habana — Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
+        <optgroup label="🇨🇺 La Habana — Centro"><option>Plaza de la Revolución</option><option>Centro Habana</option><option>La Habana Vieja</option><option>Diez de Octubre</option><option>Cerro</option></optgroup>
+        <optgroup label="🇨🇺 La Habana — Oriente"><option>Regla</option><option>La Habana del Este</option><option>Guanabacoa</option><option>San Miguel del Padrón</option></optgroup>
+        <optgroup label="🇨🇺 La Habana — Sur"><option>Boyeros</option><option>Arroyo Naranjo</option><option>Cotorro</option></optgroup>
+        <optgroup label="🇩🇴 Distrito Nacional RD"><option>Santo Domingo (DN)</option></optgroup>
+        <optgroup label="🇩🇴 Provincia Santo Domingo"><option>Santo Domingo Este</option><option>Santo Domingo Norte</option><option>Santo Domingo Oeste</option><option>Los Alcarrizos</option><option>Boca Chica</option><option>Pedro Brand</option><option>San Antonio de Guerra</option></optgroup>
       </select>
       <div class="fe" id="eafi-mun">Selecciona tu municipio.</div>
     </div>
@@ -719,14 +688,13 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 </div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- ══ UPLOAD UTILS — compresión y validación de archivos ══ -->
 <script src="upload-utils.js"></script>
 <script>
 const SURL='https://gkxtdancgkwetdniooky.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
 const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage}});
 const sbPublic=supabase.createClient(SURL,SKEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
-const MUNICIPIO_ZONA={'Playa':'oeste','La Lisa':'oeste','Marianao':'oeste','Plaza de la Revolución':'centro','Centro Habana':'centro','La Habana Vieja':'centro','Diez de Octubre':'centro','Cerro':'centro','Regla':'este','La Habana del Este':'este','Guanabacoa':'este','San Miguel del Padrón':'este','Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur'};
+const MUNICIPIO_ZONA={'Playa':'oeste','La Lisa':'oeste','Marianao':'oeste','Plaza de la Revolución':'centro','Centro Habana':'centro','La Habana Vieja':'centro','Diez de Octubre':'centro','Cerro':'centro','Regla':'este','La Habana del Este':'este','Guanabacoa':'este','San Miguel del Padrón':'este','Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur','Santo Domingo (DN)':'rd-centro','Santo Domingo Este':'rd-este','Santo Domingo Norte':'rd-norte','Santo Domingo Oeste':'rd-oeste','Los Alcarrizos':'rd-oeste','Boca Chica':'rd-sur','Pedro Brand':'rd-norte','San Antonio de Guerra':'rd-norte'};
 let sv=0,solSrv='',solHora='';
 function toast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -944,157 +912,72 @@ async function envCal(){
   if(error){sER('err-cal','Error: '+error.message);return;}
   sOK('ok-cal');document.getElementById('btn-cal').style.display='none';
 }
-
-// ══ ÚNETE — CON SUBIDA DE DOCUMENTOS ══
 async function envUni(){
   cER('err-uni');
   ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass','eu-cp',
    'eu-carnet','eu-titulo','eu-curriculum','eu-foto-perfil','eu-foto-herramientas'].forEach(id=>cE(id));
-
-  const nom       = document.getElementById('u-nom').value.trim();
-  const telData   = normalizarTelefono('u-code','u-tel','eu-tel');
-  const esp       = document.getElementById('u-esp').value;
-  const exp       = document.getElementById('u-exp').value;
-  const municipio = document.getElementById('u-zona').value;
-  const email     = document.getElementById('u-email').value.trim();
-  const pass      = document.getElementById('u-pass').value;
-  const cp        = !!document.getElementById('u-cp')?.checked;
-  const zona      = MUNICIPIO_ZONA[municipio] || '';
-
-  const fCarnet     = document.getElementById('u-carnet')?.files[0];
-  const fTitulo     = document.getElementById('u-titulo')?.files[0];
-  const fCurriculum = document.getElementById('u-curriculum')?.files[0];
-  const fPerfil     = document.getElementById('u-foto-perfil')?.files[0];
-  const fHerr       = document.getElementById('u-foto-herramientas')?.files[0];
-
-  let ok = true;
-  if(!nom)      { sE('eu-nom'); ok=false; }
-  if(!telData)  { ok=false; }
-  if(!esp)      { sE('eu-esp'); ok=false; }
-  if(!exp)      { sE('eu-exp'); ok=false; }
-  if(!municipio){ sE('eu-zona','Selecciona tu municipio.'); ok=false; }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ sE('eu-email'); ok=false; }
-  if(pass.length<6){ sE('eu-pass'); ok=false; }
-  if(!cp)       { sE('eu-cp','Debes aceptar Términos y Privacidad.'); ok=false; }
-  if(!fCarnet)     { sE('eu-carnet','Requerido.');           ok=false; }
-  if(!fTitulo)     { sE('eu-titulo','Requerido.');           ok=false; }
-  if(!fCurriculum) { sE('eu-curriculum','Requerido.');       ok=false; }
-  if(!fPerfil)     { sE('eu-foto-perfil','Requerido.');      ok=false; }
-  if(!fHerr)       { sE('eu-foto-herramientas','Requerido.');ok=false; }
+  const nom=document.getElementById('u-nom').value.trim();
+  const telData=normalizarTelefono('u-code','u-tel','eu-tel');
+  const esp=document.getElementById('u-esp').value;
+  const exp=document.getElementById('u-exp').value;
+  const municipio=document.getElementById('u-zona').value;
+  const email=document.getElementById('u-email').value.trim();
+  const pass=document.getElementById('u-pass').value;
+  const cp=!!document.getElementById('u-cp')?.checked;
+  const zona=MUNICIPIO_ZONA[municipio]||'';
+  const fCarnet=document.getElementById('u-carnet')?.files[0];
+  const fTitulo=document.getElementById('u-titulo')?.files[0];
+  const fCurriculum=document.getElementById('u-curriculum')?.files[0];
+  const fPerfil=document.getElementById('u-foto-perfil')?.files[0];
+  const fHerr=document.getElementById('u-foto-herramientas')?.files[0];
+  let ok=true;
+  if(!nom){sE('eu-nom');ok=false;}
+  if(!telData){ok=false;}
+  if(!esp){sE('eu-esp');ok=false;}
+  if(!exp){sE('eu-exp');ok=false;}
+  if(!municipio){sE('eu-zona','Selecciona tu municipio.');ok=false;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('eu-email');ok=false;}
+  if(pass.length<6){sE('eu-pass');ok=false;}
+  if(!cp){sE('eu-cp','Debes aceptar Términos y Privacidad.');ok=false;}
+  if(!fCarnet){sE('eu-carnet','Requerido.');ok=false;}
+  if(!fTitulo){sE('eu-titulo','Requerido.');ok=false;}
+  if(!fCurriculum){sE('eu-curriculum','Requerido.');ok=false;}
+  if(!fPerfil){sE('eu-foto-perfil','Requerido.');ok=false;}
+  if(!fHerr){sE('eu-foto-herramientas','Requerido.');ok=false;}
   if(!ok) return;
-
-  if(!window.dbUpload){
-    sER('err-uni','Error de configuración. Recarga la página e intenta de nuevo.');
-    return;
-  }
-
+  if(!window.dbUpload){sER('err-uni','Error de configuración. Recarga la página e intenta de nuevo.');return;}
   setL('btn-uni',true,'Creando cuenta...');
-
   try{
-    // 1. Crear cuenta Auth
-    const {data:ad,error:ae} = await sb.auth.signUp({
-      email, password:pass,
-      options:{emailRedirectTo:'https://dbarrio-two.vercel.app/'}
-    });
-    if(ae||!ad?.user){
-      setL('btn-uni',false);
-      sER('err-uni','Error creando cuenta: '+(ae?.message||'Error desconocido.'));
-      return;
-    }
-
-    // 2. Login para poder subir con RLS
-    const {data:si,error:se1} = await sb.auth.signInWithPassword({email,password:pass});
-    if(se1||!si?.session){
-      setL('btn-uni',false);
-      sER('err-uni','Cuenta creada. Revisa tu correo e inicia sesión para continuar.');
-      return;
-    }
-
-    const uid = ad.user.id;
-
-    // 3. Subir documentos con barra de progreso
-    const progressEl = document.getElementById('u-upload-progress');
-    const statusEl   = document.getElementById('u-upload-status');
-    const barEl      = document.getElementById('u-upload-bar');
-    if(progressEl) progressEl.style.display = 'block';
-
-    const docs = [
-      {file:fCarnet,     nombre:'carnet',           field:'carnet'},
-      {file:fTitulo,     nombre:'titulo',            field:'titulo'},
-      {file:fCurriculum, nombre:'curriculum',        field:'curriculum'},
-      {file:fPerfil,     nombre:'foto_perfil',       field:'foto_perfil'},
-      {file:fHerr,       nombre:'foto_herramientas', field:'foto_herramientas'},
-    ];
-
-    const urls = {};
-    const errores = [];
-
-    for(let i=0; i<docs.length; i++){
-      const doc = docs[i];
-      const pct = Math.round((i/docs.length)*100);
-      if(barEl)    barEl.style.width    = pct+'%';
-      if(statusEl) statusEl.textContent = `Subiendo ${doc.nombre} (${i+1}/${docs.length})...`;
-
-      const ext  = doc.file.type==='application/pdf' ? 'pdf' : 'jpg';
-      const path = `tecnicos/${uid}/${doc.nombre}.${ext}`;
-
-      const {url, error:ue} = await window.dbUpload.processAndUpload(
-        sb, doc.file, 'documentos-tecnicos', path,
-        (msg) => { if(statusEl) statusEl.textContent = msg; }
-      );
-
-      if(ue){ errores.push(`${doc.nombre}: ${ue}`); }
-      else  { urls[doc.field] = url; }
-    }
-
-    if(barEl) barEl.style.width = '100%';
-    if(statusEl) statusEl.textContent = 'Guardando datos...';
-
-    if(errores.length){
-      await sb.auth.signOut();
-      setL('btn-uni',false);
-      if(progressEl) progressEl.style.display='none';
-      sER('err-uni','Errores al subir documentos: '+errores.join(', '));
-      return;
-    }
-
-    // 4. Insertar en tabla socios
-    const {error:se} = await sb.from('socios').insert({
-      auth_uid:          uid,
-      nombre:            nom,
-      telefono:          telData.completo,
-      especialidad:      esp,
-      experiencia_anios: parseInt(exp,10),
-      zona:              zona || municipio,
-      email,
-      admitido:          false,
-      estado_socio:      'pendiente',
-      comision:          15,
-      deuda:             0,
-      trabajos:          0,
-      ...urls
-    });
-
-    await sb.auth.signOut();
-    setL('btn-uni',false);
-    if(progressEl) progressEl.style.display='none';
-
-    if(se && !se.message?.includes('municipio')){
-      sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);
-      return;
-    }
-
-    sOK('ok-uni');
-    document.getElementById('btn-uni').style.display='none';
-
-  }catch(e){
-    setL('btn-uni',false);
+    const {data:ad,error:ae}=await sb.auth.signUp({email,password:pass,options:{emailRedirectTo:'https://dbarrio.app/'}});
+    if(ae||!ad?.user){setL('btn-uni',false);sER('err-uni','Error creando cuenta: '+(ae?.message||'Error desconocido.'));return;}
+    const {data:si,error:se1}=await sb.auth.signInWithPassword({email,password:pass});
+    if(se1||!si?.session){setL('btn-uni',false);sER('err-uni','Cuenta creada. Revisa tu correo e inicia sesión para continuar.');return;}
+    const uid=ad.user.id;
     const progressEl=document.getElementById('u-upload-progress');
-    if(progressEl) progressEl.style.display='none';
-    sER('err-uni','Error inesperado: '+(e?.message||e));
-  }
+    const statusEl=document.getElementById('u-upload-status');
+    const barEl=document.getElementById('u-upload-bar');
+    if(progressEl)progressEl.style.display='block';
+    const docs=[{file:fCarnet,nombre:'carnet',field:'carnet'},{file:fTitulo,nombre:'titulo',field:'titulo'},{file:fCurriculum,nombre:'curriculum',field:'curriculum'},{file:fPerfil,nombre:'foto_perfil',field:'foto_perfil'},{file:fHerr,nombre:'foto_herramientas',field:'foto_herramientas'}];
+    const urls={};const errores=[];
+    for(let i=0;i<docs.length;i++){
+      const doc=docs[i];
+      const pct=Math.round((i/docs.length)*100);
+      if(barEl)barEl.style.width=pct+'%';
+      if(statusEl)statusEl.textContent=`Subiendo ${doc.nombre} (${i+1}/${docs.length})...`;
+      const ext=doc.file.type==='application/pdf'?'pdf':'jpg';
+      const path=`tecnicos/${uid}/${doc.nombre}.${ext}`;
+      const {url,error:ue}=await window.dbUpload.processAndUpload(sb,doc.file,'documentos-tecnicos',path,(msg)=>{if(statusEl)statusEl.textContent=msg;});
+      if(ue){errores.push(`${doc.nombre}: ${ue}`);}else{urls[doc.field]=url;}
+    }
+    if(barEl)barEl.style.width='100%';
+    if(statusEl)statusEl.textContent='Guardando datos...';
+    if(errores.length){await sb.auth.signOut();setL('btn-uni',false);if(progressEl)progressEl.style.display='none';sER('err-uni','Errores al subir documentos: '+errores.join(', '));return;}
+    const {error:se}=await sb.from('socios').insert({auth_uid:uid,nombre:nom,telefono:telData.completo,especialidad:esp,experiencia_anios:parseInt(exp,10),zona:zona||municipio,email,admitido:false,estado_socio:'pendiente',comision:15,deuda:0,trabajos:0,...urls});
+    await sb.auth.signOut();setL('btn-uni',false);if(progressEl)progressEl.style.display='none';
+    if(se&&!se.message?.includes('municipio')){sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);return;}
+    sOK('ok-uni');document.getElementById('btn-uni').style.display='none';
+  }catch(e){setL('btn-uni',false);const progressEl=document.getElementById('u-upload-progress');if(progressEl)progressEl.style.display='none';sER('err-uni','Error inesperado: '+(e?.message||e));}
 }
-
 async function doLogin(){
   cER('err-acc');['ea-email','ea-pass'].forEach(id=>cE(id));
   const email=document.getElementById('a-email').value.trim();
@@ -1107,17 +990,10 @@ async function doLogin(){
   const {data:auth,error:ae}=await sb.auth.signInWithPassword({email,password:pass});
   if(ae||!auth.session){setL('btn-acc',false);sER('err-acc','Credenciales incorrectas. Verifica tu email y contraseña.');return;}
   const uid=auth.session.user.id;
-  const [{data:adm},{data:enc},{data:soc}]=await Promise.all([
-    sb.from('admins').select('id').eq('auth_uid',uid).maybeSingle(),
-    sb.from('encargados').select('id,activo').eq('auth_uid',uid).maybeSingle(),
-    sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid',uid).maybeSingle()
-  ]);
+  const [{data:adm},{data:enc},{data:soc}]=await Promise.all([sb.from('admins').select('id').eq('auth_uid',uid).maybeSingle(),sb.from('encargados').select('id,activo').eq('auth_uid',uid).maybeSingle(),sb.from('socios').select('id,admitido,estado_socio').eq('auth_uid',uid).maybeSingle()]);
   if(adm){window.location.href='admin.html';return;}
   if(enc){if(!enc.activo){await sb.auth.signOut();setL('btn-acc',false);sER('err-acc','Tu cuenta de encargado está desactivada.');return;}window.location.href='admin.html';return;}
-  if(soc){
-    if(!soc.admitido||soc.estado_socio!=='activo'){await sb.auth.signOut();setL('btn-acc',false);sER('err-acc',soc.admitido?'Tu cuenta está en estado: '+soc.estado_socio+'. Contacta al administrador.':'Cuenta pendiente de aprobación. Te avisaremos por WhatsApp.');return;}
-    window.location.href='socio.html';return;
-  }
+  if(soc){if(!soc.admitido||soc.estado_socio!=='activo'){await sb.auth.signOut();setL('btn-acc',false);sER('err-acc',soc.admitido?'Tu cuenta está en estado: '+soc.estado_socio+'. Contacta al administrador.':'Cuenta pendiente de aprobación. Te avisaremos por WhatsApp.');return;}window.location.href='socio.html';return;}
   await sb.auth.signOut();setL('btn-acc',false);sER('err-acc','Usuario no reconocido en el sistema.');
 }
 async function doRecovery(){
@@ -1125,7 +1001,7 @@ async function doRecovery(){
   const email=document.getElementById('a-email').value.trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');return;}
   setL('btn-rec-pass',true,'Enviando...');
-  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://dbarrio-two.vercel.app/reset.html'});
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://dbarrio.app/reset.html'});
   setL('btn-rec-pass',false);
   if(error){sER('err-acc','Error: '+error.message);return;}
   const el=document.getElementById('err-acc');
@@ -1143,36 +1019,26 @@ document.querySelectorAll('.cb').forEach(row=>{
 document.getElementById('s-cp')?.addEventListener('change',()=>cE('es-cp'));
 document.getElementById('g-cp')?.addEventListener('change',()=>cE('eg-cp'));
 document.getElementById('u-cp')?.addEventListener('change',()=>cE('eu-cp'));
-
 async function cargarPreciosZona(){
   const mun=document.getElementById('s-mun')?.value;
   const box=document.getElementById('precios-zona-box');
   const list=document.getElementById('precios-zona-list');
   if(!box||!list) return;
-  if(!mun||!solSrv){ box.classList.remove('v'); return; }
+  if(!mun||!solSrv){box.classList.remove('v');return;}
   const zona=MUNICIPIO_ZONA[mun]||null;
-  if(!zona){ box.classList.remove('v'); return; }
-  const {data:tecnicos}=await sbPublic.from('socios')
-    .select('id').eq('zona',zona).eq('estado_socio','activo').eq('admitido',true);
-  if(!tecnicos?.length){ box.classList.remove('v'); return; }
+  if(!zona){box.classList.remove('v');return;}
+  const {data:tecnicos}=await sbPublic.from('socios').select('id').eq('zona',zona).eq('estado_socio','activo').eq('admitido',true);
+  if(!tecnicos?.length){box.classList.remove('v');return;}
   const ids=tecnicos.map(t=>t.id);
   const srvKey=solSrv.split('/')[0].trim().split(' ')[0];
-  const {data:precios}=await sbPublic.from('servicios_catalogo')
-    .select('nombre,precio_min,precio_max,unidad')
-    .in('socio_id',ids).eq('activo',true)
-    .ilike('nombre','%'+srvKey+'%')
-    .order('precio_min').limit(4);
-  if(!precios?.length){ box.classList.remove('v'); return; }
-  list.innerHTML=precios.map(p=>`
-    <div class="precio-zona-item">
-      <span class="precio-zona-nombre">${esc(p.nombre)}</span>
-      <span class="precio-zona-val">desde $${parseFloat(p.precio_min).toFixed(2)}</span>
-    </div>`).join('');
+  const {data:precios}=await sbPublic.from('servicios_catalogo').select('nombre,precio_min,precio_max,unidad').in('socio_id',ids).eq('activo',true).ilike('nombre','%'+srvKey+'%').order('precio_min').limit(4);
+  if(!precios?.length){box.classList.remove('v');return;}
+  list.innerHTML=precios.map(p=>`<div class="precio-zona-item"><span class="precio-zona-nombre">${esc(p.nombre)}</span><span class="precio-zona-val">desde $${parseFloat(p.precio_min).toFixed(2)}</span></div>`).join('');
   box.classList.add('v');
 }
 </script>
 <script>
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js'); }
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}
 </script>
 </body>
 </html>
