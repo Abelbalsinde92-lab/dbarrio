@@ -1242,14 +1242,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (adm) {
       USER_ROLE = 'admin';
     } else {
-      const { data:enc } = await sb.from('encargados')
-  .select('id,zona,zonas_extra,nombre').eq('auth_uid',session.user.id).eq('activo',true).maybeSingle();
+      const { data:enc } = await sb.from('encargados').select('id,zona,zonas,nombre').eq('auth_uid',session.user.id).eq('activo',true).maybeSingle();
       if (enc) { 
         USER_ROLE='encargado'; 
         USER_ZONA=enc.zona; 
-        USER_ZONAS=(enc.zonas_extra && enc.zonas_extra.length>0)
-  ? [enc.zona, ...enc.zonas_extra]
-  : [enc.zona];
+        USER_ZONAS=(enc.zonas&&enc.zonas.length>0)?enc.zonas:[enc.zona];
         USER_ENC_ID=enc.id; 
       }
       else { await sb.auth.signOut(); window.location.href='index.html'; return; }
@@ -1610,45 +1607,14 @@ function setKpis({pend=0,asig=0,comp=0,caja=0}={}){
 }
 setKpis();
 
-async function loadSociosMap() {
-  const { data, error } = await sb
-    .from('socios')
-    .select('id,nombre,telefono,comision,zona,zonas_extra,admitido');
-
-  if (error) {
-    console.error('Error cargando sociosMap:', error);
-    return;
-  }
-
-  if (data) {
-    sociosMap = {};
-    data.forEach(s => sociosMap[s.id] = s);
-  }
+async function loadSociosMap(){
+  const {data} = await sb.from('socios').select('id,nombre,telefono,comision');
+  if(data){ sociosMap={}; data.forEach(s=>sociosMap[s.id]=s); }
 }
 
-async function loadEncargadosMap() {
-  const { data, error } = await sb
-    .from('encargados')
-    .select('id,nombre,zona,zonas_extra')
-    .eq('activo', true);
-
-  if (error) {
-    console.error('Error cargando encargadosMap:', error);
-    return;
-  }
-
-  if (data) {
-    encargadosMap = {};
-    data.forEach(e => {
-      encargadosMap[e.id] = {
-        ...e,
-        zonas: [
-          e.zona,
-          ...(Array.isArray(e.zonas_extra) ? e.zonas_extra : [])
-        ].filter(Boolean)
-      };
-    });
-  }
+async function loadEncargadosMap(){
+  const {data} = await sb.from('encargados').select('id,nombre,zona').eq('activo',true);
+  if(data){ encargadosMap={}; data.forEach(e=>encargadosMap[e.id]=e); }
 }
 
 // ══ OPERACIÓN ══
@@ -2043,39 +2009,17 @@ async function loadHi(){
 }
 
 // ══ SOCIOS ══
-async function loadSocios() {
-  const el = document.getElementById('lista-so');
-  el.innerHTML = '<div class="loading">Cargando...</div>';
-
+async function loadSocios(){
+  const el=document.getElementById('lista-so');
+  el.innerHTML='<div class="loading">Cargando...</div>';
   await loadEncargadosMap();
-
-  let q = sb
-    .from('socios')
-    .select('*')
-    .order('estado_socio')
-    .order('nombre');
-
-  // PRUEBA: filtro simple solo por zona principal
-  if (USER_ROLE === 'encargado' && Array.isArray(USER_ZONAS) && USER_ZONAS.length) {
-    q = q.in('zona', USER_ZONAS.filter(Boolean));
-  }
-
-  const { data, error } = await q;
-
-  console.log('SOCIOS QUERY RESULT:', { data, error, USER_ROLE, USER_ZONAS });
-
-  if (error) {
-    el.innerHTML = `<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`;
-    return;
-  }
-
-  if (!data?.length) {
-    el.innerHTML = '<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin técnicos en tu zona</span></div>';
-    return;
-  }
-
-  window._sociosData = data;
-  filtrarSocios();
+  let q=sb.from('socios').select('*').order('estado_socio').order('nombre');
+  // Encargado solo ve los técnicos de su zona
+  if(USER_ROLE==='encargado'&&USER_ZONAS.length) q=q.in('zona',USER_ZONAS);
+  const {data,error}=await q;
+  if(error){ el.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`; return }
+  if(!data?.length){ el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin técnicos en tu zona</span></div>'; return }
+  window._sociosData=data; filtrarSocios();
 }
 
 function filtrarSocios(){
