@@ -2055,18 +2055,14 @@ async function loadSocios() {
     .order('estado_socio')
     .order('nombre');
 
-  // Encargado solo ve los técnicos de sus zonas
+  // PRUEBA: filtro simple solo por zona principal
   if (USER_ROLE === 'encargado' && Array.isArray(USER_ZONAS) && USER_ZONAS.length) {
-    const zonas = USER_ZONAS.filter(Boolean);
-
-    q = q.or(
-      zonas
-        .map(z => `zona.eq.${z},zonas_extra.cs.{${z}}`)
-        .join(',')
-    );
+    q = q.in('zona', USER_ZONAS.filter(Boolean));
   }
 
   const { data, error } = await q;
+
+  console.log('SOCIOS QUERY RESULT:', { data, error, USER_ROLE, USER_ZONAS });
 
   if (error) {
     el.innerHTML = `<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`;
