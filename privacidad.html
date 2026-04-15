@@ -24,8 +24,6 @@
 }
 html{background:var(--ink)}
 body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
-
-/* HEADER */
 .header{position:sticky;top:0;z-index:50;height:calc(var(--th)+env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;background:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;-webkit-tap-highlight-color:transparent;flex-shrink:0}
 .brand-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,193,22,.15);border:1px solid var(--y-border);display:grid;place-items:center;flex-shrink:0}
@@ -38,8 +36,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .nav-link{height:32px;padding:0 12px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.6);font-size:12px;font-weight:600;display:inline-flex;align-items:center;text-decoration:none;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:var(--f)}
 .nav-link:hover{background:rgba(255,255,255,.08);color:#fff}
 .nav-link.active{background:var(--y-bg);border-color:var(--y-border);color:var(--y)}
-
-/* HERO */
 .doc-hero{background:var(--ink2);padding:36px 20px 0;position:relative;overflow:hidden}
 .doc-hero-grid{position:absolute;inset:0;background:radial-gradient(circle,rgba(245,193,22,.08) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
 .doc-hero-wm{position:absolute;right:-10px;bottom:-20px;font-family:var(--fd);font-size:160px;font-weight:900;color:rgba(245,193,22,.04);letter-spacing:-5px;line-height:1;pointer-events:none;user-select:none}
@@ -56,19 +52,13 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .hstat-n{font-family:var(--fd);font-size:18px;font-weight:900;color:var(--y);line-height:1}
 .hstat-l{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.3)}
 .hero-curve{height:24px;background:var(--bg);border-radius:24px 24px 0 0;margin-top:-1px}
-
-/* CONTENT */
 .wrap{max-width:700px;margin:0 auto;padding:24px 16px calc(56px + env(safe-area-inset-bottom,0))}
-
-/* RESUMEN RÁPIDO */
 .summary-box{background:var(--ink);border-radius:var(--r);padding:20px 22px;margin-bottom:28px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
 .summary-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--y),rgba(245,193,22,.2))}
 .summary-title{font-family:var(--fd);font-size:18px;font-weight:900;color:var(--y);margin-bottom:12px;letter-spacing:-.2px}
 .summary-list{display:flex;flex-direction:column;gap:8px}
 .summary-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.55}
 .summary-ico{font-size:15px;flex-shrink:0;margin-top:1px}
-
-/* SECTIONS */
 .sec-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--y);color:#000;font-family:var(--fd);font-size:14px;font-weight:900;flex-shrink:0;margin-right:10px;line-height:1}
 .sec-heading{display:flex;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1.5px solid var(--line)}
 .sec-heading-txt{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink);letter-spacing:-.2px}
@@ -78,8 +68,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .doc-section ul{padding-left:18px;display:flex;flex-direction:column;gap:5px}
 .doc-section ul li{font-size:14px;color:var(--g1);line-height:1.6}
 .doc-section strong{color:var(--ink);font-weight:700}
-
-/* FOOTER */
 .footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:20px 20px calc(20px+env(safe-area-inset-bottom,0));display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .footer-brand{font-family:var(--fd);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.5px}
 .footer-brand span{color:var(--y)}
@@ -103,7 +91,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       <path fill="#f6f6f6" d="M301.7,265.67c0-15.81,9.83-27.46,26-27.46s25.93,11.65,25.93,27.46-9.76,27.53-25.93,27.53-26-11.73-26-27.53ZM340.52,265.67c0-9.91-4.15-17.19-12.82-17.19s-12.89,7.28-12.89,17.19,4.22,17.26,12.89,17.26,12.82-7.36,12.82-17.26Z"/>
       <path fill="#F3C120" d="M268.5,106.63c-2.18-2.85-4.85-5.38-7.74-7.74l-10.21-10.21h.16l25.97-25.97V25.97L250.71,0H120.29c-.02,1.26-.12,2.51-.28,3.75,44.04,10.39,72.4,42.47,72.4,89.42s-28.18,78.77-71.98,89.26c.12,1.28.17,2.56.14,3.85h129.99l28.59-28.59v-40.43l-10.64-10.64Z"/>
       <polygon fill="#F3C120" points="100.67 61.54 74.5 61.54 74.5 124.74 100.67 124.74 119.18 106.23 119.18 80.05 100.67 61.54"/>
-    </svg><span class="rest">barrio</span></span>
+    </svg>
   </a>
   <nav class="nav-links">
     <a class="nav-link active" href="privacidad.html">Privacidad</a>
@@ -119,11 +107,11 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="doc-eyebrow">Documento legal · dbarrio</div>
     <h1 class="doc-title">Política de<br><em>Privacidad</em></h1>
     <div class="doc-meta">
-      <span class="doc-meta-txt">Versión 1.0</span>
+      <span class="doc-meta-txt">Versión 1.1</span>
       <span class="doc-meta-dot"></span>
       <span class="doc-meta-txt">2025</span>
       <span class="doc-meta-dot"></span>
-      <span class="doc-meta-txt">La Habana</span>
+      <span class="doc-meta-txt">La Habana · Santo Domingo</span>
     </div>
   </div>
   <div class="hero-stats">
@@ -136,7 +124,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 
 <div class="wrap">
 
-  <!-- RESUMEN -->
   <div class="summary-box">
     <div class="summary-title">En resumen, sin tecnicismos</div>
     <div class="summary-list">
@@ -147,17 +134,15 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     </div>
   </div>
 
-  <!-- 01 -->
   <div class="doc-section">
     <div class="sec-heading">
       <span class="sec-num">01</span>
       <span class="sec-heading-txt">¿Quién es responsable de tus datos?</span>
     </div>
-    <p><strong>dbarrio</strong> es la plataforma de gestión de servicios técnicos a domicilio operada desde La Habana, Cuba, accesible en <strong>dbarrio-two.vercel.app</strong>. Somos responsables del tratamiento de los datos personales que recopilas al usar esta plataforma.</p>
+    <p><strong>dbarrio</strong> es la plataforma de gestión de servicios técnicos a domicilio operada en La Habana, Cuba y Santo Domingo, República Dominicana, accesible en <strong>dbarrio.app</strong>. Somos responsables del tratamiento de los datos personales que proporcionas al usar esta plataforma.</p>
     <p>Para cualquier consulta sobre privacidad puedes escribirnos directamente por WhatsApp al número de contacto disponible en la plataforma.</p>
   </div>
 
-  <!-- 02 -->
   <div class="doc-section">
     <div class="sec-heading">
       <span class="sec-num">02</span>
@@ -174,7 +159,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <p style="margin-top:10px">Los técnicos registrados también proporcionan su email y contraseña para acceder al panel de trabajo.</p>
   </div>
 
-  <!-- 03 -->
   <div class="doc-section">
     <div class="sec-heading">
       <span class="sec-num">03</span>
@@ -190,7 +174,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <p style="margin-top:10px"><strong>No usamos tus datos</strong> para publicidad, marketing de terceros, análisis de comportamiento comercial ni ningún fin distinto al servicio solicitado.</p>
   </div>
 
-  <!-- 04 -->
   <div class="doc-section">
     <div class="sec-heading">
       <span class="sec-num">04</span>
@@ -201,7 +184,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <p><strong>No vendemos, alquilamos ni cedemos</strong> tus datos personales a empresas, anunciantes ni terceros con ningún fin comercial.</p>
   </div>
 
-  <!-- 05 -->
   <div class="doc-section">
     <div class="sec-heading">
       <span class="sec-num">05</span>
@@ -216,7 +198,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <p style="margin-top:10px">Puedes solicitarnos la eliminación de tus datos en cualquier momento. Procesaremos tu solicitud en un plazo razonable, salvo que exista una obligación legal de conservarlos.</p>
   </div>
 
-  <!-- 06 -->
   <div class="doc-section">
     <div class="sec-heading">
       <span class="sec-num">06</span>
@@ -232,7 +213,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <p style="margin-top:10px">Para ejercer cualquiera de estos derechos, contáctanos por WhatsApp desde el botón disponible en la plataforma.</p>
   </div>
 
-  <!-- 07 -->
   <div class="doc-section">
     <div class="sec-heading">
       <span class="sec-num">07</span>
@@ -245,7 +225,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 </div>
 
 <footer class="footer">
-  <span class="footer-brand">De<span>B</span>arrio</span>
+  <span class="footer-brand">d<span>b</span>arrio</span>
   <div class="footer-links">
     <a href="index.html">Inicio</a>
     <a href="terminos.html">Términos de uso</a>
