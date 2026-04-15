@@ -893,10 +893,12 @@ button{font-family:var(--f);cursor:pointer}
       <option value="centro">Centro — Plaza, C.Habana, H.Vieja, Diez de Oct., Cerro</option>
       <option value="este">Este — Regla, H.del Este, Guanabacoa, S.M.Padrón</option>
       <option value="sur">Sur — Boyeros, Arroyo Naranjo, Cotorro</option>
+      <option value="rd-centro">🇩🇴 RD — Santo Domingo (DN)</option>
+      <option value="rd-este">🇩🇴 RD — Santo Domingo Este</option>
+      <option value="rd-norte">🇩🇴 RD — Santo Domingo Norte</option>
+      <option value="rd-oeste">🇩🇴 RD — Santo Domingo Oeste / Los Alcarrizos</option>
+      <option value="rd-sur">🇩🇴 RD — Boca Chica</option>
     </select>
-  </div>
-  <div id="lista-so"><div class="loading">Cargando...</div></div>
-</div>
 
 <!-- CAJA -->
 <div class="section" id="sec-ca">
@@ -1188,13 +1190,22 @@ const MUNICIPIO_ZONA = {
   'Regla':'este','La Habana del Este':'este',
   'Guanabacoa':'este','San Miguel del Padrón':'este',
   'Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur',
+  'Santo Domingo (DN)':'rd-centro','Santo Domingo Este':'rd-este',
+  'Santo Domingo Norte':'rd-norte','Santo Domingo Oeste':'rd-oeste',
+  'Los Alcarrizos':'rd-oeste','Boca Chica':'rd-sur',
+  'Pedro Brand':'rd-norte','San Antonio de Guerra':'rd-norte',
 };
-const ZONA_LABEL = { oeste:'Oeste', centro:'Centro', este:'Este', sur:'Sur' };
+const ZONA_LABEL = { oeste:'Oeste', centro:'Centro', este:'Este', sur:'Sur', 'rd-centro':'RD Centro', 'rd-este':'RD Este', 'rd-norte':'RD Norte', 'rd-oeste':'RD Oeste', 'rd-sur':'RD Sur' };
 const ZONA_MUNICIPIOS = {
   oeste:  'Playa · La Lisa · Marianao',
   centro: 'Plaza · C.Habana · H.Vieja · Diez de Oct. · Cerro',
   este:   'Regla · H.del Este · Guanabacoa · S.M.Padrón',
   sur:    'Boyeros · Arroyo Naranjo · Cotorro',
+  'rd-centro': 'Santo Domingo (DN)',
+  'rd-este':   'Santo Domingo Este',
+  'rd-norte':  'Santo Domingo Norte · Pedro Brand · San Antonio de Guerra',
+  'rd-oeste':  'Santo Domingo Oeste · Los Alcarrizos',
+  'rd-sur':    'Boca Chica',
 };
 
 // ══ CFG TEMPLATES ══
