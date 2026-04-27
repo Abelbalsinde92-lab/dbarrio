@@ -1,32 +1,193 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" prefix="og: https://ogp.me/ns#">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="theme-color" content="#0F0F1A"/>
-<title>dbarrio — técnicos a domicilio · La Habana &amp; Santo Domingo</title>
-<meta name="description" content="¿Se te rompió algo en casa? Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Servicio rápido en La Habana."/>
-<meta name="keywords" content="técnicos La Habana, reparaciones a domicilio, plomería, electricidad, refrigeración, electrodomésticos, dbarrio"/>
+
+<!-- ═══ SEO PRIMARIO ═══ -->
+<title>dbarrio | Técnicos a Domicilio en La Habana — Electricidad, Plomería, Refrigeración</title>
+<meta name="description" content="Técnicos verificados a domicilio en La Habana. Electricidad, plomería, refrigeración, electrodomésticos y más. Solicita ahora, recibe tu código de seguimiento y garantía en cada servicio."/>
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+<link rel="canonical" href="https://dbarrio.app/"/>
+
+<!-- Keywords (señal secundaria, no crítica) -->
+<meta name="keywords" content="técnicos a domicilio La Habana, reparaciones a domicilio Cuba, electricista La Habana, plomero La Habana, refrigeración La Habana, electrodomésticos La Habana, dbarrio, técnicos verificados"/>
+
+<!-- Geo Local -->
+<meta name="geo.region" content="CU-03"/>
+<meta name="geo.placename" content="La Habana, Cuba"/>
+<meta name="geo.position" content="23.1136;-82.3666"/>
+<meta name="ICBM" content="23.1136, -82.3666"/>
+
+<!-- ═══ OPEN GRAPH ═══ -->
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://dbarrio.app/"/>
-<meta property="og:title" content="dbarrio — técnicos a domicilio · La Habana &amp; Santo Domingo"/>
-<meta property="og:description" content="Técnicos verificados en tu municipio. Solicita ahora y recibe tu código de seguimiento."/>
+<meta property="og:site_name" content="dbarrio"/>
+<meta property="og:locale" content="es_CU"/>
+<meta property="og:title" content="dbarrio — Técnicos Verificados a Domicilio en La Habana"/>
+<meta property="og:description" content="Solicita un técnico en tu municipio. Electricidad, plomería, refrigeración y más. Código de seguimiento y garantía incluidos."/>
 <meta property="og:image" content="https://dbarrio.app/db-512.png"/>
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="dbarrio — técnicos en La Habana"/>
-<meta name="twitter:description" content="Técnicos verificados en tu municipio. Solicita ahora."/>
+<meta property="og:image:width" content="512"/>
+<meta property="og:image:height" content="512"/>
+<meta property="og:image:alt" content="dbarrio — técnicos a domicilio en La Habana"/>
+
+<!-- ═══ TWITTER / X ═══ -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@dbarrio_fix"/>
+<meta name="twitter:title" content="dbarrio — Técnicos Verificados en La Habana"/>
+<meta name="twitter:description" content="Electricidad, plomería, refrigeración y más. Técnicos en tu municipio con garantía de servicio."/>
+<meta name="twitter:image" content="https://dbarrio.app/db-512.png"/>
+
+<!-- ═══ PWA / MOBILE ═══ -->
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="dbarrio"/>
+
+<!-- ═══ ICONOS ═══ -->
 <link rel="icon" type="image/png" sizes="32x32" href="db-32.png?v=2">
 <link rel="icon" type="image/png" sizes="16x16" href="db-16.png?v=2">
 <link rel="apple-touch-icon" sizes="180x180" href="db-180.png?v=2">
 <link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=2">
 <link rel="manifest" href="manifest.json?v=2">
+
+<!-- ═══ FUENTES — OPTIMIZADO PARA CORE WEB VITALS ═══ -->
+<!-- Preconnect crítico ANTES de cualquier stylesheet -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet"/>
+<!-- Preconnect Supabase para reducir latencia en llamadas API -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+<!-- Cargar fuentes con display=swap para evitar FOIT (Flash of Invisible Text) -->
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet"/></noscript>
+
+<!-- ═══ SCHEMA.ORG JSON-LD ═══ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://dbarrio.app/#organization",
+      "name": "dbarrio",
+      "url": "https://dbarrio.app/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://dbarrio.app/db-512.png",
+        "width": 512,
+        "height": 512
+      },
+      "sameAs": [
+        "https://www.instagram.com/dbarrio_fix"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "availableLanguage": "Spanish"
+      }
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://dbarrio.app/#localbusiness",
+      "name": "dbarrio — Técnicos a Domicilio",
+      "description": "Plataforma de técnicos verificados a domicilio en La Habana. Electricidad, plomería, refrigeración, electrodomésticos, cerrajería y más.",
+      "url": "https://dbarrio.app/",
+      "logo": "https://dbarrio.app/db-512.png",
+      "image": "https://dbarrio.app/db-512.png",
+      "priceRange": "$",
+      "currenciesAccepted": "CUP, MLC",
+      "paymentAccepted": "Cash",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "La Habana",
+        "addressCountry": "CU"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 23.1136,
+        "longitude": -82.3666
+      },
+      "areaServed": [
+        {"@type": "City", "name": "La Habana"},
+        {"@type": "AdministrativeArea", "name": "Playa"},
+        {"@type": "AdministrativeArea", "name": "La Lisa"},
+        {"@type": "AdministrativeArea", "name": "Marianao"},
+        {"@type": "AdministrativeArea", "name": "Centro Habana"},
+        {"@type": "AdministrativeArea", "name": "Plaza de la Revolución"},
+        {"@type": "AdministrativeArea", "name": "Diez de Octubre"},
+        {"@type": "AdministrativeArea", "name": "Cerro"},
+        {"@type": "AdministrativeArea", "name": "Boyeros"},
+        {"@type": "AdministrativeArea", "name": "Arroyo Naranjo"}
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Servicios Técnicos a Domicilio",
+        "itemListElement": [
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Electricidad a domicilio en La Habana"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Plomería a domicilio en La Habana"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Refrigeración a domicilio en La Habana"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Reparación de electrodomésticos en La Habana"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Cerrajería a domicilio en La Habana"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Reparación de computadoras La Habana"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Reparación de celulares La Habana"}}
+        ]
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "reviewCount": "3",
+        "bestRating": "5"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://dbarrio.app/#website",
+      "url": "https://dbarrio.app/",
+      "name": "dbarrio",
+      "description": "Técnicos verificados a domicilio en La Habana",
+      "publisher": {"@id": "https://dbarrio.app/#organization"},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://dbarrio.app/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cómo funciona dbarrio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Solicitas el servicio indicando municipio, tipo de trabajo y tu WhatsApp. Recibes un código db-xxxx de seguimiento. Un técnico verificado de tu zona te contacta para coordinar. El servicio incluye garantía."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿En qué municipios de La Habana operan?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "dbarrio opera en Playa, La Lisa, Marianao, Plaza de la Revolución, Centro Habana, La Habana Vieja, Diez de Octubre, Cerro, Regla, Habana del Este, Guanabacoa, San Miguel del Padrón, Boyeros, Arroyo Naranjo y Cotorro."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Los servicios tienen garantía?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Todos los trabajos realizados a través de dbarrio incluyen garantía. Si algo falla dentro del período de garantía, lo resolvemos sin costo adicional."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -234,6 +395,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Saltar al contenido</a>
 <div class="toast" id="toast"></div>
 <header class="header">
   <div class="brand">
@@ -250,7 +412,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       <polygon fill="#F3C120" points="100.67 61.54 74.5 61.54 74.5 124.74 100.67 124.74 119.18 106.23 119.18 80.05 100.67 61.54"/>
     </svg>
   </div>
-  <nav class="nav">
+  <nav class="nav" aria-label="Navegación principal">
     <button class="nav-btn nav-sec" onclick="open_('gar')">Garantía</button>
     <button class="nav-btn nav-sec" onclick="open_('cal')">Calificar</button>
     <button class="nav-btn" onclick="open_('acc')">Entrar</button>
@@ -258,14 +420,15 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   </nav>
 </header>
 
-<section class="hero">
+<main id="main-content">
+<section class="hero" aria-labelledby="hero-heading">
   <div class="hero-grid" aria-hidden="true"></div>
   <div class="hero-wm" aria-hidden="true">db</div>
   <div class="hero-chip">
     <span class="hero-dot"></span>
     <span class="hero-chip-txt">Técnicos activos · La Habana &amp; Santo Domingo</span>
   </div>
-  <h1 class="hero-title">¿Se te<br>rompió algo<br><em>en casa?</em></h1>
+  <h1 class="hero-title" id="hero-heading">¿Se te<br>rompió algo<br><em>en casa?</em></h1>
   <p class="hero-desc">Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Solicita ahora — recibe tu <span class="code-b">db-xxxx</span> de seguimiento.</p>
   <div class="hero-btns">
     <button class="btn btn-y" onclick="open_('sol')">
@@ -307,7 +470,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   <div class="acordeon">
     <div class="acord-item open" id="ac-como">
       <div class="acord-hdr" onclick="toggleAcord('ac-como')">
-        <span class="acord-title">✅ ¿Cómo funciona?</span>
+        <span class="acord-title" role="heading" aria-level="3">✅ ¿Cómo funciona?</span>
         <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="acord-body">
@@ -351,9 +514,9 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   </div>
 </section>
 
-<section class="section section-dark" id="sec-planes">
+<section class="section section-dark" id="sec-planes" aria-labelledby="planes-heading">
   <div class="sec-label" style="color:var(--y);opacity:.7">dbarrio para empresas</div>
-  <h2 class="sec-title light">Mantenimiento fijo<br><em style="font-style:normal;color:var(--y)">para tu negocio</em></h2>
+  <h2 class="sec-title light" id="planes-heading">Mantenimiento fijo<br><em style="font-style:normal;color:var(--y)">para tu negocio</em></h2>
   <p class="sec-sub light" style="margin-bottom:24px">Restaurantes, hostales, oficinas y negocios. Paga una cuota mensual fija y ten un técnico de confianza siempre disponible — sin buscar, sin sorpresas.</p>
   <div class="planes-grid">
     <div class="plan-card">
@@ -424,13 +587,20 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   </div>
 </section>
 
-<footer class="footer">
-  <div class="footer-brand">d<span>b</span>arrio</div>
+</main><!-- /main -->
+
+<footer class="footer" itemscope itemtype="https://schema.org/LocalBusiness">
+  <div class="footer-brand" itemprop="name">d<span>b</span>arrio</div>
   <div class="footer-links">
     <a class="footer-link" href="privacidad.html">Privacidad</a>
     <a class="footer-link" href="terminos.html">Términos de uso</a>
+    <a class="footer-link" href="zona-db.html">Zona db</a>
   </div>
-  <div class="footer-copy">© 2025 dbarrio · La Habana · Santo Domingo · Santo Domingo</div>
+  <address class="footer-copy" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style:normal">
+    © 2026 dbarrio ·
+    <span itemprop="addressLocality">La Habana</span>, <span itemprop="addressCountry">Cuba</span>
+    · Santo Domingo, RD
+  </address>
 </footer>
 
 <!-- ══ MODAL SOLICITUD ══ -->
@@ -1038,7 +1208,13 @@ async function cargarPreciosZona(){
 }
 </script>
 <script>
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
 </script>
+<!-- ═══ SKIP-TO-CONTENT (accesibilidad + SEO) ═══ -->
+<style>.skip-link{position:absolute;top:-100px;left:0;background:var(--y);color:#000;padding:8px 16px;font-weight:700;font-size:14px;z-index:9999;border-radius:0 0 8px 0}.skip-link:focus{top:0}</style>
 </body>
 </html>
