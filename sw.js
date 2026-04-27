@@ -1,4 +1,4 @@
-const CACHE = 'dbarrio-v4';
+const CACHE = 'dbarrio-v5';
 const ASSETS = [
   '/',
   '/index.html',
@@ -9,12 +9,23 @@ const ASSETS = [
   '/db-192.png',
   '/db-512.png'
 ];
+
+// URLs que NUNCA deben ir a offline.html
+// Google, bots y Search Console necesitan acceder directamente
+const BYPASS = [
+  '/sitemap.xml',
+  '/robots.txt',
+  '/manifest.json',
+  '/.well-known/'
+];
+
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(c => c.addAll(ASSETS))
   );
   self.skipWaiting();
 });
+
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -23,8 +34,17 @@ self.addEventListener('activate', e => {
   );
   self.clients.claim();
 });
+
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+
+  const url = new URL(e.request.url);
+
+  // Bypass completo para archivos SEO y de sistema
+  // El SW no intercepta, la red responde directamente
+  const isBypass = BYPASS.some(path => url.pathname.startsWith(path));
+  if (isBypass) return;
+
   e.respondWith(
     fetch(e.request)
       .then(res => {
@@ -41,21 +61,23 @@ self.addEventListener('fetch', e => {
       )
   );
 });
+
 self.addEventListener('push', e => {
   let data = {};
   try { data = e.data?.json() || {}; } catch (_) {}
   e.waitUntil(
     self.registration.showNotification(data.title || 'dbarrio', {
-      body:    data.body  || 'Nueva actividad',
-      icon:    data.icon  || '/db-192.png',
-      badge:            '/db-192.png',
-      vibrate: [200, 100, 200],
-      tag:     data.tag   || 'dbarrio-notif',
+      body:     data.body  || 'Nueva actividad',
+      icon:     data.icon  || '/db-192.png',
+      badge:             '/db-192.png',
+      vibrate:  [200, 100, 200],
+      tag:      data.tag   || 'dbarrio-notif',
       renotify: true,
-      data:    data.data  || { url: '/admin.html' }
+      data:     data.data  || { url: '/admin.html' }
     })
   );
 });
+
 self.addEventListener('notificationclick', e => {
   e.notification.close();
   const url = e.notification.data?.url || '/admin.html';
