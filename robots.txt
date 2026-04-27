@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Bloquear paneles internos y páginas de gestión
+Disallow: /admin.html
+Disallow: /socio.html
+Disallow: /reset.html
+Disallow: /guia-socio.html
+Disallow: /offline.html
+Disallow: /upload-utils.js
+Disallow: /sw.js
+
+# Sitemap
+Sitemap: https://dbarrio.app/sitemap.xml
