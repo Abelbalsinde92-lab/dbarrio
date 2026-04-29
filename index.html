@@ -392,6 +392,9 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .precio-zona-item{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:4px 0}
 .precio-zona-nombre{color:var(--ink);font-weight:500}
 .precio-zona-val{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ok)}
+.srv-link-card{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);text-decoration:none;transition:border-color .15s,background .15s}
+.srv-link-card:hover{border-color:var(--yd);background:var(--y-bg)}
+.srv-link-lbl{font-family:var(--fd);font-size:13px;font-weight:900;color:var(--ink);text-align:center;line-height:1.2}
 </style>
 </head>
 <body>
@@ -510,6 +513,35 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
         </div>
         <button class="btn btn-k btn-full" onclick="open_('uni')">Registrarme como técnico</button>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECCIÓN SERVICIOS CON LINKS SEO ═══ -->
+<section class="section section-light" id="sec-servicios" aria-labelledby="servicios-heading" style="padding-top:32px">
+  <div class="sec-label">🔧 Nuestros servicios</div>
+  <h2 class="sec-title dark" id="servicios-heading">¿Qué necesitas<br><em style="font-style:normal;color:var(--yd)">reparar hoy?</em></h2>
+  <p class="sec-sub" style="margin-bottom:20px">Técnicos verificados para cada tipo de trabajo — en La Habana y Santo Domingo.</p>
+  <div style="margin-bottom:24px">
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇨🇺 La Habana, Cuba</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <a href="electricidad-la-habana.html" class="srv-link-card"><span style="font-size:26px">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
+      <a href="plomeria-la-habana.html" class="srv-link-card"><span style="font-size:26px">🚿</span><span class="srv-link-lbl">Plomería</span></a>
+      <a href="refrigeracion-la-habana.html" class="srv-link-card"><span style="font-size:26px">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
+      <a href="electrodomesticos-la-habana.html" class="srv-link-card"><span style="font-size:26px">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
+      <a href="cerrajeria-la-habana.html" class="srv-link-card"><span style="font-size:26px">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
+      <a href="reparacion-celulares-la-habana.html" class="srv-link-card"><span style="font-size:26px">📱</span><span class="srv-link-lbl">Celulares</span></a>
+    </div>
+  </div>
+  <div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇩🇴 Santo Domingo, RD</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      <a href="electricidad-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
+      <a href="plomeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">🚿</span><span class="srv-link-lbl">Plomería</span></a>
+      <a href="refrigeracion-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
+      <a href="electrodomesticos-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
+      <a href="cerrajeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
+      <a href="reparacion-celulares-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">📱</span><span class="srv-link-lbl">Celulares</span></a>
     </div>
   </div>
 </section>
