@@ -1,36 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Página principal -->
   <url>
     <loc>https://dbarrio.app/</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- Zona db (blog/consejos) -->
   <url>
     <loc>https://dbarrio.app/zona-db.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- Términos de uso -->
   <url>
     <loc>https://dbarrio.app/terminos.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
-  <!-- Política de privacidad -->
   <url>
     <loc>https://dbarrio.app/privacidad.html</loc>
-    <lastmod>2026-04-27</lastmod>
+    <lastmod>2026-04-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
+  <url>
+    <loc>https://dbarrio.app/electricidad-la-habana.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/electricidad-santo-domingo.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/plomeria-la-habana.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/plomeria-santo-domingo.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/refrigeracion-la-habana.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/refrigeracion-santo-domingo.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/electrodomesticos-la-habana.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/electrodomesticos-santo-domingo.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/cerrajeria-la-habana.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/cerrajeria-santo-domingo.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/reparacion-celulares-la-habana.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dbarrio.app/reparacion-celulares-santo-domingo.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
