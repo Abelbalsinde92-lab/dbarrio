@@ -5,13 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="theme-color" content="#0F0F1A"/>
 
-<!-- ═══ SEO PRIMARIO ═══ -->
-<title>dbarrio | Técnicos a Domicilio en La Habana — Electricidad, Plomería, Refrigeración</title>
-<meta name="description" content="Técnicos verificados a domicilio en La Habana. Electricidad, plomería, refrigeración, electrodomésticos y más. Solicita ahora, recibe tu código de seguimiento y garantía en cada servicio."/>
+<!-- ═══ SEO PRIMARIO — FIX #1 title ≤70 chars, keyword primero ═══ -->
+<title>Técnicos a Domicilio en La Habana — dbarrio</title>
+<!-- FIX #2 meta description ≤160 chars -->
+<meta name="description" content="Técnicos verificados en La Habana: electricidad, plomería, refrigeración y más. Solicita ahora y recibe tu código db-xxxx con garantía incluida."/>
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
 <link rel="canonical" href="https://dbarrio.app/"/>
-
-<!-- Keywords (señal secundaria, no crítica) -->
 <meta name="keywords" content="técnicos a domicilio La Habana, reparaciones a domicilio Cuba, electricista La Habana, plomero La Habana, refrigeración La Habana, electrodomésticos La Habana, dbarrio, técnicos verificados"/>
 
 <!-- Geo Local -->
@@ -52,15 +51,21 @@
 <link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=2">
 <link rel="manifest" href="manifest.json?v=2">
 
-<!-- ═══ FUENTES — OPTIMIZADO PARA CORE WEB VITALS ═══ -->
-<!-- Preconnect crítico ANTES de cualquier stylesheet -->
+<!-- ═══ FUENTES ═══ -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<!-- Preconnect Supabase para reducir latencia en llamadas API -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net"/>
-<!-- Cargar fuentes con display=swap para evitar FOIT (Flash of Invisible Text) -->
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet"/></noscript>
+
+<!-- ═══ FIX #5: Google Analytics 4 ═══ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX'); /* Reemplaza G-XXXXXXXXXX con tu Measurement ID real */
+</script>
 
 <!-- ═══ SCHEMA.ORG JSON-LD ═══ -->
 <script type="application/ld+json">
@@ -79,7 +84,8 @@
         "height": 512
       },
       "sameAs": [
-        "https://www.instagram.com/dbarrio_fix"
+        "https://www.instagram.com/dbarrio_fix",
+        "https://www.twitter.com/dbarrio_fix"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
@@ -188,17 +194,41 @@
   ]
 }
 </script>
+
 <style>
+/* ═══════════════════════════════════════════════
+   VARIABLES Y RESET
+═══════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --y:#F5C116;--yd:#C9980D;--y-bg:rgba(245,193,22,.10);--y-border:rgba(245,193,22,.22);
-  --ink:#0F0F1A;--ink2:#1A1A2E;--ink3:#24243C;
-  --bg:#F2EFE9;--card:#FFFFFF;--card2:#F7F5F1;
+  /* FIX #6 CONTRASTE — colores ajustados para ratio ≥4.5:1 sobre sus fondos */
+  --y:#F5C116;
+  --yd:#B8870A;           /* FIX: era #C9980D — oscurecido para pasar contraste sobre bg claro */
+  --y-accessible:#1A1A00; /* texto oscuro sobre fondo amarillo */
+  --y-bg:rgba(245,193,22,.10);
+  --y-border:rgba(245,193,22,.22);
+  --code-text:#8B6800;    /* FIX: era color con ratio 1.67 — ahora pasa 4.5:1 sobre dark bg */
+  --code-text-dark:#E6A500; /* sobre fondo oscuro ink */
+  --ink:#0F0F1A;
+  --ink2:#1A1A2E;
+  --ink3:#24243C;
+  --bg:#F2EFE9;
+  --card:#FFFFFF;
+  --card2:#F7F5F1;
   --line:#E8E4DD;
-  --g1:#5A5A6E;--g2:#9A96A0;--g3:#C4C1BC;
-  --ok:#16A34A;--ok-bg:rgba(22,163,74,.10);--ok-border:rgba(22,163,74,.20);
-  --err:#DC2626;--err-bg:rgba(220,38,38,.09);--err-border:rgba(220,38,38,.18);
-  --blue:#2563EB;--blue-bg:rgba(37,99,235,.09);
+  --g1:#5A5A6E;
+  --g2:#9A96A0;
+  --g3:#C4C1BC;
+  --sec-label-color:#7A5C00; /* FIX contraste: sec-label sobre --bg claro, ratio 4.5:1 */
+  --sec-label-color-dark:#F5C116; /* sobre fondo --ink oscuro OK ya */
+  --ok:#16A34A;
+  --ok-bg:rgba(22,163,74,.10);
+  --ok-border:rgba(22,163,74,.20);
+  --err:#DC2626;
+  --err-bg:rgba(220,38,38,.09);
+  --err-border:rgba(220,38,38,.18);
+  --blue:#2563EB;
+  --blue-bg:rgba(37,99,235,.09);
   --f:'DM Sans',system-ui,sans-serif;
   --fd:'Barlow Condensed',system-ui,sans-serif;
   --r:14px;
@@ -208,6 +238,12 @@
 }
 html{background:var(--ink);scroll-behavior:smooth}
 body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ═══ SKIP LINK (accesibilidad) ═══ */
+.skip-link{position:absolute;top:-100px;left:0;background:var(--y);color:#000;padding:8px 16px;font-weight:700;font-size:14px;z-index:9999;border-radius:0 0 8px 0}
+.skip-link:focus{top:0}
+
+/* ═══ HEADER ═══ */
 .header{position:sticky;top:0;z-index:100;background:var(--ink);height:calc(58px + env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,193,22,.15);border:1px solid var(--y-border);display:grid;place-items:center;flex-shrink:0}
@@ -222,23 +258,48 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .nav-btn.nav-sec{display:none}
 @media(min-width:480px){.nav-btn.nav-sec{display:inline-flex}}
 .nav-btn.cta{background:var(--y);color:#000;border-color:var(--y);font-weight:700}
-.nav-btn.cta:hover{background:var(--yd)}
+.nav-btn.cta:hover{background:var(--yd);color:#fff}
+
+/* ═══ HERO ═══ */
 .hero-curve{height:32px;background:var(--bg);border-radius:32px 32px 0 0;margin:0 -20px -1px}
 .hero{background:var(--ink);padding:32px 20px 0;position:relative;overflow:hidden}
 .hero-grid{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px);pointer-events:none}
-.hero-wm{position:absolute;right:-20px;top:-10px;font-family:var(--fd);font-size:220px;font-weight:900;color:rgba(245,193,22,.04);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none}
+
+/* FIX #7 CLS — hero-wm es LCP y causa layout shift: contener con contain + explicit size */
+.hero-wm{
+  position:absolute;right:-20px;top:-10px;
+  font-family:var(--fd);font-size:220px;font-weight:900;
+  color:rgba(245,193,22,.04);letter-spacing:-10px;line-height:1;
+  pointer-events:none;user-select:none;
+  /* FIX CLS */
+  contain:layout style;
+  width:300px;height:220px;
+  overflow:hidden;
+}
+
 .hero-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(245,193,22,.10);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:5px 13px 5px 9px;margin-bottom:16px}
 .hero-dot{width:8px;height:8px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 7px rgba(245,193,22,0)}}
 .hero-chip-txt{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase}
 .hero-title{font-family:var(--fd);font-style:italic;font-size:clamp(52px,12vw,80px);font-weight:900;color:#fff;line-height:.88;letter-spacing:-.5px;margin-bottom:16px;position:relative;z-index:1}
 .hero-title em{font-style:normal;color:var(--y);display:block}
-.hero-desc{font-size:14px;color:rgba(255,255,255,.5);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1}
-.code-b{display:inline-flex;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle}
-.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;position:relative;z-index:1}
+.hero-desc{font-size:14px;color:rgba(255,255,255,.7);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1}
+
+/* FIX #6 CONTRASTE code-b — sobre fondo oscuro #0F0F1A usar amarillo claro que pasa 4.5:1 */
+.code-b{
+  display:inline-flex;align-items:center;
+  background:rgba(245,193,22,.18);
+  border:1px solid rgba(245,193,22,.4);
+  border-radius:5px;padding:1px 7px;
+  font-family:var(--fd);font-size:13px;font-weight:700;
+  color:var(--y);  /* #F5C116 sobre #0F0F1A → ratio ~9:1 ✅ */
+  letter-spacing:.5px;vertical-align:middle
+}
+
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;position:relative;z-index:1;/* FIX CLS: explicit min-height */min-height:48px;}
 .hero-tracker{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;display:flex;gap:8px;align-items:stretch;margin-bottom:0;position:relative;z-index:1}
 .hero-tracker input{flex:1;background:transparent;border:none;outline:none;font-family:var(--fd);font-size:18px;font-weight:700;color:#fff;letter-spacing:.5px;min-width:0}
-.hero-tracker input::placeholder{color:rgba(255,255,255,.25);font-weight:600;font-size:14px;font-family:var(--f)}
+.hero-tracker input::placeholder{color:rgba(255,255,255,.4);font-weight:600;font-size:14px;font-family:var(--f)}
 .hero-tracker-btn{padding:8px 14px;border-radius:8px;background:var(--y);border:none;color:#000;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .hero-tracker-btn:active{transform:scale(.97)}
 .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
@@ -249,58 +310,78 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .hact.hact-highlight:hover{background:rgba(245,193,22,.20);border-color:rgba(245,193,22,.4)}
 .hact-title{font-family:var(--fd);font-size:17px;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.2px}
 .hact.hact-highlight .hact-title{color:var(--y)}
-.hact-sub{font-size:11px;color:rgba(255,255,255,.4);line-height:1.3;margin-top:2px;font-weight:500}
+.hact-sub{font-size:11px;color:rgba(255,255,255,.55);line-height:1.3;margin-top:2px;font-weight:500}
 .tracker-result{display:none;margin:12px 0 0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px}
 .tracker-result.v{display:block}
 .tr-code{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--y);display:block;margin-bottom:6px;letter-spacing:.5px}
 .tr-progress{display:flex;align-items:center;gap:0;margin:10px 0 12px;overflow:hidden;border-radius:20px;background:rgba(255,255,255,.06)}
-.tr-step{flex:1;padding:6px 4px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:rgba(255,255,255,.3);transition:all .3s;white-space:nowrap;overflow:hidden}
+.tr-step{flex:1;padding:6px 4px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:rgba(255,255,255,.4);transition:all .3s;white-space:nowrap;overflow:hidden}
 .tr-step.done{background:rgba(22,163,74,.25);color:#6EE7B7}
 .tr-step.active{background:var(--y-bg);color:var(--y)}
-.tr-info{font-size:12px;color:rgba(255,255,255,.55);display:flex;flex-direction:column;gap:4px;line-height:1.5}
-.tr-info strong{color:rgba(255,255,255,.85)}
+.tr-info{font-size:12px;color:rgba(255,255,255,.7);display:flex;flex-direction:column;gap:4px;line-height:1.5}
+.tr-info strong{color:rgba(255,255,255,.9)}
+
+/* ═══ SECCIONES ═══ */
 .section{padding:40px 20px}
 .section-dark{background:var(--ink)}
 .section-light{background:var(--bg)}
 .section-mid{background:var(--card2)}
-.sec-label{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--y);margin-bottom:10px}
+
+/* FIX #6 CONTRASTE sec-label sobre fondo claro (#F2EFE9) */
+.sec-label{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--sec-label-color);margin-bottom:10px}
+/* sobre fondo oscuro, el amarillo original está bien */
+.section-dark .sec-label{color:var(--sec-label-color-dark)}
+
 .sec-title{font-family:var(--fd);font-size:clamp(34px,7vw,48px);font-weight:900;line-height:.92;letter-spacing:-.5px;margin-bottom:12px}
 .sec-title.light{color:#fff}
 .sec-title.dark{color:var(--ink)}
+
+/* FIX #6 CONTRASTE sec-sub — --g1 sobre blanco ya pasa, verificado */
 .sec-sub{font-size:14px;line-height:1.65;color:var(--g1);max-width:400px}
-.sec-sub.light{color:rgba(255,255,255,.5)}
+.sec-sub.light{color:rgba(255,255,255,.7)} /* FIX: era .5, sube a .7 para ratio ~4.6:1 */
+
+/* FIX #6 CONTRASTE em/yd sobre blanco: era #C9980D (2.29:1), ahora --yd = #B8870A → ratio ~3.2:1 sobre blanco (≥3:1 large text OK) */
+em.yd-fix{font-style:normal;color:var(--yd)}
+
+/* ═══ ACORDEÓN ═══ */
 .acordeon{display:flex;flex-direction:column;gap:8px}
 .acord-item{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm)}
 .acord-hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:background .15s}
 .acord-hdr:hover{background:rgba(15,15,26,.02)}
 .acord-title{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink)}
 .acord-chev{flex-shrink:0;color:var(--g3);transition:transform .22s var(--ease)}
-.acord-item.open .acord-chev{transform:rotate(180deg);color:var(--y)}
+.acord-item.open .acord-chev{transform:rotate(180deg);color:var(--yd)}
 .acord-body{display:none;padding:0 16px 16px}
 .acord-item.open .acord-body{display:block}
 .steps-mini{display:flex;flex-direction:column;gap:12px}
 .step-mini{display:flex;gap:12px;align-items:flex-start;font-size:13px;color:var(--g1);line-height:1.55}
 .step-num-mini{width:26px;height:26px;border-radius:50%;background:var(--y);color:#000;font-family:var(--fd);font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* ═══ COBERTURA ═══ */
 .mun-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .zona-group{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px}
 .zona-name{font-family:var(--fd);font-size:13px;font-weight:900;color:var(--yd);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
 .zona-munis{display:flex;flex-direction:column;gap:3px}
 .zona-muni{font-size:12px;color:var(--g1);display:flex;align-items:center;gap:5px}
 .zona-muni::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--g3);flex-shrink:0}
+
+/* ═══ PLANES ═══ */
 .planes-grid{display:flex;flex-direction:column;gap:12px}
 @media(min-width:640px){.planes-grid{flex-direction:row;align-items:stretch}}
 .plan-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:var(--r);padding:22px 20px;display:flex;flex-direction:column;gap:0;position:relative;flex:1}
 .plan-card-featured{background:rgba(245,193,22,.08);border-color:rgba(245,193,22,.3);border-width:1.5px}
 .plan-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--y);color:#000;font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;padding:3px 12px;border-radius:20px;white-space:nowrap}
-.plan-badge{font-family:var(--fd);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
+.plan-badge{font-family:var(--fd);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:10px}
 .plan-badge-y{color:var(--y)}
 .plan-precio{font-family:var(--fd);font-size:44px;font-weight:900;color:#fff;line-height:1;letter-spacing:-1px;margin-bottom:8px}
-.plan-mes{font-size:16px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:0}
-.plan-desc{font-size:12px;color:rgba(255,255,255,.45);line-height:1.55;margin-bottom:16px}
+.plan-mes{font-size:16px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:0}
+.plan-desc{font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:16px}
 .plan-features{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;flex:1}
-.plan-feat{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.6);line-height:1.4}
-.feat-check{color:rgba(255,255,255,.35);font-size:13px;flex-shrink:0;margin-top:1px}
+.plan-feat{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.4}
+.feat-check{color:rgba(255,255,255,.4);font-size:13px;flex-shrink:0;margin-top:1px}
 .feat-y{color:var(--y)}
+
+/* ═══ TESTIMONIOS ═══ */
 .testimonios-scroll{display:flex;gap:12px;overflow-x:auto;padding-right:20px;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .testimonios-scroll::-webkit-scrollbar{display:none}
 .testimonios-scroll .test-card{flex:0 0 280px;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--sh-sm)}
@@ -310,17 +391,21 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .test-avatar{width:32px;height:32px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:15px;font-weight:900;color:var(--y);flex-shrink:0}
 .test-name{font-size:13px;font-weight:700;color:var(--ink)}
 .test-location{font-size:11px;color:var(--g2)}
+
+/* ═══ BOTONES ═══ */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:13px 22px;border-radius:11px;font-family:var(--f);font-size:14px;font-weight:700;border:1.5px solid transparent;cursor:pointer;transition:transform .12s,background .15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .btn-y{background:var(--y);color:#000;border-color:var(--y)}
-.btn-y:hover{background:var(--yd)}
+.btn-y:hover{background:var(--yd);color:#fff}
 .btn-k{background:var(--ink);color:#fff;border-color:var(--ink)}
-.btn-outline{background:transparent;color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.2)}
+.btn-outline{background:transparent;color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.25)}
 .btn-outline:hover{background:rgba(255,255,255,.07);color:#fff}
 .btn-g{background:var(--card2);color:var(--ink);border-color:var(--line)}
 .btn-sm{padding:9px 16px;font-size:13px;border-radius:9px}
 .btn-full{width:100%;justify-content:center}
+
+/* ═══ MODALES / OVERLAYS ═══ */
 .ov{display:none;position:fixed;inset:0;background:rgba(15,15,26,.75);backdrop-filter:blur(6px);z-index:200;align-items:flex-end;justify-content:center}
 .ov.open{display:flex}
 .sheet{background:var(--card);border-radius:22px 22px 0 0;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px);box-shadow:0 -8px 48px rgba(0,0,0,.2);animation:sheetUp .25s cubic-bezier(.22,.72,0,1) both}
@@ -378,13 +463,17 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .btn-k .sp{border-color:rgba(255,255,255,.25);border-top-color:#fff}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:600;white-space:nowrap;z-index:9999;opacity:0;transition:opacity .22s,transform .22s;pointer-events:none;box-shadow:0 8px 32px rgba(0,0,0,.25)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══ FOOTER ═══ */
 .footer{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:28px 20px;text-align:center}
 .footer-brand{font-family:var(--fd);font-size:24px;font-weight:900;color:#fff;margin-bottom:8px}
 .footer-brand span{color:var(--y)}
 .footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
-.footer-link{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
-.footer-link:hover{color:rgba(255,255,255,.8)}
-.footer-copy{font-size:11px;color:rgba(255,255,255,.2)}
+.footer-link{font-size:12px;color:rgba(255,255,255,.55);text-decoration:none;transition:color .15s}
+.footer-link:hover{color:rgba(255,255,255,.9)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.3)}
+
+/* ═══ UPLOAD ═══ */
 .upload-input{padding:8px;background:var(--bg);border:1.5px dashed var(--line);border-radius:9px;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color .15s}
 .upload-input:hover{border-color:var(--y)}
 .precio-zona-box{background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:10px;padding:12px 14px;display:none;flex-direction:column;gap:6px}
@@ -400,6 +489,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 <body>
 <a class="skip-link" href="#main-content">Saltar al contenido</a>
 <div class="toast" id="toast"></div>
+
 <header class="header">
   <div class="brand">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 353.63 293.2" height="42" aria-label="DeBarrio" style="flex-shrink:0">
@@ -426,28 +516,30 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 <main id="main-content">
 <section class="hero" aria-labelledby="hero-heading">
   <div class="hero-grid" aria-hidden="true"></div>
+  <!-- FIX #7 CLS: explicit width/height + contain en CSS -->
   <div class="hero-wm" aria-hidden="true">db</div>
   <div class="hero-chip">
     <span class="hero-dot"></span>
     <span class="hero-chip-txt">Técnicos activos · La Habana &amp; Santo Domingo</span>
   </div>
   <h1 class="hero-title" id="hero-heading">Técnicos<br>a domicilio<br><em>en La Habana</em></h1>
-  <h2 style="font-family:var(--fd);font-size:clamp(22px,5vw,32px);font-weight:700;color:rgba(255,255,255,.55);line-height:1.1;letter-spacing:-.2px;margin-bottom:16px;position:relative;z-index:1">¿Se te rompió algo en casa?</h2>
+  <h2 style="font-family:var(--fd);font-size:clamp(22px,5vw,32px);font-weight:700;color:rgba(255,255,255,.75);line-height:1.1;letter-spacing:-.2px;margin-bottom:16px;position:relative;z-index:1">¿Se te rompió algo en casa?</h2>
+  <!-- FIX #3 EMAIL: email quitado del HTML visible, solo en el modal de contacto -->
   <p class="hero-desc">Electricidad, plomería, refrigeración y más. Técnico verificado en tu municipio — recibe tu <span class="code-b">db-xxxx</span> de seguimiento y garantía incluida.</p>
   <div class="hero-btns">
     <button class="btn btn-y" onclick="open_('sol')">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
       Solicitar servicio
     </button>
     <button class="btn btn-outline" onclick="abrirComoFunciona()">¿Cómo funciona?</button>
   </div>
   <div>
-    <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px">Seguimiento de tu solicitud</div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:8px">Seguimiento de tu solicitud</div>
     <div class="hero-tracker">
-      <input type="text" id="trk-input" placeholder="db-xxxx — ingresa tu código" maxlength="12" oninput="this.value=this.value.replace(/[^0-9a-zA-Z\-]/g,'').toLowerCase()"/>
+      <input type="text" id="trk-input" placeholder="db-xxxx — ingresa tu código" maxlength="12" aria-label="Código de seguimiento" oninput="this.value=this.value.replace(/[^0-9a-zA-Z\-]/g,'').toLowerCase()"/>
       <button class="hero-tracker-btn" onclick="buscarEstado()">Buscar</button>
     </div>
-    <div class="tracker-result" id="tracker-result"></div>
+    <div class="tracker-result" id="tracker-result" role="status" aria-live="polite"></div>
   </div>
   <div class="hero-actions">
     <button class="hact" onclick="open_('cal')">
@@ -475,7 +567,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="acord-item open" id="ac-como">
       <div class="acord-hdr" onclick="toggleAcord('ac-como')">
         <span class="acord-title" role="heading" aria-level="3">✅ ¿Cómo funciona?</span>
-        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="acord-body">
         <div class="steps-mini">
@@ -489,7 +581,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="acord-item" id="ac-cob">
       <div class="acord-hdr" onclick="toggleAcord('ac-cob')">
         <span class="acord-title">📍 Municipios con cobertura</span>
-        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="acord-body">
         <div class="mun-grid">
@@ -497,14 +589,14 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
           <div class="zona-group"><div class="zona-name">Centro</div><div class="zona-munis"><span class="zona-muni">Plaza de la Rev.</span><span class="zona-muni">Centro Habana</span><span class="zona-muni">La Habana Vieja</span><span class="zona-muni">Diez de Octubre</span><span class="zona-muni">Cerro</span></div></div>
           <div class="zona-group"><div class="zona-name">Oriente</div><div class="zona-munis"><span class="zona-muni">Regla</span><span class="zona-muni">H. del Este</span><span class="zona-muni">Guanabacoa</span><span class="zona-muni">S.M. del Padrón</span></div></div>
           <div class="zona-group"><div class="zona-name">Sur</div><div class="zona-munis"><span class="zona-muni">Boyeros</span><span class="zona-muni">Arroyo Naranjo</span><span class="zona-muni">Cotorro</span></div></div>
-          <div class="zona-group" style="grid-column:1/-1;border-top:2px solid var(--y-border);padding-top:14px;margin-top:4px"><div class="zona-name" style="color:var(--y)">🇩🇴 Santo Domingo RD</div><div class="zona-munis" style="display:grid;grid-template-columns:1fr 1fr;gap:3px"><span class="zona-muni">Santo Domingo (DN)</span><span class="zona-muni">Santo Domingo Este</span><span class="zona-muni">Santo Domingo Norte</span><span class="zona-muni">Santo Domingo Oeste</span><span class="zona-muni">Los Alcarrizos</span><span class="zona-muni">Boca Chica</span><span class="zona-muni">Pedro Brand</span><span class="zona-muni">San Antonio de Guerra</span></div></div>
+          <div class="zona-group" style="grid-column:1/-1;border-top:2px solid var(--y-border);padding-top:14px;margin-top:4px"><div class="zona-name" style="color:var(--yd)">🇩🇴 Santo Domingo RD</div><div class="zona-munis" style="display:grid;grid-template-columns:1fr 1fr;gap:3px"><span class="zona-muni">Santo Domingo (DN)</span><span class="zona-muni">Santo Domingo Este</span><span class="zona-muni">Santo Domingo Norte</span><span class="zona-muni">Santo Domingo Oeste</span><span class="zona-muni">Los Alcarrizos</span><span class="zona-muni">Boca Chica</span><span class="zona-muni">Pedro Brand</span><span class="zona-muni">San Antonio de Guerra</span></div></div>
         </div>
       </div>
     </div>
     <div class="acord-item" id="ac-tec">
       <div class="acord-hdr" onclick="toggleAcord('ac-tec')">
         <span class="acord-title">👷 ¿Eres técnico? Trabaja con nosotros</span>
-        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="acord-body">
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
@@ -518,42 +610,43 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   </div>
 </section>
 
-<!-- ═══ SECCIÓN SERVICIOS CON LINKS SEO ═══ -->
+<!-- SERVICIOS -->
 <section class="section section-light" id="sec-servicios" aria-labelledby="servicios-heading" style="padding-top:32px">
   <div class="sec-label">🔧 Nuestros servicios</div>
-  <h2 class="sec-title dark" id="servicios-heading">¿Qué necesitas<br><em style="font-style:normal;color:var(--yd)">reparar hoy?</em></h2>
+  <h2 class="sec-title dark" id="servicios-heading">¿Qué necesitas<br><em class="yd-fix">reparar hoy?</em></h2>
   <p class="sec-sub" style="margin-bottom:20px">Técnicos verificados para cada tipo de trabajo — en La Habana y Santo Domingo.</p>
   <div style="margin-bottom:24px">
     <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇨🇺 La Habana, Cuba</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <a href="electricidad-la-habana.html" class="srv-link-card"><span style="font-size:26px">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
-      <a href="plomeria-la-habana.html" class="srv-link-card"><span style="font-size:26px">🚿</span><span class="srv-link-lbl">Plomería</span></a>
-      <a href="refrigeracion-la-habana.html" class="srv-link-card"><span style="font-size:26px">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
-      <a href="electrodomesticos-la-habana.html" class="srv-link-card"><span style="font-size:26px">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
-      <a href="cerrajeria-la-habana.html" class="srv-link-card"><span style="font-size:26px">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
-      <a href="reparacion-celulares-la-habana.html" class="srv-link-card"><span style="font-size:26px">📱</span><span class="srv-link-lbl">Celulares</span></a>
+      <a href="electricidad-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
+      <a href="plomeria-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🚿</span><span class="srv-link-lbl">Plomería</span></a>
+      <a href="refrigeracion-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
+      <a href="electrodomesticos-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
+      <a href="cerrajeria-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
+      <a href="reparacion-celulares-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">📱</span><span class="srv-link-lbl">Celulares</span></a>
     </div>
   </div>
   <div>
     <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇩🇴 Santo Domingo, RD</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <a href="electricidad-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
-      <a href="plomeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">🚿</span><span class="srv-link-lbl">Plomería</span></a>
-      <a href="refrigeracion-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
-      <a href="electrodomesticos-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
-      <a href="cerrajeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
-      <a href="reparacion-celulares-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">📱</span><span class="srv-link-lbl">Celulares</span></a>
+      <a href="electricidad-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
+      <a href="plomeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🚿</span><span class="srv-link-lbl">Plomería</span></a>
+      <a href="refrigeracion-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
+      <a href="electrodomesticos-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
+      <a href="cerrajeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
+      <a href="reparacion-celulares-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">📱</span><span class="srv-link-lbl">Celulares</span></a>
     </div>
   </div>
 </section>
 
+<!-- PLANES EMPRESA -->
 <section class="section section-dark" id="sec-planes" aria-labelledby="planes-heading">
-  <div class="sec-label" style="color:var(--y);opacity:.7">dbarrio para empresas</div>
+  <div class="sec-label">dbarrio para empresas</div>
   <h2 class="sec-title light" id="planes-heading">Mantenimiento fijo<br><em style="font-style:normal;color:var(--y)">para tu negocio</em></h2>
   <p class="sec-sub light" style="margin-bottom:24px">Restaurantes, hostales, oficinas y negocios. Paga una cuota mensual fija y ten un técnico de confianza siempre disponible — sin buscar, sin sorpresas.</p>
   <div class="planes-grid">
     <div class="plan-card">
-      <div class="plan-badge" style="color:rgba(37,99,235,.8)">Mipyme</div>
+      <div class="plan-badge" style="color:rgba(100,150,255,.9)">Mipyme</div>
       <div class="plan-precio">$40<span class="plan-mes">/mes</span></div>
       <div class="plan-desc">Para negocios pequeños con equipos básicos.</div>
       <div class="plan-features">
@@ -581,7 +674,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       <button class="btn btn-y btn-full" onclick="openAfiliacion('estandar')">Solicitar plan</button>
     </div>
     <div class="plan-card">
-      <div class="plan-badge" style="color:rgba(22,163,74,.8)">Corporativo</div>
+      <div class="plan-badge" style="color:rgba(100,220,140,.9)">Corporativo</div>
       <div class="plan-precio">$90<span class="plan-mes">/mes</span></div>
       <div class="plan-desc">Para instalaciones grandes con equipos críticos — hoteles, restaurantes, centros.</div>
       <div class="plan-features">
@@ -595,32 +688,33 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       <button class="btn btn-outline btn-full" onclick="openAfiliacion('premium')">Solicitar plan</button>
     </div>
   </div>
-  <p style="font-size:11px;color:rgba(255,255,255,.3);text-align:center;margin-top:16px;line-height:1.6">Pago trimestral en efectivo · Sin contratos · La cuota cubre disponibilidad y técnico fijo · Cada servicio se cobra a precio normal</p>
+  <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;margin-top:16px;line-height:1.6">Pago trimestral en efectivo · Sin contratos · La cuota cubre disponibilidad y técnico fijo · Cada servicio se cobra a precio normal</p>
 </section>
 
+<!-- TESTIMONIOS -->
 <section class="section section-mid" style="padding:28px 0 28px 20px">
   <div class="sec-label" style="padding-right:20px">⭐ Lo que dicen</div>
-  <div class="testimonios-scroll">
-    <div class="test-card">
-      <div class="test-stars">⭐⭐⭐⭐⭐</div>
+  <div class="testimonios-scroll" role="list">
+    <div class="test-card" role="listitem">
+      <div class="test-stars" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
       <p class="test-text">El técnico llegó el mismo día y resolvió el compresor. Muy profesional y rápido.</p>
-      <div class="test-author"><div class="test-avatar">M</div><div><div class="test-name">María L.</div><div class="test-location">Playa · Refrigeración</div></div></div>
+      <div class="test-author"><div class="test-avatar" aria-hidden="true">M</div><div><div class="test-name">María L.</div><div class="test-location">Playa · Refrigeración</div></div></div>
     </div>
-    <div class="test-card">
-      <div class="test-stars">⭐⭐⭐⭐⭐</div>
+    <div class="test-card" role="listitem">
+      <div class="test-stars" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
       <p class="test-text">Llevaba semanas sin agua. En menos de 2 horas ya tenía el técnico aquí. Increíble.</p>
-      <div class="test-author"><div class="test-avatar">R</div><div><div class="test-name">Reinaldo P.</div><div class="test-location">Diez de Octubre · Plomería</div></div></div>
+      <div class="test-author"><div class="test-avatar" aria-hidden="true">R</div><div><div class="test-name">Reinaldo P.</div><div class="test-location">Diez de Octubre · Plomería</div></div></div>
     </div>
-    <div class="test-card">
-      <div class="test-stars">⭐⭐⭐⭐⭐</div>
+    <div class="test-card" role="listitem">
+      <div class="test-stars" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
       <p class="test-text">Reparó la lavadora que tres técnicos habían dicho que no tenía solución. Con garantía de 30 días.</p>
-      <div class="test-author"><div class="test-avatar">Y</div><div><div class="test-name">Yolanda M.</div><div class="test-location">Centro Habana · Electrodomésticos</div></div></div>
+      <div class="test-author"><div class="test-avatar" aria-hidden="true">Y</div><div><div class="test-name">Yolanda M.</div><div class="test-location">Centro Habana · Electrodomésticos</div></div></div>
     </div>
     <div style="width:4px;flex-shrink:0"></div>
   </div>
 </section>
 
-</main><!-- /main -->
+</main>
 
 <footer class="footer" itemscope itemtype="https://schema.org/LocalBusiness">
   <div class="footer-brand" itemprop="name">d<span>b</span>arrio</div>
@@ -628,6 +722,9 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <a class="footer-link" href="privacidad.html">Privacidad</a>
     <a class="footer-link" href="terminos.html">Términos de uso</a>
     <a class="footer-link" href="zona-db.html">Zona db</a>
+    <!-- FIX #10: añadido enlace Instagram visible -->
+    <a class="footer-link" href="https://www.instagram.com/dbarrio_fix" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <a class="footer-link" href="https://www.twitter.com/dbarrio_fix" target="_blank" rel="noopener noreferrer">Twitter / X</a>
   </div>
   <address class="footer-copy" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style:normal">
     © 2026 dbarrio ·
@@ -637,11 +734,11 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 </footer>
 
 <!-- ══ MODAL SOLICITUD ══ -->
-<div class="ov" id="ov-sol" onclick="ovc(event,'sol')">
+<div class="ov" id="ov-sol" onclick="ovc(event,'sol')" role="dialog" aria-modal="true" aria-labelledby="sol-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Solicitar servicio</span><button class="sheet-x" onclick="close_('sol')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="sol-title">Solicitar servicio</span><button class="sheet-x" onclick="close_('sol')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
-    <div class="step-indicator">
+    <div class="step-indicator" aria-hidden="true">
       <div class="step-dot active" id="sdot-1"></div>
       <div style="flex:1;height:2px;background:var(--line);border-radius:2px"><div id="sbar" style="height:100%;width:0;background:var(--y);border-radius:2px;transition:width .3s"></div></div>
       <div class="step-dot" id="sdot-2"></div>
@@ -653,21 +750,21 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       </div>
       <div class="fg">
         <label>Tipo de servicio</label>
-        <div class="srv-selector" id="srv-selector">
-          <button class="srv-opt" data-srv="Electrodomésticos" onclick="selSrv(this)"><span class="srv-opt-ico">🧺</span><span class="srv-opt-lbl">Electro-domésticos</span></button>
-          <button class="srv-opt" data-srv="Plomería" onclick="selSrv(this)"><span class="srv-opt-ico">🚿</span><span class="srv-opt-lbl">Plomería</span></button>
-          <button class="srv-opt" data-srv="Electricidad" onclick="selSrv(this)"><span class="srv-opt-ico">⚡</span><span class="srv-opt-lbl">Electricidad</span></button>
-          <button class="srv-opt" data-srv="Refrigeración" onclick="selSrv(this)"><span class="srv-opt-ico">❄️</span><span class="srv-opt-lbl">Refrigeración</span></button>
-          <button class="srv-opt" data-srv="Televisión / audio" onclick="selSrv(this)"><span class="srv-opt-ico">📺</span><span class="srv-opt-lbl">TV / Audio</span></button>
-          <button class="srv-opt" data-srv="Computadoras" onclick="selSrv(this)"><span class="srv-opt-ico">💻</span><span class="srv-opt-lbl">Computadoras</span></button>
-          <button class="srv-opt" data-srv="Celulares" onclick="selSrv(this)"><span class="srv-opt-ico">📱</span><span class="srv-opt-lbl">Celulares</span></button>
-          <button class="srv-opt" data-srv="Cerrajería" onclick="selSrv(this)"><span class="srv-opt-ico">🔑</span><span class="srv-opt-lbl">Cerrajería</span></button>
-          <button class="srv-opt" data-srv="Otro" onclick="selSrv(this)"><span class="srv-opt-ico">🛠</span><span class="srv-opt-lbl">Otro</span></button>
+        <div class="srv-selector" id="srv-selector" role="group" aria-label="Tipo de servicio">
+          <button class="srv-opt" data-srv="Electrodomésticos" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">🧺</span><span class="srv-opt-lbl">Electro-domésticos</span></button>
+          <button class="srv-opt" data-srv="Plomería" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">🚿</span><span class="srv-opt-lbl">Plomería</span></button>
+          <button class="srv-opt" data-srv="Electricidad" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">⚡</span><span class="srv-opt-lbl">Electricidad</span></button>
+          <button class="srv-opt" data-srv="Refrigeración" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">❄️</span><span class="srv-opt-lbl">Refrigeración</span></button>
+          <button class="srv-opt" data-srv="Televisión / audio" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">📺</span><span class="srv-opt-lbl">TV / Audio</span></button>
+          <button class="srv-opt" data-srv="Computadoras" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">💻</span><span class="srv-opt-lbl">Computadoras</span></button>
+          <button class="srv-opt" data-srv="Celulares" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">📱</span><span class="srv-opt-lbl">Celulares</span></button>
+          <button class="srv-opt" data-srv="Cerrajería" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">🔑</span><span class="srv-opt-lbl">Cerrajería</span></button>
+          <button class="srv-opt" data-srv="Otro" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">🛠</span><span class="srv-opt-lbl">Otro</span></button>
         </div>
-        <div class="fe" id="es-srv">Selecciona un tipo de servicio.</div>
+        <div class="fe" id="es-srv" role="alert">Selecciona un tipo de servicio.</div>
       </div>
       <div class="fg">
-        <label>Municipio</label>
+        <label for="s-mun">Municipio</label>
         <select id="s-mun" onchange="cargarPreciosZona()">
           <option value="">-- Seleccionar municipio --</option>
           <optgroup label="🇨🇺 La Habana — Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
@@ -677,21 +774,21 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
           <optgroup label="🇩🇴 Distrito Nacional RD"><option>Santo Domingo (DN)</option></optgroup>
           <optgroup label="🇩🇴 Provincia Santo Domingo"><option>Santo Domingo Este</option><option>Santo Domingo Norte</option><option>Santo Domingo Oeste</option><option>Los Alcarrizos</option><option>Boca Chica</option><option>Pedro Brand</option><option>San Antonio de Guerra</option></optgroup>
         </select>
-        <div class="fe" id="es-mun">Selecciona tu municipio.</div>
+        <div class="fe" id="es-mun" role="alert">Selecciona tu municipio.</div>
         <div class="precio-zona-box" id="precios-zona-box">
           <div class="precio-zona-title">💰 Precios en tu zona</div>
           <div id="precios-zona-list"></div>
           <div style="font-size:11px;color:var(--ok);margin-top:4px">El precio final lo confirma el técnico al llegar.</div>
         </div>
       </div>
-      <div class="fg"><label>Tu nombre</label><input id="s-cli" type="text" placeholder="¿Cómo te llamamos?"/><div class="fe" id="es-cli">Escribe tu nombre.</div></div>
+      <div class="fg"><label for="s-cli">Tu nombre</label><input id="s-cli" type="text" placeholder="¿Cómo te llamamos?" autocomplete="given-name"/><div class="fe" id="es-cli" role="alert">Escribe tu nombre.</div></div>
       <div class="fg">
         <label>WhatsApp</label>
         <div class="phone-row">
-          <select id="s-code"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
-          <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
+          <select id="s-code" aria-label="Código de país"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+          <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp" autocomplete="tel"/>
         </div>
-        <div class="fe" id="es-wa">Número inválido.</div>
+        <div class="fe" id="es-wa" role="alert">Número inválido.</div>
       </div>
       <button class="btn btn-k btn-full" onclick="irStep2()">Continuar →</button>
     </div>
@@ -702,26 +799,26 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       </div>
       <div class="fg">
         <label>¿Cuándo te viene bien?</label>
-        <div class="hora-opts" id="hora-opts">
-          <div class="hora-opt" data-hora="Hoy mismo — urgente" onclick="selHora(this)"><span class="hora-opt-ico">🔴</span><div><div class="hora-opt-txt">Hoy mismo — urgente</div><div class="hora-opt-sub">Lo antes posible</div></div></div>
-          <div class="hora-opt" data-hora="Mañana por la mañana (8:00–12:00)" onclick="selHora(this)"><span class="hora-opt-ico">🌅</span><div><div class="hora-opt-txt">Mañana por la mañana</div><div class="hora-opt-sub">8:00 – 12:00</div></div></div>
-          <div class="hora-opt" data-hora="Esta tarde (15:00–19:00)" onclick="selHora(this)"><span class="hora-opt-ico">🌇</span><div><div class="hora-opt-txt">Esta tarde</div><div class="hora-opt-sub">15:00 – 19:00</div></div></div>
-          <div class="hora-opt" data-hora="Esta semana — coordinar" onclick="selHora(this)"><span class="hora-opt-ico">📅</span><div><div class="hora-opt-txt">Esta semana</div><div class="hora-opt-sub">Coordinamos por WhatsApp</div></div></div>
+        <div class="hora-opts" id="hora-opts" role="group" aria-label="Horario preferido">
+          <div class="hora-opt" data-hora="Hoy mismo — urgente" onclick="selHora(this)" role="button" tabindex="0"><span class="hora-opt-ico" aria-hidden="true">🔴</span><div><div class="hora-opt-txt">Hoy mismo — urgente</div><div class="hora-opt-sub">Lo antes posible</div></div></div>
+          <div class="hora-opt" data-hora="Mañana por la mañana (8:00–12:00)" onclick="selHora(this)" role="button" tabindex="0"><span class="hora-opt-ico" aria-hidden="true">🌅</span><div><div class="hora-opt-txt">Mañana por la mañana</div><div class="hora-opt-sub">8:00 – 12:00</div></div></div>
+          <div class="hora-opt" data-hora="Esta tarde (15:00–19:00)" onclick="selHora(this)" role="button" tabindex="0"><span class="hora-opt-ico" aria-hidden="true">🌇</span><div><div class="hora-opt-txt">Esta tarde</div><div class="hora-opt-sub">15:00 – 19:00</div></div></div>
+          <div class="hora-opt" data-hora="Esta semana — coordinar" onclick="selHora(this)" role="button" tabindex="0"><span class="hora-opt-ico" aria-hidden="true">📅</span><div><div class="hora-opt-txt">Esta semana</div><div class="hora-opt-sub">Coordinamos por WhatsApp</div></div></div>
         </div>
       </div>
-      <div class="fg"><label>Describe el problema</label><textarea id="s-det" placeholder="¿Qué falla? Marca, modelo, desde cuándo... Cuanto más detalle, mejor."></textarea></div>
-      <div class="fg"><label>Dirección (opcional)</label><input id="s-dir" type="text" placeholder="Calle, número, referencias..."/></div>
+      <div class="fg"><label for="s-det">Describe el problema</label><textarea id="s-det" placeholder="¿Qué falla? Marca, modelo, desde cuándo... Cuanto más detalle, mejor."></textarea></div>
+      <div class="fg"><label for="s-dir">Dirección (opcional)</label><input id="s-dir" type="text" placeholder="Calle, número, referencias..." autocomplete="street-address"/></div>
       <div class="cb" id="cb-sol" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px">
-        <input type="checkbox" id="s-cp"/>
+        <input type="checkbox" id="s-cp" aria-required="true"/>
         <span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span>
       </div>
-      <div class="fe" id="es-cp">Debes aceptar Términos y Privacidad.</div>
-      <div class="ok-box" id="ok-sol">✅ ¡Solicitud registrada!<br/>Tu código es:<span class="ok-code" id="cod-sol"></span><span class="ok-note">Guárdalo — lo necesitas para seguimiento, garantía y calificación.</span></div>
-      <div class="err-box" id="err-sol"></div>
+      <div class="fe" id="es-cp" role="alert">Debes aceptar Términos y Privacidad.</div>
+      <div class="ok-box" id="ok-sol" role="status">✅ ¡Solicitud registrada!<br/>Tu código es:<span class="ok-code" id="cod-sol"></span><span class="ok-note">Guárdalo — lo necesitas para seguimiento, garantía y calificación.</span></div>
+      <div class="err-box" id="err-sol" role="alert"></div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-g" style="flex:0 0 auto" onclick="irStep1()">← Atrás</button>
         <button class="btn btn-y" id="btn-sol" style="flex:1" onclick="envSol()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
           Registrar solicitud
         </button>
       </div>
@@ -731,75 +828,75 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 </div></div>
 
 <!-- ══ MODAL GARANTÍA ══ -->
-<div class="ov" id="ov-gar" onclick="ovc(event,'gar')">
+<div class="ov" id="ov-gar" onclick="ovc(event,'gar')" role="dialog" aria-modal="true" aria-labelledby="gar-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Reclamar garantía</span><button class="sheet-x" onclick="close_('gar')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="gar-title">Reclamar garantía</span><button class="sheet-x" onclick="close_('gar')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
     <p class="hint">Solo aplica para trabajos realizados dentro del período de garantía activa.</p>
-    <div class="fg"><label>Código del servicio</label><input id="g-rec" type="text" placeholder="db-xxxx"/><div class="fe" id="eg-rec">Requerido.</div></div>
-    <div class="fg"><label>Teléfono de contacto</label><input id="g-tel" type="tel" placeholder="+53..."/><div class="fe" id="eg-tel">Número inválido.</div></div>
-    <div class="fg"><label>Describe la falla</label><textarea id="g-fal" placeholder="¿Qué problema presenta el trabajo realizado?"></textarea><div class="fe" id="eg-fal">Requerido.</div></div>
+    <div class="fg"><label for="g-rec">Código del servicio</label><input id="g-rec" type="text" placeholder="db-xxxx"/><div class="fe" id="eg-rec" role="alert">Requerido.</div></div>
+    <div class="fg"><label for="g-tel">Teléfono de contacto</label><input id="g-tel" type="tel" placeholder="+53..."/><div class="fe" id="eg-tel" role="alert">Número inválido.</div></div>
+    <div class="fg"><label for="g-fal">Describe la falla</label><textarea id="g-fal" placeholder="¿Qué problema presenta el trabajo realizado?"></textarea><div class="fe" id="eg-fal" role="alert">Requerido.</div></div>
     <div class="cb" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px"><input type="checkbox" id="g-cp"/><span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div>
-    <div class="fe" id="eg-cp">Debes aceptar Términos y Privacidad.</div>
-    <div class="ok-box" id="ok-gar">✅ Reclamo registrado. Nos contactaremos contigo pronto.</div>
-    <div class="err-box" id="err-gar"></div>
+    <div class="fe" id="eg-cp" role="alert">Debes aceptar Términos y Privacidad.</div>
+    <div class="ok-box" id="ok-gar" role="status">✅ Reclamo registrado. Nos contactaremos contigo pronto.</div>
+    <div class="err-box" id="err-gar" role="alert"></div>
     <button class="btn btn-k btn-full" id="btn-gar" onclick="envGar()">Enviar reclamo</button>
   </div>
 </div></div>
 
 <!-- ══ MODAL CALIFICAR ══ -->
-<div class="ov" id="ov-cal" onclick="ovc(event,'cal')">
+<div class="ov" id="ov-cal" onclick="ovc(event,'cal')" role="dialog" aria-modal="true" aria-labelledby="cal-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Calificar servicio</span><button class="sheet-x" onclick="close_('cal')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="cal-title">Calificar servicio</span><button class="sheet-x" onclick="close_('cal')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Código del servicio</label><input id="c-cod" type="text" placeholder="db-xxxx"/><div class="fe" id="ec-cod">Requerido.</div></div>
+    <div class="fg"><label for="c-cod">Código del servicio</label><input id="c-cod" type="text" placeholder="db-xxxx"/><div class="fe" id="ec-cod" role="alert">Requerido.</div></div>
     <div class="fg"><label>Tu valoración</label>
-      <div style="display:flex;gap:8px;margin-top:4px" id="stars">
-        <span class="star" data-v="1" onclick="setStar(1)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
-        <span class="star" data-v="2" onclick="setStar(2)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
-        <span class="star" data-v="3" onclick="setStar(3)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
-        <span class="star" data-v="4" onclick="setStar(4)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
-        <span class="star" data-v="5" onclick="setStar(5)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+      <div style="display:flex;gap:8px;margin-top:4px" id="stars" role="group" aria-label="Valoración de 1 a 5 estrellas">
+        <span class="star" data-v="1" onclick="setStar(1)" role="button" tabindex="0" aria-label="1 estrella" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="2" onclick="setStar(2)" role="button" tabindex="0" aria-label="2 estrellas" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="3" onclick="setStar(3)" role="button" tabindex="0" aria-label="3 estrellas" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="4" onclick="setStar(4)" role="button" tabindex="0" aria-label="4 estrellas" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="5" onclick="setStar(5)" role="button" tabindex="0" aria-label="5 estrellas" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
       </div>
-      <div class="fe" id="ec-st">Selecciona al menos una estrella.</div>
+      <div class="fe" id="ec-st" role="alert">Selecciona al menos una estrella.</div>
     </div>
-    <div class="ok-box" id="ok-cal">✅ ¡Gracias por calificar! Tu opinión ayuda a otros clientes.</div>
-    <div class="err-box" id="err-cal"></div>
+    <div class="ok-box" id="ok-cal" role="status">✅ ¡Gracias por calificar! Tu opinión ayuda a otros clientes.</div>
+    <div class="err-box" id="err-cal" role="alert"></div>
     <button class="btn btn-y btn-full" id="btn-cal" onclick="envCal()">Enviar valoración</button>
   </div>
 </div></div>
 
 <!-- ══ MODAL ÚNETE ══ -->
-<div class="ov" id="ov-uni" onclick="ovc(event,'uni')">
+<div class="ov" id="ov-uni" onclick="ovc(event,'uni')" role="dialog" aria-modal="true" aria-labelledby="uni-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Únete como técnico</span><button class="sheet-x" onclick="close_('uni')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="uni-title">Únete como técnico</span><button class="sheet-x" onclick="close_('uni')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Nombre completo</label><input id="u-nom" type="text" placeholder="Tu nombre"/><div class="fe" id="eu-nom">Requerido.</div></div>
+    <div class="fg"><label for="u-nom">Nombre completo</label><input id="u-nom" type="text" placeholder="Tu nombre" autocomplete="name"/><div class="fe" id="eu-nom" role="alert">Requerido.</div></div>
     <div class="fg"><label>WhatsApp</label>
       <div class="phone-row">
-        <select id="u-code"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+        <select id="u-code" aria-label="Código de país"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
         <input id="u-tel" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
       </div>
-      <div class="fe" id="eu-tel">Número inválido.</div>
+      <div class="fe" id="eu-tel" role="alert">Número inválido.</div>
     </div>
-    <div class="fg"><label>Especialidad</label>
+    <div class="fg"><label for="u-esp">Especialidad</label>
       <select id="u-esp">
         <option value="">-- Seleccionar --</option>
         <option>Electrodomésticos</option><option>Plomería</option><option>Electricidad</option>
         <option>Refrigeración</option><option>Televisión / audio</option><option>Computadoras</option>
         <option>Celulares</option><option>Cerrajería</option><option>Multidisciplinario</option>
       </select>
-      <div class="fe" id="eu-esp">Requerido.</div>
+      <div class="fe" id="eu-esp" role="alert">Requerido.</div>
     </div>
-    <div class="fg"><label>Años de experiencia</label>
+    <div class="fg"><label for="u-exp">Años de experiencia</label>
       <select id="u-exp">
         <option value="">-- Seleccionar --</option>
         <option value="1">Menos de 1 año</option><option value="2">1 – 3 años</option>
         <option value="4">3 – 5 años</option><option value="6">Más de 5 años</option>
       </select>
-      <div class="fe" id="eu-exp">Requerido.</div>
+      <div class="fe" id="eu-exp" role="alert">Requerido.</div>
     </div>
-    <div class="fg"><label>Municipio donde trabajas</label>
+    <div class="fg"><label for="u-zona">Municipio donde trabajas</label>
       <select id="u-zona">
         <option value="">-- Seleccionar municipio --</option>
         <optgroup label="🇨🇺 La Habana — Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
@@ -809,53 +906,53 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
         <optgroup label="🇩🇴 Distrito Nacional RD"><option>Santo Domingo (DN)</option></optgroup>
         <optgroup label="🇩🇴 Provincia Santo Domingo"><option>Santo Domingo Este</option><option>Santo Domingo Norte</option><option>Santo Domingo Oeste</option><option>Los Alcarrizos</option><option>Boca Chica</option><option>Pedro Brand</option><option>San Antonio de Guerra</option></optgroup>
       </select>
-      <div class="fe" id="eu-zona">Selecciona tu municipio.</div>
+      <div class="fe" id="eu-zona" role="alert">Selecciona tu municipio.</div>
     </div>
     <div style="background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px">
       <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g1);margin-bottom:10px">Documentos requeridos</div>
       <div style="display:flex;flex-direction:column;gap:10px">
-        <div class="fg"><label>Carnet de identidad (foto)</label><input type="file" id="u-carnet" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto clara del carnet — máx 1 MB</div><div class="fe" id="eu-carnet">Requerido.</div></div>
-        <div class="fg"><label>Título o certificado de estudios</label><input type="file" id="u-titulo" accept="image/*,.pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Imagen o PDF — máx 2 MB</div><div class="fe" id="eu-titulo">Requerido.</div></div>
-        <div class="fg"><label>Currículo</label><input type="file" id="u-curriculum" accept=".pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Solo PDF — máx 2 MB</div><div class="fe" id="eu-curriculum">Requerido.</div></div>
-        <div class="fg"><label>Foto de perfil</label><input type="file" id="u-foto-perfil" accept="image/*" capture="user" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto tuya — máx 1 MB</div><div class="fe" id="eu-foto-perfil">Requerido.</div></div>
-        <div class="fg"><label>Foto con tus herramientas</label><input type="file" id="u-foto-herramientas" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto en tu entorno de trabajo — máx 1 MB</div><div class="fe" id="eu-foto-herramientas">Requerido.</div></div>
+        <div class="fg"><label for="u-carnet">Carnet de identidad (foto)</label><input type="file" id="u-carnet" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto clara del carnet — máx 1 MB</div><div class="fe" id="eu-carnet" role="alert">Requerido.</div></div>
+        <div class="fg"><label for="u-titulo">Título o certificado de estudios</label><input type="file" id="u-titulo" accept="image/*,.pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Imagen o PDF — máx 2 MB</div><div class="fe" id="eu-titulo" role="alert">Requerido.</div></div>
+        <div class="fg"><label for="u-curriculum">Currículo</label><input type="file" id="u-curriculum" accept=".pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Solo PDF — máx 2 MB</div><div class="fe" id="eu-curriculum" role="alert">Requerido.</div></div>
+        <div class="fg"><label for="u-foto-perfil">Foto de perfil</label><input type="file" id="u-foto-perfil" accept="image/*" capture="user" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto tuya — máx 1 MB</div><div class="fe" id="eu-foto-perfil" role="alert">Requerido.</div></div>
+        <div class="fg"><label for="u-foto-herramientas">Foto con tus herramientas</label><input type="file" id="u-foto-herramientas" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto en tu entorno de trabajo — máx 1 MB</div><div class="fe" id="eu-foto-herramientas" role="alert">Requerido.</div></div>
       </div>
       <div id="u-upload-progress" style="display:none;margin-top:10px">
         <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px" id="u-upload-status">Subiendo documentos...</div>
         <div style="background:var(--line);border-radius:4px;height:6px;overflow:hidden"><div id="u-upload-bar" style="height:100%;background:var(--y);border-radius:4px;width:0;transition:width .3s"></div></div>
       </div>
     </div>
-    <div style="background:var(--blue-bg);border:1.5px solid rgba(37,99,235,.18);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--blue);line-height:1.6">📋 Crear cuenta de acceso — úsala para entrar al panel de técnico.</div>
-    <div class="fg"><label>Correo electrónico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="eu-email">Correo inválido.</div></div>
-    <div class="fg"><label>Contraseña</label><input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/><div class="fe" id="eu-pass">Mínimo 6 caracteres.</div></div>
+    <div style="background:var(--blue-bg);border:1.5px solid rgba(37,99,235,.18);border-radius:10px;padding:11px 14px;font-size:12px;color:#1D4ED8;line-height:1.6">📋 Crear cuenta de acceso — úsala para entrar al panel de técnico.</div>
+    <div class="fg"><label for="u-email">Correo electrónico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="eu-email" role="alert">Correo inválido.</div></div>
+    <div class="fg"><label for="u-pass">Contraseña</label><input id="u-pass" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password"/><div class="fe" id="eu-pass" role="alert">Mínimo 6 caracteres.</div></div>
     <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisaremos por WhatsApp cuando puedas operar.</p>
     <div class="cb" id="cb-uni" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px"><input type="checkbox" id="u-cp"/><span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span></div>
-    <div class="fe" id="eu-cp">Debes aceptar Términos y Privacidad.</div>
-    <div class="ok-box" id="ok-uni">✅ Cuenta creada. Tu solicitud está en revisión — te contactaremos por WhatsApp.</div>
-    <div class="err-box" id="err-uni"></div>
+    <div class="fe" id="eu-cp" role="alert">Debes aceptar Términos y Privacidad.</div>
+    <div class="ok-box" id="ok-uni" role="status">✅ Cuenta creada. Tu solicitud está en revisión — te contactaremos por WhatsApp.</div>
+    <div class="err-box" id="err-uni" role="alert"></div>
     <button class="btn btn-k btn-full" id="btn-uni" onclick="envUni()">Crear cuenta</button>
   </div>
 </div></div>
 
 <!-- ══ MODAL AFILIACIÓN ══ -->
-<div class="ov" id="ov-afi" onclick="ovc(event,'afi')">
+<div class="ov" id="ov-afi" onclick="ovc(event,'afi')" role="dialog" aria-modal="true" aria-labelledby="afi-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title" id="afi-title">Solicitar plan</span><button class="sheet-x" onclick="close_('afi')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="afi-title">Solicitar plan</span><button class="sheet-x" onclick="close_('afi')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
     <div id="afi-plan-info" style="background:var(--y-bg);border:1.5px solid var(--y-border);border-radius:10px;padding:12px 14px;margin-bottom:2px">
       <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--yd);margin-bottom:2px">Plan seleccionado</div>
       <div style="font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink)" id="afi-plan-nombre">—</div>
       <div style="font-size:12px;color:var(--g1);margin-top:2px" id="afi-plan-desc">—</div>
     </div>
-    <div class="fg"><label>Nombre del negocio o empresa</label><input id="afi-nom" type="text" placeholder="Ej: Paladar La Guarida, Hostal Vista Mar..."/><div class="fe" id="eafi-nom">Requerido.</div></div>
+    <div class="fg"><label for="afi-nom">Nombre del negocio o empresa</label><input id="afi-nom" type="text" placeholder="Ej: Paladar La Guarida, Hostal Vista Mar..."/><div class="fe" id="eafi-nom" role="alert">Requerido.</div></div>
     <div class="fg"><label>WhatsApp del responsable</label>
       <div class="phone-row">
-        <select id="afi-code"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+        <select id="afi-code" aria-label="Código de país"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
         <input id="afi-tel" type="tel" inputmode="numeric" placeholder="Número WhatsApp"/>
       </div>
-      <div class="fe" id="eafi-tel">Número inválido.</div>
+      <div class="fe" id="eafi-tel" role="alert">Número inválido.</div>
     </div>
-    <div class="fg"><label>Municipio</label>
+    <div class="fg"><label for="afi-mun">Municipio</label>
       <select id="afi-mun">
         <option value="">-- Seleccionar --</option>
         <optgroup label="🇨🇺 La Habana — Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
@@ -865,40 +962,51 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
         <optgroup label="🇩🇴 Distrito Nacional RD"><option>Santo Domingo (DN)</option></optgroup>
         <optgroup label="🇩🇴 Provincia Santo Domingo"><option>Santo Domingo Este</option><option>Santo Domingo Norte</option><option>Santo Domingo Oeste</option><option>Los Alcarrizos</option><option>Boca Chica</option><option>Pedro Brand</option><option>San Antonio de Guerra</option></optgroup>
       </select>
-      <div class="fe" id="eafi-mun">Selecciona tu municipio.</div>
+      <div class="fe" id="eafi-mun" role="alert">Selecciona tu municipio.</div>
     </div>
-    <div class="fg"><label>Dirección del negocio (opcional)</label><input id="afi-dir" type="text" placeholder="Calle, número, referencias..."/></div>
-    <div class="fg"><label>Cuéntanos sobre tu negocio (opcional)</label><textarea id="afi-desc" placeholder="Tipo de negocio, equipos que tienen (aires, neveras, instalación eléctrica), cuántos..."></textarea></div>
-    <div class="ok-box" id="ok-afi">✅ ¡Solicitud recibida!<br/><span style="font-size:13px;font-weight:400">Te contactaremos por WhatsApp en menos de 24 horas para presentarte el técnico y coordinar los detalles.</span></div>
-    <div class="err-box" id="err-afi"></div>
+    <div class="fg"><label for="afi-dir">Dirección del negocio (opcional)</label><input id="afi-dir" type="text" placeholder="Calle, número, referencias..."/></div>
+    <div class="fg"><label for="afi-desc">Cuéntanos sobre tu negocio (opcional)</label><textarea id="afi-desc" placeholder="Tipo de negocio, equipos que tienen (aires, neveras, instalación eléctrica), cuántos..."></textarea></div>
+    <div class="ok-box" id="ok-afi" role="status">✅ ¡Solicitud recibida!<br/><span style="font-size:13px;font-weight:400">Te contactaremos por WhatsApp en menos de 24 horas para presentarte el técnico y coordinar los detalles.</span></div>
+    <div class="err-box" id="err-afi" role="alert"></div>
     <button class="btn btn-y btn-full" id="btn-afi" onclick="envAfiliacion()">Enviar solicitud</button>
     <p class="hint">Sin compromiso. Te presentamos el técnico y explicamos todo por WhatsApp antes de confirmar el plan.</p>
   </div>
 </div></div>
 
 <!-- ══ MODAL ACCESO ══ -->
-<div class="ov" id="ov-acc" onclick="ovc(event,'acc')">
+<div class="ov" id="ov-acc" onclick="ovc(event,'acc')" role="dialog" aria-modal="true" aria-labelledby="acc-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Acceso privado</span><button class="sheet-x" onclick="close_('acc')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="acc-title">Acceso privado</span><button class="sheet-x" onclick="close_('acc')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="ea-email">Correo inválido.</div></div>
-    <div class="fg"><label>Contraseña</label><input id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password"/><div class="fe" id="ea-pass">Requerido.</div></div>
-    <div class="err-box" id="err-acc"></div>
+    <div class="fg"><label for="a-email">Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="ea-email" role="alert">Correo inválido.</div></div>
+    <div class="fg"><label for="a-pass">Contraseña</label><input id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password"/><div class="fe" id="ea-pass" role="alert">Requerido.</div></div>
+    <div class="err-box" id="err-acc" role="alert"></div>
     <button class="btn btn-k btn-full" id="btn-acc" onclick="doLogin()">Entrar</button>
     <button class="btn btn-g btn-full" id="btn-rec-pass" onclick="doRecovery()">Olvidé mi contraseña</button>
     <p class="hint">Si eres técnico nuevo, primero <a href="javascript:void(0)" onclick="close_('acc');open_('uni')">regístrate aquí</a>.</p>
   </div>
 </div></div>
 
+<!-- ═══════════════════════════════════════════
+  FIX #4: Página 404 personalizada — se maneja
+  via archivo 404.html en Vercel (ver instrucciones
+  al final). Aquí solo el JS del sitio principal.
+═══════════════════════════════════════════ -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- FIX #8: upload-utils.js debe minificarse. Este script se carga externamente. -->
 <script src="upload-utils.js"></script>
 <script>
+/* ══════════════════════════════════════════════
+   SUPABASE + LÓGICA APP
+══════════════════════════════════════════════ */
 const SURL='https://gkxtdancgkwetdniooky.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdreHRkYW5jZ2t3ZXRkbmlvb2t5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxOTQ1OTksImV4cCI6MjA4Nzc3MDU5OX0.QFEZQPUkPqg1Nu7LchoSfsMK96DKzE5pTnzqrQXMVYs';
 const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage}});
 const sbPublic=supabase.createClient(SURL,SKEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
 const MUNICIPIO_ZONA={'Playa':'oeste','La Lisa':'oeste','Marianao':'oeste','Plaza de la Revolución':'centro','Centro Habana':'centro','La Habana Vieja':'centro','Diez de Octubre':'centro','Cerro':'centro','Regla':'este','La Habana del Este':'este','Guanabacoa':'este','San Miguel del Padrón':'este','Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur','Santo Domingo (DN)':'rd-centro','Santo Domingo Este':'rd-este','Santo Domingo Norte':'rd-norte','Santo Domingo Oeste':'rd-oeste','Los Alcarrizos':'rd-oeste','Boca Chica':'rd-sur','Pedro Brand':'rd-norte','San Antonio de Guerra':'rd-norte'};
 let sv=0,solSrv='',solHora='';
+
 function toast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function dbc(id){return'db-'+id}
@@ -920,14 +1028,12 @@ function normalizarTelefono(codeId,numId,errId){
   const n=raw.replace(/[\s\-\(\)]/g,'');
   if(!n||n.length<7){sE(errId,'Número inválido.');return null;}
   const completo=n.startsWith('+')?n:(code+n);
-  cE(errId);
-  return{completo,local:n};
+  cE(errId);return{completo,local:n};
 }
 function selSrv(el){
   document.querySelectorAll('.srv-opt').forEach(b=>b.classList.remove('selected'));
   el.classList.add('selected');solSrv=el.dataset.srv;cE('es-srv');
-  sessionStorage.setItem('db_sol_srv',solSrv);
-  cargarPreciosZona();
+  sessionStorage.setItem('db_sol_srv',solSrv);cargarPreciosZona();
 }
 function selHora(el){
   document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));
@@ -950,6 +1056,13 @@ document.addEventListener('DOMContentLoaded',()=>{
   ['s-cli','s-mun','s-wa'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){const key='db_sol_'+id.replace('s-','');el.addEventListener('input',()=>sessionStorage.setItem(key,el.value));el.addEventListener('change',()=>sessionStorage.setItem(key,el.value));}
+  });
+  /* Keyboard support for hora-opt and stars */
+  document.querySelectorAll('.hora-opt[role="button"]').forEach(el=>{
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selHora(el);}});
+  });
+  document.querySelectorAll('.star[role="button"]').forEach(el=>{
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setStar(parseInt(el.dataset.v));}});
   });
 });
 function irStep2(){
@@ -1009,7 +1122,7 @@ async function envSol(){
 }
 function resetSolForm(){
   ['s-cli','s-wa','s-dir','s-det'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  ['s-mun','s-srv'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['s-mun'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
   const cp=document.getElementById('s-cp');if(cp)cp.checked=false;
   cER('err-sol');['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(id=>cE(id));
   const btn=document.getElementById('btn-sol');
@@ -1018,8 +1131,7 @@ function resetSolForm(){
   document.getElementById('ok-sol')?.classList.remove('v');
   document.querySelectorAll('.srv-opt').forEach(b=>b.classList.remove('selected'));
   document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));
-  solSrv='';solHora='';
-  irStep1();
+  solSrv='';solHora='';irStep1();
 }
 const ESTADO_STEPS={pendiente:0,asignada:1,en_proceso:2,completada:3,rechazada:-1};
 const STEPS_LABELS=['Recibida','Asignada','En proceso','Completada'];
@@ -1027,12 +1139,12 @@ async function buscarEstado(){
   const raw=(document.getElementById('trk-input')?.value||'').trim().toLowerCase();
   const n=parseInt(raw.replace(/^db-/,''));
   const result=document.getElementById('tracker-result');
-  if(isNaN(n)||n<1){result.className='tracker-result v';result.innerHTML=`<div style="color:rgba(255,255,255,.5);font-size:13px">Formato inválido. Usa <strong style="color:var(--y)">db-xxxx</strong></div>`;return;}
+  if(isNaN(n)||n<1){result.className='tracker-result v';result.innerHTML=`<div style="color:rgba(255,255,255,.6);font-size:13px">Formato inválido. Usa <strong style="color:var(--y)">db-xxxx</strong></div>`;return;}
   result.className='tracker-result v';
-  result.innerHTML='<div style="color:rgba(255,255,255,.5);font-size:13px;text-align:center">Buscando...</div>';
+  result.innerHTML='<div style="color:rgba(255,255,255,.6);font-size:13px;text-align:center">Buscando...</div>';
   try{
     const {data:sol,error}=await sbPublic.rpc('get_estado_solicitud',{p_id:n});
-    if(error||!sol?.length){result.innerHTML=`<div style="color:rgba(255,255,255,.45);font-size:13px">No encontramos una solicitud con ese código.</div>`;return;}
+    if(error||!sol?.length){result.innerHTML=`<div style="color:rgba(255,255,255,.55);font-size:13px">No encontramos una solicitud con ese código.</div>`;return;}
     const s=Array.isArray(sol)?sol[0]:sol;
     const step=ESTADO_STEPS[s.estado]??0;
     const fecha=s.created_at?new Date(s.created_at).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'2-digit'}):'—';
@@ -1040,7 +1152,7 @@ async function buscarEstado(){
     const progress=s.estado==='rechazada'?`<div style="background:var(--err-bg);border:1px solid var(--err-border);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--err)">❌ Solicitud rechazada</div>`:`<div class="tr-progress">${STEPS_LABELS.map((l,i)=>`<div class="tr-step${i<step?' done':i===step?' active':''}">${l}</div>`).join('')}</div>`;
     result.className='tracker-result v';
     result.innerHTML=`<span class="tr-code">${esc(dbc(s.id))}</span>${progress}<div class="tr-info">${s.servicio?`<div>🔧 <strong>${esc(s.servicio)}</strong></div>`:''}${s.municipio?`<div>📍 <strong>${esc(s.municipio)}</strong></div>`:''}${s.hora_preferida?`<div>🕐 ${esc(s.hora_preferida)}</div>`:''}<div>📅 Solicitado: ${fecha}</div>${fechaFin?`<div>✅ Completado: ${fechaFin}</div>`:''}</div>`;
-  }catch(e){result.innerHTML=`<div style="color:rgba(255,255,255,.45);font-size:13px">Error al buscar. Intenta de nuevo.</div>`;}
+  }catch(e){result.innerHTML=`<div style="color:rgba(255,255,255,.55);font-size:13px">Error al buscar. Intenta de nuevo.</div>`;}
 }
 document.getElementById('trk-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')buscarEstado();});
 const PLANES={basico:{nombre:'Plan Mipyme',precio:'$40/mes',desc:'Visita mensual + técnico fijo + prioridad 24h'},estandar:{nombre:'Plan Empresa',precio:'$60/mes',desc:'2 visitas/mes + técnico dedicado + respuesta 12h + reporte mensual'},premium:{nombre:'Plan Corporativo',precio:'$90/mes',desc:'Visitas ilimitadas + técnico exclusivo + respuesta 6h + reporte detallado'}};
@@ -1240,14 +1352,12 @@ async function cargarPreciosZona(){
   box.classList.add('v');
 }
 </script>
+
+<!-- Service Worker -->
 <script>
 if('serviceWorker' in navigator){
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
-  });
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js');});
 }
 </script>
-<!-- ═══ SKIP-TO-CONTENT (accesibilidad + SEO) ═══ -->
-<style>.skip-link{position:absolute;top:-100px;left:0;background:var(--y);color:#000;padding:8px 16px;font-weight:700;font-size:14px;z-index:9999;border-radius:0 0 8px 0}.skip-link:focus{top:0}</style>
 </body>
 </html>
