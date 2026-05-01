@@ -85,6 +85,7 @@ button{font-family:var(--f);cursor:pointer}
 @media(max-width:520px){.brand-name{display:none}.brand-role{display:none}}
 /* KPI row */
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.market-switch{height:36px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:rgba(255,255,255,.88);font-size:12px;font-weight:800;padding:0 10px;outline:none;min-width:118px;flex-shrink:0}.market-switch:focus{border-color:var(--y);box-shadow:0 0 0 3px rgba(245,193,22,.12)}.market-switch option{background:var(--ink);color:#fff}.market-mini{display:inline-flex;align-items:center;font-size:10px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;padding:2px 7px;border-radius:20px;border:1px solid transparent;white-space:nowrap;vertical-align:middle}.market-cu{background:rgba(37,99,235,.10);color:#2563EB;border-color:rgba(37,99,235,.22)}.market-do{background:rgba(22,163,74,.10);color:#15803D;border-color:rgba(22,163,74,.22)}.market-all{background:rgba(245,193,22,.12);color:#B8870A;border-color:rgba(245,193,22,.24)}
 .kpi-row{
   display:flex;align-items:center;gap:1px;
   background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);
@@ -103,7 +104,7 @@ button{font-family:var(--f);cursor:pointer}
 .kpi-n.comp{color:#6EE7B7}
 .kpi-n.cash{color:var(--y)}
 .kpi-l{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.35);line-height:1}
-@media(max-width:560px){.kpi-item.money{display:none}}
+@media(max-width:560px){.kpi-item.money{display:none}.market-switch{min-width:88px;max-width:98px;padding:0 6px;font-size:11px}}
 @media(max-width:420px){.kpi-row{display:none}}
 .btn-exit{
   height:36px;padding:0 14px;border-radius:9px;
@@ -675,6 +676,11 @@ button{font-family:var(--f);cursor:pointer}
     <span class="brand-role" id="brandRole">ADMIN</span>
   </div>
   <div class="topbar-right">
+    <select class="market-switch" id="admin-market" onchange="setMercadoAdmin(this.value)" title="Mercado operativo">
+      <option value="ALL">🌍 Todos</option>
+      <option value="CU">🇨🇺 Cuba</option>
+      <option value="DO">🇩🇴 RD</option>
+    </select>
     <div class="kpi-row">
       <div class="kpi-item">
         <span class="kpi-n pend" id="kpiPend">0</span>
@@ -1238,6 +1244,20 @@ let pendingCajaId = null, pendingCajaTipo = null;
 let pendingCompMsg = null, pendingCompTel = null;
 let pendingAprobarId = null;
 
+// ══ MERCADO ADMIN UNIVERSAL ══
+const MERCADOS_ADMIN = { ALL:{key:'ALL',label:'Todos'}, CU:{key:'CU',label:'Cuba'}, DO:{key:'DO',label:'República Dominicana'} };
+function getMercadoAdmin(){ const v=localStorage.getItem('admin_mercado')||'ALL'; return MERCADOS_ADMIN[v]?v:'ALL'; }
+function setMercadoAdmin(v){ if(!MERCADOS_ADMIN[v]) v='ALL'; localStorage.setItem('admin_mercado',v); applyMercadoAdminUI(); refreshAdminByMarket(); }
+function applyMercadoAdminUI(){ const sel=document.getElementById('admin-market'); if(sel) sel.value=getMercadoAdmin(); const role=document.getElementById('brandRole'); if(role) role.textContent=USER_ROLE==='admin'?('ADMIN · '+MERCADOS_ADMIN[getMercadoAdmin()].label.toUpperCase()):'ENCARGADO'; }
+function applyMarketFilter(q,col='mercado'){ const m=getMercadoAdmin(); return (USER_ROLE==='admin'&&m!=='ALL')?q.eq(col,m):q; }
+function mercadoFromZona(z){ return String(z||'').startsWith('rd-')?'DO':'CU'; }
+function getRecMercado(r){ return (r&&r.mercado)||mercadoFromZona(r&&r.zona)||'CU'; }
+function marketBadge(m){ m=m||'CU'; const cls=m==='DO'?'market-do':(m==='ALL'?'market-all':'market-cu'); const txt=m==='DO'?'🇩🇴 DO':(m==='ALL'?'🌍 ALL':'🇨🇺 CU'); return '<span class="market-mini '+cls+'">'+txt+'</span>'; }
+function socioMatchesSolicitud(sc,s){ const sm=(sc&&sc.mercado)||mercadoFromZona(sc&&sc.zona); const rm=getRecMercado(s); return !sm||!rm||sm===rm; }
+async function getSocioIdsByMarket(){ const m=getMercadoAdmin(); if(USER_ROLE!=='admin'||m==='ALL') return null; const {data}=await sb.from('socios').select('id').eq('mercado',m); return (data||[]).map(x=>x.id); }
+function secIdActive(){ return document.querySelector('.section.active')?.id?.replace('sec-','')||'op'; }
+async function refreshAdminByMarket(){ await loadSociosMap(); await loadKPIs(); const id=secIdActive(); if(id==='op') loadOp(); if(id==='ag') loadAgenda(); if(id==='hi') loadHi(); if(id==='so') loadSocios(); if(id==='ca') loadCaja(); if(id==='sp') loadSoporte(); if(id==='afi') loadAfiliados(); if(id==='st'&&USER_ROLE==='admin') loadStats(); if(id==='enc'&&USER_ROLE==='admin') loadEncargados(); }
+
 // ══ INIT ══
 document.addEventListener('DOMContentLoaded', async () => {
   try {
@@ -1257,6 +1277,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       else { await sb.auth.signOut(); window.location.href='index.html'; return; }
     }
     applyRoleUI();
+    applyMercadoAdminUI();
     suscribirPush();
     setupRealtime();
     if (USER_ROLE==='admin') loadAjsUI();
@@ -1289,6 +1310,7 @@ function setupRealtime(){
     const ev=payload.eventType;
     const rec=payload.new||{};
     const old=payload.old||{};
+    if(USER_ROLE==='admin'&&getMercadoAdmin()!=='ALL'){ const rm=getRecMercado(rec.id?rec:old); if(rm!==getMercadoAdmin()) return; }
     if(secActive('op')) loadOp();
     if(secActive('hi')) loadHi();
     if(secActive('ag')) loadAgenda();
@@ -1489,6 +1511,7 @@ async function loadAgenda(){
   const fin=new Date(hoy); fin.setHours(23,59,59,999);
   let qOrd=sb.from('solicitudes').select('*').eq('estado','asignada').gte('fecha_ts',inicio.toISOString()).lte('fecha_ts',fin.toISOString());
   if(USER_ROLE==='encargado'&&USER_ZONAS.length) qOrd=qOrd.in('zona',USER_ZONAS);
+  qOrd=applyMarketFilter(qOrd);
   const {data:ords}=await qOrd;
   const ordList=ords||[];
   document.getElementById('ag-ord-count').textContent=ordList.length?`${ordList.length} orden${ordList.length>1?'es':''}  hoy`:'Sin órdenes asignadas hoy';
@@ -1516,6 +1539,7 @@ async function loadAgenda(){
   // ── BLOQUE 2: Afiliados con servicios sin usar (más de 15 días del mes) ──
   const elAfi=document.getElementById('ag-afiliados');
   let qAfi=sb.from('afiliados').select('*').eq('estado','activo');
+  qAfi=applyMarketFilter(qAfi);
   const {data:afis}=await qAfi;
   const diaDelMes=hoy.getDate();
   const sinUsar=(afis||[]).filter(a=>{
@@ -1535,7 +1559,7 @@ async function loadAgenda(){
       return `<div class="soporte-card" style="margin-bottom:8px">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px">
           <div style="flex:1;min-width:0">
-            <div style="font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink)">${esc(a.nombre)}</div>
+            <div style="font-family:var(--fd);font-size:15px;font-weight:900;color:var(--ink)">${esc(a.nombre)} ${marketBadge(a.mercado||mercadoFromZona(a.zona))}</div>
             <div style="font-size:12px;color:var(--g2);margin-top:2px">${esc(plan)} · ${esc(a.municipio||'—')}</div>
             <div style="font-size:12px;font-weight:700;color:var(--warn);margin-top:2px">Quedan ${resto} servicio${resto>1?'s':''} sin usar este mes</div>
           </div>
@@ -1585,15 +1609,16 @@ async function loadAgenda(){
 // ══ KPIs ══
 async function loadKPIs(){
   if(USER_ROLE==='encargado'&&USER_ZONAS.length){
-    const {data} = await sb.from('solicitudes').select('estado').in('zona',USER_ZONAS);
+    const {data}=await sb.from('solicitudes').select('estado').in('zona',USER_ZONAS);
     const s=data||[];
     setKpis({pend:s.filter(x=>x.estado==='pendiente').length,asig:s.filter(x=>x.estado==='asignada').length,comp:s.filter(x=>x.estado==='completada').length,caja:0});
     return;
   }
-  const [{data:solic},{data:movs}] = await Promise.all([
-    sb.from('solicitudes').select('estado'),
-    sb.from('movimientos').select('monto').eq('tipo','cargo_comision')
-  ]);
+  let qSol=applyMarketFilter(sb.from('solicitudes').select('estado'));
+  const ids=await getSocioIdsByMarket();
+  let qMov=sb.from('movimientos').select('monto').eq('tipo','cargo_comision');
+  if(Array.isArray(ids)){ if(!ids.length){setKpis({pend:0,asig:0,comp:0,caja:0});return;} qMov=qMov.in('socio_id',ids); }
+  const [{data:solic},{data:movs}]=await Promise.all([qSol,qMov]);
   const s=solic||[];
   const ing=(movs||[]).reduce((a,m)=>a+parseFloat(m.monto||0),0);
   setKpis({pend:s.filter(x=>x.estado==='pendiente').length,asig:s.filter(x=>x.estado==='asignada').length,comp:s.filter(x=>x.estado==='completada').length,caja:Number.isFinite(ing)?ing:0});
@@ -1613,7 +1638,7 @@ function setKpis({pend=0,asig=0,comp=0,caja=0}={}){
 setKpis();
 
 async function loadSociosMap(){
-  const {data} = await sb.from('socios').select('id,nombre,telefono,comision');
+  const {data} = await sb.from('socios').select('id,nombre,telefono,comision,mercado,zona');
   if(data){ sociosMap={}; data.forEach(s=>sociosMap[s.id]=s); }
 }
 
@@ -1628,11 +1653,13 @@ async function loadOp(){
   el.innerHTML='<div class="loading">Cargando órdenes...</div>';
   await loadSociosMap();
   // Cargar afiliados activos para badge en cards
-  const {data:afisActivos}=await sb.from('afiliados').select('telefono,tipo,servicios_mes').eq('estado','activo');
+  let qAfisActivos=applyMarketFilter(sb.from('afiliados').select('telefono,tipo,servicios_mes,mercado').eq('estado','activo'));
+  const {data:afisActivos}=await qAfisActivos;
   window._afiadosActivos={};
   (afisActivos||[]).forEach(a=>{ if(a.telefono) window._afiadosActivos[a.telefono]=a; });
   let q=sb.from('solicitudes').select('*').in('estado',['pendiente','asignada']).order('created_at',{ascending:true});
   if(USER_ROLE==='encargado'&&USER_ZONAS.length) q=q.in('zona',USER_ZONAS);
+  q=applyMarketFilter(q);
   const {data,error}=await q;
   if(error){
     if(error.message?.includes('JWT')||error.code==='PGRST301'){
@@ -1645,7 +1672,8 @@ async function loadOp(){
   const telefonos=[...new Set(data.map(s=>s.telefono).filter(Boolean))];
   window._clienteHist={};
   if(telefonos.length){
-    const {data:hist}=await sb.from('solicitudes').select('telefono,estado').in('telefono',telefonos).eq('estado','completada');
+    let qHist=applyMarketFilter(sb.from('solicitudes').select('telefono,estado,mercado').in('telefono',telefonos).eq('estado','completada'));
+    const {data:hist}=await qHist;
     (hist||[]).forEach(h=>{ window._clienteHist[h.telefono]=(window._clienteHist[h.telefono]||0)+1; });
   }
   el.innerHTML=data.map(buildCardOp).join('');
@@ -1676,7 +1704,7 @@ function buildCardOp(s){
 
   let asignarHTML='';
   if(s.estado==='pendiente'||s.estado==='asignada'){
-    const opts=Object.values(sociosMap).filter(sc=>sc&&sc.nombre).map(sc=>`<option value="${sc.id}" ${String(sc.id)===String(s.socio_asignado)?'selected':''}>${esc(sc.nombre)}</option>`).join('');
+    const opts=Object.values(sociosMap).filter(sc=>sc&&sc.nombre&&socioMatchesSolicitud(sc,s)).map(sc=>`<option value="${sc.id}" ${String(sc.id)===String(s.socio_asignado)?'selected':''}>${esc(sc.nombre)}${sc.mercado?' · '+sc.mercado:''}</option>`).join('');
     const isPend=s.estado==='pendiente';
     asignarHTML=`<div class="assign-form"><label>${isPend?'Asignar técnico':'Reasignar técnico'}</label><div class="assign-row"><select id="sel-${s.id}"><option value="">-- Seleccionar técnico --</option>${opts}</select><button class="btn btn-y btn-sm" onclick="${isPend?`asignar(${s.id})`:`reasignar(${s.id})`}">${isPend?'Asignar':'Reasignar'}</button></div></div>`;
   }
@@ -1693,6 +1721,7 @@ function buildCardOp(s){
         <div class="op-meta-row">
           <span class="chip ${cls}">${txt}</span>
           <span class="op-code">${esc(dbc(s.id))}</span>
+          ${marketBadge(getRecMercado(s))}
           ${zonaFlag}${horaFlag}${recurFlag}${afiFlag}
         </div>
         <div class="op-detail">${esc(s.cliente)} · ${esc(s.servicio||'—')} · ${fmt(s.fecha_ts)}</div>
@@ -1970,6 +1999,7 @@ async function loadHi(){
   const d2 =document.getElementById('f-d2').value;
   let q=sb.from('solicitudes').select('*',{count:'exact'}).eq('estado','completada').not('fecha_fin','is',null).order('fecha_fin',{ascending:false}).range(window._hiPage*20,(window._hiPage*20)+19);
   if(USER_ROLE==='encargado'&&USER_ZONAS.length) q=q.in('zona',USER_ZONAS);
+  q=applyMarketFilter(q);
   if(cli) q=q.ilike('cliente','%'+cli+'%');
   if(cod){ const n=parseInt(cod.replace(/^db-/i,'')); if(!isNaN(n)) q=q.eq('id',n); }
   if(d1) q=q.gte('fecha_fin',d1);
@@ -1987,7 +2017,7 @@ async function loadHi(){
     }
     return `<div class="hist-card">
       <div>
-        <div class="hist-code">${esc(dbc(s.id))}</div>
+        <div class="hist-code">${esc(dbc(s.id))} ${marketBadge(getRecMercado(s))}</div>
         <div class="hist-name">${esc(s.cliente)}</div>
         <div class="hist-meta">${esc(s.servicio||'')} · ${esc(s.municipio||'')} · ${esc(socNom)}</div>
         ${garHTML}
@@ -2021,6 +2051,7 @@ async function loadSocios(){
   let q=sb.from('socios').select('*').order('estado_socio').order('nombre');
   // Encargado solo ve los técnicos de su zona
   if(USER_ROLE==='encargado'&&USER_ZONAS.length) q=q.in('zona',USER_ZONAS);
+  q=applyMarketFilter(q);
   const {data,error}=await q;
   if(error){ el.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`; return }
   if(!data?.length){ el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin técnicos en tu zona</span></div>'; return }
@@ -2066,7 +2097,7 @@ function buildSocioCard(s){
   return `<div class="socio-card" id="sc-${s.id}">
     <div class="socio-hdr" onclick="toggleSocioCard(this)">
       <div style="flex:1;min-width:0">
-        <div class="socio-name">${esc(s.nombre)}</div>
+        <div class="socio-name">${esc(s.nombre)} ${marketBadge(s.mercado||mercadoFromZona(s.zona))}</div>
         <div class="socio-meta">${esc(s.especialidad||'—')} · ${esc(zonaLabel)}</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
@@ -2189,7 +2220,8 @@ function waAdmin(tel,msg){ wa(tel,msg) }
 // ══ CAJA ══
 async function loadCaja(){
   await loadSociosMap();
-  const {data:socs}=await sb.from('socios').select('id,nombre,telefono,deuda').gt('deuda',0).order('deuda',{ascending:false});
+  let qSocsCaja=applyMarketFilter(sb.from('socios').select('id,nombre,telefono,deuda,mercado').gt('deuda',0).order('deuda',{ascending:false}));
+  const {data:socs}=await qSocsCaja;
   const elC=document.getElementById('lista-ca');
   if(!socs?.length){ elC.innerHTML='<div class="empty"><span class="empty-ico">✓</span><span class="empty-txt">Sin técnicos con deuda pendiente</span></div>'; }
   else{ elC.innerHTML=socs.map(s=>`<div class="caja-card" style="margin-bottom:10px">
@@ -2206,7 +2238,7 @@ async function loadCaja(){
   </div>`).join(''); }
   const sel=document.getElementById('f-ca-soc');
   const prev=sel.value;
-  sel.innerHTML='<option value="">Todos los técnicos</option>'+Object.values(sociosMap).filter(Boolean).map(s=>`<option value="${s.id}" ${s.id==prev?'selected':''}>${esc(s.nombre)}</option>`).join('');
+  sel.innerHTML='<option value="">Todos los técnicos</option>'+Object.values(sociosMap).filter(s=>s&&(getMercadoAdmin()==='ALL'||USER_ROLE!=='admin'||s.mercado===getMercadoAdmin())).map(s=>`<option value="${s.id}" ${s.id==prev?'selected':''}>${esc(s.nombre)}${s.mercado?' · '+s.mercado:''}</option>`).join('');
   loadMovs();
 }
 function openCaja(id,tipo){ pendingCajaId=id; pendingCajaTipo=tipo; const t={liquidar:'Liquidar deuda',pago:'Registrar pago',ajuste:'Ajuste manual'}; setT('caja-title',t[tipo]||'Movimiento'); document.getElementById('caja-monto').value=''; document.getElementById('caja-nota').value=''; document.getElementById('err-caja').classList.remove('v'); openModal('caja'); }
@@ -2231,6 +2263,7 @@ async function loadMovs(){
   const socId=document.getElementById('f-ca-soc').value;
   let q=sb.from('movimientos').select('*').order('created_at',{ascending:false}).limit(50);
   if(socId) q=q.eq('socio_id',parseInt(socId));
+  else { const ids=await getSocioIdsByMarket(); if(Array.isArray(ids)){ if(!ids.length){ el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin movimientos</span></div>'; return; } q=q.in('socio_id',ids); } }
   const {data,error}=await q;
   if(error){ el.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`; return }
   if(!data?.length){ el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin movimientos</span></div>'; return }
@@ -2267,6 +2300,7 @@ async function loadSoporte(){
   elR.innerHTML='<div class="loading">Cargando...</div>';
   let qGar=sb.from('solicitudes').select('id,telefono,fecha_fin,garantia_dias,garantia_expira,socio_asignado,zona').eq('estado','completada').gt('garantia_dias',0).order('fecha_fin',{ascending:false}).limit(200);
   if(USER_ROLE==='encargado'&&USER_ZONAS.length) qGar=qGar.in('zona',USER_ZONAS);
+  qGar=applyMarketFilter(qGar);
   const {data:sols,error:e1}=await qGar;
   if(e1) elG.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(e1.message)}</span></div>`;
   else if(!sols?.length) elG.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin garantías registradas</span></div>';
@@ -2357,6 +2391,7 @@ async function crearVisitaGarantia(reclamoId){
     consent_texto: 'garantia v1',
     nota_admin:    `Visita de garantía — reclamo original #${reclamoId} — orden ${r.codigo_servicio||''}`,
     socio_asignado:r.socio_id||solOrig?.socio_asignado||null,
+    mercado:       solOrig?.mercado||getMercadoAdmin()||'CU',
   }).select('id').single();
 
   if(error){toast('Error al crear visita: '+error.message);return;}
@@ -2394,10 +2429,15 @@ async function notaReclamo(id){ const nota=prompt('Nota admin:'); if(nota===null
 async function loadStats(){
   const el=document.getElementById('lista-st'); if(!el) return;
   el.innerHTML='<div class="loading">Calculando estadísticas...</div>';
+  let qStatsSol=applyMarketFilter(sb.from('solicitudes').select('id,estado,zona,municipio,servicio,fecha_ts,fecha_fin,monto,valoracion,socio_asignado,mercado'));
+  let qStatsSoc=applyMarketFilter(sb.from('socios').select('id,nombre,trabajos,rating_avg,deuda,mercado'));
+  const idsStats=await getSocioIdsByMarket();
+  let qStatsMov=sb.from('movimientos').select('monto,tipo,created_at,socio_id').eq('tipo','cargo_comision');
+  if(Array.isArray(idsStats)){ if(!idsStats.length) qStatsMov=qStatsMov.eq('socio_id',-1); else qStatsMov=qStatsMov.in('socio_id',idsStats); }
   const [{data:solicitudes},{data:socios},{data:movimientos},{data:encargados}]=await Promise.all([
-    sb.from('solicitudes').select('id,estado,zona,municipio,servicio,fecha_ts,fecha_fin,monto,valoracion,socio_asignado'),
-    sb.from('socios').select('id,nombre,trabajos,rating_avg,deuda'),
-    sb.from('movimientos').select('monto,tipo,created_at').eq('tipo','cargo_comision'),
+    qStatsSol,
+    qStatsSoc,
+    qStatsMov,
     sb.from('encargados').select('id,nombre,zona').eq('activo',true)
   ]);
   const sols=solicitudes||[], movs=movimientos||[];
@@ -2533,6 +2573,7 @@ async function loadAfiliados(){
   el.innerHTML='<div class="loading">Cargando...</div>';
   let q=sb.from('afiliados').select('*').order('created_at',{ascending:false});
   if(USER_ROLE==='encargado'&&USER_ZONAS.length) q=q.in('municipio',USER_ZONAS); // filtro por zona aprox
+  q=applyMarketFilter(q);
   const {data,error}=await q;
   if(error){el.innerHTML=`<div class="empty"><span class="empty-txt">Error: ${esc(error.message)}</span></div>`;return;}
   if(!data?.length){el.innerHTML='<div class="empty"><span class="empty-ico">◎</span><span class="empty-txt">Sin solicitudes de afiliación aún</span></div>';return;}
