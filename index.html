@@ -55,7 +55,20 @@
 <link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=2">
 <link rel="manifest" href="manifest.json?v=2">
 
+<!-- ═══ ANALYTICS ═══ -->
+<!-- Reemplaza G-XXXXXXXXXX con tu Measurement ID real de Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
 <!-- ═══ FUENTES — OPTIMIZADO PARA CORE WEB VITALS ═══ -->
+<!-- Preload fuente display crítica para reducir CLS -->
+<link rel="preload" href="https://fonts.gstatic.com/s/barlowcondensed/v12/HTxxL3I-JCGChYJ8VI-L6OO_au7B43LT.woff2" as="font" type="font/woff2" crossorigin/>
+
 <!-- Preconnect crítico ANTES de cualquier stylesheet -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -229,16 +242,16 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .hero-curve{height:32px;background:var(--bg);border-radius:32px 32px 0 0;margin:0 -20px -1px}
 .hero{background:var(--ink);padding:32px 20px 0;position:relative;overflow:hidden}
 .hero-grid{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px);pointer-events:none}
-.hero-wm{position:absolute;right:-20px;top:-10px;font-family:var(--fd);font-size:220px;font-weight:900;color:rgba(245,193,22,.04);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none;width:260px;height:220px;overflow:hidden}
+.hero-wm{position:absolute;right:-20px;top:-10px;font-family:var(--fd);font-size:220px;font-weight:900;color:rgba(245,193,22,.04);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none;width:260px;height:220px;overflow:hidden;contain:strict}
 .hero-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(245,193,22,.10);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:5px 13px 5px 9px;margin-bottom:16px}
 .hero-dot{width:8px;height:8px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 7px rgba(245,193,22,0)}}
 .hero-chip-txt{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase}
 .hero-title{font-family:var(--fd);font-style:italic;font-size:clamp(52px,12vw,80px);font-weight:900;color:#fff;line-height:.88;letter-spacing:-.5px;margin-bottom:16px;position:relative;z-index:1}
 .hero-title em{font-style:normal;color:var(--y);display:block}
-.hero-desc{font-size:14px;color:rgba(255,255,255,.5);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1}
+.hero-desc{font-size:14px;color:rgba(255,255,255,.5);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1;min-height:46px}
 .code-b{display:inline-flex;align-items:center;background:var(--y);border:1px solid var(--y);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:800;color:#111827;letter-spacing:.5px;vertical-align:middle}
-.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;position:relative;z-index:1}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;position:relative;z-index:1;min-height:44px}
 .hero-tracker{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;display:flex;gap:8px;align-items:stretch;margin-bottom:0;position:relative;z-index:1}
 .hero-tracker input{flex:1;background:transparent;border:none;outline:none;font-family:var(--fd);font-size:18px;font-weight:700;color:#fff;letter-spacing:.5px;min-width:0}
 .hero-tracker input::placeholder{color:rgba(255,255,255,.25);font-weight:600;font-size:14px;font-family:var(--f)}
@@ -312,7 +325,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .test-author{display:flex;align-items:center;gap:10px}
 .test-avatar{width:32px;height:32px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:15px;font-weight:900;color:var(--y);flex-shrink:0}
 .test-name{font-size:13px;font-weight:700;color:var(--ink)}
-.test-location{font-size:11px;color:var(--g2)}
+.test-location{font-size:11px;color:#6A6678}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:13px 22px;border-radius:11px;font-family:var(--f);font-size:14px;font-weight:700;border:1.5px solid transparent;cursor:pointer;transition:transform .12s,background .15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
@@ -385,9 +398,9 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .footer-brand{font-family:var(--fd);font-size:24px;font-weight:900;color:#fff;margin-bottom:8px}
 .footer-brand span{color:var(--y)}
 .footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
-.footer-link{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
+.footer-link{font-size:12px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .15s}
 .footer-link:hover{color:rgba(255,255,255,.8)}
-.footer-copy{font-size:11px;color:rgba(255,255,255,.2)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.5)}
 .upload-input{padding:8px;background:var(--bg);border:1.5px dashed var(--line);border-radius:9px;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color .15s}
 .upload-input:hover{border-color:var(--y)}
 .precio-zona-box{background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:10px;padding:12px 14px;display:none;flex-direction:column;gap:6px}
@@ -614,7 +627,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       <button class="btn btn-outline btn-full" onclick="openAfiliacion('premium')">Solicitar plan</button>
     </div>
   </div>
-  <p style="font-size:11px;color:rgba(255,255,255,.3);text-align:center;margin-top:16px;line-height:1.6">Pago trimestral en efectivo · Sin contratos · La cuota cubre disponibilidad y técnico fijo · Cada servicio se cobra a precio normal</p>
+  <p style="font-size:11px;color:rgba(255,255,255,.6);text-align:center;margin-top:16px;line-height:1.6">Pago trimestral en efectivo · Sin contratos · La cuota cubre disponibilidad y técnico fijo · Cada servicio se cobra a precio normal</p>
 </section>
 
 <section class="section section-mid" style="padding:28px 0 28px 20px">
@@ -844,7 +857,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       </div>
     </div>
     <div style="background:var(--blue-bg);border:1.5px solid rgba(37,99,235,.18);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--blue);line-height:1.6">📋 Crear cuenta de acceso — úsala para entrar al panel de técnico.</div>
-    <div class="fg"><label>Correo electrónico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="eu-email">Correo inválido.</div></div>
+    <div class="fg"><label>Correo electrónico</label><input id="u-email" type="email" placeholder="tu correo electrónico" autocomplete="email"/><div class="fe" id="eu-email">Correo inválido.</div></div>
     <div class="fg"><label>Contraseña</label><input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/><div class="fe" id="eu-pass">Mínimo 6 caracteres.</div></div>
     <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisaremos por WhatsApp cuando puedas operar.</p>
     <div class="cb" id="cb-uni" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px"><input type="checkbox" id="u-cp"/><span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span></div>
@@ -899,7 +912,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 <div class="sheet"><div class="pill"></div>
   <div class="sheet-hdr"><span class="sheet-title">Acceso privado</span><button class="sheet-x" onclick="close_('acc')">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="ea-email">Correo inválido.</div></div>
+    <div class="fg"><label>Correo electrónico</label><input id="a-email" type="email" placeholder="tu correo electrónico" autocomplete="email"/><div class="fe" id="ea-email">Correo inválido.</div></div>
     <div class="fg"><label>Contraseña</label><input id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password"/><div class="fe" id="ea-pass">Requerido.</div></div>
     <div class="err-box" id="err-acc"></div>
     <button class="btn btn-k btn-full" id="btn-acc" onclick="doLogin()">Entrar</button>
