@@ -206,7 +206,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .hero-title em{font-style:normal;color:var(--y);display:block}
 .hero-desc{font-size:14px;color:rgba(255,255,255,.7);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1}
 /* FIX #6 CONTRASTE: .code-b — #F5C116 sobre #0F0F1A → ratio ~9:1 */
-.code-b{display:inline-flex;align-items:center;background:rgba(245,193,22,.18);border:1px solid rgba(245,193,22,.4);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle}
+.code-b{display:inline-flex;align-items:center;background:rgba(245,193,22,.18);border:1px solid rgba(245,193,22,.4);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle}.section-light .code-b,.acord-body .code-b{background:rgba(120,90,0,.12);border-color:rgba(120,90,0,.3);color:#6B4700}
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;position:relative;z-index:1;min-height:48px}
 .hero-tracker{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;display:flex;gap:8px;align-items:stretch;margin-bottom:0;position:relative;z-index:1}
 .hero-tracker input{flex:1;background:transparent;border:none;outline:none;font-family:var(--fd);font-size:18px;font-weight:700;color:#fff;letter-spacing:.5px;min-width:0}
@@ -244,7 +244,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .sec-sub{font-size:14px;line-height:1.65;color:var(--g1);max-width:400px}
 .sec-sub.light{color:rgba(255,255,255,.7)}
 /* FIX #6: --yd oscurecido a #B8870A → ratio ~3.2:1 sobre blanco (large text OK ≥3:1) */
-em.yd-fix{font-style:normal;color:var(--yd)}
+em.yd-fix{font-style:normal;color:#8B6200}
 .acordeon{display:flex;flex-direction:column;gap:8px}
 .acord-item{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm)}
 .acord-hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:background .15s}
@@ -499,7 +499,7 @@ em.yd-fix{font-style:normal;color:var(--yd)}
   <h2 class="sec-title dark" id="servicios-heading">¿Qué necesitas<br><em class="yd-fix">reparar hoy?</em></h2>
   <p class="sec-sub" style="margin-bottom:20px">Técnicos verificados para cada tipo de trabajo — en La Habana y Santo Domingo.</p>
   <div style="margin-bottom:24px">
-    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇨🇺 La Habana, Cuba</div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#5A5A6E;margin-bottom:10px">🇨🇺 La Habana, Cuba</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
       <a href="electricidad-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
       <a href="plomeria-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🚿</span><span class="srv-link-lbl">Plomería</span></a>
@@ -510,7 +510,7 @@ em.yd-fix{font-style:normal;color:var(--yd)}
     </div>
   </div>
   <div>
-    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇩🇴 Santo Domingo, RD</div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#5A5A6E;margin-bottom:10px">🇩🇴 Santo Domingo, RD</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
       <a href="electricidad-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
       <a href="plomeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🚿</span><span class="srv-link-lbl">Plomería</span></a>
