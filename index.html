@@ -156,9 +156,9 @@
   --card:#FFFFFF;
   --card2:#F7F5F1;
   --line:#E8E4DD;
-  --g1:#5A5A6E;
-  --g2:#9A96A0;
-  --g3:#C4C1BC;
+  --g1:#4B5563;
+  --g2:#5B6472;
+  --g3:#6B7280;
   --ok:#16A34A;
   --ok-bg:rgba(22,163,74,.10);
   --ok-border:rgba(22,163,74,.20);
@@ -205,8 +205,19 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .hero-title{font-family:var(--fd);font-style:italic;font-size:clamp(52px,12vw,80px);font-weight:900;color:#fff;line-height:.88;letter-spacing:-.5px;margin-bottom:16px;position:relative;z-index:1}
 .hero-title em{font-style:normal;color:var(--y);display:block}
 .hero-desc{font-size:14px;color:rgba(255,255,255,.7);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1}
+.hero-subtitle{
+  font-family:var(--fd);
+  font-size:clamp(22px,5vw,32px);
+  font-weight:700;
+  color:rgba(255,255,255,.86);
+  line-height:1.1;
+  letter-spacing:-.2px;
+  margin-bottom:16px;
+  position:relative;
+  z-index:1;
+}
 /* FIX #6 CONTRASTE: .code-b — #F5C116 sobre #0F0F1A → ratio ~9:1 */
-.code-b{display:inline-flex;align-items:center;background:rgba(245,193,22,.18);border:1px solid rgba(245,193,22,.4);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle}
+.code-b{display:inline-flex;align-items:center;background:rgba(245,193,22,.18);border:1px solid rgba(245,193,22,.4);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle}.section-light .code-b,.acord-body .code-b{background:rgba(120,90,0,.12);border-color:rgba(120,90,0,.3);color:#6B4700}
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;position:relative;z-index:1;min-height:48px}
 .hero-tracker{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;display:flex;gap:8px;align-items:stretch;margin-bottom:0;position:relative;z-index:1}
 .hero-tracker input{flex:1;background:transparent;border:none;outline:none;font-family:var(--fd);font-size:18px;font-weight:700;color:#fff;letter-spacing:.5px;min-width:0}
@@ -244,7 +255,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .sec-sub{font-size:14px;line-height:1.65;color:var(--g1);max-width:400px}
 .sec-sub.light{color:rgba(255,255,255,.7)}
 /* FIX #6: --yd oscurecido a #B8870A → ratio ~3.2:1 sobre blanco (large text OK ≥3:1) */
-em.yd-fix{font-style:normal;color:var(--yd)}
+em.yd-fix{font-style:normal;color:#8B6200}
 .acordeon{display:flex;flex-direction:column;gap:8px}
 .acord-item{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm)}
 .acord-hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:background .15s}
@@ -268,15 +279,16 @@ em.yd-fix{font-style:normal;color:var(--yd)}
 .plan-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:var(--r);padding:22px 20px;display:flex;flex-direction:column;gap:0;position:relative;flex:1}
 .plan-card-featured{background:rgba(245,193,22,.08);border-color:rgba(245,193,22,.3);border-width:1.5px}
 .plan-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--y);color:#000;font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;padding:3px 12px;border-radius:20px;white-space:nowrap}
-.plan-badge{font-family:var(--fd);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:10px}
+.plan-badge{font-family:var(--fd);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:10px}
 .plan-badge-y{color:var(--y)}
 .plan-precio{font-family:var(--fd);font-size:44px;font-weight:900;color:#fff;line-height:1;letter-spacing:-1px;margin-bottom:8px}
-.plan-mes{font-size:16px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:0}
-.plan-desc{font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:16px}
+.plan-mes{font-size:16px;font-weight:600;color:rgba(255,255,255,.78);letter-spacing:0}
+.plan-desc{font-size:12px;color:rgba(255,255,255,.78);line-height:1.55;margin-bottom:16px}
 .plan-features{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;flex:1}
-.plan-feat{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.4}
+.plan-feat{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.86);line-height:1.4}
 .feat-check{color:rgba(255,255,255,.4);font-size:13px;flex-shrink:0;margin-top:1px}
 .feat-y{color:var(--y)}
+.planes-note{font-size:12px;color:rgba(255,255,255,.82);text-align:center;margin-top:16px;line-height:1.6}
 .testimonios-scroll{display:flex;gap:12px;overflow-x:auto;padding-right:20px;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .testimonios-scroll::-webkit-scrollbar{display:none}
 .testimonios-scroll .test-card{flex:0 0 280px;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--sh-sm)}
@@ -285,7 +297,7 @@ em.yd-fix{font-style:normal;color:var(--yd)}
 .test-author{display:flex;align-items:center;gap:10px}
 .test-avatar{width:32px;height:32px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:15px;font-weight:900;color:var(--y);flex-shrink:0}
 .test-name{font-size:13px;font-weight:700;color:var(--ink)}
-.test-location{font-size:11px;color:var(--g2)}
+.test-location{font-size:11px;color:#4B5563;font-weight:500}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:13px 22px;border-radius:11px;font-family:var(--f);font-size:14px;font-weight:700;border:1.5px solid transparent;cursor:pointer;transition:transform .12s,background .15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
@@ -325,7 +337,7 @@ em.yd-fix{font-style:normal;color:var(--yd)}
 .hora-opt.selected{border-color:var(--y);background:var(--y-bg);box-shadow:0 0 0 3px var(--y-bg)}
 .hora-opt-ico{font-size:18px;flex-shrink:0}
 .hora-opt-txt{font-size:13px;font-weight:600;color:var(--ink)}
-.hora-opt-sub{font-size:11px;color:var(--g2)}
+.hora-opt-sub{font-size:11px;color:#4B5563}
 .fg{display:flex;flex-direction:column;gap:6px}
 .fg label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g1)}
 .fg input,.fg select,.fg textarea{padding:12px 14px;background:var(--card2);border:1.5px solid var(--line);border-radius:10px;font-family:var(--f);font-size:14px;color:var(--ink);outline:none;-webkit-appearance:none;transition:border-color .15s,box-shadow .15s}
@@ -344,10 +356,10 @@ em.yd-fix{font-style:normal;color:var(--yd)}
 .ok-box{display:none;padding:14px 16px;background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:11px;font-size:13px;color:var(--ok);font-weight:600;line-height:1.55;text-align:center}
 .ok-box.v{display:block}
 .ok-code{display:block;font-family:var(--fd);font-size:32px;font-weight:900;color:var(--ok);letter-spacing:1px;margin:8px 0 4px}
-.ok-note{font-size:11px;color:var(--g1);font-weight:400}
+.ok-note{font-size:11px;color:#374151;font-weight:500}
 .err-box{display:none;padding:10px 13px;background:var(--err-bg);border:1.5px solid var(--err-border);border-radius:10px;font-size:13px;color:var(--err);font-weight:500}
 .err-box.v{display:block}
-.hint{font-size:12px;color:var(--g2);line-height:1.55}
+.hint{font-size:12px;color:#4B5563;line-height:1.55}
 .hint a{color:var(--ink)}
 .sp{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid rgba(0,0,0,.15);border-top-color:#000;animation:spin .6s linear infinite;vertical-align:middle;margin-right:5px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -360,7 +372,7 @@ em.yd-fix{font-style:normal;color:var(--yd)}
 .footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
 .footer-link{font-size:12px;color:rgba(255,255,255,.55);text-decoration:none;transition:color .15s}
 .footer-link:hover{color:rgba(255,255,255,.9)}
-.footer-copy{font-size:11px;color:rgba(255,255,255,.3)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.68)}
 .upload-input{padding:8px;background:var(--bg);border:1.5px dashed var(--line);border-radius:9px;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color .15s}
 .upload-input:hover{border-color:var(--y)}
 .precio-zona-box{background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:10px;padding:12px 14px;display:none;flex-direction:column;gap:6px}
@@ -371,6 +383,7 @@ em.yd-fix{font-style:normal;color:var(--yd)}
 .srv-link-card{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);text-decoration:none;transition:border-color .15s,background .15s}
 .srv-link-card:hover{border-color:var(--yd);background:var(--y-bg)}
 .srv-link-lbl{font-family:var(--fd);font-size:13px;font-weight:900;color:var(--ink);text-align:center;line-height:1.2}
+.market-hidden{display:none!important}
 </style>
 </head>
 <body>
@@ -405,10 +418,10 @@ em.yd-fix{font-style:normal;color:var(--yd)}
   <div class="hero-wm" aria-hidden="true">db</div>
   <div class="hero-chip">
     <span class="hero-dot"></span>
-    <span class="hero-chip-txt">Técnicos activos · La Habana &amp; Santo Domingo</span>
+    <span class="hero-chip-txt" data-market-chip>Técnicos activos · La Habana</span>
   </div>
   <h1 class="hero-title" id="hero-heading">Técnicos<br>a domicilio<br><em>en La Habana</em></h1>
-  <h2 style="font-family:var(--fd);font-size:clamp(22px,5vw,32px);font-weight:700;color:rgba(255,255,255,.75);line-height:1.1;letter-spacing:-.2px;margin-bottom:16px;position:relative;z-index:1">¿Se te rompió algo en casa?</h2>
+  <p class="hero-subtitle">¿Se te rompió algo en casa?</p>
   <p class="hero-desc">Electricidad, plomería, refrigeración y más. Técnico verificado en tu municipio — recibe tu <span class="code-b">db-xxxx</span> de seguimiento y garantía incluida.</p>
   <div class="hero-btns">
     <button class="btn btn-y" onclick="open_('sol')">
@@ -469,11 +482,11 @@ em.yd-fix{font-style:normal;color:var(--yd)}
       </div>
       <div class="acord-body">
         <div class="mun-grid">
-          <div class="zona-group"><div class="zona-name">Occidente</div><div class="zona-munis"><span class="zona-muni">Playa</span><span class="zona-muni">La Lisa</span><span class="zona-muni">Marianao</span></div></div>
-          <div class="zona-group"><div class="zona-name">Centro</div><div class="zona-munis"><span class="zona-muni">Plaza de la Rev.</span><span class="zona-muni">Centro Habana</span><span class="zona-muni">La Habana Vieja</span><span class="zona-muni">Diez de Octubre</span><span class="zona-muni">Cerro</span></div></div>
-          <div class="zona-group"><div class="zona-name">Oriente</div><div class="zona-munis"><span class="zona-muni">Regla</span><span class="zona-muni">H. del Este</span><span class="zona-muni">Guanabacoa</span><span class="zona-muni">S.M. del Padrón</span></div></div>
-          <div class="zona-group"><div class="zona-name">Sur</div><div class="zona-munis"><span class="zona-muni">Boyeros</span><span class="zona-muni">Arroyo Naranjo</span><span class="zona-muni">Cotorro</span></div></div>
-          <div class="zona-group" style="grid-column:1/-1;border-top:2px solid var(--y-border);padding-top:14px;margin-top:4px"><div class="zona-name" style="color:var(--yd)">🇩🇴 Santo Domingo RD</div><div class="zona-munis" style="display:grid;grid-template-columns:1fr 1fr;gap:3px"><span class="zona-muni">Santo Domingo (DN)</span><span class="zona-muni">Santo Domingo Este</span><span class="zona-muni">Santo Domingo Norte</span><span class="zona-muni">Santo Domingo Oeste</span><span class="zona-muni">Los Alcarrizos</span><span class="zona-muni">Boca Chica</span><span class="zona-muni">Pedro Brand</span><span class="zona-muni">San Antonio de Guerra</span></div></div>
+          <div class="zona-group" data-market="CU"><div class="zona-name">Occidente</div><div class="zona-munis"><span class="zona-muni">Playa</span><span class="zona-muni">La Lisa</span><span class="zona-muni">Marianao</span></div></div>
+          <div class="zona-group" data-market="CU"><div class="zona-name">Centro</div><div class="zona-munis"><span class="zona-muni">Plaza de la Rev.</span><span class="zona-muni">Centro Habana</span><span class="zona-muni">La Habana Vieja</span><span class="zona-muni">Diez de Octubre</span><span class="zona-muni">Cerro</span></div></div>
+          <div class="zona-group" data-market="CU"><div class="zona-name">Oriente</div><div class="zona-munis"><span class="zona-muni">Regla</span><span class="zona-muni">H. del Este</span><span class="zona-muni">Guanabacoa</span><span class="zona-muni">S.M. del Padrón</span></div></div>
+          <div class="zona-group" data-market="CU"><div class="zona-name">Sur</div><div class="zona-munis"><span class="zona-muni">Boyeros</span><span class="zona-muni">Arroyo Naranjo</span><span class="zona-muni">Cotorro</span></div></div>
+          <div class="zona-group" data-market="DO" style="grid-column:1/-1;border-top:2px solid var(--y-border);padding-top:14px;margin-top:4px"><div class="zona-name" style="color:var(--yd)">🇩🇴 Santo Domingo RD</div><div class="zona-munis" style="display:grid;grid-template-columns:1fr 1fr;gap:3px"><span class="zona-muni">Santo Domingo (DN)</span><span class="zona-muni">Santo Domingo Este</span><span class="zona-muni">Santo Domingo Norte</span><span class="zona-muni">Santo Domingo Oeste</span><span class="zona-muni">Los Alcarrizos</span><span class="zona-muni">Boca Chica</span><span class="zona-muni">Pedro Brand</span><span class="zona-muni">San Antonio de Guerra</span></div></div>
         </div>
       </div>
     </div>
@@ -497,9 +510,9 @@ em.yd-fix{font-style:normal;color:var(--yd)}
 <section class="section section-light" id="sec-servicios" aria-labelledby="servicios-heading" style="padding-top:32px">
   <div class="sec-label">🔧 Nuestros servicios</div>
   <h2 class="sec-title dark" id="servicios-heading">¿Qué necesitas<br><em class="yd-fix">reparar hoy?</em></h2>
-  <p class="sec-sub" style="margin-bottom:20px">Técnicos verificados para cada tipo de trabajo — en La Habana y Santo Domingo.</p>
-  <div style="margin-bottom:24px">
-    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇨🇺 La Habana, Cuba</div>
+  <p class="sec-sub" style="margin-bottom:20px" data-market-service-sub>Técnicos verificados para cada tipo de trabajo — en La Habana.</p>
+  <div style="margin-bottom:24px" data-market="CU">
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#5A5A6E;margin-bottom:10px">🇨🇺 La Habana, Cuba</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
       <a href="electricidad-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
       <a href="plomeria-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🚿</span><span class="srv-link-lbl">Plomería</span></a>
@@ -509,8 +522,8 @@ em.yd-fix{font-style:normal;color:var(--yd)}
       <a href="reparacion-celulares-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">📱</span><span class="srv-link-lbl">Celulares</span></a>
     </div>
   </div>
-  <div>
-    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇩🇴 Santo Domingo, RD</div>
+  <div data-market="DO">
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#5A5A6E;margin-bottom:10px">🇩🇴 Santo Domingo, RD</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
       <a href="electricidad-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
       <a href="plomeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🚿</span><span class="srv-link-lbl">Plomería</span></a>
@@ -570,7 +583,7 @@ em.yd-fix{font-style:normal;color:var(--yd)}
       <button class="btn btn-outline btn-full" onclick="openAfiliacion('premium')">Solicitar plan</button>
     </div>
   </div>
-  <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;margin-top:16px;line-height:1.6">Pago trimestral en efectivo · Sin contratos · La cuota cubre disponibilidad y técnico fijo · Cada servicio se cobra a precio normal</p>
+  <p class="planes-note">Pago trimestral en efectivo · Sin contratos · La cuota cubre disponibilidad y técnico fijo · Cada servicio se cobra a precio normal</p>
 </section>
 
 <section class="section section-mid" style="padding:28px 0 28px 20px">
@@ -607,8 +620,7 @@ em.yd-fix{font-style:normal;color:var(--yd)}
   </div>
   <address class="footer-copy" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style:normal">
     © 2026 dbarrio ·
-    <span itemprop="addressLocality">La Habana</span>, <span itemprop="addressCountry">Cuba</span>
-    · Santo Domingo, RD
+    <span itemprop="addressLocality" data-market-footer-city>La Habana</span>, <span itemprop="addressCountry" data-market-footer-country>Cuba</span>
   </address>
 </footer>
 
@@ -874,6 +886,33 @@ const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage}});
 const sbPublic=supabase.createClient(SURL,SKEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
 const MUNICIPIO_ZONA={'Playa':'oeste','La Lisa':'oeste','Marianao':'oeste','Plaza de la Revolución':'centro','Centro Habana':'centro','La Habana Vieja':'centro','Diez de Octubre':'centro','Cerro':'centro','Regla':'este','La Habana del Este':'este','Guanabacoa':'este','San Miguel del Padrón':'este','Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur','Santo Domingo (DN)':'rd-centro','Santo Domingo Este':'rd-este','Santo Domingo Norte':'rd-norte','Santo Domingo Oeste':'rd-oeste','Los Alcarrizos':'rd-oeste','Boca Chica':'rd-sur','Pedro Brand':'rd-norte','San Antonio de Guerra':'rd-norte'};
+
+const MUNICIPIOS_MERCADO={
+  CU:['Playa','La Lisa','Marianao','Plaza de la Revolución','Centro Habana','La Habana Vieja','Diez de Octubre','Cerro','Regla','La Habana del Este','Guanabacoa','San Miguel del Padrón','Boyeros','Arroyo Naranjo','Cotorro'],
+  DO:['Santo Domingo (DN)','Santo Domingo Este','Santo Domingo Norte','Santo Domingo Oeste','Los Alcarrizos','Boca Chica','Pedro Brand','San Antonio de Guerra']
+};
+const MERCADOS_DB={
+  CU:{chip:'Técnicos activos · La Habana',serviceSub:'Técnicos verificados para cada tipo de trabajo — en La Habana.',footerCity:'La Habana',footerCountry:'Cuba',phone:'+53'},
+  DO:{chip:'Técnicos activos · Santo Domingo',serviceSub:'Técnicos verificados para cada tipo de trabajo — en Santo Domingo.',footerCity:'Santo Domingo',footerCountry:'República Dominicana',phone:'+1809'}
+};
+function getMercadoActual(){
+  const url=new URL(window.location.href);const q=(url.searchParams.get('mercado')||url.searchParams.get('m')||'').toUpperCase();
+  if(q==='CU'||q==='DO'){localStorage.setItem('dbarrio_mercado',q);return q;}
+  const saved=(localStorage.getItem('dbarrio_mercado')||'').toUpperCase();return saved==='DO'?'DO':'CU';
+}
+function mercadoFromMunicipio(mun){
+  return MUNICIPIOS_MERCADO.DO.includes(mun)?'DO':'CU';
+}
+function aplicarMercadoVisual(){
+  const mercado=getMercadoActual();const cfg=MERCADOS_DB[mercado]||MERCADOS_DB.CU;
+  document.querySelectorAll('[data-market]').forEach(el=>el.classList.toggle('market-hidden',el.dataset.market!==mercado));
+  const chip=document.querySelector('[data-market-chip]');if(chip)chip.textContent=cfg.chip;
+  const serviceSub=document.querySelector('[data-market-service-sub]');if(serviceSub)serviceSub.textContent=cfg.serviceSub;
+  const footerCity=document.querySelector('[data-market-footer-city]');if(footerCity)footerCity.textContent=cfg.footerCity;
+  const footerCountry=document.querySelector('[data-market-footer-country]');if(footerCountry)footerCountry.textContent=cfg.footerCountry;
+  ['s-code','u-code','afi-code'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=cfg.phone;});
+}
+
 let sv=0,solSrv='',solHora='';
 function toast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -910,6 +949,7 @@ function restoreSolForm(){
   if(wa){const e=document.getElementById('s-wa');if(e)e.value=wa;}
 }
 document.addEventListener('DOMContentLoaded',()=>{
+  aplicarMercadoVisual();
   ['s-cli','s-mun','s-wa'].forEach(id=>{const el=document.getElementById(id);if(el){const key='db_sol_'+id.replace('s-','');el.addEventListener('input',()=>sessionStorage.setItem(key,el.value));el.addEventListener('change',()=>sessionStorage.setItem(key,el.value));}});
   document.querySelectorAll('.hora-opt[role="button"]').forEach(el=>{el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selHora(el);}});});
   document.querySelectorAll('.star[role="button"]').forEach(el=>{el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setStar(parseInt(el.dataset.v));}});});
@@ -943,7 +983,7 @@ async function envSol(){
   if(!ok) return;
   setL('btn-sol',true,'Registrando...');
   try{
-    const {data,error}=await sbPublic.rpc('create_solicitud_publica',{p_cliente:cli,p_telefono:tel.completo,p_municipio:mun,p_direccion:dir||null,p_servicio:solSrv||null,p_detalles:det||null,p_consent_texto:'solicitud publica v2',p_zona:zona,p_hora_preferida:solHora||null});
+    const {data,error}=await sbPublic.rpc('create_solicitud_publica',{p_cliente:cli,p_telefono:tel.completo,p_municipio:mun,p_direccion:dir||null,p_servicio:solSrv||null,p_detalles:det||null,p_consent_texto:'solicitud publica v2',p_zona:zona,p_hora_preferida:solHora||null,p_mercado:mercadoFromMunicipio(mun)});
     setL('btn-sol',false);
     if(error){const msg=error.message?.includes('RATE_LIMIT')?'⚠️ Ya registraste 3 solicitudes hoy. Intenta mañana.':'Error al registrar: '+error.message;sER('err-sol',msg);return;}
     if(!data){sER('err-sol','No se pudo crear la solicitud. Intenta de nuevo.');return;}
@@ -996,7 +1036,7 @@ async function envAfiliacion(){
   let ok=true;if(!nom){sE('eafi-nom');ok=false;}if(!tel){ok=false;}if(!mun){sE('eafi-mun','Selecciona tu municipio.');ok=false;}if(!ok) return;
   setL('btn-afi',true,'Enviando...');
   try{
-    const {error}=await sbPublic.from('afiliados').insert({nombre:nom,telefono:tel.completo,tipo:afiTipo,municipio:mun,direccion:dir||null,descripcion:desc||null,estado:'pendiente'});
+    const {error}=await sbPublic.from('afiliados').insert({nombre:nom,telefono:tel.completo,tipo:afiTipo,municipio:mun,direccion:dir||null,descripcion:desc||null,estado:'pendiente',mercado:mercadoFromMunicipio(mun)});
     setL('btn-afi',false);if(error){sER('err-afi','Error: '+error.message);return;}
     sOK('ok-afi');document.getElementById('btn-afi').style.display='none';
     const p=PLANES[afiTipo];const msgAdmin=`🏠 *Nueva solicitud de afiliación*\n\n👤 ${nom}\n📱 ${tel.completo}\n📍 ${mun}${dir?' · '+dir:''}\n📋 ${p.nombre} — ${p.precio}${desc?'\n\n💬 '+desc:''}`;
@@ -1055,7 +1095,7 @@ async function envUni(){
     }
     if(barEl)barEl.style.width='100%';if(statusEl)statusEl.textContent='Guardando datos...';
     if(errores.length){await sb.auth.signOut();setL('btn-uni',false);if(progressEl)progressEl.style.display='none';sER('err-uni','Errores al subir documentos: '+errores.join(', '));return;}
-    const {error:se}=await sb.from('socios').insert({auth_uid:uid,nombre:nom,telefono:telData.completo,especialidad:esp,experiencia_anios:parseInt(exp,10),zona:zona||municipio,email,admitido:false,estado_socio:'pendiente',comision:15,deuda:0,trabajos:0,...urls});
+    const {error:se}=await sb.from('socios').insert({auth_uid:uid,nombre:nom,telefono:telData.completo,especialidad:esp,experiencia_anios:parseInt(exp,10),zona:zona||municipio,email,admitido:false,estado_socio:'pendiente',comision:15,deuda:0,trabajos:0,mercado:mercadoFromMunicipio(municipio),...urls});
     await sb.auth.signOut();setL('btn-uni',false);if(progressEl)progressEl.style.display='none';
     if(se&&!se.message?.includes('municipio')){sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);return;}
     sOK('ok-uni');document.getElementById('btn-uni').style.display='none';
