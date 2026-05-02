@@ -5,19 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="theme-color" content="#0F0F1A"/>
 
-<!-- ═══ SEO PRIMARIO ═══ -->
-<title>dbarrio | Técnicos a domicilio en La Habana</title>
-<meta name="description" content="Técnicos verificados en La Habana: electricidad, plomería, refrigeración y electrodomésticos. Solicita servicio con seguimiento y garantía."/>
+<!-- ═══ SEO PRIMARIO — FIX #1 title ≤70 chars, keyword primero ═══ -->
+<title>Técnicos a Domicilio en La Habana — dbarrio</title>
+<!-- FIX #2 meta description ≤160 chars -->
+<meta name="description" content="Técnicos verificados en La Habana: electricidad, plomería, refrigeración y más. Solicita ahora y recibe tu código db-xxxx con garantía incluida."/>
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
 <link rel="canonical" href="https://dbarrio.app/"/>
-<link rel="alternate" hreflang="es-CU" href="https://dbarrio.app/?mercado=CU"/>
-<link rel="alternate" hreflang="es-DO" href="https://dbarrio.app/?mercado=DO"/>
-<link rel="alternate" hreflang="x-default" href="https://dbarrio.app/"/>
-
-<!-- Keywords (señal secundaria, no crítica) -->
 <meta name="keywords" content="técnicos a domicilio La Habana, reparaciones a domicilio Cuba, electricista La Habana, plomero La Habana, refrigeración La Habana, electrodomésticos La Habana, dbarrio, técnicos verificados"/>
-
-<!-- Geo Local -->
 <meta name="geo.region" content="CU-03"/>
 <meta name="geo.placename" content="La Habana, Cuba"/>
 <meta name="geo.position" content="23.1136;-82.3666"/>
@@ -55,15 +49,21 @@
 <link rel="icon" type="image/png" sizes="192x192" href="db-192.png?v=2">
 <link rel="manifest" href="manifest.json?v=2">
 
-<!-- ═══ FUENTES — OPTIMIZADO PARA CORE WEB VITALS ═══ -->
-<!-- Preconnect crítico ANTES de cualquier stylesheet -->
+<!-- ═══ FUENTES ═══ -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<!-- Preconnect Supabase para reducir latencia en llamadas API -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net"/>
-<!-- Cargar fuentes con display=swap para evitar FOIT (Flash of Invisible Text) -->
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet"/></noscript>
+
+<!-- ═══ FIX #5: Google Analytics 4 ═══ -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8XGMYWJQ6S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8XGMYWJQ6S');
+</script>
 
 <!-- ═══ SCHEMA.ORG JSON-LD ═══ -->
 <script type="application/ld+json">
@@ -75,20 +75,9 @@
       "@id": "https://dbarrio.app/#organization",
       "name": "dbarrio",
       "url": "https://dbarrio.app/",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://dbarrio.app/db-512.png",
-        "width": 512,
-        "height": 512
-      },
-      "sameAs": [
-        "https://www.instagram.com/dbarrio_fix"
-      ],
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "availableLanguage": "Spanish"
-      }
+      "logo": {"@type":"ImageObject","url":"https://dbarrio.app/db-512.png","width":512,"height":512},
+      "sameAs": ["https://www.instagram.com/dbarrio_fix","https://www.twitter.com/dbarrio_fix"],
+      "contactPoint": {"@type":"ContactPoint","contactType":"customer service","availableLanguage":"Spanish"}
     },
     {
       "@type": "LocalBusiness",
@@ -101,47 +90,34 @@
       "priceRange": "$",
       "currenciesAccepted": "CUP, MLC",
       "paymentAccepted": "Cash",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "La Habana",
-        "addressCountry": "CU"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 23.1136,
-        "longitude": -82.3666
-      },
+      "address": {"@type":"PostalAddress","addressLocality":"La Habana","addressCountry":"CU"},
+      "geo": {"@type":"GeoCoordinates","latitude":23.1136,"longitude":-82.3666},
       "areaServed": [
-        {"@type": "City", "name": "La Habana"},
-        {"@type": "AdministrativeArea", "name": "Playa"},
-        {"@type": "AdministrativeArea", "name": "La Lisa"},
-        {"@type": "AdministrativeArea", "name": "Marianao"},
-        {"@type": "AdministrativeArea", "name": "Centro Habana"},
-        {"@type": "AdministrativeArea", "name": "Plaza de la Revolución"},
-        {"@type": "AdministrativeArea", "name": "Diez de Octubre"},
-        {"@type": "AdministrativeArea", "name": "Cerro"},
-        {"@type": "AdministrativeArea", "name": "Boyeros"},
-        {"@type": "AdministrativeArea", "name": "Arroyo Naranjo"}
+        {"@type":"City","name":"La Habana"},
+        {"@type":"AdministrativeArea","name":"Playa"},
+        {"@type":"AdministrativeArea","name":"La Lisa"},
+        {"@type":"AdministrativeArea","name":"Marianao"},
+        {"@type":"AdministrativeArea","name":"Centro Habana"},
+        {"@type":"AdministrativeArea","name":"Plaza de la Revolución"},
+        {"@type":"AdministrativeArea","name":"Diez de Octubre"},
+        {"@type":"AdministrativeArea","name":"Cerro"},
+        {"@type":"AdministrativeArea","name":"Boyeros"},
+        {"@type":"AdministrativeArea","name":"Arroyo Naranjo"}
       ],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": "Servicios Técnicos a Domicilio",
         "itemListElement": [
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Electricidad a domicilio en La Habana"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Plomería a domicilio en La Habana"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Refrigeración a domicilio en La Habana"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Reparación de electrodomésticos en La Habana"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Cerrajería a domicilio en La Habana"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Reparación de computadoras La Habana"}},
-          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Reparación de celulares La Habana"}}
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Electricidad a domicilio en La Habana"}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Plomería a domicilio en La Habana"}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Refrigeración a domicilio en La Habana"}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Reparación de electrodomésticos en La Habana"}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Cerrajería a domicilio en La Habana"}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Reparación de computadoras La Habana"}},
+          {"@type":"Offer","itemOffered":{"@type":"Service","name":"Reparación de celulares La Habana"}}
         ]
       },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5",
-        "reviewCount": "3",
-        "bestRating": "5"
-      }
+      "aggregateRating": {"@type":"AggregateRating","ratingValue":"5","reviewCount":"3","bestRating":"5"}
     },
     {
       "@type": "WebSite",
@@ -149,59 +125,48 @@
       "url": "https://dbarrio.app/",
       "name": "dbarrio",
       "description": "Técnicos verificados a domicilio en La Habana",
-      "publisher": {"@id": "https://dbarrio.app/#organization"},
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://dbarrio.app/?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
+      "publisher": {"@id":"https://dbarrio.app/#organization"},
+      "potentialAction": {"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://dbarrio.app/?q={search_term_string}"},"query-input":"required name=search_term_string"}
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "¿Cómo funciona dbarrio?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Solicitas el servicio indicando municipio, tipo de trabajo y tu WhatsApp. Recibes un código db-xxxx de seguimiento. Un técnico verificado de tu zona te contacta para coordinar. El servicio incluye garantía."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "¿En qué municipios de La Habana operan?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "dbarrio opera en Playa, La Lisa, Marianao, Plaza de la Revolución, Centro Habana, La Habana Vieja, Diez de Octubre, Cerro, Regla, Habana del Este, Guanabacoa, San Miguel del Padrón, Boyeros, Arroyo Naranjo y Cotorro."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "¿Los servicios tienen garantía?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Sí. Todos los trabajos realizados a través de dbarrio incluyen garantía. Si algo falla dentro del período de garantía, lo resolvemos sin costo adicional."
-          }
-        }
+        {"@type":"Question","name":"¿Cómo funciona dbarrio?","acceptedAnswer":{"@type":"Answer","text":"Solicitas el servicio indicando municipio, tipo de trabajo y tu WhatsApp. Recibes un código db-xxxx de seguimiento. Un técnico verificado de tu zona te contacta para coordinar. El servicio incluye garantía."}},
+        {"@type":"Question","name":"¿En qué municipios de La Habana operan?","acceptedAnswer":{"@type":"Answer","text":"dbarrio opera en Playa, La Lisa, Marianao, Plaza de la Revolución, Centro Habana, La Habana Vieja, Diez de Octubre, Cerro, Regla, Habana del Este, Guanabacoa, San Miguel del Padrón, Boyeros, Arroyo Naranjo y Cotorro."}},
+        {"@type":"Question","name":"¿Los servicios tienen garantía?","acceptedAnswer":{"@type":"Answer","text":"Sí. Todos los trabajos realizados a través de dbarrio incluyen garantía. Si algo falla dentro del período de garantía, lo resolvemos sin costo adicional."}}
       ]
     }
   ]
 }
 </script>
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --y:#F5C116;--yd:#5C4500;--y-bg:rgba(245,193,22,.10);--y-border:rgba(245,193,22,.22);
-  --ink:#0F0F1A;--ink2:#1A1A2E;--ink3:#24243C;
-  --bg:#F2EFE9;--card:#FFFFFF;--card2:#F7F5F1;
+  --y:#F5C116;
+  --yd:#B8870A;
+  --y-bg:rgba(245,193,22,.10);
+  --y-border:rgba(245,193,22,.22);
+  --sec-label-color:#7A5C00;
+  --sec-label-color-dark:#F5C116;
+  --ink:#0F0F1A;
+  --ink2:#1A1A2E;
+  --ink3:#24243C;
+  --bg:#F2EFE9;
+  --card:#FFFFFF;
+  --card2:#F7F5F1;
   --line:#E8E4DD;
-  --g1:#5A5A6E;--g2:#9A96A0;--g3:#C4C1BC;
-  --ok:#16A34A;--ok-bg:rgba(22,163,74,.10);--ok-border:rgba(22,163,74,.20);
-  --err:#DC2626;--err-bg:rgba(220,38,38,.09);--err-border:rgba(220,38,38,.18);
-  --blue:#2563EB;--blue-bg:rgba(37,99,235,.09);
+  --g1:#5A5A6E;
+  --g2:#9A96A0;
+  --g3:#C4C1BC;
+  --ok:#16A34A;
+  --ok-bg:rgba(22,163,74,.10);
+  --ok-border:rgba(22,163,74,.20);
+  --err:#DC2626;
+  --err-bg:rgba(220,38,38,.09);
+  --err-border:rgba(220,38,38,.18);
+  --blue:#2563EB;
+  --blue-bg:rgba(37,99,235,.09);
   --f:'DM Sans',system-ui,sans-serif;
   --fd:'Barlow Condensed',system-ui,sans-serif;
   --r:14px;
@@ -211,6 +176,8 @@
 }
 html{background:var(--ink);scroll-behavior:smooth}
 body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.skip-link{position:absolute;top:-100px;left:0;background:var(--y);color:#000;padding:8px 16px;font-weight:700;font-size:14px;z-index:9999;border-radius:0 0 8px 0}
+.skip-link:focus{top:0}
 .header{position:sticky;top:0;z-index:100;background:var(--ink);height:calc(58px + env(safe-area-inset-top,0));padding:env(safe-area-inset-top,0) 16px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,193,22,.15);border:1px solid var(--y-border);display:grid;place-items:center;flex-shrink:0}
@@ -220,28 +187,30 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .brand-name .d{color:#E0E0F0}.brand-name .rest{color:var(--y)}
 @media(max-width:360px){.brand-name{display:none}}
 .nav{display:flex;align-items:center;gap:6px;margin-left:auto}
-.nav-btn{height:34px;padding:0 13px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.65);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:var(--f);display:inline-flex;align-items:center;justify-content:center;line-height:1}
+.nav-btn{height:34px;padding:0 13px;border-radius:9px;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.75);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:var(--f);display:inline-flex;align-items:center;justify-content:center;line-height:1}
 .nav-btn:hover{background:rgba(255,255,255,.08);color:#fff}
 .nav-btn.nav-sec{display:none}
 @media(min-width:480px){.nav-btn.nav-sec{display:inline-flex}}
 .nav-btn.cta{background:var(--y);color:#000;border-color:var(--y);font-weight:700}
-.nav-btn.cta:hover{background:var(--yd)}
+.nav-btn.cta:hover{background:var(--yd);color:#fff}
 .hero-curve{height:32px;background:var(--bg);border-radius:32px 32px 0 0;margin:0 -20px -1px}
 .hero{background:var(--ink);padding:32px 20px 0;position:relative;overflow:hidden}
 .hero-grid{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(245,193,22,.025) 39px,rgba(245,193,22,.025) 40px);pointer-events:none}
-.hero-wm{position:absolute;right:-20px;top:-10px;font-family:var(--fd);font-size:220px;font-weight:900;color:rgba(245,193,22,.04);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none;width:260px;height:220px;overflow:hidden}
+/* FIX #7 CLS: contain + explicit size evita layout shift del LCP element */
+.hero-wm{position:absolute;right:-20px;top:-10px;font-family:var(--fd);font-size:220px;font-weight:900;color:rgba(245,193,22,.04);letter-spacing:-10px;line-height:1;pointer-events:none;user-select:none;contain:layout style;width:300px;height:220px;overflow:hidden}
 .hero-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(245,193,22,.10);border:1px solid rgba(245,193,22,.2);border-radius:20px;padding:5px 13px 5px 9px;margin-bottom:16px}
 .hero-dot{width:8px;height:8px;background:var(--y);border-radius:50%;animation:pulse 2s ease infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,193,22,.5)}50%{box-shadow:0 0 0 7px rgba(245,193,22,0)}}
 .hero-chip-txt{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.5px;text-transform:uppercase}
 .hero-title{font-family:var(--fd);font-style:italic;font-size:clamp(52px,12vw,80px);font-weight:900;color:#fff;line-height:.88;letter-spacing:-.5px;margin-bottom:16px;position:relative;z-index:1}
 .hero-title em{font-style:normal;color:var(--y);display:block}
-.hero-desc{font-size:14px;color:rgba(255,255,255,.5);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1}
-.code-b{display:inline-flex;align-items:center;background:var(--y);border:1px solid var(--y);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:800;color:#111827;letter-spacing:.5px;vertical-align:middle}
-.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;position:relative;z-index:1}
+.hero-desc{font-size:14px;color:rgba(255,255,255,.7);line-height:1.65;max-width:320px;margin-bottom:28px;position:relative;z-index:1}
+/* FIX #6 CONTRASTE: .code-b — #F5C116 sobre #0F0F1A → ratio ~9:1 */
+.code-b{display:inline-flex;align-items:center;background:rgba(245,193,22,.18);border:1px solid rgba(245,193,22,.4);border-radius:5px;padding:1px 7px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--y);letter-spacing:.5px;vertical-align:middle}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;position:relative;z-index:1;min-height:48px}
 .hero-tracker{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;display:flex;gap:8px;align-items:stretch;margin-bottom:0;position:relative;z-index:1}
 .hero-tracker input{flex:1;background:transparent;border:none;outline:none;font-family:var(--fd);font-size:18px;font-weight:700;color:#fff;letter-spacing:.5px;min-width:0}
-.hero-tracker input::placeholder{color:rgba(255,255,255,.25);font-weight:600;font-size:14px;font-family:var(--f)}
+.hero-tracker input::placeholder{color:rgba(255,255,255,.4);font-weight:600;font-size:14px;font-family:var(--f)}
 .hero-tracker-btn{padding:8px 14px;border-radius:8px;background:var(--y);border:none;color:#000;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .hero-tracker-btn:active{transform:scale(.97)}
 .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
@@ -252,33 +221,37 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .hact.hact-highlight:hover{background:rgba(245,193,22,.20);border-color:rgba(245,193,22,.4)}
 .hact-title{font-family:var(--fd);font-size:17px;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.2px}
 .hact.hact-highlight .hact-title{color:var(--y)}
-.hact-sub{font-size:11px;color:rgba(255,255,255,.4);line-height:1.3;margin-top:2px;font-weight:500}
+.hact-sub{font-size:11px;color:rgba(255,255,255,.55);line-height:1.3;margin-top:2px;font-weight:500}
 .tracker-result{display:none;margin:12px 0 0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 16px}
 .tracker-result.v{display:block}
 .tr-code{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--y);display:block;margin-bottom:6px;letter-spacing:.5px}
 .tr-progress{display:flex;align-items:center;gap:0;margin:10px 0 12px;overflow:hidden;border-radius:20px;background:rgba(255,255,255,.06)}
-.tr-step{flex:1;padding:6px 4px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:rgba(255,255,255,.3);transition:all .3s;white-space:nowrap;overflow:hidden}
+.tr-step{flex:1;padding:6px 4px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:rgba(255,255,255,.4);transition:all .3s;white-space:nowrap;overflow:hidden}
 .tr-step.done{background:rgba(22,163,74,.25);color:#6EE7B7}
 .tr-step.active{background:var(--y-bg);color:var(--y)}
-.tr-info{font-size:12px;color:rgba(255,255,255,.55);display:flex;flex-direction:column;gap:4px;line-height:1.5}
-.tr-info strong{color:rgba(255,255,255,.85)}
+.tr-info{font-size:12px;color:rgba(255,255,255,.7);display:flex;flex-direction:column;gap:4px;line-height:1.5}
+.tr-info strong{color:rgba(255,255,255,.9)}
 .section{padding:40px 20px}
 .section-dark{background:var(--ink)}
 .section-light{background:var(--bg)}
 .section-mid{background:var(--card2)}
-.sec-label{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#5C4500;margin-bottom:10px}
+/* FIX #6 CONTRASTE: sec-label sobre fondo claro usa color oscuro */
+.sec-label{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--sec-label-color);margin-bottom:10px}
+.section-dark .sec-label{color:var(--sec-label-color-dark)}
 .sec-title{font-family:var(--fd);font-size:clamp(34px,7vw,48px);font-weight:900;line-height:.92;letter-spacing:-.5px;margin-bottom:12px}
 .sec-title.light{color:#fff}
 .sec-title.dark{color:var(--ink)}
 .sec-sub{font-size:14px;line-height:1.65;color:var(--g1);max-width:400px}
-.sec-sub.light{color:rgba(255,255,255,.5)}
+.sec-sub.light{color:rgba(255,255,255,.7)}
+/* FIX #6: --yd oscurecido a #B8870A → ratio ~3.2:1 sobre blanco (large text OK ≥3:1) */
+em.yd-fix{font-style:normal;color:var(--yd)}
 .acordeon{display:flex;flex-direction:column;gap:8px}
 .acord-item{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-sm)}
 .acord-hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;transition:background .15s}
 .acord-hdr:hover{background:rgba(15,15,26,.02)}
 .acord-title{font-family:var(--fd);font-size:16px;font-weight:900;color:var(--ink)}
 .acord-chev{flex-shrink:0;color:var(--g3);transition:transform .22s var(--ease)}
-.acord-item.open .acord-chev{transform:rotate(180deg);color:var(--y)}
+.acord-item.open .acord-chev{transform:rotate(180deg);color:var(--yd)}
 .acord-body{display:none;padding:0 16px 16px}
 .acord-item.open .acord-body{display:block}
 .steps-mini{display:flex;flex-direction:column;gap:12px}
@@ -295,14 +268,14 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .plan-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:var(--r);padding:22px 20px;display:flex;flex-direction:column;gap:0;position:relative;flex:1}
 .plan-card-featured{background:rgba(245,193,22,.08);border-color:rgba(245,193,22,.3);border-width:1.5px}
 .plan-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--y);color:#000;font-family:var(--fd);font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase;padding:3px 12px;border-radius:20px;white-space:nowrap}
-.plan-badge{font-family:var(--fd);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:10px}
+.plan-badge{font-family:var(--fd);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:10px}
 .plan-badge-y{color:var(--y)}
 .plan-precio{font-family:var(--fd);font-size:44px;font-weight:900;color:#fff;line-height:1;letter-spacing:-1px;margin-bottom:8px}
-.plan-mes{font-size:16px;font-weight:700;color:rgba(255,255,255,.82);letter-spacing:0}
-.plan-desc{font-size:12px;color:rgba(255,255,255,.82);line-height:1.55;margin-bottom:16px}
+.plan-mes{font-size:16px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:0}
+.plan-desc{font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:16px}
 .plan-features{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;flex:1}
-.plan-feat{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.82);line-height:1.4}
-.feat-check{color:rgba(255,255,255,.72);font-size:13px;flex-shrink:0;margin-top:1px}
+.plan-feat{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.75);line-height:1.4}
+.feat-check{color:rgba(255,255,255,.4);font-size:13px;flex-shrink:0;margin-top:1px}
 .feat-y{color:var(--y)}
 .testimonios-scroll{display:flex;gap:12px;overflow-x:auto;padding-right:20px;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .testimonios-scroll::-webkit-scrollbar{display:none}
@@ -317,9 +290,9 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .btn-y{background:var(--y);color:#000;border-color:var(--y)}
-.btn-y:hover{background:var(--yd)}
+.btn-y:hover{background:var(--yd);color:#fff}
 .btn-k{background:var(--ink);color:#fff;border-color:var(--ink)}
-.btn-outline{background:transparent;color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.2)}
+.btn-outline{background:transparent;color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.25)}
 .btn-outline:hover{background:rgba(255,255,255,.07);color:#fff}
 .btn-g{background:var(--card2);color:var(--ink);border-color:var(--line)}
 .btn-sm{padding:9px 16px;font-size:13px;border-radius:9px}
@@ -385,9 +358,9 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .footer-brand{font-family:var(--fd);font-size:24px;font-weight:900;color:#fff;margin-bottom:8px}
 .footer-brand span{color:var(--y)}
 .footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
-.footer-link{font-size:12px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .15s}
-.footer-link:hover{color:rgba(255,255,255,.8)}
-.footer-copy{font-size:11px;color:rgba(255,255,255,.2)}
+.footer-link{font-size:12px;color:rgba(255,255,255,.55);text-decoration:none;transition:color .15s}
+.footer-link:hover{color:rgba(255,255,255,.9)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.3)}
 .upload-input{padding:8px;background:var(--bg);border:1.5px dashed var(--line);border-radius:9px;font-size:13px;color:var(--ink);cursor:pointer;transition:border-color .15s}
 .upload-input:hover{border-color:var(--y)}
 .precio-zona-box{background:var(--ok-bg);border:1.5px solid var(--ok-border);border-radius:10px;padding:12px 14px;display:none;flex-direction:column;gap:6px}
@@ -398,23 +371,6 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .srv-link-card{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);text-decoration:none;transition:border-color .15s,background .15s}
 .srv-link-card:hover{border-color:var(--yd);background:var(--y-bg)}
 .srv-link-lbl{font-family:var(--fd);font-size:13px;font-weight:900;color:var(--ink);text-align:center;line-height:1.2}
-
-.market-hidden{display:none!important}
-.skip-link{position:absolute;left:0;top:-44px;background:var(--y);color:#000;padding:10px 14px;font-weight:800;font-size:14px;z-index:9999;border-radius:0 0 8px 0}.skip-link:focus{top:0}
-/* ═══ ACCESIBILIDAD / WOORANK CONTRAST FIX ═══ */
-.section-light .sec-label,.section-mid .sec-label{color:#5C4500!important}
-.section-light .zona-name,.section-mid .zona-name{color:#5C4500!important}
-.section-light [style*="color:var(--g2)"],.section-mid [style*="color:var(--g2)"]{color:#3F3F52!important}
-.section-dark .sec-label{color:var(--y)!important;opacity:1!important}
-.section-dark .plan-badge{color:rgba(255,255,255,.82)!important}
-.section-dark .plan-badge-y{color:var(--y)!important}
-.section-dark .plan-badge[style*="37,99,235"]{color:#9CC0FF!important}
-.section-dark .plan-badge[style*="22,163,74"]{color:#8BE9A7!important}
-.section-dark .plan-mes,.section-dark .plan-desc,.section-dark .plan-feat{color:rgba(255,255,255,.84)!important}
-.section-dark .feat-check{color:rgba(255,255,255,.78)!important}
-.section-dark .feat-y{color:var(--y)!important}
-.sec-title.dark em{color:#5C4500!important}
-
 </style>
 </head>
 <body>
@@ -449,24 +405,25 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   <div class="hero-wm" aria-hidden="true">db</div>
   <div class="hero-chip">
     <span class="hero-dot"></span>
-    <span class="hero-chip-txt" data-market-chip>Técnicos activos · La Habana</span>
+    <span class="hero-chip-txt">Técnicos activos · La Habana &amp; Santo Domingo</span>
   </div>
-  <h1 class="hero-title" id="hero-heading">¿Se te<br>rompió algo<br><em>en casa?</em></h1>
-  <p class="hero-desc">Técnicos verificados en tu municipio. Electricidad, plomería, refrigeración y más. Solicita ahora — recibe tu <span class="code-b">db-xxxx</span> de seguimiento.</p>
+  <h1 class="hero-title" id="hero-heading">Técnicos<br>a domicilio<br><em>en La Habana</em></h1>
+  <h2 style="font-family:var(--fd);font-size:clamp(22px,5vw,32px);font-weight:700;color:rgba(255,255,255,.75);line-height:1.1;letter-spacing:-.2px;margin-bottom:16px;position:relative;z-index:1">¿Se te rompió algo en casa?</h2>
+  <p class="hero-desc">Electricidad, plomería, refrigeración y más. Técnico verificado en tu municipio — recibe tu <span class="code-b">db-xxxx</span> de seguimiento y garantía incluida.</p>
   <div class="hero-btns">
     <button class="btn btn-y" onclick="open_('sol')">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
       Solicitar servicio
     </button>
     <button class="btn btn-outline" onclick="abrirComoFunciona()">¿Cómo funciona?</button>
   </div>
   <div>
-    <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px">Seguimiento de tu solicitud</div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:8px">Seguimiento de tu solicitud</div>
     <div class="hero-tracker">
-      <input type="text" id="trk-input" placeholder="db-xxxx — ingresa tu código" maxlength="12" oninput="this.value=this.value.replace(/[^0-9a-zA-Z\-]/g,'').toLowerCase()"/>
+      <input type="text" id="trk-input" placeholder="db-xxxx — ingresa tu código" maxlength="12" aria-label="Código de seguimiento" oninput="this.value=this.value.replace(/[^0-9a-zA-Z\-]/g,'').toLowerCase()"/>
       <button class="hero-tracker-btn" onclick="buscarEstado()">Buscar</button>
     </div>
-    <div class="tracker-result" id="tracker-result"></div>
+    <div class="tracker-result" id="tracker-result" role="status" aria-live="polite"></div>
   </div>
   <div class="hero-actions">
     <button class="hact" onclick="open_('cal')">
@@ -493,8 +450,8 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   <div class="acordeon">
     <div class="acord-item open" id="ac-como">
       <div class="acord-hdr" onclick="toggleAcord('ac-como')">
-        <span class="acord-title">✅ ¿Cómo funciona?</span>
-        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <span class="acord-title" role="heading" aria-level="3">✅ ¿Cómo funciona?</span>
+        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="acord-body">
         <div class="steps-mini">
@@ -508,22 +465,22 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <div class="acord-item" id="ac-cob">
       <div class="acord-hdr" onclick="toggleAcord('ac-cob')">
         <span class="acord-title">📍 Municipios con cobertura</span>
-        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="acord-body">
         <div class="mun-grid">
-          <div class="zona-group" data-market="CU"><div class="zona-name">Occidente</div><div class="zona-munis"><span class="zona-muni">Playa</span><span class="zona-muni">La Lisa</span><span class="zona-muni">Marianao</span></div></div>
-          <div class="zona-group" data-market="CU"><div class="zona-name">Centro</div><div class="zona-munis"><span class="zona-muni">Plaza de la Rev.</span><span class="zona-muni">Centro Habana</span><span class="zona-muni">La Habana Vieja</span><span class="zona-muni">Diez de Octubre</span><span class="zona-muni">Cerro</span></div></div>
-          <div class="zona-group" data-market="CU"><div class="zona-name">Oriente</div><div class="zona-munis"><span class="zona-muni">Regla</span><span class="zona-muni">H. del Este</span><span class="zona-muni">Guanabacoa</span><span class="zona-muni">S.M. del Padrón</span></div></div>
-          <div class="zona-group" data-market="CU"><div class="zona-name">Sur</div><div class="zona-munis"><span class="zona-muni">Boyeros</span><span class="zona-muni">Arroyo Naranjo</span><span class="zona-muni">Cotorro</span></div></div>
-          <div class="zona-group" data-market="DO" style="grid-column:1/-1;border-top:2px solid var(--y-border);padding-top:14px;margin-top:4px"><div class="zona-name" style="color:var(--y)">🇩🇴 Santo Domingo RD</div><div class="zona-munis" style="display:grid;grid-template-columns:1fr 1fr;gap:3px"><span class="zona-muni">Santo Domingo (DN)</span><span class="zona-muni">Santo Domingo Este</span><span class="zona-muni">Santo Domingo Norte</span><span class="zona-muni">Santo Domingo Oeste</span><span class="zona-muni">Los Alcarrizos</span><span class="zona-muni">Boca Chica</span><span class="zona-muni">Pedro Brand</span><span class="zona-muni">San Antonio de Guerra</span></div></div>
+          <div class="zona-group"><div class="zona-name">Occidente</div><div class="zona-munis"><span class="zona-muni">Playa</span><span class="zona-muni">La Lisa</span><span class="zona-muni">Marianao</span></div></div>
+          <div class="zona-group"><div class="zona-name">Centro</div><div class="zona-munis"><span class="zona-muni">Plaza de la Rev.</span><span class="zona-muni">Centro Habana</span><span class="zona-muni">La Habana Vieja</span><span class="zona-muni">Diez de Octubre</span><span class="zona-muni">Cerro</span></div></div>
+          <div class="zona-group"><div class="zona-name">Oriente</div><div class="zona-munis"><span class="zona-muni">Regla</span><span class="zona-muni">H. del Este</span><span class="zona-muni">Guanabacoa</span><span class="zona-muni">S.M. del Padrón</span></div></div>
+          <div class="zona-group"><div class="zona-name">Sur</div><div class="zona-munis"><span class="zona-muni">Boyeros</span><span class="zona-muni">Arroyo Naranjo</span><span class="zona-muni">Cotorro</span></div></div>
+          <div class="zona-group" style="grid-column:1/-1;border-top:2px solid var(--y-border);padding-top:14px;margin-top:4px"><div class="zona-name" style="color:var(--yd)">🇩🇴 Santo Domingo RD</div><div class="zona-munis" style="display:grid;grid-template-columns:1fr 1fr;gap:3px"><span class="zona-muni">Santo Domingo (DN)</span><span class="zona-muni">Santo Domingo Este</span><span class="zona-muni">Santo Domingo Norte</span><span class="zona-muni">Santo Domingo Oeste</span><span class="zona-muni">Los Alcarrizos</span><span class="zona-muni">Boca Chica</span><span class="zona-muni">Pedro Brand</span><span class="zona-muni">San Antonio de Guerra</span></div></div>
         </div>
       </div>
     </div>
     <div class="acord-item" id="ac-tec">
       <div class="acord-hdr" onclick="toggleAcord('ac-tec')">
         <span class="acord-title">👷 ¿Eres técnico? Trabaja con nosotros</span>
-        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="acord-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="acord-body">
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
@@ -537,42 +494,41 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   </div>
 </section>
 
-<!-- ═══ SECCIÓN SERVICIOS CON LINKS SEO ═══ -->
 <section class="section section-light" id="sec-servicios" aria-labelledby="servicios-heading" style="padding-top:32px">
   <div class="sec-label">🔧 Nuestros servicios</div>
-  <h2 class="sec-title dark" id="servicios-heading">¿Qué necesitas<br><em style="font-style:normal;color:#5C4500">reparar hoy?</em></h2>
-  <p class="sec-sub" style="margin-bottom:20px" data-market-service-sub>Técnicos verificados para cada tipo de trabajo — en La Habana.</p>
-  <div style="margin-bottom:24px" data-market="CU">
-    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#3F3F52;margin-bottom:10px">🇨🇺 La Habana, Cuba</div>
+  <h2 class="sec-title dark" id="servicios-heading">¿Qué necesitas<br><em class="yd-fix">reparar hoy?</em></h2>
+  <p class="sec-sub" style="margin-bottom:20px">Técnicos verificados para cada tipo de trabajo — en La Habana y Santo Domingo.</p>
+  <div style="margin-bottom:24px">
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇨🇺 La Habana, Cuba</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <a href="electricidad-la-habana.html" class="srv-link-card"><span style="font-size:26px">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
-      <a href="plomeria-la-habana.html" class="srv-link-card"><span style="font-size:26px">🚿</span><span class="srv-link-lbl">Plomería</span></a>
-      <a href="refrigeracion-la-habana.html" class="srv-link-card"><span style="font-size:26px">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
-      <a href="electrodomesticos-la-habana.html" class="srv-link-card"><span style="font-size:26px">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
-      <a href="cerrajeria-la-habana.html" class="srv-link-card"><span style="font-size:26px">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
-      <a href="reparacion-celulares-la-habana.html" class="srv-link-card"><span style="font-size:26px">📱</span><span class="srv-link-lbl">Celulares</span></a>
+      <a href="electricidad-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
+      <a href="plomeria-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🚿</span><span class="srv-link-lbl">Plomería</span></a>
+      <a href="refrigeracion-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
+      <a href="electrodomesticos-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
+      <a href="cerrajeria-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
+      <a href="reparacion-celulares-la-habana.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">📱</span><span class="srv-link-lbl">Celulares</span></a>
     </div>
   </div>
-  <div data-market="DO">
-    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#3F3F52;margin-bottom:10px">🇩🇴 Santo Domingo, RD</div>
+  <div>
+    <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:10px">🇩🇴 Santo Domingo, RD</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-      <a href="electricidad-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
-      <a href="plomeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">🚿</span><span class="srv-link-lbl">Plomería</span></a>
-      <a href="refrigeracion-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
-      <a href="electrodomesticos-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
-      <a href="cerrajeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
-      <a href="reparacion-celulares-santo-domingo.html" class="srv-link-card"><span style="font-size:26px">📱</span><span class="srv-link-lbl">Celulares</span></a>
+      <a href="electricidad-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">⚡</span><span class="srv-link-lbl">Electricidad</span></a>
+      <a href="plomeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🚿</span><span class="srv-link-lbl">Plomería</span></a>
+      <a href="refrigeracion-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">❄️</span><span class="srv-link-lbl">Refrigeración</span></a>
+      <a href="electrodomesticos-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🧺</span><span class="srv-link-lbl">Electrodomésticos</span></a>
+      <a href="cerrajeria-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">🔑</span><span class="srv-link-lbl">Cerrajería</span></a>
+      <a href="reparacion-celulares-santo-domingo.html" class="srv-link-card"><span style="font-size:26px" aria-hidden="true">📱</span><span class="srv-link-lbl">Celulares</span></a>
     </div>
   </div>
 </section>
 
 <section class="section section-dark" id="sec-planes" aria-labelledby="planes-heading">
-  <div class="sec-label" style="color:var(--y)">dbarrio para empresas</div>
+  <div class="sec-label">dbarrio para empresas</div>
   <h2 class="sec-title light" id="planes-heading">Mantenimiento fijo<br><em style="font-style:normal;color:var(--y)">para tu negocio</em></h2>
   <p class="sec-sub light" style="margin-bottom:24px">Restaurantes, hostales, oficinas y negocios. Paga una cuota mensual fija y ten un técnico de confianza siempre disponible — sin buscar, sin sorpresas.</p>
   <div class="planes-grid">
     <div class="plan-card">
-      <div class="plan-badge" style="color:#9CC0FF">Mipyme</div>
+      <div class="plan-badge" style="color:rgba(100,150,255,.9)">Mipyme</div>
       <div class="plan-precio">$40<span class="plan-mes">/mes</span></div>
       <div class="plan-desc">Para negocios pequeños con equipos básicos.</div>
       <div class="plan-features">
@@ -600,7 +556,7 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       <button class="btn btn-y btn-full" onclick="openAfiliacion('estandar')">Solicitar plan</button>
     </div>
     <div class="plan-card">
-      <div class="plan-badge" style="color:#8BE9A7">Corporativo</div>
+      <div class="plan-badge" style="color:rgba(100,220,140,.9)">Corporativo</div>
       <div class="plan-precio">$90<span class="plan-mes">/mes</span></div>
       <div class="plan-desc">Para instalaciones grandes con equipos críticos — hoteles, restaurantes, centros.</div>
       <div class="plan-features">
@@ -614,32 +570,31 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       <button class="btn btn-outline btn-full" onclick="openAfiliacion('premium')">Solicitar plan</button>
     </div>
   </div>
-  <p style="font-size:11px;color:rgba(255,255,255,.3);text-align:center;margin-top:16px;line-height:1.6">Pago trimestral en efectivo · Sin contratos · La cuota cubre disponibilidad y técnico fijo · Cada servicio se cobra a precio normal</p>
+  <p style="font-size:11px;color:rgba(255,255,255,.4);text-align:center;margin-top:16px;line-height:1.6">Pago trimestral en efectivo · Sin contratos · La cuota cubre disponibilidad y técnico fijo · Cada servicio se cobra a precio normal</p>
 </section>
 
 <section class="section section-mid" style="padding:28px 0 28px 20px">
   <div class="sec-label" style="padding-right:20px">⭐ Lo que dicen</div>
-  <div class="testimonios-scroll">
-    <div class="test-card">
-      <div class="test-stars">⭐⭐⭐⭐⭐</div>
+  <div class="testimonios-scroll" role="list">
+    <div class="test-card" role="listitem">
+      <div class="test-stars" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
       <p class="test-text">El técnico llegó el mismo día y resolvió el compresor. Muy profesional y rápido.</p>
-      <div class="test-author"><div class="test-avatar">M</div><div><div class="test-name">María L.</div><div class="test-location">Playa · Refrigeración</div></div></div>
+      <div class="test-author"><div class="test-avatar" aria-hidden="true">M</div><div><div class="test-name">María L.</div><div class="test-location">Playa · Refrigeración</div></div></div>
     </div>
-    <div class="test-card">
-      <div class="test-stars">⭐⭐⭐⭐⭐</div>
+    <div class="test-card" role="listitem">
+      <div class="test-stars" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
       <p class="test-text">Llevaba semanas sin agua. En menos de 2 horas ya tenía el técnico aquí. Increíble.</p>
-      <div class="test-author"><div class="test-avatar">R</div><div><div class="test-name">Reinaldo P.</div><div class="test-location">Diez de Octubre · Plomería</div></div></div>
+      <div class="test-author"><div class="test-avatar" aria-hidden="true">R</div><div><div class="test-name">Reinaldo P.</div><div class="test-location">Diez de Octubre · Plomería</div></div></div>
     </div>
-    <div class="test-card">
-      <div class="test-stars">⭐⭐⭐⭐⭐</div>
+    <div class="test-card" role="listitem">
+      <div class="test-stars" aria-label="5 estrellas">⭐⭐⭐⭐⭐</div>
       <p class="test-text">Reparó la lavadora que tres técnicos habían dicho que no tenía solución. Con garantía de 30 días.</p>
-      <div class="test-author"><div class="test-avatar">Y</div><div><div class="test-name">Yolanda M.</div><div class="test-location">Centro Habana · Electrodomésticos</div></div></div>
+      <div class="test-author"><div class="test-avatar" aria-hidden="true">Y</div><div><div class="test-name">Yolanda M.</div><div class="test-location">Centro Habana · Electrodomésticos</div></div></div>
     </div>
     <div style="width:4px;flex-shrink:0"></div>
   </div>
 </section>
-
-</main><!-- /main -->
+</main>
 
 <footer class="footer" itemscope itemtype="https://schema.org/LocalBusiness">
   <div class="footer-brand" itemprop="name">d<span>b</span>arrio</div>
@@ -647,19 +602,22 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
     <a class="footer-link" href="privacidad.html">Privacidad</a>
     <a class="footer-link" href="terminos.html">Términos de uso</a>
     <a class="footer-link" href="zona-db.html">Zona db</a>
+    <a class="footer-link" href="https://www.instagram.com/dbarrio_fix" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <a class="footer-link" href="https://www.twitter.com/dbarrio_fix" target="_blank" rel="noopener noreferrer">Twitter / X</a>
   </div>
   <address class="footer-copy" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style:normal">
     © 2026 dbarrio ·
-    <span itemprop="addressLocality" data-market-footer-city>La Habana</span>, <span itemprop="addressCountry" data-market-footer-country>Cuba</span>
+    <span itemprop="addressLocality">La Habana</span>, <span itemprop="addressCountry">Cuba</span>
+    · Santo Domingo, RD
   </address>
 </footer>
 
-<!-- ══ MODAL SOLICITUD ══ -->
-<div class="ov" id="ov-sol" onclick="ovc(event,'sol')">
+<!-- MODAL SOLICITUD -->
+<div class="ov" id="ov-sol" onclick="ovc(event,'sol')" role="dialog" aria-modal="true" aria-labelledby="sol-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Solicitar servicio</span><button class="sheet-x" onclick="close_('sol')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="sol-title">Solicitar servicio</span><button class="sheet-x" onclick="close_('sol')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
-    <div class="step-indicator">
+    <div class="step-indicator" aria-hidden="true">
       <div class="step-dot active" id="sdot-1"></div>
       <div style="flex:1;height:2px;background:var(--line);border-radius:2px"><div id="sbar" style="height:100%;width:0;background:var(--y);border-radius:2px;transition:width .3s"></div></div>
       <div class="step-dot" id="sdot-2"></div>
@@ -671,21 +629,21 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       </div>
       <div class="fg">
         <label>Tipo de servicio</label>
-        <div class="srv-selector" id="srv-selector">
-          <button class="srv-opt" data-srv="Electrodomésticos" onclick="selSrv(this)"><span class="srv-opt-ico">🧺</span><span class="srv-opt-lbl">Electro-domésticos</span></button>
-          <button class="srv-opt" data-srv="Plomería" onclick="selSrv(this)"><span class="srv-opt-ico">🚿</span><span class="srv-opt-lbl">Plomería</span></button>
-          <button class="srv-opt" data-srv="Electricidad" onclick="selSrv(this)"><span class="srv-opt-ico">⚡</span><span class="srv-opt-lbl">Electricidad</span></button>
-          <button class="srv-opt" data-srv="Refrigeración" onclick="selSrv(this)"><span class="srv-opt-ico">❄️</span><span class="srv-opt-lbl">Refrigeración</span></button>
-          <button class="srv-opt" data-srv="Televisión / audio" onclick="selSrv(this)"><span class="srv-opt-ico">📺</span><span class="srv-opt-lbl">TV / Audio</span></button>
-          <button class="srv-opt" data-srv="Computadoras" onclick="selSrv(this)"><span class="srv-opt-ico">💻</span><span class="srv-opt-lbl">Computadoras</span></button>
-          <button class="srv-opt" data-srv="Celulares" onclick="selSrv(this)"><span class="srv-opt-ico">📱</span><span class="srv-opt-lbl">Celulares</span></button>
-          <button class="srv-opt" data-srv="Cerrajería" onclick="selSrv(this)"><span class="srv-opt-ico">🔑</span><span class="srv-opt-lbl">Cerrajería</span></button>
-          <button class="srv-opt" data-srv="Otro" onclick="selSrv(this)"><span class="srv-opt-ico">🛠</span><span class="srv-opt-lbl">Otro</span></button>
+        <div class="srv-selector" id="srv-selector" role="group" aria-label="Tipo de servicio">
+          <button class="srv-opt" data-srv="Electrodomésticos" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">🧺</span><span class="srv-opt-lbl">Electro-domésticos</span></button>
+          <button class="srv-opt" data-srv="Plomería" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">🚿</span><span class="srv-opt-lbl">Plomería</span></button>
+          <button class="srv-opt" data-srv="Electricidad" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">⚡</span><span class="srv-opt-lbl">Electricidad</span></button>
+          <button class="srv-opt" data-srv="Refrigeración" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">❄️</span><span class="srv-opt-lbl">Refrigeración</span></button>
+          <button class="srv-opt" data-srv="Televisión / audio" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">📺</span><span class="srv-opt-lbl">TV / Audio</span></button>
+          <button class="srv-opt" data-srv="Computadoras" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">💻</span><span class="srv-opt-lbl">Computadoras</span></button>
+          <button class="srv-opt" data-srv="Celulares" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">📱</span><span class="srv-opt-lbl">Celulares</span></button>
+          <button class="srv-opt" data-srv="Cerrajería" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">🔑</span><span class="srv-opt-lbl">Cerrajería</span></button>
+          <button class="srv-opt" data-srv="Otro" onclick="selSrv(this)"><span class="srv-opt-ico" aria-hidden="true">🛠</span><span class="srv-opt-lbl">Otro</span></button>
         </div>
-        <div class="fe" id="es-srv">Selecciona un tipo de servicio.</div>
+        <div class="fe" id="es-srv" role="alert">Selecciona un tipo de servicio.</div>
       </div>
       <div class="fg">
-        <label>Municipio</label>
+        <label for="s-mun">Municipio</label>
         <select id="s-mun" onchange="cargarPreciosZona()">
           <option value="">-- Seleccionar municipio --</option>
           <optgroup label="🇨🇺 La Habana — Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
@@ -695,21 +653,21 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
           <optgroup label="🇩🇴 Distrito Nacional RD"><option>Santo Domingo (DN)</option></optgroup>
           <optgroup label="🇩🇴 Provincia Santo Domingo"><option>Santo Domingo Este</option><option>Santo Domingo Norte</option><option>Santo Domingo Oeste</option><option>Los Alcarrizos</option><option>Boca Chica</option><option>Pedro Brand</option><option>San Antonio de Guerra</option></optgroup>
         </select>
-        <div class="fe" id="es-mun">Selecciona tu municipio.</div>
+        <div class="fe" id="es-mun" role="alert">Selecciona tu municipio.</div>
         <div class="precio-zona-box" id="precios-zona-box">
-          <div class="precio-zona-title">💰 Precios en tu zona</div>
+          <div>💰 Precios en tu zona</div>
           <div id="precios-zona-list"></div>
           <div style="font-size:11px;color:var(--ok);margin-top:4px">El precio final lo confirma el técnico al llegar.</div>
         </div>
       </div>
-      <div class="fg"><label>Tu nombre</label><input id="s-cli" type="text" placeholder="¿Cómo te llamamos?"/><div class="fe" id="es-cli">Escribe tu nombre.</div></div>
+      <div class="fg"><label for="s-cli">Tu nombre</label><input id="s-cli" type="text" placeholder="¿Cómo te llamamos?" autocomplete="given-name"/><div class="fe" id="es-cli" role="alert">Escribe tu nombre.</div></div>
       <div class="fg">
         <label>WhatsApp</label>
         <div class="phone-row">
-          <select id="s-code"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
-          <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
+          <select id="s-code" aria-label="Código de país"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+          <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp" autocomplete="tel"/>
         </div>
-        <div class="fe" id="es-wa">Número inválido.</div>
+        <div class="fe" id="es-wa" role="alert">Número inválido.</div>
       </div>
       <button class="btn btn-k btn-full" onclick="irStep2()">Continuar →</button>
     </div>
@@ -720,26 +678,26 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
       </div>
       <div class="fg">
         <label>¿Cuándo te viene bien?</label>
-        <div class="hora-opts" id="hora-opts">
-          <div class="hora-opt" data-hora="Hoy mismo — urgente" onclick="selHora(this)"><span class="hora-opt-ico">🔴</span><div><div class="hora-opt-txt">Hoy mismo — urgente</div><div class="hora-opt-sub">Lo antes posible</div></div></div>
-          <div class="hora-opt" data-hora="Mañana por la mañana (8:00–12:00)" onclick="selHora(this)"><span class="hora-opt-ico">🌅</span><div><div class="hora-opt-txt">Mañana por la mañana</div><div class="hora-opt-sub">8:00 – 12:00</div></div></div>
-          <div class="hora-opt" data-hora="Esta tarde (15:00–19:00)" onclick="selHora(this)"><span class="hora-opt-ico">🌇</span><div><div class="hora-opt-txt">Esta tarde</div><div class="hora-opt-sub">15:00 – 19:00</div></div></div>
-          <div class="hora-opt" data-hora="Esta semana — coordinar" onclick="selHora(this)"><span class="hora-opt-ico">📅</span><div><div class="hora-opt-txt">Esta semana</div><div class="hora-opt-sub">Coordinamos por WhatsApp</div></div></div>
+        <div class="hora-opts" id="hora-opts" role="group" aria-label="Horario preferido">
+          <div class="hora-opt" data-hora="Hoy mismo — urgente" onclick="selHora(this)" role="button" tabindex="0"><span class="hora-opt-ico" aria-hidden="true">🔴</span><div><div class="hora-opt-txt">Hoy mismo — urgente</div><div class="hora-opt-sub">Lo antes posible</div></div></div>
+          <div class="hora-opt" data-hora="Mañana por la mañana (8:00–12:00)" onclick="selHora(this)" role="button" tabindex="0"><span class="hora-opt-ico" aria-hidden="true">🌅</span><div><div class="hora-opt-txt">Mañana por la mañana</div><div class="hora-opt-sub">8:00 – 12:00</div></div></div>
+          <div class="hora-opt" data-hora="Esta tarde (15:00–19:00)" onclick="selHora(this)" role="button" tabindex="0"><span class="hora-opt-ico" aria-hidden="true">🌇</span><div><div class="hora-opt-txt">Esta tarde</div><div class="hora-opt-sub">15:00 – 19:00</div></div></div>
+          <div class="hora-opt" data-hora="Esta semana — coordinar" onclick="selHora(this)" role="button" tabindex="0"><span class="hora-opt-ico" aria-hidden="true">📅</span><div><div class="hora-opt-txt">Esta semana</div><div class="hora-opt-sub">Coordinamos por WhatsApp</div></div></div>
         </div>
       </div>
-      <div class="fg"><label>Describe el problema</label><textarea id="s-det" placeholder="¿Qué falla? Marca, modelo, desde cuándo... Cuanto más detalle, mejor."></textarea></div>
-      <div class="fg"><label>Dirección (opcional)</label><input id="s-dir" type="text" placeholder="Calle, número, referencias..."/></div>
+      <div class="fg"><label for="s-det">Describe el problema</label><textarea id="s-det" placeholder="¿Qué falla? Marca, modelo, desde cuándo... Cuanto más detalle, mejor."></textarea></div>
+      <div class="fg"><label for="s-dir">Dirección (opcional)</label><input id="s-dir" type="text" placeholder="Calle, número, referencias..." autocomplete="street-address"/></div>
       <div class="cb" id="cb-sol" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px">
-        <input type="checkbox" id="s-cp"/>
+        <input type="checkbox" id="s-cp" aria-required="true"/>
         <span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span>
       </div>
-      <div class="fe" id="es-cp">Debes aceptar Términos y Privacidad.</div>
-      <div class="ok-box" id="ok-sol">✅ ¡Solicitud registrada!<br/>Tu código es:<span class="ok-code" id="cod-sol"></span><span class="ok-note">Guárdalo — lo necesitas para seguimiento, garantía y calificación.</span></div>
-      <div class="err-box" id="err-sol"></div>
+      <div class="fe" id="es-cp" role="alert">Debes aceptar Términos y Privacidad.</div>
+      <div class="ok-box" id="ok-sol" role="status">✅ ¡Solicitud registrada!<br/>Tu código es:<span class="ok-code" id="cod-sol"></span><span class="ok-note">Guárdalo — lo necesitas para seguimiento, garantía y calificación.</span></div>
+      <div class="err-box" id="err-sol" role="alert"></div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-g" style="flex:0 0 auto" onclick="irStep1()">← Atrás</button>
         <button class="btn btn-y" id="btn-sol" style="flex:1" onclick="envSol()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
           Registrar solicitud
         </button>
       </div>
@@ -748,76 +706,76 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
   </div>
 </div></div>
 
-<!-- ══ MODAL GARANTÍA ══ -->
-<div class="ov" id="ov-gar" onclick="ovc(event,'gar')">
+<!-- MODAL GARANTÍA -->
+<div class="ov" id="ov-gar" onclick="ovc(event,'gar')" role="dialog" aria-modal="true" aria-labelledby="gar-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Reclamar garantía</span><button class="sheet-x" onclick="close_('gar')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="gar-title">Reclamar garantía</span><button class="sheet-x" onclick="close_('gar')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
     <p class="hint">Solo aplica para trabajos realizados dentro del período de garantía activa.</p>
-    <div class="fg"><label>Código del servicio</label><input id="g-rec" type="text" placeholder="db-xxxx"/><div class="fe" id="eg-rec">Requerido.</div></div>
-    <div class="fg"><label>Teléfono de contacto</label><input id="g-tel" type="tel" placeholder="+53..."/><div class="fe" id="eg-tel">Número inválido.</div></div>
-    <div class="fg"><label>Describe la falla</label><textarea id="g-fal" placeholder="¿Qué problema presenta el trabajo realizado?"></textarea><div class="fe" id="eg-fal">Requerido.</div></div>
+    <div class="fg"><label for="g-rec">Código del servicio</label><input id="g-rec" type="text" placeholder="db-xxxx"/><div class="fe" id="eg-rec" role="alert">Requerido.</div></div>
+    <div class="fg"><label for="g-tel">Teléfono de contacto</label><input id="g-tel" type="tel" placeholder="+53..."/><div class="fe" id="eg-tel" role="alert">Número inválido.</div></div>
+    <div class="fg"><label for="g-fal">Describe la falla</label><textarea id="g-fal" placeholder="¿Qué problema presenta el trabajo realizado?"></textarea><div class="fe" id="eg-fal" role="alert">Requerido.</div></div>
     <div class="cb" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px"><input type="checkbox" id="g-cp"/><span>Acepto <a href="terminos.html" target="_blank">Términos</a> y <a href="privacidad.html" target="_blank">Privacidad</a>.</span></div>
-    <div class="fe" id="eg-cp">Debes aceptar Términos y Privacidad.</div>
-    <div class="ok-box" id="ok-gar">✅ Reclamo registrado. Nos contactaremos contigo pronto.</div>
-    <div class="err-box" id="err-gar"></div>
+    <div class="fe" id="eg-cp" role="alert">Debes aceptar Términos y Privacidad.</div>
+    <div class="ok-box" id="ok-gar" role="status">✅ Reclamo registrado. Nos contactaremos contigo pronto.</div>
+    <div class="err-box" id="err-gar" role="alert"></div>
     <button class="btn btn-k btn-full" id="btn-gar" onclick="envGar()">Enviar reclamo</button>
   </div>
 </div></div>
 
-<!-- ══ MODAL CALIFICAR ══ -->
-<div class="ov" id="ov-cal" onclick="ovc(event,'cal')">
+<!-- MODAL CALIFICAR -->
+<div class="ov" id="ov-cal" onclick="ovc(event,'cal')" role="dialog" aria-modal="true" aria-labelledby="cal-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Calificar servicio</span><button class="sheet-x" onclick="close_('cal')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="cal-title">Calificar servicio</span><button class="sheet-x" onclick="close_('cal')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Código del servicio</label><input id="c-cod" type="text" placeholder="db-xxxx"/><div class="fe" id="ec-cod">Requerido.</div></div>
+    <div class="fg"><label for="c-cod">Código del servicio</label><input id="c-cod" type="text" placeholder="db-xxxx"/><div class="fe" id="ec-cod" role="alert">Requerido.</div></div>
     <div class="fg"><label>Tu valoración</label>
-      <div style="display:flex;gap:8px;margin-top:4px" id="stars">
-        <span class="star" data-v="1" onclick="setStar(1)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
-        <span class="star" data-v="2" onclick="setStar(2)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
-        <span class="star" data-v="3" onclick="setStar(3)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
-        <span class="star" data-v="4" onclick="setStar(4)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
-        <span class="star" data-v="5" onclick="setStar(5)" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+      <div style="display:flex;gap:8px;margin-top:4px" id="stars" role="group" aria-label="Valoración de 1 a 5 estrellas">
+        <span class="star" data-v="1" onclick="setStar(1)" role="button" tabindex="0" aria-label="1 estrella" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="2" onclick="setStar(2)" role="button" tabindex="0" aria-label="2 estrellas" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="3" onclick="setStar(3)" role="button" tabindex="0" aria-label="3 estrellas" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="4" onclick="setStar(4)" role="button" tabindex="0" aria-label="4 estrellas" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
+        <span class="star" data-v="5" onclick="setStar(5)" role="button" tabindex="0" aria-label="5 estrellas" style="font-size:32px;cursor:pointer;transition:transform .1s">⭐</span>
       </div>
-      <div class="fe" id="ec-st">Selecciona al menos una estrella.</div>
+      <div class="fe" id="ec-st" role="alert">Selecciona al menos una estrella.</div>
     </div>
-    <div class="ok-box" id="ok-cal">✅ ¡Gracias por calificar! Tu opinión ayuda a otros clientes.</div>
-    <div class="err-box" id="err-cal"></div>
+    <div class="ok-box" id="ok-cal" role="status">✅ ¡Gracias por calificar! Tu opinión ayuda a otros clientes.</div>
+    <div class="err-box" id="err-cal" role="alert"></div>
     <button class="btn btn-y btn-full" id="btn-cal" onclick="envCal()">Enviar valoración</button>
   </div>
 </div></div>
 
-<!-- ══ MODAL ÚNETE ══ -->
-<div class="ov" id="ov-uni" onclick="ovc(event,'uni')">
+<!-- MODAL ÚNETE -->
+<div class="ov" id="ov-uni" onclick="ovc(event,'uni')" role="dialog" aria-modal="true" aria-labelledby="uni-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Únete como técnico</span><button class="sheet-x" onclick="close_('uni')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="uni-title">Únete como técnico</span><button class="sheet-x" onclick="close_('uni')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Nombre completo</label><input id="u-nom" type="text" placeholder="Tu nombre"/><div class="fe" id="eu-nom">Requerido.</div></div>
+    <div class="fg"><label for="u-nom">Nombre completo</label><input id="u-nom" type="text" placeholder="Tu nombre" autocomplete="name"/><div class="fe" id="eu-nom" role="alert">Requerido.</div></div>
     <div class="fg"><label>WhatsApp</label>
       <div class="phone-row">
-        <select id="u-code"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+        <select id="u-code" aria-label="Código de país"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
         <input id="u-tel" type="tel" inputmode="numeric" placeholder="Número de WhatsApp"/>
       </div>
-      <div class="fe" id="eu-tel">Número inválido.</div>
+      <div class="fe" id="eu-tel" role="alert">Número inválido.</div>
     </div>
-    <div class="fg"><label>Especialidad</label>
+    <div class="fg"><label for="u-esp">Especialidad</label>
       <select id="u-esp">
         <option value="">-- Seleccionar --</option>
         <option>Electrodomésticos</option><option>Plomería</option><option>Electricidad</option>
         <option>Refrigeración</option><option>Televisión / audio</option><option>Computadoras</option>
         <option>Celulares</option><option>Cerrajería</option><option>Multidisciplinario</option>
       </select>
-      <div class="fe" id="eu-esp">Requerido.</div>
+      <div class="fe" id="eu-esp" role="alert">Requerido.</div>
     </div>
-    <div class="fg"><label>Años de experiencia</label>
+    <div class="fg"><label for="u-exp">Años de experiencia</label>
       <select id="u-exp">
         <option value="">-- Seleccionar --</option>
         <option value="1">Menos de 1 año</option><option value="2">1 – 3 años</option>
         <option value="4">3 – 5 años</option><option value="6">Más de 5 años</option>
       </select>
-      <div class="fe" id="eu-exp">Requerido.</div>
+      <div class="fe" id="eu-exp" role="alert">Requerido.</div>
     </div>
-    <div class="fg"><label>Municipio donde trabajas</label>
+    <div class="fg"><label for="u-zona">Municipio donde trabajas</label>
       <select id="u-zona">
         <option value="">-- Seleccionar municipio --</option>
         <optgroup label="🇨🇺 La Habana — Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
@@ -827,53 +785,53 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
         <optgroup label="🇩🇴 Distrito Nacional RD"><option>Santo Domingo (DN)</option></optgroup>
         <optgroup label="🇩🇴 Provincia Santo Domingo"><option>Santo Domingo Este</option><option>Santo Domingo Norte</option><option>Santo Domingo Oeste</option><option>Los Alcarrizos</option><option>Boca Chica</option><option>Pedro Brand</option><option>San Antonio de Guerra</option></optgroup>
       </select>
-      <div class="fe" id="eu-zona">Selecciona tu municipio.</div>
+      <div class="fe" id="eu-zona" role="alert">Selecciona tu municipio.</div>
     </div>
     <div style="background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px">
       <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g1);margin-bottom:10px">Documentos requeridos</div>
       <div style="display:flex;flex-direction:column;gap:10px">
-        <div class="fg"><label>Carnet de identidad (foto)</label><input type="file" id="u-carnet" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto clara del carnet — máx 1 MB</div><div class="fe" id="eu-carnet">Requerido.</div></div>
-        <div class="fg"><label>Título o certificado de estudios</label><input type="file" id="u-titulo" accept="image/*,.pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Imagen o PDF — máx 2 MB</div><div class="fe" id="eu-titulo">Requerido.</div></div>
-        <div class="fg"><label>Currículo</label><input type="file" id="u-curriculum" accept=".pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Solo PDF — máx 2 MB</div><div class="fe" id="eu-curriculum">Requerido.</div></div>
-        <div class="fg"><label>Foto de perfil</label><input type="file" id="u-foto-perfil" accept="image/*" capture="user" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto tuya — máx 1 MB</div><div class="fe" id="eu-foto-perfil">Requerido.</div></div>
-        <div class="fg"><label>Foto con tus herramientas</label><input type="file" id="u-foto-herramientas" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto en tu entorno de trabajo — máx 1 MB</div><div class="fe" id="eu-foto-herramientas">Requerido.</div></div>
+        <div class="fg"><label for="u-carnet">Carnet de identidad (foto)</label><input type="file" id="u-carnet" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto clara del carnet — máx 1 MB</div><div class="fe" id="eu-carnet" role="alert">Requerido.</div></div>
+        <div class="fg"><label for="u-titulo">Título o certificado de estudios</label><input type="file" id="u-titulo" accept="image/*,.pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Imagen o PDF — máx 2 MB</div><div class="fe" id="eu-titulo" role="alert">Requerido.</div></div>
+        <div class="fg"><label for="u-curriculum">Currículo</label><input type="file" id="u-curriculum" accept=".pdf" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Solo PDF — máx 2 MB</div><div class="fe" id="eu-curriculum" role="alert">Requerido.</div></div>
+        <div class="fg"><label for="u-foto-perfil">Foto de perfil</label><input type="file" id="u-foto-perfil" accept="image/*" capture="user" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto tuya — máx 1 MB</div><div class="fe" id="eu-foto-perfil" role="alert">Requerido.</div></div>
+        <div class="fg"><label for="u-foto-herramientas">Foto con tus herramientas</label><input type="file" id="u-foto-herramientas" accept="image/*" capture="environment" class="upload-input"/><div style="font-size:11px;color:var(--g2);margin-top:3px">Foto en tu entorno de trabajo — máx 1 MB</div><div class="fe" id="eu-foto-herramientas" role="alert">Requerido.</div></div>
       </div>
       <div id="u-upload-progress" style="display:none;margin-top:10px">
         <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px" id="u-upload-status">Subiendo documentos...</div>
         <div style="background:var(--line);border-radius:4px;height:6px;overflow:hidden"><div id="u-upload-bar" style="height:100%;background:var(--y);border-radius:4px;width:0;transition:width .3s"></div></div>
       </div>
     </div>
-    <div style="background:var(--blue-bg);border:1.5px solid rgba(37,99,235,.18);border-radius:10px;padding:11px 14px;font-size:12px;color:var(--blue);line-height:1.6">📋 Crear cuenta de acceso — úsala para entrar al panel de técnico.</div>
-    <div class="fg"><label>Correo electrónico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="eu-email">Correo inválido.</div></div>
-    <div class="fg"><label>Contraseña</label><input id="u-pass" type="password" placeholder="Mínimo 6 caracteres"/><div class="fe" id="eu-pass">Mínimo 6 caracteres.</div></div>
+    <div style="background:var(--blue-bg);border:1.5px solid rgba(37,99,235,.18);border-radius:10px;padding:11px 14px;font-size:12px;color:#1D4ED8;line-height:1.6">📋 Crear cuenta de acceso — úsala para entrar al panel de técnico.</div>
+    <div class="fg"><label for="u-email">Correo electrónico</label><input id="u-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="eu-email" role="alert">Correo inválido.</div></div>
+    <div class="fg"><label for="u-pass">Contraseña</label><input id="u-pass" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password"/><div class="fe" id="eu-pass" role="alert">Mínimo 6 caracteres.</div></div>
     <p class="hint">Tu solicitud queda <strong>pendiente de aprobación</strong>. Te avisaremos por WhatsApp cuando puedas operar.</p>
     <div class="cb" id="cb-uni" style="background:var(--card2);border:1.5px solid var(--line);border-radius:9px;padding:10px 12px"><input type="checkbox" id="u-cp"/><span>Acepto los <a href="terminos.html" target="_blank">Términos</a> y la <a href="privacidad.html" target="_blank">Política de Privacidad</a>.</span></div>
-    <div class="fe" id="eu-cp">Debes aceptar Términos y Privacidad.</div>
-    <div class="ok-box" id="ok-uni">✅ Cuenta creada. Tu solicitud está en revisión — te contactaremos por WhatsApp.</div>
-    <div class="err-box" id="err-uni"></div>
+    <div class="fe" id="eu-cp" role="alert">Debes aceptar Términos y Privacidad.</div>
+    <div class="ok-box" id="ok-uni" role="status">✅ Cuenta creada. Tu solicitud está en revisión — te contactaremos por WhatsApp.</div>
+    <div class="err-box" id="err-uni" role="alert"></div>
     <button class="btn btn-k btn-full" id="btn-uni" onclick="envUni()">Crear cuenta</button>
   </div>
 </div></div>
 
-<!-- ══ MODAL AFILIACIÓN ══ -->
-<div class="ov" id="ov-afi" onclick="ovc(event,'afi')">
+<!-- MODAL AFILIACIÓN -->
+<div class="ov" id="ov-afi" onclick="ovc(event,'afi')" role="dialog" aria-modal="true" aria-labelledby="afi-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title" id="afi-title">Solicitar plan</span><button class="sheet-x" onclick="close_('afi')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="afi-title">Solicitar plan</span><button class="sheet-x" onclick="close_('afi')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
     <div id="afi-plan-info" style="background:var(--y-bg);border:1.5px solid var(--y-border);border-radius:10px;padding:12px 14px;margin-bottom:2px">
       <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--yd);margin-bottom:2px">Plan seleccionado</div>
       <div style="font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink)" id="afi-plan-nombre">—</div>
       <div style="font-size:12px;color:var(--g1);margin-top:2px" id="afi-plan-desc">—</div>
     </div>
-    <div class="fg"><label>Nombre del negocio o empresa</label><input id="afi-nom" type="text" placeholder="Ej: Paladar La Guarida, Hostal Vista Mar..."/><div class="fe" id="eafi-nom">Requerido.</div></div>
+    <div class="fg"><label for="afi-nom">Nombre del negocio o empresa</label><input id="afi-nom" type="text" placeholder="Ej: Paladar La Guarida, Hostal Vista Mar..."/><div class="fe" id="eafi-nom" role="alert">Requerido.</div></div>
     <div class="fg"><label>WhatsApp del responsable</label>
       <div class="phone-row">
-        <select id="afi-code"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
+        <select id="afi-code" aria-label="Código de país"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
         <input id="afi-tel" type="tel" inputmode="numeric" placeholder="Número WhatsApp"/>
       </div>
-      <div class="fe" id="eafi-tel">Número inválido.</div>
+      <div class="fe" id="eafi-tel" role="alert">Número inválido.</div>
     </div>
-    <div class="fg"><label>Municipio</label>
+    <div class="fg"><label for="afi-mun">Municipio</label>
       <select id="afi-mun">
         <option value="">-- Seleccionar --</option>
         <optgroup label="🇨🇺 La Habana — Occidente"><option>Playa</option><option>La Lisa</option><option>Marianao</option></optgroup>
@@ -883,25 +841,25 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
         <optgroup label="🇩🇴 Distrito Nacional RD"><option>Santo Domingo (DN)</option></optgroup>
         <optgroup label="🇩🇴 Provincia Santo Domingo"><option>Santo Domingo Este</option><option>Santo Domingo Norte</option><option>Santo Domingo Oeste</option><option>Los Alcarrizos</option><option>Boca Chica</option><option>Pedro Brand</option><option>San Antonio de Guerra</option></optgroup>
       </select>
-      <div class="fe" id="eafi-mun">Selecciona tu municipio.</div>
+      <div class="fe" id="eafi-mun" role="alert">Selecciona tu municipio.</div>
     </div>
-    <div class="fg"><label>Dirección del negocio (opcional)</label><input id="afi-dir" type="text" placeholder="Calle, número, referencias..."/></div>
-    <div class="fg"><label>Cuéntanos sobre tu negocio (opcional)</label><textarea id="afi-desc" placeholder="Tipo de negocio, equipos que tienen (aires, neveras, instalación eléctrica), cuántos..."></textarea></div>
-    <div class="ok-box" id="ok-afi">✅ ¡Solicitud recibida!<br/><span style="font-size:13px;font-weight:400">Te contactaremos por WhatsApp en menos de 24 horas para presentarte el técnico y coordinar los detalles.</span></div>
-    <div class="err-box" id="err-afi"></div>
+    <div class="fg"><label for="afi-dir">Dirección del negocio (opcional)</label><input id="afi-dir" type="text" placeholder="Calle, número, referencias..."/></div>
+    <div class="fg"><label for="afi-desc">Cuéntanos sobre tu negocio (opcional)</label><textarea id="afi-desc" placeholder="Tipo de negocio, equipos que tienen (aires, neveras, instalación eléctrica), cuántos..."></textarea></div>
+    <div class="ok-box" id="ok-afi" role="status">✅ ¡Solicitud recibida!<br/><span style="font-size:13px;font-weight:400">Te contactaremos por WhatsApp en menos de 24 horas.</span></div>
+    <div class="err-box" id="err-afi" role="alert"></div>
     <button class="btn btn-y btn-full" id="btn-afi" onclick="envAfiliacion()">Enviar solicitud</button>
     <p class="hint">Sin compromiso. Te presentamos el técnico y explicamos todo por WhatsApp antes de confirmar el plan.</p>
   </div>
 </div></div>
 
-<!-- ══ MODAL ACCESO ══ -->
-<div class="ov" id="ov-acc" onclick="ovc(event,'acc')">
+<!-- MODAL ACCESO -->
+<div class="ov" id="ov-acc" onclick="ovc(event,'acc')" role="dialog" aria-modal="true" aria-labelledby="acc-title">
 <div class="sheet"><div class="pill"></div>
-  <div class="sheet-hdr"><span class="sheet-title">Acceso privado</span><button class="sheet-x" onclick="close_('acc')">&times;</button></div>
+  <div class="sheet-hdr"><span class="sheet-title" id="acc-title">Acceso privado</span><button class="sheet-x" onclick="close_('acc')" aria-label="Cerrar">&times;</button></div>
   <div class="mbody">
-    <div class="fg"><label>Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="ea-email">Correo inválido.</div></div>
-    <div class="fg"><label>Contraseña</label><input id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password"/><div class="fe" id="ea-pass">Requerido.</div></div>
-    <div class="err-box" id="err-acc"></div>
+    <div class="fg"><label for="a-email">Correo electrónico</label><input id="a-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email"/><div class="fe" id="ea-email" role="alert">Correo inválido.</div></div>
+    <div class="fg"><label for="a-pass">Contraseña</label><input id="a-pass" type="password" placeholder="••••••••" autocomplete="current-password"/><div class="fe" id="ea-pass" role="alert">Requerido.</div></div>
+    <div class="err-box" id="err-acc" role="alert"></div>
     <button class="btn btn-k btn-full" id="btn-acc" onclick="doLogin()">Entrar</button>
     <button class="btn btn-g btn-full" id="btn-rec-pass" onclick="doRecovery()">Olvidé mi contraseña</button>
     <p class="hint">Si eres técnico nuevo, primero <a href="javascript:void(0)" onclick="close_('acc');open_('uni')">regístrate aquí</a>.</p>
@@ -916,77 +874,6 @@ const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI
 const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage}});
 const sbPublic=supabase.createClient(SURL,SKEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
 const MUNICIPIO_ZONA={'Playa':'oeste','La Lisa':'oeste','Marianao':'oeste','Plaza de la Revolución':'centro','Centro Habana':'centro','La Habana Vieja':'centro','Diez de Octubre':'centro','Cerro':'centro','Regla':'este','La Habana del Este':'este','Guanabacoa':'este','San Miguel del Padrón':'este','Boyeros':'sur','Arroyo Naranjo':'sur','Cotorro':'sur','Santo Domingo (DN)':'rd-centro','Santo Domingo Este':'rd-este','Santo Domingo Norte':'rd-norte','Santo Domingo Oeste':'rd-oeste','Los Alcarrizos':'rd-oeste','Boca Chica':'rd-sur','Pedro Brand':'rd-norte','San Antonio de Guerra':'rd-norte'};
-
-/* ═══ MERCADO CONTEXT — SOLO CAMBIOS DE MERCADO ═══ */
-const MERCADOS={
-  CU:{key:'CU',pais:'Cuba',ciudad:'La Habana',chip:'Técnicos activos · La Habana',codigoTelefono:'+53'},
-  DO:{key:'DO',pais:'República Dominicana',ciudad:'Santo Domingo',chip:'Técnicos activos · Santo Domingo',codigoTelefono:'+1809'}
-};
-const MUNICIPIOS_MERCADO={
-  CU:[
-    {label:'🇨🇺 La Habana — Occidente',items:['Playa','La Lisa','Marianao']},
-    {label:'🇨🇺 La Habana — Centro',items:['Plaza de la Revolución','Centro Habana','La Habana Vieja','Diez de Octubre','Cerro']},
-    {label:'🇨🇺 La Habana — Oriente',items:['Regla','La Habana del Este','Guanabacoa','San Miguel del Padrón']},
-    {label:'🇨🇺 La Habana — Sur',items:['Boyeros','Arroyo Naranjo','Cotorro']}
-  ],
-  DO:[
-    {label:'🇩🇴 Distrito Nacional RD',items:['Santo Domingo (DN)']},
-    {label:'🇩🇴 Provincia Santo Domingo',items:['Santo Domingo Este','Santo Domingo Norte','Santo Domingo Oeste','Los Alcarrizos','Boca Chica','Pedro Brand','San Antonio de Guerra']}
-  ]
-};
-function getMercadoActual(){
-  const qs=new URLSearchParams(location.search);
-  const fromUrl=(qs.get('mercado')||qs.get('m')||'').toUpperCase();
-  if(MERCADOS[fromUrl]){localStorage.setItem('mercado',fromUrl);return fromUrl;}
-  const saved=(localStorage.getItem('mercado')||'CU').toUpperCase();
-  return MERCADOS[saved]?saved:'CU';
-}
-function setMercadoActual(mercado){
-  const m=String(mercado||'CU').toUpperCase();
-  localStorage.setItem('mercado',MERCADOS[m]?m:'CU');
-  aplicarMercado();
-}
-function mercadoFromMunicipio(mun){
-  for(const [m,groups] of Object.entries(MUNICIPIOS_MERCADO)){
-    if(groups.some(g=>g.items.includes(mun)))return m;
-  }
-  return getMercadoActual();
-}
-function renderMunicipiosSelect(id,mercado){
-  const sel=document.getElementById(id);if(!sel)return;
-  const prev=sel.value;
-  sel.innerHTML='<option value="">-- Seleccionar municipio --</option>';
-  (MUNICIPIOS_MERCADO[mercado]||MUNICIPIOS_MERCADO.CU).forEach(g=>{
-    const og=document.createElement('optgroup');og.label=g.label;
-    g.items.forEach(item=>{const op=document.createElement('option');op.textContent=item;op.value=item;og.appendChild(op);});
-    sel.appendChild(og);
-  });
-  if([...sel.options].some(o=>o.value===prev))sel.value=prev;
-}
-function aplicarMercado(){
-  const mercado=getMercadoActual();
-  const cfg=MERCADOS[mercado];
-  document.documentElement.dataset.mercado=mercado;
-  document.querySelectorAll('[data-market-chip]').forEach(el=>el.textContent=cfg.chip);
-  document.querySelectorAll('[data-market-heading]').forEach(el=>el.textContent='en '+cfg.ciudad);
-  document.querySelectorAll('[data-market-footer-city]').forEach(el=>el.textContent=cfg.ciudad);
-  document.querySelectorAll('[data-market-footer-country]').forEach(el=>el.textContent=cfg.pais);
-  document.querySelectorAll('[data-market-service-sub]').forEach(el=>el.textContent='Técnicos verificados para cada tipo de trabajo — en '+cfg.ciudad+'.');
-  const seoTitle = mercado === 'DO' ? 'dbarrio | Técnicos a domicilio en Santo Domingo' : 'dbarrio | Técnicos a domicilio en La Habana';
-  const seoDesc = mercado === 'DO'
-    ? 'Técnicos verificados en Santo Domingo: electricidad, plomería, refrigeración y electrodomésticos. Solicita servicio con seguimiento y garantía.'
-    : 'Técnicos verificados en La Habana: electricidad, plomería, refrigeración y electrodomésticos. Solicita servicio con seguimiento y garantía.';
-  document.title = seoTitle;
-  const metaDesc = document.querySelector('meta[name="description"]'); if(metaDesc) metaDesc.setAttribute('content', seoDesc);
-  const ogTitle = document.querySelector('meta[property="og:title"]'); if(ogTitle) ogTitle.setAttribute('content', seoTitle);
-  const ogDesc = document.querySelector('meta[property="og:description"]'); if(ogDesc) ogDesc.setAttribute('content', seoDesc);
-  const twTitle = document.querySelector('meta[name="twitter:title"]'); if(twTitle) twTitle.setAttribute('content', seoTitle);
-  const twDesc = document.querySelector('meta[name="twitter:description"]'); if(twDesc) twDesc.setAttribute('content', seoDesc);
-  document.querySelectorAll('[data-market]').forEach(el=>el.classList.toggle('market-hidden',el.dataset.market!==mercado));
-  ['s-mun','u-zona','afi-mun'].forEach(id=>renderMunicipiosSelect(id,mercado));
-  ['s-code','u-code','afi-code'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=cfg.codigoTelefono;});
-}
-
 let sv=0,solSrv='',solHora='';
 function toast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -1009,26 +896,13 @@ function normalizarTelefono(codeId,numId,errId){
   const n=raw.replace(/[\s\-\(\)]/g,'');
   if(!n||n.length<7){sE(errId,'Número inválido.');return null;}
   const completo=n.startsWith('+')?n:(code+n);
-  cE(errId);
-  return{completo,local:n};
+  cE(errId);return{completo,local:n};
 }
-function selSrv(el){
-  document.querySelectorAll('.srv-opt').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');solSrv=el.dataset.srv;cE('es-srv');
-  sessionStorage.setItem('db_sol_srv',solSrv);
-  cargarPreciosZona();
-}
-function selHora(el){
-  document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');solHora=el.dataset.hora;
-  sessionStorage.setItem('db_sol_hora',solHora);
-}
+function selSrv(el){document.querySelectorAll('.srv-opt').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');solSrv=el.dataset.srv;cE('es-srv');sessionStorage.setItem('db_sol_srv',solSrv);cargarPreciosZona();}
+function selHora(el){document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');solHora=el.dataset.hora;sessionStorage.setItem('db_sol_hora',solHora);}
 function restoreSolForm(){
-  const srv=sessionStorage.getItem('db_sol_srv');
-  const hora=sessionStorage.getItem('db_sol_hora');
-  const cli=sessionStorage.getItem('db_sol_cli');
-  const mun=sessionStorage.getItem('db_sol_mun');
-  const wa=sessionStorage.getItem('db_sol_wa');
+  const srv=sessionStorage.getItem('db_sol_srv');const hora=sessionStorage.getItem('db_sol_hora');
+  const cli=sessionStorage.getItem('db_sol_cli');const mun=sessionStorage.getItem('db_sol_mun');const wa=sessionStorage.getItem('db_sol_wa');
   if(srv){const btn=document.querySelector(`.srv-opt[data-srv="${srv}"]`);if(btn){btn.classList.add('selected');solSrv=srv;}}
   if(hora){const btn=document.querySelector(`.hora-opt[data-hora="${hora}"]`);if(btn){btn.classList.add('selected');solHora=hora;}}
   if(cli){const e=document.getElementById('s-cli');if(e)e.value=cli;}
@@ -1036,211 +910,130 @@ function restoreSolForm(){
   if(wa){const e=document.getElementById('s-wa');if(e)e.value=wa;}
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  ['s-cli','s-mun','s-wa'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){const key='db_sol_'+id.replace('s-','');el.addEventListener('input',()=>sessionStorage.setItem(key,el.value));el.addEventListener('change',()=>sessionStorage.setItem(key,el.value));}
-  });
+  ['s-cli','s-mun','s-wa'].forEach(id=>{const el=document.getElementById(id);if(el){const key='db_sol_'+id.replace('s-','');el.addEventListener('input',()=>sessionStorage.setItem(key,el.value));el.addEventListener('change',()=>sessionStorage.setItem(key,el.value));}});
+  document.querySelectorAll('.hora-opt[role="button"]').forEach(el=>{el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selHora(el);}});});
+  document.querySelectorAll('.star[role="button"]').forEach(el=>{el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setStar(parseInt(el.dataset.v));}});});
 });
 function irStep2(){
   cER('err-sol');['es-srv','es-mun','es-cli','es-wa'].forEach(id=>cE(id));
-  const mun=document.getElementById('s-mun')?.value;
-  const cli=document.getElementById('s-cli')?.value?.trim();
-  const tel=normalizarTelefono('s-code','s-wa','es-wa');
+  const mun=document.getElementById('s-mun')?.value;const cli=document.getElementById('s-cli')?.value?.trim();const tel=normalizarTelefono('s-code','s-wa','es-wa');
   let ok=true;
   if(!solSrv){sE('es-srv','Selecciona un tipo de servicio.');ok=false;}
   if(!mun){sE('es-mun','Selecciona tu municipio.');ok=false;}
   if(!cli){sE('es-cli','Escribe tu nombre.');ok=false;}
   if(!tel){ok=false;}
   if(!ok) return;
-  document.getElementById('step-1').classList.remove('active');
-  document.getElementById('step-2').classList.add('active');
-  document.getElementById('sdot-1').classList.remove('active');
-  document.getElementById('sdot-1').classList.add('done');
-  document.getElementById('sdot-2').classList.add('active');
-  document.getElementById('sbar').style.width='100%';
+  document.getElementById('step-1').classList.remove('active');document.getElementById('step-2').classList.add('active');
+  document.getElementById('sdot-1').classList.remove('active');document.getElementById('sdot-1').classList.add('done');
+  document.getElementById('sdot-2').classList.add('active');document.getElementById('sbar').style.width='100%';
 }
 function irStep1(){
-  document.getElementById('step-2').classList.remove('active');
-  document.getElementById('step-1').classList.add('active');
-  document.getElementById('sdot-2').classList.remove('active');
-  document.getElementById('sdot-1').classList.remove('done');
-  document.getElementById('sdot-1').classList.add('active');
-  document.getElementById('sbar').style.width='0';
+  document.getElementById('step-2').classList.remove('active');document.getElementById('step-1').classList.add('active');
+  document.getElementById('sdot-2').classList.remove('active');document.getElementById('sdot-1').classList.remove('done');
+  document.getElementById('sdot-1').classList.add('active');document.getElementById('sbar').style.width='0';
 }
 async function envSol(){
   cER('err-sol');['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(id=>cE(id));
-  const cli=document.getElementById('s-cli')?.value?.trim()||'';
-  const tel=normalizarTelefono('s-code','s-wa','es-wa');
-  const mun=document.getElementById('s-mun')?.value||'';
-  const dir=document.getElementById('s-dir')?.value?.trim()||'';
-  const det=document.getElementById('s-det')?.value?.trim()||'';
-  const cp=!!document.getElementById('s-cp')?.checked;
+  const cli=document.getElementById('s-cli')?.value?.trim()||'';const tel=normalizarTelefono('s-code','s-wa','es-wa');
+  const mun=document.getElementById('s-mun')?.value||'';const dir=document.getElementById('s-dir')?.value?.trim()||'';
+  const det=document.getElementById('s-det')?.value?.trim()||'';const cp=!!document.getElementById('s-cp')?.checked;
   const zona=MUNICIPIO_ZONA[mun]||null;
   let ok=true;
-  if(!cli){sE('es-cli','Escribe tu nombre.');ok=false;}
-  if(!tel){ok=false;}
-  if(!mun){sE('es-mun','Selecciona tu municipio.');ok=false;}
-  if(!solSrv){sE('es-srv','Selecciona un tipo de servicio.');ok=false;}
-  if(!cp){sE('es-cp');ok=false;}
+  if(!cli){sE('es-cli','Escribe tu nombre.');ok=false;}if(!tel){ok=false;}if(!mun){sE('es-mun','Selecciona tu municipio.');ok=false;}if(!solSrv){sE('es-srv','Selecciona un tipo de servicio.');ok=false;}if(!cp){sE('es-cp');ok=false;}
   if(!ok) return;
   setL('btn-sol',true,'Registrando...');
   try{
-    const params={p_cliente:cli,p_telefono:tel.completo,p_municipio:mun,p_direccion:dir||null,p_servicio:solSrv||null,p_detalles:det||null,p_consent_texto:'solicitud publica v2',p_zona:zona,p_hora_preferida:solHora||null,p_mercado:mercadoFromMunicipio(mun)};
-    let {data,error}=await sbPublic.rpc('create_solicitud_publica',params);
-    if(error&&/schema cache|function|p_mercado/i.test(error.message||'')){
-      const {p_mercado,...paramsSinMercado}=params;
-      ({data,error}=await sbPublic.rpc('create_solicitud_publica',paramsSinMercado));
-    }
+    const {data,error}=await sbPublic.rpc('create_solicitud_publica',{p_cliente:cli,p_telefono:tel.completo,p_municipio:mun,p_direccion:dir||null,p_servicio:solSrv||null,p_detalles:det||null,p_consent_texto:'solicitud publica v2',p_zona:zona,p_hora_preferida:solHora||null});
     setL('btn-sol',false);
     if(error){const msg=error.message?.includes('RATE_LIMIT')?'⚠️ Ya registraste 3 solicitudes hoy. Intenta mañana.':'Error al registrar: '+error.message;sER('err-sol',msg);return;}
     if(!data){sER('err-sol','No se pudo crear la solicitud. Intenta de nuevo.');return;}
-    document.getElementById('cod-sol').textContent=dbc(data);
-    sOK('ok-sol');
-    document.getElementById('btn-sol').style.display='none';
+    document.getElementById('cod-sol').textContent=dbc(data);sOK('ok-sol');document.getElementById('btn-sol').style.display='none';
     document.querySelectorAll('#step-2 .btn').forEach(b=>{if(b.id!=='btn-sol')b.style.display='none';});
     setTimeout(()=>{close_('sol');resetSolForm();},7000);
   }catch(e){setL('btn-sol',false);sER('err-sol','Error inesperado: '+(e?.message||e));}
 }
 function resetSolForm(){
-  ['s-cli','s-wa','s-dir','s-det'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  ['s-mun','s-srv'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['s-cli','s-wa','s-dir','s-det'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});['s-mun'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
   const cp=document.getElementById('s-cp');if(cp)cp.checked=false;
   cER('err-sol');['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(id=>cE(id));
-  const btn=document.getElementById('btn-sol');
-  if(btn){btn.style.display='';btn.disabled=false;if(btn._t)btn.innerHTML=btn._t;}
-  document.querySelectorAll('#step-2 .btn').forEach(b=>b.style.display='');
-  document.getElementById('ok-sol')?.classList.remove('v');
-  document.querySelectorAll('.srv-opt').forEach(b=>b.classList.remove('selected'));
-  document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));
-  solSrv='';solHora='';
-  irStep1();
+  const btn=document.getElementById('btn-sol');if(btn){btn.style.display='';btn.disabled=false;if(btn._t)btn.innerHTML=btn._t;}
+  document.querySelectorAll('#step-2 .btn').forEach(b=>b.style.display='');document.getElementById('ok-sol')?.classList.remove('v');
+  document.querySelectorAll('.srv-opt').forEach(b=>b.classList.remove('selected'));document.querySelectorAll('.hora-opt').forEach(b=>b.classList.remove('selected'));
+  solSrv='';solHora='';irStep1();
 }
 const ESTADO_STEPS={pendiente:0,asignada:1,en_proceso:2,completada:3,rechazada:-1};
 const STEPS_LABELS=['Recibida','Asignada','En proceso','Completada'];
 async function buscarEstado(){
-  const raw=(document.getElementById('trk-input')?.value||'').trim().toLowerCase();
-  const n=parseInt(raw.replace(/^db-/,''));
+  const raw=(document.getElementById('trk-input')?.value||'').trim().toLowerCase();const n=parseInt(raw.replace(/^db-/,''));
   const result=document.getElementById('tracker-result');
-  if(isNaN(n)||n<1){result.className='tracker-result v';result.innerHTML=`<div style="color:rgba(255,255,255,.5);font-size:13px">Formato inválido. Usa <strong style="color:var(--y)">db-xxxx</strong></div>`;return;}
-  result.className='tracker-result v';
-  result.innerHTML='<div style="color:rgba(255,255,255,.5);font-size:13px;text-align:center">Buscando...</div>';
+  if(isNaN(n)||n<1){result.className='tracker-result v';result.innerHTML=`<div style="color:rgba(255,255,255,.6);font-size:13px">Formato inválido. Usa <strong style="color:var(--y)">db-xxxx</strong></div>`;return;}
+  result.className='tracker-result v';result.innerHTML='<div style="color:rgba(255,255,255,.6);font-size:13px;text-align:center">Buscando...</div>';
   try{
     const {data:sol,error}=await sbPublic.rpc('get_estado_solicitud',{p_id:n});
-    if(error||!sol?.length){result.innerHTML=`<div style="color:rgba(255,255,255,.45);font-size:13px">No encontramos una solicitud con ese código.</div>`;return;}
-    const s=Array.isArray(sol)?sol[0]:sol;
-    const step=ESTADO_STEPS[s.estado]??0;
+    if(error||!sol?.length){result.innerHTML=`<div style="color:rgba(255,255,255,.55);font-size:13px">No encontramos una solicitud con ese código.</div>`;return;}
+    const s=Array.isArray(sol)?sol[0]:sol;const step=ESTADO_STEPS[s.estado]??0;
     const fecha=s.created_at?new Date(s.created_at).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'2-digit'}):'—';
     const fechaFin=s.fecha_fin?new Date(s.fecha_fin).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'2-digit'}):null;
     const progress=s.estado==='rechazada'?`<div style="background:var(--err-bg);border:1px solid var(--err-border);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--err)">❌ Solicitud rechazada</div>`:`<div class="tr-progress">${STEPS_LABELS.map((l,i)=>`<div class="tr-step${i<step?' done':i===step?' active':''}">${l}</div>`).join('')}</div>`;
     result.className='tracker-result v';
     result.innerHTML=`<span class="tr-code">${esc(dbc(s.id))}</span>${progress}<div class="tr-info">${s.servicio?`<div>🔧 <strong>${esc(s.servicio)}</strong></div>`:''}${s.municipio?`<div>📍 <strong>${esc(s.municipio)}</strong></div>`:''}${s.hora_preferida?`<div>🕐 ${esc(s.hora_preferida)}</div>`:''}<div>📅 Solicitado: ${fecha}</div>${fechaFin?`<div>✅ Completado: ${fechaFin}</div>`:''}</div>`;
-  }catch(e){result.innerHTML=`<div style="color:rgba(255,255,255,.45);font-size:13px">Error al buscar. Intenta de nuevo.</div>`;}
+  }catch(e){result.innerHTML=`<div style="color:rgba(255,255,255,.55);font-size:13px">Error al buscar. Intenta de nuevo.</div>`;}
 }
 document.getElementById('trk-input')?.addEventListener('keydown',e=>{if(e.key==='Enter')buscarEstado();});
 const PLANES={basico:{nombre:'Plan Mipyme',precio:'$40/mes',desc:'Visita mensual + técnico fijo + prioridad 24h'},estandar:{nombre:'Plan Empresa',precio:'$60/mes',desc:'2 visitas/mes + técnico dedicado + respuesta 12h + reporte mensual'},premium:{nombre:'Plan Corporativo',precio:'$90/mes',desc:'Visitas ilimitadas + técnico exclusivo + respuesta 6h + reporte detallado'}};
 let afiTipo='';
 function openAfiliacion(tipo){
   afiTipo=tipo;const p=PLANES[tipo];
-  document.getElementById('afi-title').textContent='Solicitar '+p.nombre;
-  document.getElementById('afi-plan-nombre').textContent=p.nombre+' — '+p.precio;
-  document.getElementById('afi-plan-desc').textContent=p.desc;
-  ['afi-nom','afi-tel','afi-dir','afi-desc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  ['afi-mun'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  ['eafi-nom','eafi-tel','eafi-mun'].forEach(id=>cE(id));
-  cER('err-afi');document.getElementById('ok-afi')?.classList.remove('v');
-  const btn=document.getElementById('btn-afi');if(btn){btn.style.display='';btn.disabled=false;if(btn._t)btn.innerHTML=btn._t;}
-  open_('afi');
+  document.getElementById('afi-title').textContent='Solicitar '+p.nombre;document.getElementById('afi-plan-nombre').textContent=p.nombre+' — '+p.precio;document.getElementById('afi-plan-desc').textContent=p.desc;
+  ['afi-nom','afi-tel','afi-dir','afi-desc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});['afi-mun'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['eafi-nom','eafi-tel','eafi-mun'].forEach(id=>cE(id));cER('err-afi');document.getElementById('ok-afi')?.classList.remove('v');
+  const btn=document.getElementById('btn-afi');if(btn){btn.style.display='';btn.disabled=false;if(btn._t)btn.innerHTML=btn._t;}open_('afi');
 }
 async function envAfiliacion(){
   cER('err-afi');['eafi-nom','eafi-tel','eafi-mun'].forEach(id=>cE(id));
-  const nom=document.getElementById('afi-nom')?.value?.trim()||'';
-  const tel=normalizarTelefono('afi-code','afi-tel','eafi-tel');
-  const mun=document.getElementById('afi-mun')?.value||'';
-  const dir=document.getElementById('afi-dir')?.value?.trim()||'';
-  const desc=document.getElementById('afi-desc')?.value?.trim()||'';
-  let ok=true;
-  if(!nom){sE('eafi-nom');ok=false;}if(!tel){ok=false;}if(!mun){sE('eafi-mun','Selecciona tu municipio.');ok=false;}
-  if(!ok) return;
+  const nom=document.getElementById('afi-nom')?.value?.trim()||'';const tel=normalizarTelefono('afi-code','afi-tel','eafi-tel');
+  const mun=document.getElementById('afi-mun')?.value||'';const dir=document.getElementById('afi-dir')?.value?.trim()||'';const desc=document.getElementById('afi-desc')?.value?.trim()||'';
+  let ok=true;if(!nom){sE('eafi-nom');ok=false;}if(!tel){ok=false;}if(!mun){sE('eafi-mun','Selecciona tu municipio.');ok=false;}if(!ok) return;
   setL('btn-afi',true,'Enviando...');
   try{
-    const {error}=await sbPublic.from('afiliados').insert({nombre:nom,telefono:tel.completo,tipo:afiTipo,municipio:mun,direccion:dir||null,descripcion:desc||null,estado:'pendiente',mercado:mercadoFromMunicipio(mun)});
-    setL('btn-afi',false);
-    if(error){sER('err-afi','Error: '+error.message);return;}
+    const {error}=await sbPublic.from('afiliados').insert({nombre:nom,telefono:tel.completo,tipo:afiTipo,municipio:mun,direccion:dir||null,descripcion:desc||null,estado:'pendiente'});
+    setL('btn-afi',false);if(error){sER('err-afi','Error: '+error.message);return;}
     sOK('ok-afi');document.getElementById('btn-afi').style.display='none';
-    const p=PLANES[afiTipo];
-    const msgAdmin=`🏠 *Nueva solicitud de afiliación*\n\n👤 ${nom}\n📱 ${tel.completo}\n📍 ${mun}${dir?' · '+dir:''}\n📋 ${p.nombre} — ${p.precio}${desc?'\n\n💬 '+desc:''}`;
+    const p=PLANES[afiTipo];const msgAdmin=`🏠 *Nueva solicitud de afiliación*\n\n👤 ${nom}\n📱 ${tel.completo}\n📍 ${mun}${dir?' · '+dir:''}\n📋 ${p.nombre} — ${p.precio}${desc?'\n\n💬 '+desc:''}`;
     setTimeout(()=>wa('34627493593',msgAdmin),800);
   }catch(e){setL('btn-afi',false);sER('err-afi','Error: '+(e?.message||e));}
 }
 function wa(num,msg){const url='https://wa.me/'+String(num||'').replace(/\D/g,'')+  '?text='+encodeURIComponent(msg||'');const w=window.open(url,'_blank');if(!w)window.location.href=url;}
 async function envGar(){
   cER('err-gar');['eg-rec','eg-tel','eg-fal','eg-cp'].forEach(id=>cE(id));
-  const rec=document.getElementById('g-rec').value.trim();
-  const tel=document.getElementById('g-tel').value.trim();
-  const fal=document.getElementById('g-fal').value.trim();
-  const cp=document.getElementById('g-cp').checked;
-  let ok=true;
-  if(!rec){sE('eg-rec');ok=false;}if(!vt(tel)){sE('eg-tel');ok=false;}if(!fal){sE('eg-fal');ok=false;}if(!cp){sE('eg-cp');ok=false;}
-  if(!ok) return;
+  const rec=document.getElementById('g-rec').value.trim();const tel=document.getElementById('g-tel').value.trim();
+  const fal=document.getElementById('g-fal').value.trim();const cp=document.getElementById('g-cp').checked;
+  let ok=true;if(!rec){sE('eg-rec');ok=false;}if(!vt(tel)){sE('eg-tel');ok=false;}if(!fal){sE('eg-fal');ok=false;}if(!cp){sE('eg-cp');ok=false;}if(!ok) return;
   setL('btn-gar',true);
   try{
     const {error}=await sbPublic.rpc('create_garantia_reclamo_publico',{p_telefono:tel,p_codigo:rec,p_mensaje:fal,p_consent_texto:'reclamo garantia v1'});
-    setL('btn-gar',false);
-    if(error){sER('err-gar','Error: '+error.message);return;}
-    sOK('ok-gar');document.getElementById('btn-gar').style.display='none';
+    setL('btn-gar',false);if(error){sER('err-gar','Error: '+error.message);return;}sOK('ok-gar');document.getElementById('btn-gar').style.display='none';
   }catch(e){setL('btn-gar',false);sER('err-gar','Error: '+(e?.message||e));}
 }
-function setStar(v){
-  sv=v;
-  document.querySelectorAll('#stars .star').forEach((s,i)=>{s.style.transform=i<v?'scale(1.15)':'scale(1)';s.style.filter=i<v?'':'grayscale(1) opacity(.4)';});
-  cE('ec-st');
-}
+function setStar(v){sv=v;document.querySelectorAll('#stars .star').forEach((s,i)=>{s.style.transform=i<v?'scale(1.15)':'scale(1)';s.style.filter=i<v?'':'grayscale(1) opacity(.4)';});cE('ec-st');}
 async function envCal(){
   cER('err-cal');['ec-cod','ec-st'].forEach(id=>cE(id));
-  const cod=document.getElementById('c-cod').value.trim();
-  let ok=true;
-  if(!cod){sE('ec-cod');ok=false;}if(!sv){sE('ec-st');ok=false;}
-  if(!ok) return;
-  const n=parseInt(cod.replace(/^db-/i,''));
-  if(isNaN(n)){sE('ec-cod','Formato inválido. Usa db-xxxx.');return;}
-  setL('btn-cal',true);
-  const {error}=await sb.rpc('rate_solicitud',{p_id:n,p_valoracion:sv});
-  setL('btn-cal',false);
-  if(error){sER('err-cal','Error: '+error.message);return;}
-  sOK('ok-cal');document.getElementById('btn-cal').style.display='none';
+  const cod=document.getElementById('c-cod').value.trim();let ok=true;if(!cod){sE('ec-cod');ok=false;}if(!sv){sE('ec-st');ok=false;}if(!ok) return;
+  const n=parseInt(cod.replace(/^db-/i,''));if(isNaN(n)){sE('ec-cod','Formato inválido. Usa db-xxxx.');return;}
+  setL('btn-cal',true);const {error}=await sb.rpc('rate_solicitud',{p_id:n,p_valoracion:sv});setL('btn-cal',false);
+  if(error){sER('err-cal','Error: '+error.message);return;}sOK('ok-cal');document.getElementById('btn-cal').style.display='none';
 }
 async function envUni(){
-  cER('err-uni');
-  ['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass','eu-cp',
-   'eu-carnet','eu-titulo','eu-curriculum','eu-foto-perfil','eu-foto-herramientas'].forEach(id=>cE(id));
-  const nom=document.getElementById('u-nom').value.trim();
-  const telData=normalizarTelefono('u-code','u-tel','eu-tel');
-  const esp=document.getElementById('u-esp').value;
-  const exp=document.getElementById('u-exp').value;
-  const municipio=document.getElementById('u-zona').value;
-  const email=document.getElementById('u-email').value.trim();
-  const pass=document.getElementById('u-pass').value;
-  const cp=!!document.getElementById('u-cp')?.checked;
+  cER('err-uni');['eu-nom','eu-tel','eu-esp','eu-exp','eu-zona','eu-email','eu-pass','eu-cp','eu-carnet','eu-titulo','eu-curriculum','eu-foto-perfil','eu-foto-herramientas'].forEach(id=>cE(id));
+  const nom=document.getElementById('u-nom').value.trim();const telData=normalizarTelefono('u-code','u-tel','eu-tel');
+  const esp=document.getElementById('u-esp').value;const exp=document.getElementById('u-exp').value;const municipio=document.getElementById('u-zona').value;
+  const email=document.getElementById('u-email').value.trim();const pass=document.getElementById('u-pass').value;const cp=!!document.getElementById('u-cp')?.checked;
   const zona=MUNICIPIO_ZONA[municipio]||'';
-  const fCarnet=document.getElementById('u-carnet')?.files[0];
-  const fTitulo=document.getElementById('u-titulo')?.files[0];
-  const fCurriculum=document.getElementById('u-curriculum')?.files[0];
-  const fPerfil=document.getElementById('u-foto-perfil')?.files[0];
-  const fHerr=document.getElementById('u-foto-herramientas')?.files[0];
+  const fCarnet=document.getElementById('u-carnet')?.files[0];const fTitulo=document.getElementById('u-titulo')?.files[0];const fCurriculum=document.getElementById('u-curriculum')?.files[0];const fPerfil=document.getElementById('u-foto-perfil')?.files[0];const fHerr=document.getElementById('u-foto-herramientas')?.files[0];
   let ok=true;
-  if(!nom){sE('eu-nom');ok=false;}
-  if(!telData){ok=false;}
-  if(!esp){sE('eu-esp');ok=false;}
-  if(!exp){sE('eu-exp');ok=false;}
-  if(!municipio){sE('eu-zona','Selecciona tu municipio.');ok=false;}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('eu-email');ok=false;}
-  if(pass.length<6){sE('eu-pass');ok=false;}
-  if(!cp){sE('eu-cp','Debes aceptar Términos y Privacidad.');ok=false;}
-  if(!fCarnet){sE('eu-carnet','Requerido.');ok=false;}
-  if(!fTitulo){sE('eu-titulo','Requerido.');ok=false;}
-  if(!fCurriculum){sE('eu-curriculum','Requerido.');ok=false;}
-  if(!fPerfil){sE('eu-foto-perfil','Requerido.');ok=false;}
-  if(!fHerr){sE('eu-foto-herramientas','Requerido.');ok=false;}
+  if(!nom){sE('eu-nom');ok=false;}if(!telData){ok=false;}if(!esp){sE('eu-esp');ok=false;}if(!exp){sE('eu-exp');ok=false;}if(!municipio){sE('eu-zona','Selecciona tu municipio.');ok=false;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('eu-email');ok=false;}if(pass.length<6){sE('eu-pass');ok=false;}if(!cp){sE('eu-cp','Debes aceptar Términos y Privacidad.');ok=false;}
+  if(!fCarnet){sE('eu-carnet','Requerido.');ok=false;}if(!fTitulo){sE('eu-titulo','Requerido.');ok=false;}if(!fCurriculum){sE('eu-curriculum','Requerido.');ok=false;}if(!fPerfil){sE('eu-foto-perfil','Requerido.');ok=false;}if(!fHerr){sE('eu-foto-herramientas','Requerido.');ok=false;}
   if(!ok) return;
   if(!window.dbUpload){sER('err-uni','Error de configuración. Recarga la página e intenta de nuevo.');return;}
   setL('btn-uni',true,'Creando cuenta...');
@@ -1250,26 +1043,19 @@ async function envUni(){
     const {data:si,error:se1}=await sb.auth.signInWithPassword({email,password:pass});
     if(se1||!si?.session){setL('btn-uni',false);sER('err-uni','Cuenta creada. Revisa tu correo e inicia sesión para continuar.');return;}
     const uid=ad.user.id;
-    const progressEl=document.getElementById('u-upload-progress');
-    const statusEl=document.getElementById('u-upload-status');
-    const barEl=document.getElementById('u-upload-bar');
+    const progressEl=document.getElementById('u-upload-progress');const statusEl=document.getElementById('u-upload-status');const barEl=document.getElementById('u-upload-bar');
     if(progressEl)progressEl.style.display='block';
     const docs=[{file:fCarnet,nombre:'carnet',field:'carnet'},{file:fTitulo,nombre:'titulo',field:'titulo'},{file:fCurriculum,nombre:'curriculum',field:'curriculum'},{file:fPerfil,nombre:'foto_perfil',field:'foto_perfil'},{file:fHerr,nombre:'foto_herramientas',field:'foto_herramientas'}];
     const urls={};const errores=[];
     for(let i=0;i<docs.length;i++){
-      const doc=docs[i];
-      const pct=Math.round((i/docs.length)*100);
-      if(barEl)barEl.style.width=pct+'%';
-      if(statusEl)statusEl.textContent=`Subiendo ${doc.nombre} (${i+1}/${docs.length})...`;
-      const ext=doc.file.type==='application/pdf'?'pdf':'jpg';
-      const path=`tecnicos/${uid}/${doc.nombre}.${ext}`;
+      const doc=docs[i];const pct=Math.round((i/docs.length)*100);if(barEl)barEl.style.width=pct+'%';if(statusEl)statusEl.textContent=`Subiendo ${doc.nombre} (${i+1}/${docs.length})...`;
+      const ext=doc.file.type==='application/pdf'?'pdf':'jpg';const path=`tecnicos/${uid}/${doc.nombre}.${ext}`;
       const {url,error:ue}=await window.dbUpload.processAndUpload(sb,doc.file,'documentos-tecnicos',path,(msg)=>{if(statusEl)statusEl.textContent=msg;});
       if(ue){errores.push(`${doc.nombre}: ${ue}`);}else{urls[doc.field]=url;}
     }
-    if(barEl)barEl.style.width='100%';
-    if(statusEl)statusEl.textContent='Guardando datos...';
+    if(barEl)barEl.style.width='100%';if(statusEl)statusEl.textContent='Guardando datos...';
     if(errores.length){await sb.auth.signOut();setL('btn-uni',false);if(progressEl)progressEl.style.display='none';sER('err-uni','Errores al subir documentos: '+errores.join(', '));return;}
-    const {error:se}=await sb.from('socios').insert({auth_uid:uid,nombre:nom,telefono:telData.completo,especialidad:esp,experiencia_anios:parseInt(exp,10),zona:zona||municipio,mercado:mercadoFromMunicipio(municipio),email,admitido:false,estado_socio:'pendiente',comision:15,deuda:0,trabajos:0,...urls});
+    const {error:se}=await sb.from('socios').insert({auth_uid:uid,nombre:nom,telefono:telData.completo,especialidad:esp,experiencia_anios:parseInt(exp,10),zona:zona||municipio,email,admitido:false,estado_socio:'pendiente',comision:15,deuda:0,trabajos:0,...urls});
     await sb.auth.signOut();setL('btn-uni',false);if(progressEl)progressEl.style.display='none';
     if(se&&!se.message?.includes('municipio')){sER('err-uni','Cuenta creada pero error al guardar datos: '+se.message);return;}
     sOK('ok-uni');document.getElementById('btn-uni').style.display='none';
@@ -1277,12 +1063,8 @@ async function envUni(){
 }
 async function doLogin(){
   cER('err-acc');['ea-email','ea-pass'].forEach(id=>cE(id));
-  const email=document.getElementById('a-email').value.trim();
-  const pass=document.getElementById('a-pass').value;
-  let ok=true;
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');ok=false;}
-  if(!pass){sE('ea-pass');ok=false;}
-  if(!ok) return;
+  const email=document.getElementById('a-email').value.trim();const pass=document.getElementById('a-pass').value;
+  let ok=true;if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');ok=false;}if(!pass){sE('ea-pass');ok=false;}if(!ok) return;
   setL('btn-acc',true,'Verificando...');
   const {data:auth,error:ae}=await sb.auth.signInWithPassword({email,password:pass});
   if(ae||!auth.session){setL('btn-acc',false);sER('err-acc','Credenciales incorrectas. Verifica tu email y contraseña.');return;}
@@ -1294,94 +1076,24 @@ async function doLogin(){
   await sb.auth.signOut();setL('btn-acc',false);sER('err-acc','Usuario no reconocido en el sistema.');
 }
 async function doRecovery(){
-  cER('err-acc');cE('ea-email');
-  const email=document.getElementById('a-email').value.trim();
+  cER('err-acc');cE('ea-email');const email=document.getElementById('a-email').value.trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){sE('ea-email');return;}
-  setL('btn-rec-pass',true,'Enviando...');
-  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://dbarrio.app/reset.html'});
-  setL('btn-rec-pass',false);
-  if(error){sER('err-acc','Error: '+error.message);return;}
-  const el=document.getElementById('err-acc');
-  if(el){el.textContent='✅ Listo. Revisa tu correo (y carpeta de spam).';el.style.cssText='display:block;background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok)';}
+  setL('btn-rec-pass',true,'Enviando...');const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://dbarrio.app/reset.html'});
+  setL('btn-rec-pass',false);if(error){sER('err-acc','Error: '+error.message);return;}
+  const el=document.getElementById('err-acc');if(el){el.textContent='✅ Listo. Revisa tu correo (y carpeta de spam).';el.style.cssText='display:block;background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok)';}
 }
-document.querySelectorAll('.cb').forEach(row=>{
-  row.addEventListener('click',e=>{
-    if(e.target.closest('a')||e.target.tagName==='INPUT') return;
-    const input=row.querySelector('input[type="checkbox"]');
-    if(!input) return;
-    input.checked=!input.checked;
-    input.dispatchEvent(new Event('change',{bubbles:true}));
-  });
-});
-document.getElementById('s-cp')?.addEventListener('change',()=>cE('es-cp'));
-document.getElementById('g-cp')?.addEventListener('change',()=>cE('eg-cp'));
-document.getElementById('u-cp')?.addEventListener('change',()=>cE('eu-cp'));
+document.querySelectorAll('.cb').forEach(row=>{row.addEventListener('click',e=>{if(e.target.closest('a')||e.target.tagName==='INPUT') return;const input=row.querySelector('input[type="checkbox"]');if(!input) return;input.checked=!input.checked;input.dispatchEvent(new Event('change',{bubbles:true}));});});
+document.getElementById('s-cp')?.addEventListener('change',()=>cE('es-cp'));document.getElementById('g-cp')?.addEventListener('change',()=>cE('eg-cp'));document.getElementById('u-cp')?.addEventListener('change',()=>cE('eu-cp'));
 async function cargarPreciosZona(){
-  const mun=document.getElementById('s-mun')?.value;
-  const box=document.getElementById('precios-zona-box');
-  const list=document.getElementById('precios-zona-list');
-  if(!box||!list) return;
-  if(!mun||!solSrv){box.classList.remove('v');return;}
-  const zona=MUNICIPIO_ZONA[mun]||null;
-  if(!zona){box.classList.remove('v');return;}
-  const {data:tecnicos}=await sbPublic.from('socios').select('id').eq('zona',zona).eq('mercado',getMercadoActual()).eq('estado_socio','activo').eq('admitido',true);
-  if(!tecnicos?.length){box.classList.remove('v');return;}
-  const ids=tecnicos.map(t=>t.id);
-  const srvKey=solSrv.split('/')[0].trim().split(' ')[0];
+  const mun=document.getElementById('s-mun')?.value;const box=document.getElementById('precios-zona-box');const list=document.getElementById('precios-zona-list');
+  if(!box||!list) return;if(!mun||!solSrv){box.classList.remove('v');return;}const zona=MUNICIPIO_ZONA[mun]||null;if(!zona){box.classList.remove('v');return;}
+  const {data:tecnicos}=await sbPublic.from('socios').select('id').eq('zona',zona).eq('estado_socio','activo').eq('admitido',true);if(!tecnicos?.length){box.classList.remove('v');return;}
+  const ids=tecnicos.map(t=>t.id);const srvKey=solSrv.split('/')[0].trim().split(' ')[0];
   const {data:precios}=await sbPublic.from('servicios_catalogo').select('nombre,precio_min,precio_max,unidad').in('socio_id',ids).eq('activo',true).ilike('nombre','%'+srvKey+'%').order('precio_min').limit(4);
   if(!precios?.length){box.classList.remove('v');return;}
-  list.innerHTML=precios.map(p=>`<div class="precio-zona-item"><span class="precio-zona-nombre">${esc(p.nombre)}</span><span class="precio-zona-val">desde $${parseFloat(p.precio_min).toFixed(2)}</span></div>`).join('');
-  box.classList.add('v');
+  list.innerHTML=precios.map(p=>`<div class="precio-zona-item"><span class="precio-zona-nombre">${esc(p.nombre)}</span><span class="precio-zona-val">desde $${parseFloat(p.precio_min).toFixed(2)}</span></div>`).join('');box.classList.add('v');
 }
 </script>
-<script>
-if('serviceWorker' in navigator){
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
-  });
-}
-
-
-// Inicialización de mercado — detecta país por IP si no hay preferencia guardada.
-document.addEventListener('DOMContentLoaded', async () => {
-  const qs = new URLSearchParams(location.search);
-  const fromUrl = (qs.get('mercado') || qs.get('m') || '').toUpperCase();
-  const fromStorage = (localStorage.getItem('mercado') || '').toUpperCase();
-
-  // Si ya hay preferencia explícita (URL o localStorage), úsala directamente.
-  if (MERCADOS[fromUrl] || MERCADOS[fromStorage]) {
-    aplicarMercado();
-    return;
-  }
-
-  // Sin preferencia guardada → detectar por IP (solo la primera vez).
-  try {
-    const res = await fetch('https://get.geojs.io/v1/ip/country.json', { signal: AbortSignal.timeout(2500) });
-    const { country } = await res.json();
-    const mercadoDetectado = MERCADOS[country] ? country : 'CU';
-    localStorage.setItem('mercado', mercadoDetectado);
-  } catch (_) {
-    // Si la API falla o tarda demasiado, queda el default CU.
-  }
-  aplicarMercado();
-});
-</script>
-<!-- ═══ SKIP-TO-CONTENT (accesibilidad + SEO) ═══ -->
-<style>.skip-link{position:absolute;top:-100px;left:0;background:var(--y);color:#000;padding:8px 16px;font-weight:700;font-size:14px;z-index:9999;border-radius:0 0 8px 0}.skip-link:focus{top:0}.skip-link{position:absolute;left:0;top:-44px;background:var(--y);color:#000;padding:10px 14px;font-weight:800;font-size:14px;z-index:9999;border-radius:0 0 8px 0}.skip-link:focus{top:0}
-/* ═══ ACCESIBILIDAD / WOORANK CONTRAST FIX ═══ */
-.section-light .sec-label,.section-mid .sec-label{color:#5C4500!important}
-.section-light .zona-name,.section-mid .zona-name{color:#5C4500!important}
-.section-light [style*="color:var(--g2)"],.section-mid [style*="color:var(--g2)"]{color:#3F3F52!important}
-.section-dark .sec-label{color:var(--y)!important;opacity:1!important}
-.section-dark .plan-badge{color:rgba(255,255,255,.82)!important}
-.section-dark .plan-badge-y{color:var(--y)!important}
-.section-dark .plan-badge[style*="37,99,235"]{color:#9CC0FF!important}
-.section-dark .plan-badge[style*="22,163,74"]{color:#8BE9A7!important}
-.section-dark .plan-mes,.section-dark .plan-desc,.section-dark .plan-feat{color:rgba(255,255,255,.84)!important}
-.section-dark .feat-check{color:rgba(255,255,255,.78)!important}
-.section-dark .feat-y{color:var(--y)!important}
-.sec-title.dark em{color:#5C4500!important}
-
-</style>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js');});}</script>
 </body>
 </html>
