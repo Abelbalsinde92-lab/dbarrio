@@ -214,6 +214,12 @@ body{min-height:100svh;background:var(--bg);color:var(--ink);font-family:var(--f
 .err-box.v{display:block}
 /* Precio hints */
 .precio-hint{background:var(--y-bg);border:1px solid var(--y-border);border-radius:9px;padding:10px 13px;font-size:12px;color:var(--yd);line-height:1.55}
+.precio-ref-box{background:var(--blue-bg);border:1.5px solid var(--blue-border);border-radius:10px;padding:11px 13px;display:flex;flex-direction:column;gap:6px}
+.precio-ref-title{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue)}
+.precio-ref-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px}
+.precio-ref-label{color:var(--g1);font-weight:600}
+.precio-ref-val{font-family:var(--fd);font-size:18px;font-weight:900;color:var(--blue);white-space:nowrap}
+.precio-ref-note{font-size:11px;color:var(--g1);line-height:1.45}
 </style>
 </head>
 <body>
@@ -359,12 +365,41 @@ const UNIDAD_LABEL={servicio:'por servicio',hora:'por hora',visita:'por visita',
 const sb=supabase.createClient(SURL,SKEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const sendingCierre={};
 let mySocio=null,rtSolic=null,rtMovs=null,rtSocio=null;
+let PRECIOS_REF=[];
 
 const MERCADO_INFO={CU:{label:'Cuba',short:'CU',flag:'🇨🇺'},DO:{label:'República Dominicana',short:'DO',flag:'🇩🇴'}};
 function mercadoSocio(){return (mySocio?.mercado||'CU').toUpperCase();}
 function mercadoBadge(m=null){const key=(m||mercadoSocio()).toUpperCase();const cfg=MERCADO_INFO[key]||MERCADO_INFO.CU;return `${cfg.flag} ${cfg.short}`;}
 function mercadoLabel(m=null){const key=(m||mercadoSocio()).toUpperCase();const cfg=MERCADO_INFO[key]||MERCADO_INFO.CU;return `${cfg.flag} ${cfg.label}`;}
 function zonaEsDelMercado(zona,mercado=mercadoSocio()){return mercado==='DO'?String(zona||'').startsWith('rd-'):!String(zona||'').startsWith('rd-');}
+
+async function cargarPreciosReferencia(){
+  try{
+    const {data,error}=await sb.rpc('get_precios_mercado',{p_mercado:mercadoSocio()});
+    if(error){console.warn('Precios referencia:',error);PRECIOS_REF=[];return;}
+    PRECIOS_REF=Array.isArray(data)?data:(data?[data]:[]);
+  }catch(e){console.warn('Precios referencia exception:',e);PRECIOS_REF=[];}
+}
+function normalizarServicio(v){return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();}
+function buscarPrecioReferencia(servicio){
+  const key=normalizarServicio(servicio);
+  if(!key||!PRECIOS_REF.length) return null;
+  return PRECIOS_REF.find(p=>normalizarServicio(p.servicio)===key)||PRECIOS_REF.find(p=>key.includes(normalizarServicio(p.servicio))||normalizarServicio(p.servicio).includes(key))||null;
+}
+function fmtMoney(n){const num=Number(n);return Number.isFinite(num)?num.toLocaleString('es-ES',{minimumFractionDigits:0,maximumFractionDigits:2}):'—';}
+function precioReferenciaHtml(s){
+  const p=buscarPrecioReferencia(s.servicio);
+  if(!p||p.precio_desde==null) return '';
+  const usd=Number(p.precio_desde).toFixed(2);
+  const local=p.precio_local_equiv!=null?fmtMoney(p.precio_local_equiv):'';
+  const moneda=p.moneda_local||(mercadoSocio()==='DO'?'DOP':'CUP');
+  return `<div class="precio-ref-box">
+    <div class="precio-ref-title">Precio de referencia dbarrio</div>
+    <div class="precio-ref-row"><span class="precio-ref-label">${esc(p.servicio||s.servicio||'Servicio')}</span><span class="precio-ref-val">desde US$${usd}</span></div>
+    ${local?`<div class="precio-ref-row"><span class="precio-ref-label">Equivalente aprox.</span><span class="precio-ref-val">${local} ${esc(moneda)}</span></div>`:''}
+    <div class="precio-ref-note">Referencia para cotizar. El precio final se acuerda con el cliente según diagnóstico, piezas y transporte.</div>
+  </div>`;
+}
 
 function toast(msg,dur=2600){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -461,6 +496,7 @@ async function loadOrdenes(){
   const {data,error}=await sb.from('solicitudes').select('*').eq('socio_asignado',mySocio.id).eq('mercado',mercadoSocio()).in('estado',['asignada']).order('fecha_ts',{ascending:false});
   if(error){el.innerHTML=`<div class="vacio"><div class="vacio-ico">⚠️</div><div class="vacio-txt">${esc(error.message)}</div></div>`;return;}
   if(!data?.length){el.innerHTML=`<div class="vacio"><div class="vacio-ico">📋</div><div class="vacio-txt">Sin órdenes activas por ahora.</div><div class="vacio-sub">Cuando el admin te asigne una aparecerá aquí.</div></div>`;return;}
+  await cargarPreciosReferencia();
   el.innerHTML=data.map(cardOrden).join('');
   ocultarBadge();
 }
@@ -563,6 +599,7 @@ function cardOrden(s){
         ${s.detalles?`<div class="info-item info-full"><span class="info-lbl">Detalles</span><span class="info-val">${esc(s.detalles)}</span></div>`:''}
         ${s.nota_admin?`<div class="info-item info-full"><span class="info-lbl">Nota del admin</span><span class="info-val" style="background:var(--y-bg);border-radius:7px;padding:6px 10px">${esc(s.nota_admin)}</span></div>`:''}
       </div>
+      ${precioReferenciaHtml(s)}
       ${flagC}${flagR}
       ${waRapidos}
       ${btnConfirmar}
