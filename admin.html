@@ -1238,6 +1238,7 @@ const CFG = {
 // ══ STATE ══
 let USER_ROLE = 'admin', USER_ZONA = null, USER_ZONAS = [], USER_ENC_ID = null;
 let sociosMap = {};
+let preciosRefMap = {};
 let encargadosMap = {};  // id → {id, nombre, zona}
 let pendingCompId = null, pendingRechId = null;
 let pendingCajaId = null, pendingCajaTipo = null;
@@ -1255,6 +1256,27 @@ function getRecMercado(r){ return (r&&r.mercado)||mercadoFromZona(r&&r.zona)||'C
 function marketBadge(m){ m=m||'CU'; const cls=m==='DO'?'market-do':(m==='ALL'?'market-all':'market-cu'); const txt=m==='DO'?'🇩🇴 DO':(m==='ALL'?'🌍 ALL':'🇨🇺 CU'); return '<span class="market-mini '+cls+'">'+txt+'</span>'; }
 function socioMatchesSolicitud(sc,s){ const sm=(sc&&sc.mercado)||mercadoFromZona(sc&&sc.zona); const rm=getRecMercado(s); return !sm||!rm||sm===rm; }
 async function getSocioIdsByMarket(){ const m=getMercadoAdmin(); if(USER_ROLE!=='admin'||m==='ALL') return null; const {data}=await sb.from('socios').select('id').eq('mercado',m); return (data||[]).map(x=>x.id); }
+function precioKey(mercado,servicio){ return String(mercado||'CU').toUpperCase()+'|'+String(servicio||'').trim().toLowerCase(); }
+function precioRefFromSolicitud(s){ return preciosRefMap[precioKey(getRecMercado(s),s?.servicio)]||null; }
+function fmtLocal(n){ const v=Number(n); return Number.isFinite(v)?v.toLocaleString('es-ES'):null; }
+function precioRefHTML(s){
+  const p=precioRefFromSolicitud(s);
+  if(!p) return '';
+  const usd=Number(p.precio_desde);
+  const local=fmtLocal(p.precio_local_equiv);
+  const moneda=p.moneda_local||((getRecMercado(s)==='DO')?'DOP':'CUP');
+  return `<div class="info-item"><span class="info-lbl">Precio referencia</span><span class="info-val" style="font-weight:800;color:var(--ok)">desde US$${Number.isFinite(usd)?usd.toFixed(2):esc(p.precio_desde)}</span></div>${local?`<div class="info-item"><span class="info-lbl">Equiv. local</span><span class="info-val" style="font-weight:800;color:var(--ok)">${local} ${esc(moneda)}</span></div>`:''}`;
+}
+async function loadPreciosReferenciaForSolicitudes(solicitudes=[]){
+  preciosRefMap={};
+  const mercados=[...new Set((solicitudes||[]).map(getRecMercado).filter(Boolean))];
+  await Promise.all(mercados.map(async mercado=>{
+    const {data,error}=await sb.rpc('get_precios_mercado',{p_mercado:mercado});
+    if(error||!data) return;
+    const rows=Array.isArray(data)?data:(typeof data==='object'?Object.values(data):[]);
+    rows.forEach(p=>{ if(p&&p.servicio) preciosRefMap[precioKey(mercado,p.servicio)]=p; });
+  }));
+}
 function secIdActive(){ return document.querySelector('.section.active')?.id?.replace('sec-','')||'op'; }
 async function refreshAdminByMarket(){ await loadSociosMap(); await loadKPIs(); const id=secIdActive(); if(id==='op') loadOp(); if(id==='ag') loadAgenda(); if(id==='hi') loadHi(); if(id==='so') loadSocios(); if(id==='ca') loadCaja(); if(id==='sp') loadSoporte(); if(id==='afi') loadAfiliados(); if(id==='st'&&USER_ROLE==='admin') loadStats(); if(id==='enc'&&USER_ROLE==='admin') loadEncargados(); }
 
@@ -1676,6 +1698,7 @@ async function loadOp(){
     const {data:hist}=await qHist;
     (hist||[]).forEach(h=>{ window._clienteHist[h.telefono]=(window._clienteHist[h.telefono]||0)+1; });
   }
+  await loadPreciosReferenciaForSolicitudes(data);
   el.innerHTML=data.map(buildCardOp).join('');
   loadKPIs();
 }
@@ -1734,6 +1757,7 @@ function buildCardOp(s){
           <span class="info-lbl">Servicio</span>
           <span class="info-val">${esc(s.servicio||'—')}</span>
         </div>
+        ${precioRefHTML(s)}
         <div class="info-item">
           <span class="info-lbl">Zona</span>
           <span class="info-val">${zonaLabel?esc(zonaLabel):'—'}</span>
