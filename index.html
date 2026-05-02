@@ -1115,13 +1115,28 @@ async function doRecovery(){
 document.querySelectorAll('.cb').forEach(row=>{row.addEventListener('click',e=>{if(e.target.closest('a')||e.target.tagName==='INPUT') return;const input=row.querySelector('input[type="checkbox"]');if(!input) return;input.checked=!input.checked;input.dispatchEvent(new Event('change',{bubbles:true}));});});
 document.getElementById('s-cp')?.addEventListener('change',()=>cE('es-cp'));document.getElementById('g-cp')?.addEventListener('change',()=>cE('eg-cp'));document.getElementById('u-cp')?.addEventListener('change',()=>cE('eu-cp'));
 async function cargarPreciosZona(){
-  const mun=document.getElementById('s-mun')?.value;const box=document.getElementById('precios-zona-box');const list=document.getElementById('precios-zona-list');
-  if(!box||!list) return;if(!mun||!solSrv){box.classList.remove('v');return;}const zona=MUNICIPIO_ZONA[mun]||null;if(!zona){box.classList.remove('v');return;}
-  const {data:tecnicos}=await sbPublic.from('socios').select('id').eq('zona',zona).eq('estado_socio','activo').eq('admitido',true);if(!tecnicos?.length){box.classList.remove('v');return;}
-  const ids=tecnicos.map(t=>t.id);const srvKey=solSrv.split('/')[0].trim().split(' ')[0];
-  const {data:precios}=await sbPublic.from('servicios_catalogo').select('nombre,precio_min,precio_max,unidad').in('socio_id',ids).eq('activo',true).ilike('nombre','%'+srvKey+'%').order('precio_min').limit(4);
-  if(!precios?.length){box.classList.remove('v');return;}
-  list.innerHTML=precios.map(p=>`<div class="precio-zona-item"><span class="precio-zona-nombre">${esc(p.nombre)}</span><span class="precio-zona-val">desde $${parseFloat(p.precio_min).toFixed(2)}</span></div>`).join('');box.classList.add('v');
+  const mun=document.getElementById('s-mun')?.value;
+  const box=document.getElementById('precios-zona-box');
+  const list=document.getElementById('precios-zona-list');
+  if(!box||!list) return;
+  if(!mun||!solSrv){box.classList.remove('v');return;}
+  const mercado=typeof mercadoFromMunicipio==='function'?mercadoFromMunicipio(mun):(typeof getMercadoActual==='function'?getMercadoActual():'CU');
+  const servicio=String(solSrv||'').trim();
+  try{
+    const {data,error}=await sbPublic.rpc('get_precio_referencia',{p_mercado:mercado,p_servicio:servicio});
+    if(error){console.warn('Precio referencia error:',error);box.classList.remove('v');return;}
+    if(!data||(Array.isArray(data)&&data.length===0)){box.classList.remove('v');return;}
+    const p=Array.isArray(data)?data[0]:data;
+    if(!p||!p.precio_desde){box.classList.remove('v');return;}
+    const precioUsd=Number(p.precio_desde||0).toFixed(2);
+    const precioLocal=p.precio_local_equiv!=null?Number(p.precio_local_equiv).toLocaleString('es-ES'):null;
+    const monedaLocal=p.moneda_local||(mercado==='DO'?'DOP':'CUP');
+    list.innerHTML=`<div class="precio-zona-item"><span class="precio-zona-nombre">${esc(servicio)}</span><span class="precio-zona-val">desde US$${precioUsd}</span></div>${precioLocal?`<div class="precio-zona-item"><span class="precio-zona-nombre">Equivalente aprox.</span><span class="precio-zona-val">${precioLocal} ${monedaLocal}</span></div>`:''}`;
+    box.classList.add('v');
+  }catch(e){
+    console.warn('Precio referencia exception:',e);
+    box.classList.remove('v');
+  }
 }
 </script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js');});}</script>
