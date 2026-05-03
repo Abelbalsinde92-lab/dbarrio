@@ -1729,7 +1729,14 @@ function buildCardOp(s){
   if(s.estado==='pendiente'||s.estado==='asignada'){
     const opts=Object.values(sociosMap).filter(sc=>sc&&sc.nombre&&socioMatchesSolicitud(sc,s)).map(sc=>`<option value="${sc.id}" ${String(sc.id)===String(s.socio_asignado)?'selected':''}>${esc(sc.nombre)}${sc.mercado?' · '+sc.mercado:''}</option>`).join('');
     const isPend=s.estado==='pendiente';
-    asignarHTML=`<div class="assign-form"><label>${isPend?'Asignar técnico':'Reasignar técnico'}</label><div class="assign-row"><select id="sel-${s.id}"><option value="">-- Seleccionar técnico --</option>${opts}</select><button class="btn btn-y btn-sm" onclick="${isPend?`asignar(${s.id})`:`reasignar(${s.id})`}">${isPend?'Asignar':'Reasignar'}</button></div></div>`;
+    asignarHTML=`<div class="assign-form">
+  <label>${isPend?'Asignar técnico':'Reasignar técnico'}</label>
+  <div class="assign-row">
+    <select id="sel-${s.id}"><option value="">-- Seleccionar técnico --</option>${opts}</select>
+    <button class="btn btn-y btn-sm" onclick="${isPend?`asignar(${s.id})`:`reasignar(${s.id})`}">${isPend?'Asignar':'Reasignar'}</button>
+    <button class="btn btn-g btn-sm" onclick="autoAsignar(${s.id})" title="Elige automáticamente por zona y especialidad">⚡ Auto</button>
+  </div>
+</div>`;
   }
 
   const btnCompletar = s.estado==='asignada'&&cierreRep?`<button class="btn btn-y" onclick="openCompletar(${s.id})">Aprobar cierre y enviar garantía</button>`:'';
@@ -1822,6 +1829,51 @@ async function asignar(id){
     setTimeout(()=>envWAClienteAsignacion(sol,soc),1800);
   }
   loadOp();
+}
+
+async function autoAsignar(id){
+  const {data:sol,error:es}=await sb.from('solicitudes').select('*').eq('id',id).single();
+  if(es||!sol){ toast('No pude cargar la orden'); return }
+
+  // 1. Busca técnicos compatibles
+  let q = sb.from('socios')
+   .select('id,nombre,telefono,trabajos,rating_avg,zona,especialidad,mercado')
+   .eq('admitido',true)
+   .eq('estado_socio','activo')
+   .eq('zona', sol.zona || '')
+   .ilike('especialidad', '%'+(sol.servicio||'')+'%');
+
+  // respeta mercado CU/DO
+  q = applyMarketFilter(q);
+
+  const {data:tec,error:et}=await q.order('trabajos',{ascending:true}).order('rating_avg',{ascending:false}).limit(5);
+  if(et||!tec?.length){ toast('No hay técnicos disponibles en esa zona/especialidad'); return }
+
+  // 2. Elige el primero (menos trabajos, mejor rating)
+  const elegido = tec[0];
+
+  // 3. Asigna
+  const {error:eu}=await sb.from('solicitudes')
+   .update({socio_asignado:elegido.id, estado:'asignada'})
+   .eq('id',id);
+  if(eu){ toast('Error: '+eu.message); return }
+
+  toast(`Auto-asignado a ${elegido.nombre} ✓`);
+  logActividad('auto_asignar',id,`Técnico: ${elegido.nombre}`);
+
+  // 4. Notifica al técnico y al cliente (usa tus templates t1 y t4)
+  const msgT = CFG.t1.replace('{socio}',elegido.nombre)
+   .replace('{code}',dbc(id))
+   .replace('{cliente}',sol.cliente||'')
+   .replace('{municipio}',sol.municipio||'')
+   .replace('{telefono}',sol.telefono||'')
+   .replace('{servicio}',sol.servicio||'')
+   .replace('{detalles}',sol.detalles||'Sin detalles');
+  if(elegido.telefono) wa(elegido.telefono, msgT);
+
+  setTimeout(()=>envWAClienteAsignacion(sol,elegido),1500);
+
+  loadOp(); loadKPIs();
 }
 
 async function reasignar(id){
