@@ -673,6 +673,7 @@ em.yd-fix{font-style:normal;color:#8B6200}
         <div class="phone-row">
           <select id="s-code" aria-label="Código de país"><option value="+53" selected>🇨🇺 +53</option><option value="+1809">🇩🇴 +1809</option><option value="+34">🇪🇸 +34</option><option value="+1">🇺🇸 +1</option><option value="+52">🇲🇽 +52</option></select>
           <input id="s-wa" type="tel" inputmode="numeric" placeholder="Número de WhatsApp" autocomplete="tel"/>
+          <input type="text" id="s-hp" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
         </div>
         <div class="fe" id="es-wa" role="alert">Número inválido.</div>
       </div>
@@ -963,11 +964,15 @@ function irStep1(){
   document.getElementById('sdot-1').classList.add('active');document.getElementById('sbar').style.width='0';
 }
 async function envSol(){
+  if(document.getElementById('s-hp')?.value) return;
+  const lastSol=parseInt(localStorage.getItem('db_last_sol')||'0',10);
+  if(lastSol && Date.now()-lastSol<60000){sER('err-sol','Espera 1 minuto');return;}
+  localStorage.setItem('db_last_sol',Date.now());
   cER('err-sol');['es-cli','es-wa','es-mun','es-srv','es-cp'].forEach(id=>cE(id));
   const cli=document.getElementById('s-cli')?.value?.trim()||'';const tel=normalizarTelefono('s-code','s-wa','es-wa');
   const mun=document.getElementById('s-mun')?.value||'';const dir=document.getElementById('s-dir')?.value?.trim()||'';
   const det=document.getElementById('s-det')?.value?.trim()||'';const cp=!!document.getElementById('s-cp')?.checked;
-  const zona=MUNICIPIO_ZONA[mun]||null;
+  const zona=MUNICIPIO_ZONA[mun] || (mercadoFromMunicipio(mun)==='DO'? 'rd-'+mun.toLowerCase().replace(/\s+/g,'-') : null);
   let ok=true;
   if(!cli){sE('es-cli','Escribe tu nombre.');ok=false;}if(!tel){ok=false;}if(!mun){sE('es-mun','Selecciona tu municipio.');ok=false;}if(!solSrv){sE('es-srv','Selecciona un tipo de servicio.');ok=false;}if(!cp){sE('es-cp');ok=false;}
   if(!ok) return;
@@ -977,7 +982,7 @@ async function envSol(){
     setL('btn-sol',false);
     if(error){const msg=error.message?.includes('RATE_LIMIT')?'⚠️ Ya registraste 3 solicitudes hoy. Intenta mañana.':'Error al registrar: '+error.message;sER('err-sol',msg);return;}
     if(!data){sER('err-sol','No se pudo crear la solicitud. Intenta de nuevo.');return;}
-    document.getElementById('cod-sol').textContent=dbc(data);sOK('ok-sol');document.getElementById('btn-sol').style.display='none';
+    document.getElementById('cod-sol').textContent=dbc(data);sOK('ok-sol');try{ if(window.gtag) gtag('event','nueva_solicitud',{municipio:mun,servicio:solSrv}); }catch(e){}document.getElementById('btn-sol').style.display='none';
     document.querySelectorAll('#step-2 .btn').forEach(b=>{if(b.id!=='btn-sol')b.style.display='none';});
     setTimeout(()=>{close_('sol');resetSolForm();},7000);
   }catch(e){setL('btn-sol',false);sER('err-sol','Error inesperado: '+(e?.message||e));}
