@@ -2494,31 +2494,72 @@ async function notaReclamo(id){ const nota=prompt('Nota admin:'); if(nota===null
 async function loadStats(){
   const el=document.getElementById('lista-st'); if(!el) return;
   el.innerHTML='<div class="loading">Calculando estadísticas...</div>';
-  let qStatsSol=applyMarketFilter(sb.from('solicitudes').select('id,estado,zona,municipio,servicio,fecha_ts,fecha_fin,monto,valoracion,socio_asignado,mercado'));
+
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const hace7 = new Date(); hace7.setDate(hace7.getDate()-7);
+
+  let qStatsSol=applyMarketFilter(sb.from('solicitudes').select('id,estado,zona,municipio,servicio,fecha_ts,fecha_fin,monto,valoracion,socio_asignado,mercado,created_at'));
   let qStatsSoc=applyMarketFilter(sb.from('socios').select('id,nombre,trabajos,rating_avg,deuda,mercado'));
   const idsStats=await getSocioIdsByMarket();
   let qStatsMov=sb.from('movimientos').select('monto,tipo,created_at,socio_id').eq('tipo','cargo_comision');
   if(Array.isArray(idsStats)){ if(!idsStats.length) qStatsMov=qStatsMov.eq('socio_id',-1); else qStatsMov=qStatsMov.in('socio_id',idsStats); }
+
   const [{data:solicitudes},{data:socios},{data:movimientos},{data:encargados}]=await Promise.all([
     qStatsSol,
     qStatsSoc,
     qStatsMov,
     sb.from('encargados').select('id,nombre,zona').eq('activo',true)
   ]);
+
   const sols=solicitudes||[], movs=movimientos||[];
+  const sols7d = sols.filter(s => new Date(s.created_at) >= hace7);
+  const hoySols = sols.filter(s => new Date(s.created_at) >= hoy);
   const completadas=sols.filter(s=>s.estado==='completada');
+  const completadas7d = sols7d.filter(s=>s.estado==='completada');
   const ingresos=movs.reduce((a,m)=>a+parseFloat(m.monto||0),0);
+  const ingresos7d = movs.filter(m=> new Date(m.created_at) >= hace7).reduce((a,m)=>a+parseFloat(m.monto||0),0);
+
   const conRating=sols.filter(s=>s.valoracion);
   const avgRating=conRating.length?(conRating.reduce((a,s)=>a+s.valoracion,0)/conRating.length):0;
+
   const tiempos=completadas.filter(s=>s.fecha_ts&&s.fecha_fin).map(s=>(new Date(s.fecha_fin)-new Date(s.fecha_ts))/(1000*3600*24));
   const avgDias=tiempos.length?(tiempos.reduce((a,b)=>a+b,0)/tiempos.length):0;
-  const porZona={};
-  sols.forEach(s=>{ const z=s.zona||'sin zona'; porZona[z]=(porZona[z]||0)+1; });
-  const porServicio={};
-  sols.forEach(s=>{ const sv=s.servicio||'Sin especificar'; porServicio[sv]=(porServicio[sv]||0)+1; });
+
+  // NUEVO: tiempo de asignación en minutos
+  const tiempoAsig = sols7d.filter(s=>s.fecha_ts && s.created_at).map(s=>(new Date(s.fecha_ts)-new Date(s.created_at))/60000).filter(n=>n>0 && n<1440);
+  const avgMinAsig = tiempoAsig.length? Math.round(tiempoAsig.reduce((a,b)=>a+b,0)/tiempoAsig.length) : 0;
+  const tasaConv7d = sols7d.length? Math.round((completadas7d.length / sols7d.length)*100) : 0;
+
+  const porZona={}; sols.forEach(s=>{ const z=s.zona||'sin zona'; porZona[z]=(porZona[z]||0)+1; });
+  const porServicio={}; sols.forEach(s=>{ const sv=s.servicio||'Sin especificar'; porServicio[sv]=(porServicio[sv]||0)+1; });
   const socioStats=(socios||[]).map(s=>({nombre:s.nombre,trabajos:s.trabajos||0,rating:s.rating_avg?parseFloat(s.rating_avg).toFixed(1):'—'})).sort((a,b)=>b.trabajos-a.trabajos).slice(0,6);
+
   el.innerHTML=`
-    <!-- KPIs 2x2 en móvil, 4 columnas en desktop -->
+    <!-- KPIs NUEVOS en tiempo real -->
+    <div class="stat-grid" style="margin-bottom:14px">
+      <div class="stat-card s-total">
+        <div class="stat-n">${hoySols.length}</div>
+        <div class="stat-lbl">Hoy</div>
+        <div class="stat-sub">${hoySols.filter(s=>s.estado==='pendiente').length} pendientes</div>
+      </div>
+      <div class="stat-card s-green">
+        <div class="stat-n green">${tasaConv7d}%</div>
+        <div class="stat-lbl">Conversión 7d</div>
+        <div class="stat-sub">${completadas7d.length}/${sols7d.length}</div>
+      </div>
+      <div class="stat-card s-yellow">
+        <div class="stat-n yellow">${avgMinAsig}m</div>
+        <div class="stat-lbl">Tiempo asignación</div>
+        <div class="stat-sub">promedio 7d</div>
+      </div>
+      <div class="stat-card s-blue">
+        <div class="stat-n blue">$${ingresos7d.toFixed(0)}</div>
+        <div class="stat-lbl">Ingresos 7d</div>
+        <div class="stat-sub">vs $${ingresos.toFixed(0)} total</div>
+      </div>
+    </div>
+
+    <!-- Tus KPIs originales -->
     <div class="stat-grid" style="margin-bottom:14px">
       <div class="stat-card s-total">
         <div class="stat-n">${sols.length}</div>
@@ -2527,7 +2568,7 @@ async function loadStats(){
       </div>
       <div class="stat-card s-green">
         <div class="stat-n green">$${ingresos.toFixed(0)}</div>
-        <div class="stat-lbl">Comisiones</div>
+        <div class="stat-lbl">Comisiones total</div>
         <div class="stat-sub">${movs.length} registros</div>
       </div>
       <div class="stat-card s-yellow">
@@ -2537,8 +2578,8 @@ async function loadStats(){
       </div>
       <div class="stat-card s-blue">
         <div class="stat-n blue">${avgDias.toFixed(1)}d</div>
-        <div class="stat-lbl">Tiempo</div>
-        <div class="stat-sub">solicitud → cierre</div>
+        <div class="stat-lbl">Tiempo cierre</div>
+        <div class="stat-sub">solicitud → fin</div>
       </div>
     </div>
 
@@ -2546,7 +2587,7 @@ async function loadStats(){
     <div class="panel" id="panel-zona-st">
       <div class="panel-hdr" onclick="togglePanel('panel-zona-st')">
         <div class="panel-hdr-left"><span class="panel-title">Órdenes por zona</span></div>
-        <svg class="panel-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="panel-chevron" width="18" height="18" viewBox="0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="panel-body" style="padding:0">
         ${Object.entries(porZona).sort((a,b)=>b[1]-a[1]).map(([zona,n])=>{
@@ -2567,7 +2608,7 @@ async function loadStats(){
     <div class="panel" id="panel-srv-st">
       <div class="panel-hdr" onclick="togglePanel('panel-srv-st')">
         <div class="panel-hdr-left"><span class="panel-title">Servicios más solicitados</span></div>
-        <svg class="panel-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="panel-chevron" width="18" height="18" viewBox="0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="panel-body" style="padding:0">
         ${Object.entries(porServicio).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([srv,n])=>`
@@ -2582,7 +2623,7 @@ async function loadStats(){
     <div class="panel" id="panel-tec-st">
       <div class="panel-hdr" onclick="togglePanel('panel-tec-st')">
         <div class="panel-hdr-left"><span class="panel-title">Técnicos más activos</span></div>
-        <svg class="panel-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="panel-chevron" width="18" height="18" viewBox="0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="panel-body" style="padding:0">
         ${socioStats.length?socioStats.map(s=>`
@@ -2600,7 +2641,7 @@ async function loadStats(){
     <div class="panel" id="panel-enc-st">
       <div class="panel-hdr" onclick="togglePanel('panel-enc-st')">
         <div class="panel-hdr-left"><span class="panel-title">Rendimiento por encargado</span></div>
-        <svg class="panel-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="panel-chevron" width="18" height="18" viewBox="0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="panel-body" style="padding:0">
         ${(encargados||[]).map(e=>{
