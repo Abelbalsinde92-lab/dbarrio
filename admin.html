@@ -1734,7 +1734,7 @@ function buildCardOp(s){
   <div class="assign-row">
     <select id="sel-${s.id}"><option value="">-- Seleccionar técnico --</option>${opts}</select>
     <button class="btn btn-y btn-sm" onclick="${isPend?`asignar(${s.id})`:`reasignar(${s.id})`}">${isPend?'Asignar':'Reasignar'}</button>
-    <button class="btn btn-g btn-sm" onclick="autoAsignar(${s.id})" title="Elige automáticamente por zona y especialidad">⚡ Auto</button>
+    <button class="btn btn-g btn-sm" onclick="autoAsignar(${s.id})" title="Sugerir mejor técnico">⚡ Auto</button>
   </div>
 </div>`;
   }
@@ -1832,48 +1832,37 @@ async function asignar(id){
 }
 
 async function autoAsignar(id){
-  const {data:sol,error:es}=await sb.from('solicitudes').select('*').eq('id',id).single();
-  if(es||!sol){ toast('No pude cargar la orden'); return }
+  try{
+    const sel=document.getElementById('sel-'+id);
+    if(!sel) return;
 
-  // 1. Busca técnicos compatibles
-  let q = sb.from('socios')
-   .select('id,nombre,telefono,trabajos,rating_avg,zona,especialidad,mercado')
-   .eq('admitido',true)
-   .eq('estado_socio','activo')
-   .eq('zona', sol.zona || '')
-   .ilike('especialidad', '%'+(sol.servicio||'')+'%');
+    const {data:sol,error:errSol}=await sb.from('solicitudes').select('*').eq('id',id).single();
+    if(errSol||!sol){ toast('No se pudo cargar la solicitud'); return }
 
-  // respeta mercado CU/DO
-  q = applyMarketFilter(q);
+    let q=sb.from('socios')
+      .select('id,nombre,telefono,trabajos,rating_avg,zona,especialidad,mercado')
+      .eq('admitido',true)
+      .eq('estado_socio','activo')
+      .eq('zona',sol.zona)
+      .ilike('especialidad',`%${sol.servicio||''}%`);
 
-  const {data:tec,error:et}=await q.order('trabajos',{ascending:true}).order('rating_avg',{ascending:false}).limit(5);
-  if(et||!tec?.length){ toast('No hay técnicos disponibles en esa zona/especialidad'); return }
+    q=applyMarketFilter(q);
 
-  // 2. Elige el primero (menos trabajos, mejor rating)
-  const elegido = tec[0];
+    const {data:socs,error:errSoc}=await q
+      .order('trabajos',{ascending:true})
+      .order('rating_avg',{ascending:false})
+      .limit(3);
 
-  // 3. Asigna
-  const {error:eu}=await sb.from('solicitudes')
-   .update({socio_asignado:elegido.id, estado:'asignada'})
-   .eq('id',id);
-  if(eu){ toast('Error: '+eu.message); return }
+    if(errSoc){ toast('Error: '+errSoc.message); return }
+    if(!socs?.length){ toast('Sin sugerencias disponibles'); return }
 
-  toast(`Auto-asignado a ${elegido.nombre} ✓`);
-  logActividad('auto_asignar',id,`Técnico: ${elegido.nombre}`);
-
-  // 4. Notifica al técnico y al cliente (usa tus templates t1 y t4)
-  const msgT = CFG.t1.replace('{socio}',elegido.nombre)
-   .replace('{code}',dbc(id))
-   .replace('{cliente}',sol.cliente||'')
-   .replace('{municipio}',sol.municipio||'')
-   .replace('{telefono}',sol.telefono||'')
-   .replace('{servicio}',sol.servicio||'')
-   .replace('{detalles}',sol.detalles||'Sin detalles');
-  if(elegido.telefono) wa(elegido.telefono, msgT);
-
-  setTimeout(()=>envWAClienteAsignacion(sol,elegido),1500);
-
-  loadOp(); loadKPIs();
+    sel.innerHTML='<option value="">-- Seleccionar técnico --</option>'+socs.map((sc,i)=>`<option value="${sc.id}" ${i===0?'selected':''}>${esc(sc.nombre)}${sc.mercado?' · '+sc.mercado:''}</option>`).join('');
+    sel.value=String(socs[0].id);
+    toast(`Sugerencia: ${socs[0].nombre}`);
+  }catch(e){
+    console.error(e);
+    toast('Error inesperado');
+  }
 }
 
 async function reasignar(id){
